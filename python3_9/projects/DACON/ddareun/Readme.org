@@ -1,0 +1,4 @@
+#+title: Readme
+https://dacon.io/competitions/open/235698/overview/description
+
+https://github.com/syryuauros/python3_9
