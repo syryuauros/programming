@@ -1,0 +1,47 @@
+# https://swstar.tistory.com/193
+
+# layer overall
+set terminal pngcairo enhanced color font "TimesNewRoman,48" dashlength 0.5 size 1920,1440
+set border lw 5
+set pointsize 3
+set tics scale 1
+
+# x,y range setup
+xmin = -1.
+xmax = 5.
+ymin = -1.
+ymax = 6.
+
+# title, output setup
+set title '선형 함수'
+set output 'exm1.png'
+
+# line type setup -- dt: dot type,  lw: line-width
+set style line 11 dt 1 lw 5 linecolor rgb 'red'
+set style line 12 dt 2 lw 5 linecolor rgb 'magenta'
+set style line 13 dt 3 lw 5 linecolor rgb 'green'
+set style line 14 dt 4 lw 5 linecolor rgb 'blue'
+set style line 15 dt 5 lw 5 linecolor rgb 'purple'
+
+# margin setup
+set lmargin 7.
+set rmargin 1.
+set tmargin 2.5
+set bmargin 3.
+set key left top
+set key at xmin + 0.03 * (xmax - xmin), ymin + 0.97 * (ymax - ymin)
+
+
+# range, label setup
+set xrange [xmin:xmax]
+set xlabel 'x' offset 0.,0.4 font 'TimesNewRoman,48'
+set yrange [ymin:ymax]
+set ylabel 'x-{/Symbol D}x' offset 0.5,0. font 'TimesNewRoman,48'
+
+# main plot-- plot x - 1 means set x=x, y=x-1
+plot x linestyle 11 title '{/Symbol D}x = 0 (dashtype = 1)',\
+x - 1. linestyle 12 title '1 (dashtype = 2)',\
+x - 2. linestyle 13 title '2 (dashtype = 3)',\
+x - 3. linestyle 14 title '3 (dashtype = 4)',\
+x - 4. linestyle 15 title '4 (dashtype = 5)',\
+0 dt 1 lw 2 linecolor rgb "black" title ''

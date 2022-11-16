@@ -1,0 +1,79 @@
+# https://swstar.tistory.com/193
+
+# layer overall
+set terminal pngcairo enhanced color font "TimesNewRoman,48" dashlength 0.5 size 1920,1440
+set border lw 5
+set pointsize 5
+set tics scale 1
+color1 = '#FF0000'
+color2 = '#FF9933'
+color3 = '#66CC00'
+color4 = '#0000FF'
+color5 = '#6600CC'
+
+# range, variable setup
+xmin = 0.
+xmax = 10.
+ymin = 0.
+ymax = 0.35
+
+# title, output
+set title '푸아송 분포'
+set output 'example2D_03.png'
+
+# line style define
+set style line 11 dt 1 lw 5 pt 4 linecolor rgb color1
+set style line 12 dt 3 lw 5 pt 4 linecolor rgb color1
+set style line 13 dt 5 lw 5 pt 4 linecolor rgb color1
+set style line 14 dt 7 lw 5 pt 4 linecolor rgb color1
+set style line 15 dt 1 lw 5 pt 5 linecolor rgb color1
+set style line 21 dt 1 lw 5 pt 4 linecolor rgb color2
+set style line 22 dt 3 lw 5 pt 4 linecolor rgb color2
+set style line 23 dt 5 lw 5 pt 4 linecolor rgb color2
+set style line 24 dt 7 lw 5 pt 4 linecolor rgb color2
+set style line 25 dt 1 lw 5 pt 5 linecolor rgb color2
+set style line 31 dt 1 lw 5 pt 4 linecolor rgb color3
+set style line 32 dt 3 lw 5 pt 4 linecolor rgb color3
+set style line 33 dt 5 lw 5 pt 4 linecolor rgb color3
+set style line 34 dt 7 lw 5 pt 4 linecolor rgb color3
+set style line 35 dt 1 lw 5 pt 5 linecolor rgb color3
+set style line 41 dt 1 lw 5 pt 4 linecolor rgb color4
+set style line 42 dt 3 lw 5 pt 4 linecolor rgb color4
+set style line 43 dt 5 lw 5 pt 4 linecolor rgb color4
+set style line 44 dt 7 lw 5 pt 4 linecolor rgb color4
+set style line 45 dt 1 lw 5 pt 5 linecolor rgb color4
+set style line 51 dt 1 lw 5 pt 4 linecolor rgb color5
+set style line 52 dt 3 lw 5 pt 4 linecolor rgb color5
+set style line 53 dt 5 lw 5 pt 4 linecolor rgb color5
+set style line 54 dt 7 lw 5 pt 4 linecolor rgb color5
+set style line 55 dt 1 lw 5 pt 5 linecolor rgb color5
+set style line 101 dt 1 lw 5 pt 4 linecolor rgb "black"
+set style line 102 dt 2 lw 5 pt 4 linecolor rgb "black"
+set style line 103 dt 3 lw 5 pt 4 linecolor rgb "black"
+set style line 104 dt 5 lw 5 pt 4 linecolor rgb "black"
+set style fill transparent solid 0.2 noborder
+set bars 1.
+set lmargin 7.5
+set rmargin 1.5
+set tmargin 2.5
+set bmargin 3.
+set key right top
+set key at xmin + 0.97 * (xmax - xmin), ymin + 0.97 * (ymax - ymin)
+
+# range, label setup
+set xrange [xmin:xmax]
+set xlabel 'N' offset 0.,0.4 font "TimesNewRoman,48"
+set yrange [ymin:ymax]
+set ylabel 'P_{Poisson}(N)' offset 1.,0. font "TimesNewRoman,48"
+
+# plot
+plot 'exm3_data.txt' u 1:2 linestyle 15 title '<N> = 1.5',\
+'exm3_data.txt' u 1:2 w histep linestyle 11 title '',\
+'exm3_data.txt' u 1:3 linestyle 25 title '3.0',\
+'exm3_data.txt' u 1:3 w histep linestyle 21 title '',\
+'exm3_data.txt' u 1:4 linestyle 35 title '4.5',\
+'exm3_data.txt' u 1:4 w histep linestyle 31 title '',\
+'exm3_data.txt' u 1:5 linestyle 45 title '6.0',\
+'exm3_data.txt' u 1:5 w histep linestyle 41 title '',\
+'exm3_data.txt' u 1:6 linestyle 55 title '7.5',\
+'exm3_data.txt' u 1:6 w histep linestyle 51 title ''

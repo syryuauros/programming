@@ -1,0 +1,85 @@
+# https://swstar.tistory.com/193
+
+# layer overall
+set terminal pngcairo enhanced color font "TimesNewRoman,48" dashlength 0.5 size 1920,1440
+set border lw 5
+set pointsize 3
+set tics scale 1
+color1 = '#FF0000'
+color2 = '#FF9933'
+color3 = '#66CC00'
+color4 = '#0000FF'
+color5 = '#6600CC'
+
+# range, variable setup
+PI = 3.14159265
+xmin = 0.
+xmax = 8.5
+ymin = -1.2
+ymax = 1.2
+
+# title, output
+set title '삼각 함수 (sine, cosine)'
+set output 'example2D_02.png'
+
+# line style define
+set style line 11 dt 1 lw 5 pt 4 linecolor rgb color1
+set style line 12 dt 3 lw 5 pt 4 linecolor rgb color1
+set style line 13 dt 5 lw 5 pt 4 linecolor rgb color1
+set style line 14 dt 7 lw 5 pt 4 linecolor rgb color1
+set style line 15 dt 1 lw 5 pt 5 linecolor rgb color1
+set style line 21 dt 1 lw 5 pt 4 linecolor rgb color2
+set style line 22 dt 3 lw 5 pt 4 linecolor rgb color2
+set style line 23 dt 5 lw 5 pt 4 linecolor rgb color2
+set style line 24 dt 7 lw 5 pt 4 linecolor rgb color2
+set style line 25 dt 1 lw 5 pt 5 linecolor rgb color2
+set style line 31 dt 1 lw 5 pt 4 linecolor rgb color3
+set style line 32 dt 3 lw 5 pt 4 linecolor rgb color3
+set style line 33 dt 5 lw 5 pt 4 linecolor rgb color3
+set style line 34 dt 7 lw 5 pt 4 linecolor rgb color3
+set style line 35 dt 1 lw 5 pt 5 linecolor rgb color3
+set style line 41 dt 1 lw 5 pt 4 linecolor rgb color4
+set style line 42 dt 3 lw 5 pt 4 linecolor rgb color4
+set style line 43 dt 5 lw 5 pt 4 linecolor rgb color4
+set style line 44 dt 7 lw 5 pt 4 linecolor rgb color4
+set style line 45 dt 1 lw 5 pt 5 linecolor rgb color4
+set style line 51 dt 1 lw 5 pt 4 linecolor rgb color5
+set style line 52 dt 3 lw 5 pt 4 linecolor rgb color5
+set style line 53 dt 5 lw 5 pt 4 linecolor rgb color5
+set style line 54 dt 7 lw 5 pt 4 linecolor rgb color5
+set style line 55 dt 1 lw 5 pt 5 linecolor rgb color5
+set style line 101 dt 1 lw 5 pt 4 linecolor rgb "black"
+set style line 102 dt 2 lw 5 pt 4 linecolor rgb "black"
+set style line 103 dt 3 lw 5 pt 4 linecolor rgb "black"
+set style line 104 dt 5 lw 5 pt 4 linecolor rgb "black"
+set lmargin 7.5
+set rmargin 1.
+set tmargin 2.5
+set bmargin 3.
+set key right bottom
+set key at xmin + 0.97 * (xmax - xmin), ymin + 0.03 * (ymax - ymin)
+
+# range, label setup
+set xrange [xmin:xmax]
+set xlabel 'x' offset 0.,0.4 font "TimesNewRoman,48"
+set yrange [ymin:ymax]
+set ylabel 'sin(x+{/Symbol D}x)' offset 1.,0. font "TimesNewRoman,48"
+set label 1001 '{/Symbol p}' at PI + 0.01 * (xmax - xmin), 0.06 * (ymax - ymin) font "TimesNewRoman,36"
+
+# insert arrow mark without head
+set arrow from PI, 0.2 to PI, -1.1 nohead linestyle 102
+set label 1002 '2{/Symbol p}' at 2. * PI + 0.01 * (xmax - xmin), -0.03 * (ymax - ymin) font "TimesNewRoman,36"
+set arrow from 2. * PI, -0.2 to 2. * PI, 1.1 nohead linestyle 102
+
+# function define
+func(x) = sin(x)
+
+# plot
+plot func(x) linestyle 11 title '{/Symbol D}x = 0',\
+func(x + PI / 8.) linestyle 21 title '{/Symbol p}/8',\
+func(x + PI / 4.) linestyle 31 title '{/Symbol p}/4',\
+func(x + 3. * PI / 8.) linestyle 41 title '3{/Symbol p}/8',\
+func(x + PI / 2.) linestyle 51 title '{/Symbol p}/2',\
+
+# mid line at y=0
+0 dt 1 lw 2 linecolor rgb "black" title ''
