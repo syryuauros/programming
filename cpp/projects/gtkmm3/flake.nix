@@ -17,7 +17,7 @@
 
       in rec {
 
-        devShell = pkgs.mkShell rec {
+        devShells.default = pkgs.mkShell rec {
           name = "gtkmm3-project";
 
           packages = with pkgs; [
