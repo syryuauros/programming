@@ -17,8 +17,9 @@
 
       in rec {
         packages.gcc = pkgs.gcc;
-        packages.gnuplot = pkgs.gnuplot;
-        packages.unzip = pkgs.unzip;
+        packages.gtkmm4 = pkgs.gtkmm4;
+        #packages.gnuplot = pkgs.gnuplot;
+        #packages.unzip = pkgs.unzip;
 
         defaultPackage = packages.gcc;
       });
