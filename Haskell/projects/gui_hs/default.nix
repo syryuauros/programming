@@ -1,3 +1,6 @@
+# nix-shell
+# nix-shell로 실행 시 ghc8.6.5 version이 현재 내 컴퓨터에 있는 다른 dependency들 glibc, glibnetworking 등의 버전 충돌이 일어나서 제대로 작동 안 함
+
 let
   nixpkgsPin = {
     url = https://github.com/nixos/nixpkgs/archive/5659cb448e9b615d642c5fe52779c2223e72f7eb.tar.gz;
