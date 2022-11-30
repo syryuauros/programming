@@ -21,15 +21,15 @@
         packages.gnuplot = pkgs.gnuplot;
 
         defaultPackage = packages.haskell;
-        # devShell = pkgs.mkShell {
-        #   buildInputs = pkgs.haskellPackages.ghcWithPackages (pkgs: with pkgs; [ cabal-install ]);
-        #   shellHook = ''
-        #     cabal run
-        #   '';
-        # };
 
-        #apps.gnuplot = flake-utils.lib.mkApp { drv = packages.gnuplot; };
-        # defaultApp = apps.gnuplot;
+        devShells.default = pkgs.mkShell rec {
+          name = "haskell-basic-project";
+
+          packages = with pkgs; [
+            # Development Tools
+            haskellPackages.ghcWithPackages (pkgs: with pkgs; [ cabal-install ])
+          ];
+        };
       });
 
 }
