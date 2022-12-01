@@ -26,6 +26,7 @@
           name = "gui-haskell-app";
           buildInputs = [
             packages.haskell_gui
+            pkgs.cabal-install
             packages.gnuplot
             pkgs.pkg-config
             pkgs.gtk3
