@@ -4,6 +4,7 @@ import qualified Data.Text as T
 import Text.Read (readMaybe)
 import System.Random
 import Control.Concurrent
+import Control.Monad (unless)
 
 main :: IO ()
 main = do
@@ -53,12 +54,14 @@ appActivate app = do
 setEntryRelation :: Gtk.Entry -> (Double -> Double) -> Gtk.Entry -> IO ()
 setEntryRelation entrySource conv entryTarget = do
   _ <- Gtk.onEditableChanged entrySource $ do
-      s <- Gtk.entryGetText entrySource
-      case parseDouble s of
-        Nothing -> return ()
-        Just v ->
-          let s' = renderDouble (conv v)
-          in Gtk.entrySetText entryTarget s'
+    target_focused <- Gtk.widgetHasFocus entryTarget
+    unless target_focused $ do
+        s <- Gtk.entryGetText entrySource
+        case parseDouble s of
+          Nothing -> return ()
+          Just v ->
+            let s' = renderDouble (conv v)
+            in Gtk.entrySetText entryTarget s'
   return ()
 
 addEntry :: Gtk.IsContainer a => T.Text -> a -> IO Gtk.Entry
