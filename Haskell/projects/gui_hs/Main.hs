@@ -41,19 +41,25 @@ appActivate app = do
   Gtk.widgetShow vbox
   entryC <- addEntry (T.pack "°C") vbox
   entryF <- addEntry (T.pack "°F") vbox
-  _ <- Gtk.onEditableChanged entryC $
-    do s <- Gtk.entryGetText entryC
-       case parseDouble s of
-         Nothing -> return ()
-         Just v ->
-           let s' = renderDouble (c_to_f v)
-           in Gtk.entrySetText entryF s'
+  setEntryRelation entryC c_to_f entryF
+  setEntryRelation entryF f_to_c entryC
   button <- Gtk.buttonNew
   Gtk.setButtonLabel button (T.pack "Get Weather")
   Gtk.setWidgetHalign button Gtk.AlignCenter
   Gtk.containerAdd vbox button
   Gtk.widgetShow button
   Gtk.widgetShow window
+
+setEntryRelation :: Gtk.Entry -> (Double -> Double) -> Gtk.Entry -> IO ()
+setEntryRelation entrySource conv entryTarget = do
+  _ <- Gtk.onEditableChanged entrySource $ do
+      s <- Gtk.entryGetText entrySource
+      case parseDouble s of
+        Nothing -> return ()
+        Just v ->
+          let s' = renderDouble (conv v)
+          in Gtk.entrySetText entryTarget s'
+  return ()
 
 addEntry :: Gtk.IsContainer a => T.Text -> a -> IO Gtk.Entry
 addEntry labelStr container = do
@@ -66,7 +72,6 @@ addEntry labelStr container = do
   Gtk.widgetShow entry
   Gtk.widgetShow label
   Gtk.widgetShow hbox
-
   Gtk.setWidgetExpand entry True
   Gtk.setEntryXalign entry 1
   return entry
