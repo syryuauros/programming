@@ -2,6 +2,7 @@ import qualified GI.Gtk as Gtk
 import qualified GI.Gio as Gio
 import qualified Data.Text as T
 import Text.Read (readMaybe)
+import GI.GLib as GLib
 import System.Random
 import Control.Concurrent
 import Control.Monad (unless)
@@ -48,9 +49,16 @@ appActivate app = do
   Gtk.setButtonLabel button (T.pack "Get Weather")
   Gtk.setWidgetHalign button Gtk.AlignCenter
   Gtk.containerAdd vbox button
-  _ <- Gtk.onButtonClicked button $
-    do c <- getWeather
-       Gtk.entrySetText entryC (renderDouble c)
+  Gtk.onButtonClicked button $
+    do Gtk.widgetSetSensitive button False
+       _ <- forkIO $ do
+         c <- getWeather
+         _ <- GLib.idleAdd GLib.PRIORITY_HIGH_IDLE $ do
+           _ <- Gtk.entrySetText entryC (renderDouble c)
+           Gtk.widgetSetSensitive button True
+           return False
+         return ()
+       return ()
   Gtk.widgetShow button
   Gtk.widgetShow window
 
