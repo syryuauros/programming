@@ -48,8 +48,12 @@ appActivate app = do
   Gtk.setButtonLabel button (T.pack "Get Weather")
   Gtk.setWidgetHalign button Gtk.AlignCenter
   Gtk.containerAdd vbox button
+  _ <- Gtk.onButtonClicked button $
+    do c <- getWeather
+       Gtk.entrySetText entryC (renderDouble c)
   Gtk.widgetShow button
   Gtk.widgetShow window
+
 
 setEntryRelation :: Gtk.Entry -> (Double -> Double) -> Gtk.Entry -> IO ()
 setEntryRelation entrySource conv entryTarget = do
