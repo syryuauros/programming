@@ -36,7 +36,7 @@
         defaultPackage = packages.python3_9;
 
         devShells.default = pkgs.mkShell rec {
-          name = "gui-haskell-app";
+          name = "python-for-SMILE";
           buildInputs = [
             packages.python3_9
             packages.gnuplot
