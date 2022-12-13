@@ -22,3 +22,8 @@ int main(int argc, char* argv[]) {
   return 0;
 
 }
+
+
+//compile:
+//$ nix develop
+//$ g++ -v /home/auros/gits/programming/cpp/projects/test/Tsum.cpp -o /home/auros/gits/programming/cpp/projects/test/results/Tsum

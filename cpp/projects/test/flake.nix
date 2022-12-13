@@ -16,18 +16,16 @@
         };
 
       in rec {
+        packages.gcc = pkgs.gcc;
 
         devShells.default = pkgs.mkShell rec {
-          name = "gtkmm3-project";
+          name = "simple gcc";
 
           packages = with pkgs; [
-            # Development Tools
-            pkgconfig
-            gtkmm3
+            gcc
           ];
         };
 
       });
-
 
 }
