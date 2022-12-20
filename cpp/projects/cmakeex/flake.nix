@@ -23,6 +23,8 @@
 
           packages = with pkgs; [
           glibc.static
+          glibc
+          cmake
 		];
         };
 
