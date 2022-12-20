@@ -22,9 +22,9 @@
           name = "simple gcc";
 
           packages = with pkgs; [
-          glibc.static
-          #glibc
-          #cmake
+          #glibc.static
+          glibc
+          cmake
 		];
         };
 

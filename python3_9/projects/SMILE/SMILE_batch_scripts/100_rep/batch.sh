@@ -26,7 +26,7 @@ do
 sbatch --nodelist=pylon$((($i + 0) % 3 + 1))  $c_path${d_path[$i]}"batch_code.sh" $c_path${d_path[$i]} ${code_name[$i]} ${index_list[$i]} &
 sleep 0.3
 done
-sbatch --nodelist=pylon$(($l_d % 3 + 1))  $c_path${d_path[$((l_d - 1))]}"batch_code.sh" $c_path${d_path[$(($l_d - 1))]} ${code_name[$(($l_d - 1))]} ${index_list[$(($l_d - 1))]}
+sbatch --nodelist=pylon$((($l_d - 1) % 3 + 1))  $c_path${d_path[$((l_d - 1))]}"batch_code.sh" $c_path${d_path[$(($l_d - 1))]} ${code_name[$(($l_d - 1))]} ${index_list[$(($l_d - 1))]}
 #sbatch $c_path${d_path[0]}"batch_code.sh" $c_path${d_path[0]} ${code_name[1]}
 
 sleep 1
