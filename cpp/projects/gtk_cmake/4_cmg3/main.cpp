@@ -11,15 +11,20 @@ int main(int argc, char *argv[])
   printf("This code is modified!.\n");
   printf("%d + 10 == %d\n", 3, your_func(3));
 
-  auto app =
-    Gtk::Application::create(argc, argv,
-      "org.gtkmm.examples.base");
+  GtkWidget *window;
 
-  Gtk::Window window;
-  window.set_default_size(200, 200);
+  gtk_init (&argc, &argv);
 
-  return app->run(window);
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), "%d + 1 == %d/n");
+  g_signal_connect (G_OBJECT (window), "destroy", gtk_main_quit, NULL);
+  gtk_window_set_default_size(GTK_WINDOW(window), 500, 500);
 
+  gtk_widget_show_all (window);
+  gtk_main ();
+
+  return 0;
 }
 
 //https://stackoverflow.com/questions/2730135/how-do-i-link-gtk-library-more-easily-with-cmake-in-windows
+//https://www.kernelpanic.kr/27

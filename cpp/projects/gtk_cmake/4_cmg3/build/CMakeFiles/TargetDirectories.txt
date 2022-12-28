@@ -1,0 +1,6 @@
+/home/auros/gits/programming/cpp/projects/gtk_cmake/4_cmg3/build/CMakeFiles/mytest.dir
+/home/auros/gits/programming/cpp/projects/gtk_cmake/4_cmg3/build/CMakeFiles/edit_cache.dir
+/home/auros/gits/programming/cpp/projects/gtk_cmake/4_cmg3/build/CMakeFiles/rebuild_cache.dir
+/home/auros/gits/programming/cpp/projects/gtk_cmake/4_cmg3/build/mylib/CMakeFiles/mylib.dir
+/home/auros/gits/programming/cpp/projects/gtk_cmake/4_cmg3/build/mylib/CMakeFiles/edit_cache.dir
+/home/auros/gits/programming/cpp/projects/gtk_cmake/4_cmg3/build/mylib/CMakeFiles/rebuild_cache.dir
