@@ -1,1 +1,1 @@
-/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ CMakeFiles/mytest.dir/my.cpp.o CMakeFiles/mytest.dir/main.cpp.o CMakeFiles/mytest.dir/your.cpp.o -o mytest 
+/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ -rdynamic CMakeFiles/mytest.dir/main.cpp.o CMakeFiles/mytest.dir/my.cpp.o CMakeFiles/mytest.dir/your.cpp.o -o mytest 

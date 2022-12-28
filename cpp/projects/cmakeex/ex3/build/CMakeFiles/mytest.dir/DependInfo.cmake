@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/auros/gits/programming/cpp/projects/cmakeex/ex2/main.cpp" "CMakeFiles/mytest.dir/main.cpp.o" "gcc" "CMakeFiles/mytest.dir/main.cpp.o.d"
-  "/home/auros/gits/programming/cpp/projects/cmakeex/ex2/my.cpp" "CMakeFiles/mytest.dir/my.cpp.o" "gcc" "CMakeFiles/mytest.dir/my.cpp.o.d"
-  "/home/auros/gits/programming/cpp/projects/cmakeex/ex2/your.cpp" "CMakeFiles/mytest.dir/your.cpp.o" "gcc" "CMakeFiles/mytest.dir/your.cpp.o.d"
+  "/home/auros/gits/programming/cpp/projects/cmakeex/ex3/main.cpp" "CMakeFiles/mytest.dir/main.cpp.o" "gcc" "CMakeFiles/mytest.dir/main.cpp.o.d"
+  "/home/auros/gits/programming/cpp/projects/cmakeex/ex3/my.cpp" "CMakeFiles/mytest.dir/my.cpp.o" "gcc" "CMakeFiles/mytest.dir/my.cpp.o.d"
+  "/home/auros/gits/programming/cpp/projects/cmakeex/ex3/your.cpp" "CMakeFiles/mytest.dir/your.cpp.o" "gcc" "CMakeFiles/mytest.dir/your.cpp.o.d"
   )
 
 # Targets to which this target links.

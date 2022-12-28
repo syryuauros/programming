@@ -53,10 +53,10 @@ RM = /nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex2
+CMAKE_SOURCE_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex3
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex2/build
+CMAKE_BINARY_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex3/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/mytest.dir/depend.make
@@ -69,63 +69,63 @@ include CMakeFiles/mytest.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/mytest.dir/flags.make
 
-CMakeFiles/mytest.dir/my.cpp.o: CMakeFiles/mytest.dir/flags.make
-CMakeFiles/mytest.dir/my.cpp.o: ../my.cpp
-CMakeFiles/mytest.dir/my.cpp.o: CMakeFiles/mytest.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/mytest.dir/my.cpp.o"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mytest.dir/my.cpp.o -MF CMakeFiles/mytest.dir/my.cpp.o.d -o CMakeFiles/mytest.dir/my.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex2/my.cpp
-
-CMakeFiles/mytest.dir/my.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mytest.dir/my.cpp.i"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex2/my.cpp > CMakeFiles/mytest.dir/my.cpp.i
-
-CMakeFiles/mytest.dir/my.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mytest.dir/my.cpp.s"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex2/my.cpp -o CMakeFiles/mytest.dir/my.cpp.s
-
 CMakeFiles/mytest.dir/main.cpp.o: CMakeFiles/mytest.dir/flags.make
 CMakeFiles/mytest.dir/main.cpp.o: ../main.cpp
 CMakeFiles/mytest.dir/main.cpp.o: CMakeFiles/mytest.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mytest.dir/main.cpp.o"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mytest.dir/main.cpp.o -MF CMakeFiles/mytest.dir/main.cpp.o.d -o CMakeFiles/mytest.dir/main.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex2/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/mytest.dir/main.cpp.o"
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mytest.dir/main.cpp.o -MF CMakeFiles/mytest.dir/main.cpp.o.d -o CMakeFiles/mytest.dir/main.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex3/main.cpp
 
 CMakeFiles/mytest.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mytest.dir/main.cpp.i"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex2/main.cpp > CMakeFiles/mytest.dir/main.cpp.i
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex3/main.cpp > CMakeFiles/mytest.dir/main.cpp.i
 
 CMakeFiles/mytest.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mytest.dir/main.cpp.s"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex2/main.cpp -o CMakeFiles/mytest.dir/main.cpp.s
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex3/main.cpp -o CMakeFiles/mytest.dir/main.cpp.s
+
+CMakeFiles/mytest.dir/my.cpp.o: CMakeFiles/mytest.dir/flags.make
+CMakeFiles/mytest.dir/my.cpp.o: ../my.cpp
+CMakeFiles/mytest.dir/my.cpp.o: CMakeFiles/mytest.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mytest.dir/my.cpp.o"
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mytest.dir/my.cpp.o -MF CMakeFiles/mytest.dir/my.cpp.o.d -o CMakeFiles/mytest.dir/my.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex3/my.cpp
+
+CMakeFiles/mytest.dir/my.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mytest.dir/my.cpp.i"
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex3/my.cpp > CMakeFiles/mytest.dir/my.cpp.i
+
+CMakeFiles/mytest.dir/my.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mytest.dir/my.cpp.s"
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex3/my.cpp -o CMakeFiles/mytest.dir/my.cpp.s
 
 CMakeFiles/mytest.dir/your.cpp.o: CMakeFiles/mytest.dir/flags.make
 CMakeFiles/mytest.dir/your.cpp.o: ../your.cpp
 CMakeFiles/mytest.dir/your.cpp.o: CMakeFiles/mytest.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/mytest.dir/your.cpp.o"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mytest.dir/your.cpp.o -MF CMakeFiles/mytest.dir/your.cpp.o.d -o CMakeFiles/mytest.dir/your.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex2/your.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/mytest.dir/your.cpp.o"
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mytest.dir/your.cpp.o -MF CMakeFiles/mytest.dir/your.cpp.o.d -o CMakeFiles/mytest.dir/your.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex3/your.cpp
 
 CMakeFiles/mytest.dir/your.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mytest.dir/your.cpp.i"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex2/your.cpp > CMakeFiles/mytest.dir/your.cpp.i
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex3/your.cpp > CMakeFiles/mytest.dir/your.cpp.i
 
 CMakeFiles/mytest.dir/your.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mytest.dir/your.cpp.s"
-	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex2/your.cpp -o CMakeFiles/mytest.dir/your.cpp.s
+	/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex3/your.cpp -o CMakeFiles/mytest.dir/your.cpp.s
 
 # Object files for target mytest
 mytest_OBJECTS = \
-"CMakeFiles/mytest.dir/my.cpp.o" \
 "CMakeFiles/mytest.dir/main.cpp.o" \
+"CMakeFiles/mytest.dir/my.cpp.o" \
 "CMakeFiles/mytest.dir/your.cpp.o"
 
 # External object files for target mytest
 mytest_EXTERNAL_OBJECTS =
 
-mytest: CMakeFiles/mytest.dir/my.cpp.o
 mytest: CMakeFiles/mytest.dir/main.cpp.o
+mytest: CMakeFiles/mytest.dir/my.cpp.o
 mytest: CMakeFiles/mytest.dir/your.cpp.o
 mytest: CMakeFiles/mytest.dir/build.make
 mytest: CMakeFiles/mytest.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable mytest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable mytest"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mytest.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -137,6 +137,6 @@ CMakeFiles/mytest.dir/clean:
 .PHONY : CMakeFiles/mytest.dir/clean
 
 CMakeFiles/mytest.dir/depend:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/auros/gits/programming/cpp/projects/cmakeex/ex2 /home/auros/gits/programming/cpp/projects/cmakeex/ex2 /home/auros/gits/programming/cpp/projects/cmakeex/ex2/build /home/auros/gits/programming/cpp/projects/cmakeex/ex2/build /home/auros/gits/programming/cpp/projects/cmakeex/ex2/build/CMakeFiles/mytest.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex3/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/auros/gits/programming/cpp/projects/cmakeex/ex3 /home/auros/gits/programming/cpp/projects/cmakeex/ex3 /home/auros/gits/programming/cpp/projects/cmakeex/ex3/build /home/auros/gits/programming/cpp/projects/cmakeex/ex3/build /home/auros/gits/programming/cpp/projects/cmakeex/ex3/build/CMakeFiles/mytest.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/mytest.dir/depend
 
