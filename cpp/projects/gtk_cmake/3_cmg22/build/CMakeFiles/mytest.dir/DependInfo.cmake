@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg2/main.cpp" "CMakeFiles/mytest.dir/main.cpp.o" "gcc" "CMakeFiles/mytest.dir/main.cpp.o.d"
+  "/home/auros/gits/programming/cpp/projects/gtk_cmake/2_cmg1/main.cpp" "CMakeFiles/mytest.dir/main.cpp.o" "gcc" "CMakeFiles/mytest.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.
