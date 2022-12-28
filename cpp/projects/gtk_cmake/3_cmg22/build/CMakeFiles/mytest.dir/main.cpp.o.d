@@ -1,5 +1,5 @@
 CMakeFiles/mytest.dir/main.cpp.o: \
- /home/auros/gits/programming/cpp/projects/gtk_cmake/2_cmg1/main.cpp \
+ /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/main.cpp \
  /nix/store/bjhfs0gqi3p5zswg7r9bxjyn0iywq79g-glibc-2.34-210-dev/include/stdc-predef.h \
  /nix/store/wlpa37ki4zma80g2x5i2bpf69h4xnhdx-gtkmm-3.24.6-dev/include/gtkmm-3.0/gtkmm.h \
  /nix/store/m72mj634ppyc0qlcn73zzc6nc7w1q963-glibmm-2.66.4-dev/include/glibmm-2.4/glibmm.h \
@@ -1594,4 +1594,7 @@ CMakeFiles/mytest.dir/main.cpp.o: \
  /nix/store/wlpa37ki4zma80g2x5i2bpf69h4xnhdx-gtkmm-3.24.6-dev/include/gtkmm-3.0/gtkmm/treestore.h \
  /nix/store/wlpa37ki4zma80g2x5i2bpf69h4xnhdx-gtkmm-3.24.6-dev/include/gtkmm-3.0/gtkmm/uimanager.h \
  /nix/store/wlpa37ki4zma80g2x5i2bpf69h4xnhdx-gtkmm-3.24.6-dev/include/gtkmm-3.0/gtkmm/viewport.h \
- /nix/store/wlpa37ki4zma80g2x5i2bpf69h4xnhdx-gtkmm-3.24.6-dev/include/gtkmm-3.0/gtkmm/volumebutton.h
+ /nix/store/wlpa37ki4zma80g2x5i2bpf69h4xnhdx-gtkmm-3.24.6-dev/include/gtkmm-3.0/gtkmm/volumebutton.h \
+ /nix/store/65v2c245h5qa9mpc7dxhqkfjinl6phx0-gcc-11.3.0/include/c++/11.3.0/iostream \
+ /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/mylib/include/my.h \
+ /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/mylib/include/your.h

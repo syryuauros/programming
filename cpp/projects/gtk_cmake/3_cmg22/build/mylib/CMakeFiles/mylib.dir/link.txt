@@ -1,0 +1,2 @@
+/nix/store/0q9hm42fapihzj1d64nxqmbml7fpb2d6-binutils-2.38/bin/ar qc libmylib.a CMakeFiles/mylib.dir/src/my.cpp.o CMakeFiles/mylib.dir/src/your.cpp.o
+/nix/store/0q9hm42fapihzj1d64nxqmbml7fpb2d6-binutils-2.38/bin/ranlib libmylib.a

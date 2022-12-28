@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build/CMakeFiles /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build//CMakeFiles/progress.marks
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build/CMakeFiles /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build/mylib//CMakeFiles/progress.marks
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,68 +103,80 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named mytest
+# Convenience name for target.
+mylib/CMakeFiles/mylib.dir/rule:
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/CMakeFiles/mylib.dir/rule
+.PHONY : mylib/CMakeFiles/mylib.dir/rule
 
-# Build rule for target.
-mytest: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mytest
-.PHONY : mytest
-
-# fast build rule for target.
-mytest/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/build
-.PHONY : mytest/fast
-
-#=============================================================================
-# Target rules for targets named mylib
-
-# Build rule for target.
-mylib: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib
+# Convenience name for target.
+mylib: mylib/CMakeFiles/mylib.dir/rule
 .PHONY : mylib
 
 # fast build rule for target.
 mylib/fast:
-	$(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/build
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/build
 .PHONY : mylib/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+src/my.o: src/my.cpp.o
+.PHONY : src/my.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/my.cpp.o:
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.o
+.PHONY : src/my.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+src/my.i: src/my.cpp.i
+.PHONY : src/my.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/my.cpp.i:
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.i
+.PHONY : src/my.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+src/my.s: src/my.cpp.s
+.PHONY : src/my.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/my.cpp.s:
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.s
+.PHONY : src/my.cpp.s
+
+src/your.o: src/your.cpp.o
+.PHONY : src/your.o
+
+# target to build an object file
+src/your.cpp.o:
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.o
+.PHONY : src/your.cpp.o
+
+src/your.i: src/your.cpp.i
+.PHONY : src/your.i
+
+# target to preprocess a source file
+src/your.cpp.i:
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.i
+.PHONY : src/your.cpp.i
+
+src/your.s: src/your.cpp.s
+.PHONY : src/your.s
+
+# target to generate assembly for a file
+src/your.cpp.s:
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.s
+.PHONY : src/your.cpp.s
 
 # Help Target
 help:
@@ -175,10 +187,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... mylib"
-	@echo "... mytest"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... src/my.o"
+	@echo "... src/my.i"
+	@echo "... src/my.s"
+	@echo "... src/your.o"
+	@echo "... src/your.i"
+	@echo "... src/your.s"
 .PHONY : help
 
 
@@ -190,6 +204,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/auros/gits/programming/cpp/projects/gtk_cmake/3_cmg22/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
