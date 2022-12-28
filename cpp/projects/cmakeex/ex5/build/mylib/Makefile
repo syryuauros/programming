@@ -57,10 +57,10 @@ RM = /nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex4
+CMAKE_SOURCE_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex5
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build
+CMAKE_BINARY_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib//CMakeFiles/progress.marks
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles 0
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib//CMakeFiles/progress.marks
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/clean
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/preinstall
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/preinstall
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 mylib/CMakeFiles/mylib.dir/rule:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/CMakeFiles/mylib.dir/rule
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/CMakeFiles/mylib.dir/rule
 .PHONY : mylib/CMakeFiles/mylib.dir/rule
 
 # Convenience name for target.
@@ -127,7 +127,7 @@ mylib: mylib/CMakeFiles/mylib.dir/rule
 
 # fast build rule for target.
 mylib/fast:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/build
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/build
 .PHONY : mylib/fast
 
 src/my.o: src/my.cpp.o
@@ -135,7 +135,7 @@ src/my.o: src/my.cpp.o
 
 # target to build an object file
 src/my.cpp.o:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.o
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.o
 .PHONY : src/my.cpp.o
 
 src/my.i: src/my.cpp.i
@@ -143,7 +143,7 @@ src/my.i: src/my.cpp.i
 
 # target to preprocess a source file
 src/my.cpp.i:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.i
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.i
 .PHONY : src/my.cpp.i
 
 src/my.s: src/my.cpp.s
@@ -151,7 +151,7 @@ src/my.s: src/my.cpp.s
 
 # target to generate assembly for a file
 src/my.cpp.s:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.s
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/my.cpp.s
 .PHONY : src/my.cpp.s
 
 src/your.o: src/your.cpp.o
@@ -159,7 +159,7 @@ src/your.o: src/your.cpp.o
 
 # target to build an object file
 src/your.cpp.o:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.o
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.o
 .PHONY : src/your.cpp.o
 
 src/your.i: src/your.cpp.i
@@ -167,7 +167,7 @@ src/your.i: src/your.cpp.i
 
 # target to preprocess a source file
 src/your.cpp.i:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.i
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.i
 .PHONY : src/your.cpp.i
 
 src/your.s: src/your.cpp.s
@@ -175,7 +175,7 @@ src/your.s: src/your.cpp.s
 
 # target to generate assembly for a file
 src/your.cpp.s:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.s
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/src/your.cpp.s
 .PHONY : src/your.cpp.s
 
 # Help Target
@@ -204,6 +204,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

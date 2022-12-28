@@ -1,6 +1,6 @@
-/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles/mytest.dir
-/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles/edit_cache.dir
-/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles/rebuild_cache.dir
-/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib/CMakeFiles/mylib.dir
-/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib/CMakeFiles/edit_cache.dir
-/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib/CMakeFiles/rebuild_cache.dir
+/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles/mytest.dir
+/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles/edit_cache.dir
+/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles/rebuild_cache.dir
+/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib/CMakeFiles/mylib.dir
+/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib/CMakeFiles/edit_cache.dir
+/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib/CMakeFiles/rebuild_cache.dir

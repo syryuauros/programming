@@ -4,7 +4,7 @@
 # compile CXX with /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/include
+CXX_INCLUDES = -I/home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/include
 
 CXX_FLAGS = 
 

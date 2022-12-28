@@ -92,6 +92,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake"
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Compiler/zOS-C-DetermineCompiler.cmake"
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake"
+  "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake"
+  "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/FindPackageMessage.cmake"
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Internal/FeatureTesting.cmake"
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Platform/Linux-Determine-CXX.cmake"
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake"
@@ -99,6 +101,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake"
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Platform/Linux.cmake"
   "/nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/share/cmake-3.22/Modules/Platform/UnixPaths.cmake"
+  "/nix/store/sp1wy967gpj1gnyy9z7kr3gwiybv7w2w-opencv-4.5.4/lib/cmake/opencv4/OpenCVConfig-version.cmake"
+  "/nix/store/sp1wy967gpj1gnyy9z7kr3gwiybv7w2w-opencv-4.5.4/lib/cmake/opencv4/OpenCVConfig.cmake"
+  "/nix/store/sp1wy967gpj1gnyy9z7kr3gwiybv7w2w-opencv-4.5.4/lib/cmake/opencv4/OpenCVModules-release.cmake"
+  "/nix/store/sp1wy967gpj1gnyy9z7kr3gwiybv7w2w-opencv-4.5.4/lib/cmake/opencv4/OpenCVModules.cmake"
   )
 
 # The corresponding makefile is:

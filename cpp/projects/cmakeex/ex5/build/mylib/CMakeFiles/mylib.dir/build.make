@@ -53,10 +53,10 @@ RM = /nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex4
+CMAKE_SOURCE_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex5
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build
+CMAKE_BINARY_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build
 
 # Include any dependencies generated for this target.
 include mylib/CMakeFiles/mylib.dir/depend.make
@@ -72,30 +72,30 @@ include mylib/CMakeFiles/mylib.dir/flags.make
 mylib/CMakeFiles/mylib.dir/src/my.cpp.o: mylib/CMakeFiles/mylib.dir/flags.make
 mylib/CMakeFiles/mylib.dir/src/my.cpp.o: ../mylib/src/my.cpp
 mylib/CMakeFiles/mylib.dir/src/my.cpp.o: mylib/CMakeFiles/mylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object mylib/CMakeFiles/mylib.dir/src/my.cpp.o"
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT mylib/CMakeFiles/mylib.dir/src/my.cpp.o -MF CMakeFiles/mylib.dir/src/my.cpp.o.d -o CMakeFiles/mylib.dir/src/my.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/src/my.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object mylib/CMakeFiles/mylib.dir/src/my.cpp.o"
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT mylib/CMakeFiles/mylib.dir/src/my.cpp.o -MF CMakeFiles/mylib.dir/src/my.cpp.o.d -o CMakeFiles/mylib.dir/src/my.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/src/my.cpp
 
 mylib/CMakeFiles/mylib.dir/src/my.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mylib.dir/src/my.cpp.i"
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/src/my.cpp > CMakeFiles/mylib.dir/src/my.cpp.i
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/src/my.cpp > CMakeFiles/mylib.dir/src/my.cpp.i
 
 mylib/CMakeFiles/mylib.dir/src/my.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mylib.dir/src/my.cpp.s"
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/src/my.cpp -o CMakeFiles/mylib.dir/src/my.cpp.s
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/src/my.cpp -o CMakeFiles/mylib.dir/src/my.cpp.s
 
 mylib/CMakeFiles/mylib.dir/src/your.cpp.o: mylib/CMakeFiles/mylib.dir/flags.make
 mylib/CMakeFiles/mylib.dir/src/your.cpp.o: ../mylib/src/your.cpp
 mylib/CMakeFiles/mylib.dir/src/your.cpp.o: mylib/CMakeFiles/mylib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object mylib/CMakeFiles/mylib.dir/src/your.cpp.o"
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT mylib/CMakeFiles/mylib.dir/src/your.cpp.o -MF CMakeFiles/mylib.dir/src/your.cpp.o.d -o CMakeFiles/mylib.dir/src/your.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/src/your.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object mylib/CMakeFiles/mylib.dir/src/your.cpp.o"
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT mylib/CMakeFiles/mylib.dir/src/your.cpp.o -MF CMakeFiles/mylib.dir/src/your.cpp.o.d -o CMakeFiles/mylib.dir/src/your.cpp.o -c /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/src/your.cpp
 
 mylib/CMakeFiles/mylib.dir/src/your.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mylib.dir/src/your.cpp.i"
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/src/your.cpp > CMakeFiles/mylib.dir/src/your.cpp.i
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/src/your.cpp > CMakeFiles/mylib.dir/src/your.cpp.i
 
 mylib/CMakeFiles/mylib.dir/src/your.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mylib.dir/src/your.cpp.s"
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/src/your.cpp -o CMakeFiles/mylib.dir/src/your.cpp.s
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && /nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/src/your.cpp -o CMakeFiles/mylib.dir/src/your.cpp.s
 
 # Object files for target mylib
 mylib_OBJECTS = \
@@ -109,19 +109,19 @@ mylib/libmylib.a: mylib/CMakeFiles/mylib.dir/src/my.cpp.o
 mylib/libmylib.a: mylib/CMakeFiles/mylib.dir/src/your.cpp.o
 mylib/libmylib.a: mylib/CMakeFiles/mylib.dir/build.make
 mylib/libmylib.a: mylib/CMakeFiles/mylib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libmylib.a"
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && $(CMAKE_COMMAND) -P CMakeFiles/mylib.dir/cmake_clean_target.cmake
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mylib.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libmylib.a"
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && $(CMAKE_COMMAND) -P CMakeFiles/mylib.dir/cmake_clean_target.cmake
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mylib.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 mylib/CMakeFiles/mylib.dir/build: mylib/libmylib.a
 .PHONY : mylib/CMakeFiles/mylib.dir/build
 
 mylib/CMakeFiles/mylib.dir/clean:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib && $(CMAKE_COMMAND) -P CMakeFiles/mylib.dir/cmake_clean.cmake
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib && $(CMAKE_COMMAND) -P CMakeFiles/mylib.dir/cmake_clean.cmake
 .PHONY : mylib/CMakeFiles/mylib.dir/clean
 
 mylib/CMakeFiles/mylib.dir/depend:
-	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/auros/gits/programming/cpp/projects/cmakeex/ex4 /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib/CMakeFiles/mylib.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/auros/gits/programming/cpp/projects/cmakeex/ex5 /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib/CMakeFiles/mylib.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : mylib/CMakeFiles/mylib.dir/depend
 

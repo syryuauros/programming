@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/auros/gits/programming/cpp/projects/cmakeex/ex4/main.cpp" "CMakeFiles/mytest.dir/main.cpp.o" "gcc" "CMakeFiles/mytest.dir/main.cpp.o.d"
+  "/home/auros/gits/programming/cpp/projects/cmakeex/ex5/main.cpp" "CMakeFiles/mytest.dir/main.cpp.o" "gcc" "CMakeFiles/mytest.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib/CMakeFiles/mylib.dir/DependInfo.cmake"
+  "/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib/CMakeFiles/mylib.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -54,10 +54,10 @@ RM = /nix/store/k7lm30wld0jhdks4maz47v7ak8ydv2g6-cmake-3.22.3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex4
+CMAKE_SOURCE_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex5
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build
+CMAKE_BINARY_DIR = /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -98,14 +98,14 @@ mylib/clean: mylib/CMakeFiles/mylib.dir/clean
 CMakeFiles/mytest.dir/all: mylib/CMakeFiles/mylib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles --progress-num=4,5 "Built target mytest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles --progress-num=4,5 "Built target mytest"
 .PHONY : CMakeFiles/mytest.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/mytest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mytest.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles 0
 .PHONY : CMakeFiles/mytest.dir/rule
 
 # Convenience name for target.
@@ -124,14 +124,14 @@ CMakeFiles/mytest.dir/clean:
 mylib/CMakeFiles/mylib.dir/all:
 	$(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/depend
 	$(MAKE) $(MAKESILENT) -f mylib/CMakeFiles/mylib.dir/build.make mylib/CMakeFiles/mylib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles --progress-num=1,2,3 "Built target mylib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles --progress-num=1,2,3 "Built target mylib"
 .PHONY : mylib/CMakeFiles/mylib.dir/all
 
 # Build rule for subdir invocation for target.
 mylib/CMakeFiles/mylib.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mylib/CMakeFiles/mylib.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/CMakeFiles 0
 .PHONY : mylib/CMakeFiles/mylib.dir/rule
 
 # Convenience name for target.

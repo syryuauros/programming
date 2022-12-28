@@ -1,4 +1,4 @@
-# Install script for directory: /home/auros/gits/programming/cpp/projects/cmakeex/ex4
+# Install script for directory: /home/auros/gits/programming/cpp/projects/cmakeex/ex5
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/mylib/cmake_install.cmake")
+  include("/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/mylib/cmake_install.cmake")
 
 endif()
 
@@ -56,5 +56,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/auros/gits/programming/cpp/projects/cmakeex/ex4/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/auros/gits/programming/cpp/projects/cmakeex/ex5/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

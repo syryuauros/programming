@@ -1,5 +1,5 @@
 CMakeFiles/mytest.dir/main.cpp.o: \
- /home/auros/gits/programming/cpp/projects/cmakeex/ex4/main.cpp \
+ /home/auros/gits/programming/cpp/projects/cmakeex/ex5/main.cpp \
  /nix/store/ab85b675p235dncb1s6hsb9pcckyxafj-glibc-2.34-210-dev/include/stdc-predef.h \
  /nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/include/c++/11.3.0/iostream \
  /nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/include/c++/11.3.0/x86_64-unknown-linux-gnu/bits/c++config.h \
@@ -184,5 +184,5 @@ CMakeFiles/mytest.dir/main.cpp.o: \
  /nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/include/c++/11.3.0/bits/ostream.tcc \
  /nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/include/c++/11.3.0/istream \
  /nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/include/c++/11.3.0/bits/istream.tcc \
- /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/include/my.h \
- /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib/include/your.h
+ /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/include/my.h \
+ /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib/include/your.h

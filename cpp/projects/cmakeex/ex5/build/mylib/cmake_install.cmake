@@ -1,4 +1,4 @@
-# Install script for directory: /home/auros/gits/programming/cpp/projects/cmakeex/ex4/mylib
+# Install script for directory: /home/auros/gits/programming/cpp/projects/cmakeex/ex5/mylib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

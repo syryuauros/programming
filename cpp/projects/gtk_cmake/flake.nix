@@ -16,22 +16,21 @@
         };
 
       in rec {
-        packages.gcc = pkgs.gcc;
 
         devShells.default = pkgs.mkShell rec {
-          name = "simple gcc";
+          name = "gtkmm3-project";
 
           packages = with pkgs; [
-          #glibc.static
-          #glibc
-          cmake
-          tree
-          opencv
-		];
+            # Development Tools
+            pkgconfig
+            gtkmm3
+            cmake
+            tree
+            opencv
+          ];
         };
 
       });
 
-}
 
-  # https://stackoverflow.com/questions/40667313/how-to-get-opencv-to-work-in-nix
+}
