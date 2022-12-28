@@ -1,0 +1,3 @@
+/home/auros/gits/programming/cpp/projects/cmakeex/ex3/mylib/build/CMakeFiles/mylib.dir
+/home/auros/gits/programming/cpp/projects/cmakeex/ex3/mylib/build/CMakeFiles/edit_cache.dir
+/home/auros/gits/programming/cpp/projects/cmakeex/ex3/mylib/build/CMakeFiles/rebuild_cache.dir

@@ -153,54 +153,6 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-my.o: my.cpp.o
-.PHONY : my.o
-
-# target to build an object file
-my.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/my.cpp.o
-.PHONY : my.cpp.o
-
-my.i: my.cpp.i
-.PHONY : my.i
-
-# target to preprocess a source file
-my.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/my.cpp.i
-.PHONY : my.cpp.i
-
-my.s: my.cpp.s
-.PHONY : my.s
-
-# target to generate assembly for a file
-my.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/my.cpp.s
-.PHONY : my.cpp.s
-
-your.o: your.cpp.o
-.PHONY : your.o
-
-# target to build an object file
-your.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/your.cpp.o
-.PHONY : your.cpp.o
-
-your.i: your.cpp.i
-.PHONY : your.i
-
-# target to preprocess a source file
-your.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/your.cpp.i
-.PHONY : your.cpp.i
-
-your.s: your.cpp.s
-.PHONY : your.s
-
-# target to generate assembly for a file
-your.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mytest.dir/build.make CMakeFiles/mytest.dir/your.cpp.s
-.PHONY : your.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -213,12 +165,6 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... my.o"
-	@echo "... my.i"
-	@echo "... my.s"
-	@echo "... your.o"
-	@echo "... your.i"
-	@echo "... your.s"
 .PHONY : help
 
 

@@ -1,0 +1,1 @@
+/nix/store/lsyzzki1iv9gwk4vdss7i1cjxrnxling-gcc-wrapper-11.3.0/bin/g++ -rdynamic CMakeFiles/mytest.dir/main.cpp.o -o mytest  mylib/libmylib.a 

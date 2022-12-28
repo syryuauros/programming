@@ -184,5 +184,5 @@ CMakeFiles/mytest.dir/main.cpp.o: \
  /nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/include/c++/11.3.0/bits/ostream.tcc \
  /nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/include/c++/11.3.0/istream \
  /nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/include/c++/11.3.0/bits/istream.tcc \
- /home/auros/gits/programming/cpp/projects/cmakeex/ex3/my.h \
- /home/auros/gits/programming/cpp/projects/cmakeex/ex3/your.h
+ /home/auros/gits/programming/cpp/projects/cmakeex/ex3/mylib/include/my.h \
+ /home/auros/gits/programming/cpp/projects/cmakeex/ex3/mylib/include/your.h

@@ -1,5 +1,11 @@
-https://ladofa.blogspot.com/2020/08/c-2.html
+https://ladofa.blogspot.com/2020/09/c-3-cmake.html
 
-g++ -c my.cpp
-g++ -c main.cpp
-g++ -o test my.o main.o -static /* flake.nix에서 static library를 깔았기 때문에 -static으로 옵션을 준다*/
+$ nix develop       /* cpp develop shell */
+
+$ cd ./mylib/build   /* build libraries */
+$ cmake ..
+$ make
+
+$ cd ../../build     /* main.cpp compile*/
+$ cmake ..
+$ make
