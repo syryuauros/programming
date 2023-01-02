@@ -4,8 +4,8 @@ LDFLAGS	:=
 
 TARGETS	:= mytest
 MAINS		:= $(addsuffix .o, $(TARGETS) )
-OBJ			:= main.o radiobuttons.o
-DEPS		:= radiobuttons.h
+OBJ			:= main.o examplewindow.o
+DEPS		:= examplewindow.h
 # OBJ			:= main.o examplewindow.o
 # DEPS		:= examplewindow.h
 
