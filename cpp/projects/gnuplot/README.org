@@ -1,0 +1,8 @@
+
+http://stahlke.org/dan/gnuplot-iostream/
+https://itecnote.com/tecnote/c-how-to-configure-gnuplot-iostream-with-c/
+https://raw.githubusercontent.com/dstahlke/gnuplot-iostream/master/gnuplot-iostream.h
+
+must include pkgs:  'gnuplot', 'boost'
+must include header-file: 'gnuplot-iostream.h' -- just copy header file for wrapping
+g++ -o main main.cpp -lboost_iostreams -lboost_system -lboost_filesystem

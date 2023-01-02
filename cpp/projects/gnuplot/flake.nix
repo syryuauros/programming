@@ -26,6 +26,7 @@
             gtkmm3
             glade
             gnuplot
+            boost
           ];
         };
 
