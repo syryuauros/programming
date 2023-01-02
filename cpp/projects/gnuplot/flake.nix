@@ -25,6 +25,7 @@
             pkgconfig
             gtkmm3
             glade
+            gnuplot
           ];
         };
 

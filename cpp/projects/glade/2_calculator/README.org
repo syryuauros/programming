@@ -1,0 +1,9 @@
+
+https://www.youtube.com/watch?v=MaifkfUI3Ns
+https://www.youtube.com/watch?v=I4DhOoG8RYI
+https://www-uxsup.csx.cam.ac.uk/courses/moved.Glade/course.pdf
+
+https://riptutorial.com/gtk3/example/19806/-cplusplus--using-gtk--builder-in-gtkmm
+https://www.youtube.com/watch?v=g-KDOH_uqPk
+
+https://developer-old.gnome.org/gtkmm-tutorial/stable/sec-builder-accessing-widgets.html.en
