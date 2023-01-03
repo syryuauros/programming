@@ -6,13 +6,18 @@
   };
 
   outputs = input@{self, nixpkgs, flake-utils, ...} :
-
+    {
+      overlay = final: prev: {
+        plplot1 = final.callPackage ./default.nix {};
+      };
+    }
+    //
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
       let
 
         pkgs = import nixpkgs {
           inherit system;
-    #      overlays = [ self.overlay ];
+          overlays = [ self.overlay ];
         };
 
       in rec {
@@ -26,10 +31,13 @@
             gtkmm3
             glade
             #gnuplot
-            #boost
-            plplot
-            meson
-            ninja
+            boost
+            plplot1
+            automake
+            autoconf
+            libtool
+            #meson
+            #ninja
           ];
         };
 
