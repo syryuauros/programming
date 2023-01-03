@@ -25,9 +25,11 @@
             pkgconfig
             gtkmm3
             glade
-            gnuplot
-            boost
+            #gnuplot
+            #boost
             plplot
+            meson
+            ninja
           ];
         };
 
