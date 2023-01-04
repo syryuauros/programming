@@ -7,8 +7,8 @@
 
   outputs = input@{self, nixpkgs, flake-utils, ...} :
     {
-      overlay = final: prev: {
-        plplot1 = final.callPackage ./default.nix {};
+      overlays.default = final: prev: {
+        plplot5_14 = final.callPackage ./plplot5_14.nix {};
       };
     }
     //
@@ -17,7 +17,7 @@
 
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ self.overlay ];
+          overlays = [ self.overlays.default ];
         };
 
       in rec {
@@ -28,14 +28,16 @@
           packages = with pkgs; [
             # Development Tools
             pkgconfig
-            gtkmm3
-            glade
+            #gtkmm3
+            #glade
             #gnuplot
             boost
-            plplot1
+            #plplot5_11
+            plplot5_14
             automake
             autoconf
             libtool
+            cmake
             #meson
             #ninja
           ];
