@@ -28,12 +28,12 @@
           packages = with pkgs; [
             # Development Tools
             pkgconfig
-            #gtkmm3
-            #glade
-            #gnuplot
+            gtkmm3
+            glade
             boost
             #plplot5_11
             plplot5_14
+            cairomm
             automake
             autoconf
             libtool

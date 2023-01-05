@@ -1,0 +1,11 @@
+libdir=../lib
+includedir=../include/plplot
+drvdir=../lib/plplot5.14.0/drivers
+
+Name: PLplot C++
+Description: Scientific plotting library (Double precision C++ binding)
+Requires.private: plplot
+Version: 5.14.0
+Libs: -L"${libdir}" -lplplotcxx 
+Libs.private: -L"${libdir}" -lplplot
+Cflags: -I"${includedir}" 

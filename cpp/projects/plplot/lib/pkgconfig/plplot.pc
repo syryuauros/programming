@@ -1,0 +1,11 @@
+libdir=../lib
+includedir=../include/plplot
+drvdir=../lib/plplot5.14.0/drivers
+
+Name: PLplot 
+Description: Scientific plotting library (Double precision Core C library)
+Requires.private: 
+Version: 5.14.0
+Libs: -L"${libdir}" -lplplot 
+Libs.private: -L"${libdir}" -L"/nix/store/7pn06b7xr2vdjg6svpskly6hjqwvryff-libtool-2.4.7-lib/lib" -lltdl -L"/nix/store/cynvahq5hc4g8hg99vajx6p1gw7sqhm7-glibc-2.34-210/lib" -lm -lcsirocsa -lqsastime -L"/nix/store/9rg21b5cphwfs7dn4vh28xi5mxkppzqy-gcc-11.3.0-lib/lib" -lstdc++ -L"/nix/store/cynvahq5hc4g8hg99vajx6p1gw7sqhm7-glibc-2.34-210/lib" -lm -L"/nix/store/cynvahq5hc4g8hg99vajx6p1gw7sqhm7-glibc-2.34-210/lib" -lgcc_s -L"/nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/lib/gcc/x86_64-unknown-linux-gnu/11.3.0" -lgcc -L"/nix/store/cynvahq5hc4g8hg99vajx6p1gw7sqhm7-glibc-2.34-210/lib" -lc -L"/nix/store/cynvahq5hc4g8hg99vajx6p1gw7sqhm7-glibc-2.34-210/lib" -lgcc_s -L"/nix/store/zg9fzn6m0480xqr2mx5ynqkziribycgv-gcc-11.3.0/lib/gcc/x86_64-unknown-linux-gnu/11.3.0" -lgcc
+Cflags: -I"${includedir}" 
