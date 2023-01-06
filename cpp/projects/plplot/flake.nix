@@ -34,8 +34,8 @@
             #plplot5_11
             plplot5_14
             cairomm
-            automake
-            autoconf
+            automake   #convert Makefile.am into Makefile.in
+            autoconf   #convert configure.ac into configure
             libtool
             cmake
             #meson
@@ -47,3 +47,24 @@
 
 
 }
+
+
+# overlay ref :::  https://github.com/syryuauros/S4/blob/master/flake.nix
+# default.nix ref  :::  https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/libraries/plplot/default.nix
+# pkgs override ::: https://nixos.org/guides/nix-pills/nixpkgs-overriding-packages.html
+# graphviz/default.nix :::   https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/graphics/graphviz/default.nix
+#
+
+# gtkmm-plplot manual install
+# https://tschoonj.github.io/gtkmm-plplot/installation_instructions.html
+#
+# $ nix develop
+# $ git clone git@github.com:tschoonj/gtkmm-plplot.git
+# $ cd gtkmm-plplot
+# $ aclocal    /* generate m4 environment for autotools to use */
+#              /* https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install */
+#              /* http://studyfoss.egloos.com/4922394 */
+# $ autoreconf -i
+# $ configurePhase   /* './configure' is also available */
+# $ buildPhase  /* 'make' is also available  */
+# $ installPhase  /* 'make install' is also available  */
