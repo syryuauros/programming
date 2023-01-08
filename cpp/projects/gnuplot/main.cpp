@@ -1,7 +1,15 @@
 // Demo of vector plot.
 // Compile it with:
 //   g++ -o example-vector example-vector.cc -lboost_iostreams -lboost_system -lboost_filesystem
+//
 //   need 'gnuplot-iostream.h' header file in the same folder
+//   https://raw.githubusercontent.com/dstahlke/gnuplot-iostream/master/gnuplot-iostream.h
+//   https://itecnote.com/tecnote/c-how-to-configure-gnuplot-iostream-with-c/
+//   git clone https://github.com/dstahlke/gnuplot-iostream.git
+//   https://itecnote.com/tecnote/c-how-to-configure-gnuplot-iostream-with-c/
+//
+//   https://tschoonj.github.io/gtkmm-plplot/installation_instructions.html
+//
 //   need 'gnuplot' & 'boost' including pkgs in 'flake.nix'
 
 #include <vector>
