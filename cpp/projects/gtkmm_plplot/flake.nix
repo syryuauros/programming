@@ -7,8 +7,9 @@
 
   outputs = input@{self, nixpkgs, flake-utils, ...} :
     {
-      overlays.default = final: prev: {
-        plplot5_14 = final.callPackage ./plplot5_14.nix {};
+      overlays.plplot = final: prev: {
+        #plplot5_14 = final.callPackage ./plplot5_14.nix {};
+        gtkmm_plplot = final.callPackage ./gtkmm-plplot.nix {};
       };
     }
     //
@@ -16,9 +17,9 @@
       let
 
         pkgs = import nixpkgs {
-          #inherit system;
-          system = "x86_64-linux";
-          overlays = [ self.overlays.default ];
+          inherit system;
+          #system = "x86_64-linux";
+          overlays = [ self.overlays.plplot ];
         };
 
       in rec {
@@ -33,12 +34,13 @@
             glade
             boost
             #plplot5_11
-            plplot5_14
+            #plplot5_14
             cairomm
             automake   #convert Makefile.am into Makefile.in
             autoconf   #convert configure.ac into configure
             libtool
             cmake
+            gtkmm_plplot
             #meson
             #ninja
           ];
