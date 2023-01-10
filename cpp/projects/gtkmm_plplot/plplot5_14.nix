@@ -8,7 +8,8 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://downloads.sourceforge.net/project/${pname}/${pname}/${version}%20Source/${pname}-${version}.tar.gz";
-    sha256 = "0ywccb6bs1389zjfmc9zwdvdsvlpm7vg957whh6b5a96yvcf8bdr";
+    sha256 = "15yz973998irszpzk42mdxv5xqpsgjfbwzfdzb79zbcwgh1hj41k";
+    #sha256 = "0ywccb6bs1389zjfmc9zwdvdsvlpm7vg957whh6b5a96yvcf8bdr";    plplot-5.15.0.tar.gz hash
   };
 
   nativeBuildInputs = [ cmake pkg-config cairomm gtkmm3 ];

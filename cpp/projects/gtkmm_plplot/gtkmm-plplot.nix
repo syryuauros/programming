@@ -1,40 +1,64 @@
-{ lib, stdenv, fetchurl, cmake, pkg-config, cairomm, gtkmm3, automake, autoconf, libtool }:
+{ lib, stdenv, fetchurl, cmake, pkg-config, cairomm, gtkmm3, automake, autoconf, libtool, boost, glib, plplot5_14 }:
 let
-  pkgs = import <nixpkgs> {
-    system = "x86_64-linux";
-    overlays = final: prev: {
-        plplot5_14 = final.callPackage ./plplot5_14.nix {};
-      };
-    # overlays = [ self.overlays.plplot ];
-  };
+  pkgs = import <nixpkgs> {};
 in
 stdenv.mkDerivation rec {
   pname   = "gtkmm-plplot";
-  version = "2.5";
+  version = "";
 
   src = fetchurl {
-    url = "https://github.com/tschoonj/gtkmm-plplot.git";
-    sha256 = "0ywccb6bs1389zjfmc9zwdvdsvlpm7vg957whh6b5a96yvcf8bdr";
+    url = "https://github.com/tschoonj/gtkmm-plplot/releases/download/gtkmm-plplot-2.5/gtkmm-plplot-2.5.tar.gz";
+    #url = "https://github.com/tschoonj/gtkmm-plplot/archive/refs/tags/gtkmm-plplot-2.5.tar.gz";
+    sha256 = "17hy9sp43b3vqasw1fznd2llpwab1m2jzws5h01bnx70gmi55f4x";
+    #sha256 = "1w6j94x96c1mjc20hv9yd5d7qf1fhr4pa30drmmkgakakwxqjlq3";
+
   };
 
-  nativeBuildInputs = [ cmake pkg-config cairomm gtkmm3 automake autoconf libtool pkgs.plplot5_14 ];
+  nativeBuildInputs = [ cmake pkg-config cairomm gtkmm3 automake autoconf libtool boost glib plplot5_14 ];
+  #nativeBuildInputs = [ cmake pkg-config cairomm gtkmm3 automake autoconf libtool pkgs.plplot5_14 ];
 
-  #BuildInputs = [];
+  #BuildInputs = [ pkg-config autoconf automake ];
 
   #cmakeFlags = [ "-DCMAKE_SKIP_BUILD_RPATH=OFF -DDEFAULT_NO_DEVICES=ON -DPLD_extcairo=ON" "-DBUILD_TEST=ON" ];
   #cmakeFlags = [ "-DCMAKE_SKIP_BUILD_RPATH=OFF -DDEFAULT_NO_DEVICES=ON -DPLD_extcairo=ON -DPLD_svg=ON" "-DBUILD_TEST=ON" ];
-  #cmakeFlags = [ "-DCMAKE_SKIP_BUILD_RPATH=OFF" "-DCMAKE_INSTALL_PREFIX=$out/install_directory .." "-DBUILD_TEST=ON" ];
+  cmakeFlags = [ "-DCMAKE_SKIP_BUILD_RPATH=OFF" "-DCMAKE_INSTALL_PREFIX=$out/install_directory .." "-DBUILD_TEST=ON" ];
 
   doCheck = true;
 
+  preConfigure = "aclocal && autoconf -i";
+
+  unpackPhase = ''
+    tar zxvf $src
+    cd gtkmm-plplot-2.5
+  '';
+
+  configurePhase = ''
+    ./configure --prefix=$out
+  '';
+
+  buildPhase = ''
+    make
+  '';
+
+  installPhase = ''
+    make install
+  '';
+  # configurePhase = ''
+  #   aclocal
+  #   autoreconf -i
+  #   cmake .
+  # '';
+
+
   meta = with lib; {
-    description = "gtkmm-plplot";
-    homepage    = "https://tschoonj.github.io/gtkmm-plplot/installation_instructions.html";
-    maintainers = with maintainers; [ tschoonj ];
+    description = "Cross-platform scientific graphics plotting library";
+    homepage    = "https://github.com/tschoonj/gtkmm-plplot/";
+    maintainers = with maintainers; [ bcdarwin ];
     platforms   = platforms.unix;
     license     = licenses.lgpl2;
   };
 }
+
 
   # manual install
   # https://sourceforge.net/p/plplot/wiki/Linux/   -- Compile PLplot in linux
