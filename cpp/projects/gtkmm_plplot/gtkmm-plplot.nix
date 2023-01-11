@@ -7,48 +7,48 @@ stdenv.mkDerivation rec {
   version = "";
 
   src = fetchurl {
+    # fetching source ::
+    #       1. https://nixos.wiki/wiki/FAQ/Pinning_Nixpkgs
+    #       2. https://ryantm.github.io/nixpkgs/builders/fetchers/
     url = "https://github.com/tschoonj/gtkmm-plplot/releases/download/gtkmm-plplot-2.5/gtkmm-plplot-2.5.tar.gz";
-    #url = "https://github.com/tschoonj/gtkmm-plplot/archive/refs/tags/gtkmm-plplot-2.5.tar.gz";
+    # get hash(sha256) :: https://www.mankier.com/1/nix-hash
+    #       1. nix-prefetch-url address(download link >> right click >> copy link address) or file path
+    #       2. nix-hash --type sha256 --flat --base32 file path
+    # check the hash ::
+    #       1. $ ls /nix/store/ | grep [file name, ex gtkmm-plplot]
+    #       2. $ nix-hash --type sha256 --flat --base32 /nix/store/r83f....gtkmm-plplot-2.5.tar.gz
     sha256 = "17hy9sp43b3vqasw1fznd2llpwab1m2jzws5h01bnx70gmi55f4x";
-    #sha256 = "1w6j94x96c1mjc20hv9yd5d7qf1fhr4pa30drmmkgakakwxqjlq3";
-
   };
 
+  # new pkg(pkg1, plplot5_14) as a source of another new pkg(pkg2, gtkmm-plplot) ::
+  #         1. make each overlays >> declair pkg1 as an input of pkg2 in the mkDerivation
+  #         2. Just for REF :: https://github.com/samdroid-apps/nix-articles/blob/master/04-proper-mkderivation.md
   nativeBuildInputs = [ cmake pkg-config cairomm gtkmm3 automake autoconf libtool boost glib plplot5_14 ];
-  #nativeBuildInputs = [ cmake pkg-config cairomm gtkmm3 automake autoconf libtool pkgs.plplot5_14 ];
-
-  #BuildInputs = [ pkg-config autoconf automake ];
-
-  #cmakeFlags = [ "-DCMAKE_SKIP_BUILD_RPATH=OFF -DDEFAULT_NO_DEVICES=ON -DPLD_extcairo=ON" "-DBUILD_TEST=ON" ];
-  #cmakeFlags = [ "-DCMAKE_SKIP_BUILD_RPATH=OFF -DDEFAULT_NO_DEVICES=ON -DPLD_extcairo=ON -DPLD_svg=ON" "-DBUILD_TEST=ON" ];
   cmakeFlags = [ "-DCMAKE_SKIP_BUILD_RPATH=OFF" "-DCMAKE_INSTALL_PREFIX=$out/install_directory .." "-DBUILD_TEST=ON" ];
-
   doCheck = true;
 
+  # describe every phase :: https://nix-tutorial.gitlabpages.inria.fr/nix-tutorial/first-package.html
+  # every Phase of nix develop ::
+  #       1. https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-develop.html
+  #       2. more detail (Ch 6.5 Phases)  :: https://nixos.org/manual/nixpkgs/stable/#sec-stdenv-phases
+  #       3. ch 3.4.1 :: https://static.domenkozar.com/nixpkgs-manual-sphinx-exp/stdenv.xml.html
+  # explaration autotool(confiure.ac, autoconf, automake) ::
+  #       1. https://tomlee.co/2012/08/autotools-for-humans-part-1/
+  #
   preConfigure = "aclocal && autoconf -i";
-
   unpackPhase = ''
     tar zxvf $src
     cd gtkmm-plplot-2.5
   '';
-
   configurePhase = ''
     ./configure --prefix=$out
   '';
-
   buildPhase = ''
     make
   '';
-
   installPhase = ''
     make install
   '';
-  # configurePhase = ''
-  #   aclocal
-  #   autoreconf -i
-  #   cmake .
-  # '';
-
 
   meta = with lib; {
     description = "Cross-platform scientific graphics plotting library";
@@ -58,7 +58,6 @@ stdenv.mkDerivation rec {
     license     = licenses.lgpl2;
   };
 }
-
 
   # manual install
   # https://sourceforge.net/p/plplot/wiki/Linux/   -- Compile PLplot in linux
