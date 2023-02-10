@@ -23,7 +23,7 @@
       in rec {
 
         devShells.default = pkgs.mkShell rec {
-          name = "gtkmm3-project";
+          name = "plplot-5_14";
 
           packages = with pkgs; [
             # Development Tools

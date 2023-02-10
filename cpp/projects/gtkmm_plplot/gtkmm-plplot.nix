@@ -30,8 +30,9 @@ stdenv.mkDerivation rec {
   # describe every phase :: https://nix-tutorial.gitlabpages.inria.fr/nix-tutorial/first-package.html
   # every Phase of nix develop ::
   #       1. https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-develop.html
-  #       2. more detail (Ch 6.5 Phases)  :: https://nixos.org/manual/nixpkgs/stable/#sec-stdenv-phases
-  #       3. ch 3.4.1 :: https://static.domenkozar.com/nixpkgs-manual-sphinx-exp/stdenv.xml.html
+  #       2. find "Building the project with the generic builder" :: https://qfpl.io/posts/nix/building-things-with-nix/
+  #       3. more detail (Ch 6.5 Phases)  :: https://nixos.org/manual/nixpkgs/stable/#sec-stdenv-phases
+  #       4. ch 3.4.1 :: https://static.domenkozar.com/nixpkgs-manual-sphinx-exp/stdenv.xml.html
   # explaration autotool(confiure.ac, autoconf, automake) ::
   #       1. https://tomlee.co/2012/08/autotools-for-humans-part-1/
   #
