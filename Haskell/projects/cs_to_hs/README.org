@@ -1,5 +1,14 @@
 [[https://replit.com/@sepiabrown/haskell-onboarding?v=1][https://replit.com/badge/github/haedosa/haskell-onboarding.svg]]
 
+* cs_to_hs
+https://school.programmers.co.kr/learn/courses/30/lessons/181921
+
+cd ./ex-from-fp-course/src/
+
+$ ghci
+
+ghci> :l MyAnswer.hs
+
 * haskell-onboarding
 Haskell Onboarding Repository for [[https://github.com/haedosa/][Haedosa Inc]].
 
