@@ -1,0 +1,667 @@
+#+title: My Answer For Cs
+
+---------------------------------------------------------------------------------
+---------------------------------day1---------------------------------------------
+----------------------------------------------------------------------------------
+
+using System;
+
+public class Example
+{
+    public static void Main()
+    {
+        String s;
+
+        Console.Clear();
+        s = Console.ReadLine();
+        Console.WriteLine(s);
+
+    }
+}
+
+--------------------------------------------------end 1
+
+using System;
+
+public class Example
+{
+    public static void Main()
+    {
+        String[] s;
+
+        Console.Clear();
+        s = Console.ReadLine().Split(' ');
+
+        int a = Int32.Parse(s[0]);
+        int b = Int32.Parse(s[1]);
+
+        Console.WriteLine("a = {0}", a);
+        Console.WriteLine("b = {0}", b);
+    }
+}
+--------------------------------------------------end 2
+
+using System;
+
+public class Example
+{
+    public static void Main()
+    {
+        String[] input;
+
+        Console.Clear();
+        input = Console.ReadLine().Split(' ');
+
+        String s1 = input[0];
+        int a = Int32.Parse(input[1]);
+
+        for (int i = 0; i < a; i++)
+        {
+            Console.Write(s1);
+        }
+
+
+    }
+--------------------------------------------------end 3
+
+using System;
+
+public class Example
+{
+    public static void Main()
+    {
+        String s;
+
+        Console.Clear();
+        s = Console.ReadLine();
+        string s2 = "";
+
+        foreach (char c in s)
+        {
+            // char d = '\0';
+            // if (char.IsUpper(c))
+            // {
+            //     d = char.ToLower(c);
+            // }
+            // else
+            // {
+            //     d = char.ToUpper(c);
+            // }
+        s2 += char.IsUpper(c)  ? char.ToLower(c) : char.ToUpper(c) ;
+           //Console.Write(d.ToString());
+        }
+		 Console.Write(s2);
+    }
+}
+--------------------------------------------------end 4
+using System;
+using System.Collections.Generic;
+
+public class Example
+{
+    public static void Main()
+    {
+        List<int> asciis = new List<int> {33,64,35,36,37,94,38,42,40,92,39,34,60,62,63,58,59};
+        foreach (int c in asciis)
+        {
+        	Console.Write((char) (c));
+        }
+    }
+}
+
+--------------------------------------------------end 5
+---------------------------------------------------------------------------------
+---------------------------------day2---------------------------------------------
+----------------------------------------------------------------------------------
+
+using System;
+
+public class Example
+{
+    public static void Main()
+    {
+        String[] s;
+
+        Console.Clear();
+        s = Console.ReadLine().Split(' ');
+
+        int a = Int32.Parse(s[0]);
+        int b = Int32.Parse(s[1]);
+
+        //Console.WriteLine("{1}"+"{3}"+"{2}"+"{4}"+"{0}", a + b, a, b, " + ", " = ");
+        Console.Write($"{a} + {b} = {a+b}");
+    }
+}
+
+--------------------------------------------------end 1
+using System;
+
+public class Example
+{
+    public static void Main()
+    {
+        String[] input;
+
+        Console.Clear();
+        input = Console.ReadLine().Split(' ');
+
+        String s1 = input[0];
+        String s2 = input[1];
+		Console.Write($"{s1}{s2}");
+    }
+}
+
+--------------------------------------------------end 2
+using System;
+
+public class Example
+{
+    public static void Main()
+    {
+        String s;
+
+        Console.Clear();
+        s = Console.ReadLine();
+        for (int i=0;i<s.Length;i++)
+            Console.WriteLine(s[i]);
+
+    }
+}
+
+--------------------------------------------------end 3
+using System;
+
+public class Example
+{
+    public static void Main()
+    {
+        String[] s;
+
+        Console.Clear();
+        s = Console.ReadLine().Split(' ');
+
+        int a = Int32.Parse(s[0]);
+       //  int b = a%2;
+       //  if ( b == 0)
+       //      Console.Write($"{a} is even");
+       //  else
+       //      Console.Write($"{a} is odd");
+        string q = a.ToString() + (a%2 == 0 ? " is even" : " is odd");
+        Console.Write(q);
+    }
+}
+
+--------------------------------------------------end 4
+using System;
+
+public class Solution {
+    public string solution(string my_string, string overwrite_string, int s) {
+        string answer = "";
+        int numm = my_string.Length;
+        int numo = overwrite_string.Length;
+        int numos = numo + s;
+
+        answer = my_string.Substring(0, s) + overwrite_string + my_string.Substring(numos, numm-numos);
+        return answer;
+    }
+}
+
+--------------------------------------------------end 5
+---------------------------------------------------------------------------------
+---------------------------------day3---------------------------------------------
+----------------------------------------------------------------------------------
+using System;
+
+public class Solution {
+    public string solution(string str1, string str2) {
+        string answer = "";
+        for (int i=0; i<(str1.Length); i++)
+        	answer = answer + str1[i].ToString() + str2[i].ToString();
+        return answer;
+    }
+}
+--------------------------------------------------end 1
+using System;
+
+public class Solution {
+    public string solution(string[] arr) {
+        string answer = "";
+        for (int i=0; i <arr.Length; i++)
+            answer += arr[i];
+        return answer;
+    }
+}
+
+--------------------------------------------------end 2
+using System;
+
+public class Solution {
+    public string solution(string my_string, int k) {
+        string answer = "";
+       	for (int i=0; i<k; i++) answer += my_string;
+        return answer;
+    }
+}
+
+--------------------------------------------------end 3
+using System;
+
+public class Solution {
+    public int solution(int a, int b) {
+        int answer = 0;
+        int sab = Int32.Parse(a.ToString()+b.ToString());
+        int sba = Int32.Parse(b.ToString()+a.ToString());
+        answer = sab < sba ? sba : sab;
+        //answer = Int32.Parse(sa+sb);
+        //answer = ( Int32.Parse(sa+sb) < Int32.Parse(sb+sa) ? Int32.Parse(sb+sa) : Int32.Parse(sa+sb));
+        //( (Int32.Parse(sa+sb) < Int32.Parse(sb+sa)) ? (answer = Int32.Parse(sb+sa)) : (answer = Int32.Parse(sa+sb)));
+        return answer;
+    }
+}
+
+--------------------------------------------------end 4
+using System;
+
+public class Solution {
+    public int solution(int a, int b) {
+        int answer = 0;
+        int sab = Int32.Parse(a.ToString()+b.ToString());
+        answer = sab < 2*a*b ? 2*a*b : sab;
+        return answer;
+    }
+}
+
+--------------------------------------------------end 5
+---------------------------------------------------------------------------------
+---------------------------------day4---------------------------------------------
+----------------------------------------------------------------------------------
+using System;
+
+public class Solution {
+    public int solution(int num, int n) {
+       // int answer = 0;
+       // answer = (num%n == 0 ? 1 : 0);
+       // return answer;
+        return num%n == 0 ? 1 : 0;
+    }
+}
+
+--------------------------------------------------end 1
+using System;
+
+public class Solution {
+    public int solution(int number, int n, int m) {
+        //int answer = 0;
+        return number%n == 0 && number%m ==0 ? 1 :0;
+    }
+}
+
+--------------------------------------------------end 2
+using System;
+
+public class Solution {
+    public int solution(int n) {
+        int answer = 0;
+        for (int i=0;i<n/2+1;i++)
+            answer += n%2==0 ? i*i*4 : 2*i+1;
+		return answer;
+        }
+}
+
+--------------------------------------------------end 3
+using System;
+
+public class Solution {
+    public int solution(string ineq, string eq, int n, int m) {
+       //int answer = 0;
+       // string eqs = ineq + eq;
+       // switch (eqs)
+       // {
+       //     case ">=":
+       //            answer = n >= m ? 1 : 0;
+       //        break;
+       //     case ">!":
+       //            answer = n > m ? 1 : 0;
+       //        break;
+       //     case "<=":
+       //            answer = n <= m ? 1 : 0;
+       //        break;
+       //     case "<!":
+       //            answer = n < m ? 1 : 0;
+       //        break;
+       // }
+       return (
+           		ineq == "<" ?
+               	(eq == "=" ? n <= m : n < m) :
+               	(eq == "=" ? n >= m : n > m)
+       			) ?
+           		1 : 0;
+        //return answer;
+    }
+}
+
+--------------------------------------------------end 4
+using System;
+
+public class Solution {
+    public int solution(int a, int b, bool flag) {
+        //int answer = 0;
+        return flag ? a + b : a - b;
+        //return answer;
+    }
+}
+--------------------------------------------------end 5
+---------------------------------------------------------------------------------
+---------------------------------day5---------------------------------------------
+----------------------------------------------------------------------------------
+using System;
+
+public class Solution {
+    public string solution(string code) {
+        string answer = "";
+        int mode = 0;
+
+        for (int i=0;i<code.Length;i++)
+            if (code[i].ToString()=="1") mode=(mode+1)%2;
+            else if ((mode==0 && i%2==0) || (mode==1 && i%2==1)) answer += code[i];
+
+        if (answer == "") answer = "EMPTY";
+
+        return answer;
+
+    }
+}
+
+--------------------------------------------------end 1
+using System;
+
+public class Solution {
+    public int solution(int a, int d, bool[] included) {
+        int answer = 0;
+        for (int i=0; i<included.Length; i++)
+            if (included[i]) answer += a+d*i;
+        return answer;
+    }
+}
+
+--------------------------------------------------end 2
+using System;
+
+public class Solution {
+    public int solution(int a, int b, int c) {
+        //int answer = 0;
+        //if (a==b==c) answer = (a+b+c)*(a*a+b*b+c*c)*(a*a*a+b*b*b+c*c*c);
+        //else if (a==b || b==c || c==a) answer = (a+b+c)*(a*a+b*b+c*c);
+        //else answer = a+b+c;
+        //return (a==b && b==c) ? (a+b+c)*(a*a+b*b+c*c)*(a*a*a+b*b*b+c*c*c) : ((b==c||c==a||a==b) ? (a+b+c)*(a*a+b*b+c*c) : (a+b+c));
+
+        //return answer;
+        int q =(a+b+c)*(a*a+b*b+c*c)*(a*a*a+b*b*b+c*c*c);
+        int w =(a+b+c)*(a*a+b*b+c*c);
+        int r =(a+b+c);
+        return (a==b && b==c) ? q : ((b==c||c==a||a==b) ? w : r);
+    }
+}
+
+--------------------------------------------------end 3
+using System;
+
+public class Solution {
+    public int solution(int[] num_list) {
+
+        int m = 1; int s = 0;
+        for (int i=0; i<num_list.Length; i++)
+        {
+            m *= num_list[i];
+            s += num_list[i];
+        }
+        return m>s*s ? 0 : 1;
+    }
+}
+
+--------------------------------------------------end 4
+using System;
+
+public class Solution {
+    public int solution(int[] num_list) {
+        int answer = 0;
+        string aaa = "";
+        string bbb = "";
+
+        for (int i=0;i<num_list.Length;i++) {
+            if (num_list[i]%2 ==1)
+                aaa += num_list[i].ToString();
+            else
+                bbb += num_list[i].ToString();
+        }
+        answer = Int32.Parse(aaa)+Int32.Parse(bbb);
+        return answer;
+    }
+}
+
+--------------------------------------------------end 5
+---------------------------------------------------------------------------------
+---------------------------------day6---------------------------------------------
+----------------------------------------------------------------------------------
+using System;
+
+public class Solution {
+    public int[] solution(int[] num_list) {
+
+        int n = num_list.Length;
+        int n1 = num_list[n-1];
+        int n2 = num_list[n-2];
+        int m = n1 > n2 ? n1 - n2 : n1*2;
+
+        int[] answer = new int[n + 1];
+
+        for (int i=0;i<n+1;i++){
+            answer[i] = i<n ? num_list[i] : m;
+        }
+        return answer;
+    }
+}
+
+--------------------------------------------------end 1
+using System;
+
+public class Solution {
+    public int solution(int n, string control) {
+        foreach (char c in control){
+            switch (c) {
+                case 'w': n += 1; break;
+                case 's': n = n -1; break;
+                case 'd': n = n + 10; break;
+                case 'a': n = n - 10; break;
+            }
+        }
+        return n;
+    }
+}
+
+--------------------------------------------------end 2
+using System;
+
+public class Solution {
+    public string solution(int[] numLog) {
+        string answer = "";
+        int l = numLog.Length-1;
+
+        for (int i=0;i<l;i++){
+            int m = numLog[i+1]-numLog[i];
+            switch (m) {
+                case 1:
+                    answer += 'w';
+                    break;
+                case -1:
+                    answer += 's';
+                    break;
+                case 10:
+                    answer += 'd';
+                    break;
+                case -10:
+                    answer += 'a';
+                    break;
+            }
+        }
+
+        return answer;
+    }
+}
+
+--------------------------------------------------end 3
+using System;
+
+public class Solution {
+    public int[] solution(int[] arr, int[,] queries) {
+    int row = queries.GetLength(0);
+
+    for (int i=0;i<row;i++){
+        int t1 = arr[queries[i,0]];
+        int t2 = arr[queries[i,1]];
+        arr[queries[i,0]] = t2;
+        arr[queries[i,1]] = t1;
+    }
+    return arr;
+    }
+
+}
+
+--------------------------------------------------end 4
+using System;
+
+public class Solution {
+    public int[] solution(int[] arr, int[,] queries) {
+
+    int[] results = new int[queries.GetLength(0)];
+
+    for (int i=0;i<queries.GetLength(0);i++) {
+        int s = queries [i,0];
+        int e = queries [i,1];
+        int k = queries [i,2];
+        int a  = -1;
+
+        for(int j=s;j<=e;j++) {
+           a = arr[j] > k && (a == -1 || arr[j] < a) ? arr[j] : a;
+        }
+        results[i] = a;
+    }
+    return results;
+    }
+}
+
+--------------------------------------------------end 5
+---------------------------------------------------------------------------------
+---------------------------------day7---------------------------------------------
+----------------------------------------------------------------------------------
+using System;
+
+public class Solution {
+    public int[] solution(int[] arr, int[,] queries) {
+        int l = queries.GetLength(0);
+
+       for (int j=0;j<l;j++) {
+        int s = queries [j,0];
+        int e = queries [j,1];
+        int k = queries [j,2];
+          for (int i=s;i<=e;i++) {
+              arr[i] += i%k==0 ? 1 : 0;
+          }
+       }
+        return arr;
+    }
+}
+
+--------------------------------------------------end 1
+using System;
+
+public class Solution {
+    public int[] solution(int l, int r) {
+        int[] answer = new int[] {};
+        int max = (r.ToString()).Length;
+        string s = "";
+        char[] c = new char[max];
+
+        for (int i=0;i<Math.Pow(2,max);i++) {
+
+            s = Convert.ToString(i,2).PadLeft(max, '0');
+            c = s.ToCharArray();
+
+            for(int j=0;j<max;j++){
+                c[j] = c[j] == '1' ? '5' : '0';
+            }
+            string s2 = new string(c);
+            int s2i = int.Parse(s2);
+
+            if (l<=s2i && s2i<=r){
+               Array.Resize(ref answer, answer.Length + 1);
+               answer[answer.Length - 1] = s2i;
+            }
+        }
+        if (answer.Length < 1) {
+             Array.Resize(ref answer, answer.Length + 1);
+             answer[answer.Length - 1] = -1;
+        }
+        return answer;
+    }
+}
+
+--------------------------------------------------end 2, method 1
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int l, int r) {
+        List<int> answer = new List<int> () ;
+        int max = (r.ToString()).Length;
+        string s = "";
+        char[] c = new char[max];
+
+        for (int i=0;i<Math.Pow(2,max);i++) {
+
+            s = Convert.ToString(i,2).PadLeft(max, '0');
+            c = s.ToCharArray();
+
+            for(int j=0;j<max;j++){
+                c[j] = c[j] == '1' ? '5' : '0';
+            }
+
+            string s2 = new string(c);
+            int s2i = int.Parse(s2);
+
+            if (l<=s2i && s2i<=r) answer.Add(s2i);
+        }
+
+        if(answer.Count == 0) answer.Add(-1);
+        return answer.ToArray();
+    }
+}
+
+--------------------------------------------------end 2, method 2
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int l, int r) {
+        List<int> answer = new List<int>();
+
+        for(int i=l; i<=r; i++)
+        {
+            string str = i.ToString();
+            if(str.Contains('1')) continue;
+            if(str.Contains('2')) continue;
+            if(str.Contains('3')) continue;
+            if(str.Contains('4')) continue;
+            if(str.Contains('6')) continue;
+            if(str.Contains('7')) continue;
+            if(str.Contains('8')) continue;
+            if(str.Contains('9')) continue;
+
+            answer.Add(i);
+        }
+        if(answer.Count == 0) answer.Add(-1);
+        return answer.ToArray();
+    }
+}
+
+--------------------------------------------------end 2, method 3

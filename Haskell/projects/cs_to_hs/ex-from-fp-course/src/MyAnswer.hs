@@ -750,20 +750,54 @@
 -----------------------------------------------------------------------------------
 
 
-aaa :: [Int] -> [(Int, Int, Int)]-> [Int]
-aaa a [] = a
-aaa is ((i1,i2,i3):iq) = aaa (listUnIndex $ bbb (listIndex is) i1 i2 i3) iq
+-- aaa :: [Int] -> [(Int, Int, Int)]-> [Int]
+-- aaa a [] = a
+-- aaa is ((i1,i2,i3):iq) = aaa (listUnIndex $ bbb (listIndex is) i1 i2 i3) iq
 
-bbb :: [(Int, Int)] -> Int -> Int -> Int -> [(Int, Int)]
-bbb its i1 i2 i3 = [ if i1 <= t2 && t2 <= i2 && t2 `mod` i3 ==0 then (t1+1,t2) else (t1,t2) | (t1,t2) <- its ]
+-- bbb :: [(Int, Int)] -> Int -> Int -> Int -> [(Int, Int)]
+-- bbb its i1 i2 i3 = [ if i1 <= t2 && t2 <= i2 && t2 `mod` i3 ==0 then (t1+1,t2) else (t1,t2) | (t1,t2) <- its ]
 
 
-listIndex :: [Int] -> [(Int, Int)]
-listIndex is = zip is [0..(length is - 1)]
+-- listIndex :: [Int] -> [(Int, Int)]
+-- listIndex is = zip is [0..(length is - 1)]
 
-listUnIndex :: [(Int, Int)] -> [Int]
-listUnIndex its = [ t1 | (t1, t2) <- its ]
+-- listUnIndex :: [(Int, Int)] -> [Int]
+-- listUnIndex its = [ t1 | (t1, t2) <- its ]
 
---aaa [0,1,2,4,3] [(0,4,1),(0,3,2),(0,3,3)]
+-- --aaa [0,1,2,4,3] [(0,4,1),(0,3,2),(0,3,3)]
 
 ------------------------------------------------1.end
+
+import Numeric (showIntAtBase)
+import Data.Char (intToDigit)
+
+aaa :: Int -> Int -> [Int]
+aaa i1 i2 = fff $ eee i1 i2 $ ddd <$> ccc <$> iTB <$> bbb i2
+
+bbb :: Int -> [Int]
+bbb i = [ 1..2^(length $ show i) ]
+
+iTB :: Int -> String
+iTB i = showIntAtBase 2 intToDigit i ""
+
+ccc :: String -> String
+ccc [] = []
+ccc (s:sx)
+  | s == '1' = '5':ccc sx
+  | otherwise = s : ccc sx
+
+ddd :: String -> Int
+ddd s = read s :: Int
+
+eee :: Int -> Int -> [Int] -> [Int]
+eee i1 i2 is = [ i | i <- is, i1 <= i, i <= i2 ]
+
+fff :: [Int] -> [Int]
+fff is
+  | is == [] = [-1]
+  | otherwise = is
+
+-- aaa 5 555
+-- aaa 10 20
+
+------------------------------------------------2.end
