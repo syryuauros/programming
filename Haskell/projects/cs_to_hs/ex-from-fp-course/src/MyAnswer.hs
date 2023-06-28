@@ -768,36 +768,72 @@
 
 ------------------------------------------------1.end
 
-import Numeric (showIntAtBase)
-import Data.Char (intToDigit)
+-- import Numeric (showIntAtBase)
+-- import Data.Char (intToDigit)
 
-aaa :: Int -> Int -> [Int]
-aaa i1 i2 = fff $ eee i1 i2 $ ddd <$> ccc <$> iTB <$> bbb i2
+-- aaa :: Int -> Int -> [Int]
+-- aaa i1 i2 = fff $ eee i1 i2 $ ddd <$> ccc <$> iTB <$> bbb i2
 
-bbb :: Int -> [Int]
-bbb i = [ 1..2^(length $ show i) ]
+-- bbb :: Int -> [Int]
+-- bbb i = [ 1..2^(length $ show i) ]
 
-iTB :: Int -> String
-iTB i = showIntAtBase 2 intToDigit i ""
+-- iTB :: Int -> String
+-- iTB i = showIntAtBase 2 intToDigit i ""
 
-ccc :: String -> String
-ccc [] = []
-ccc (s:sx)
-  | s == '1' = '5':ccc sx
-  | otherwise = s : ccc sx
+-- ccc :: String -> String
+-- ccc [] = []
+-- ccc (s:sx)
+--   | s == '1' = '5':ccc sx
+--   | otherwise = s : ccc sx
 
-ddd :: String -> Int
-ddd s = read s :: Int
+-- ddd :: String -> Int
+-- ddd s = read s :: Int
 
-eee :: Int -> Int -> [Int] -> [Int]
-eee i1 i2 is = [ i | i <- is, i1 <= i, i <= i2 ]
+-- eee :: Int -> Int -> [Int] -> [Int]
+-- eee i1 i2 is = [ i | i <- is, i1 <= i, i <= i2 ]
 
-fff :: [Int] -> [Int]
-fff is
-  | is == [] = [-1]
-  | otherwise = is
+-- fff :: [Int] -> [Int]
+-- fff is
+--   | is == [] = [-1]
+--   | otherwise = is
 
--- aaa 5 555
--- aaa 10 20
+-- -- aaa 5 555
+-- -- aaa 10 20
 
 ------------------------------------------------2.end
+-- aaa :: Int -> Int -> [Int]
+-- aaa i1 i2 = [i1..i2]
+
+------------------------------------------------3.end
+-- aaa :: Int -> [Int]
+-- aaa 1 = [1]
+-- aaa i = i : aaa (bbb i)
+
+-- bbb :: Int -> Int
+-- bbb i
+--   | even i = i `div` 2
+--   | otherwise = 3*i+1
+
+-- -- aaa 10
+------------------------------------------------4.end
+
+aaa :: [Int] -> [Int]
+aaa is = reverse $ ddd is []
+
+bbb :: [Int] -> [Int] -> [Int]
+bbb (i1:_) [] = [i1]
+bbb (i1:is1) (i2:is2)
+  | i1 > i2 = i1:i2:is2
+  | otherwise = is2
+
+ccc :: [Int] -> [Int] -> [Int]
+ccc (i1:is1) [] = is1
+ccc (i1:is1) (i2:is2)
+  | i1 > i2 = is1
+  | otherwise = (i1:is1)
+
+ddd :: [Int] -> [Int] -> [Int]
+ddd [] is = is
+ddd is1 is2 = ddd (ccc is1 is2) (bbb is1 is2)
+
+------------------------------------------------5.end

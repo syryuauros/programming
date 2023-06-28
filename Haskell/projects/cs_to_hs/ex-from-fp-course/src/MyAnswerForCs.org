@@ -665,3 +665,68 @@ public class Solution {
 }
 
 --------------------------------------------------end 2, method 3
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int start, int end) {
+        List<int> answer = new List<int> ();
+        for (int i=start;i<=end;i++) answer.Add(i);
+
+        return answer.ToArray();
+    }
+}
+
+--------------------------------------------------end 3
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int n) {
+        List<int> answer = new List<int> ();
+        while (n > 1) {
+            answer.Add(n);
+            n = n%2==0 ? n/2 : 3*n+1;
+        }
+        answer.Add(1);
+        return answer.ToArray ();
+    }
+}
+
+--------------------------------------------------end 4
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+public class Solution
+{
+    public int[] solution(int[] arr)
+    {
+        List<int> stk = new List<int>();
+        int i = 0;
+
+        int cnt = 0;
+        int lstCnt = 0;
+        while (i < arr.Length)
+        {
+            cnt = stk.Count();
+            lstCnt = cnt - 1;
+            if (cnt < 1)
+            {
+                stk.Add(arr[i]);
+                i++;
+            }
+            else if (cnt > 0 && stk[lstCnt] < arr[i])
+            {
+                stk.Add(arr[i]);
+                i++;
+            }
+            else {
+                stk.RemoveAt(lstCnt);
+            }
+        }
+        return stk.ToArray();
+    }
+}
+
+--------------------------------------------------end 5
