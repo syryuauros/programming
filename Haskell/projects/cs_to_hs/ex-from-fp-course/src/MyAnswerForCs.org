@@ -730,3 +730,91 @@ public class Solution
 }
 
 --------------------------------------------------end 5
+---------------------------------------------------------------------------------
+---------------------------------day8---------------------------------------------
+----------------------------------------------------------------------------------
+using System;
+
+public class Solution {
+    public bool solution(bool x1, bool x2, bool x3, bool x4) {
+        bool answer = true;
+        answer = (x1 || x2) && (x3 || x4);
+        return answer;
+    }
+}
+
+--------------------------------------------------end 1
+using System;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+
+
+public class Solution {
+    public int solution(int a, int b, int c, int d) {
+        int answer = 0;
+        List<int> ns = new List<int>() {a, b, c, d};
+        List<int> dns = ns.ToArray().Distinct().ToList();
+
+        int nm = ns.Aggregate((num1, num2) => {return num1*num2;});
+        int dm = dns.Aggregate((num1, num2) => {return num1*num2;});
+        int dn = dns.Count();
+
+        if (dn==1) answer = 1111*a;
+        else if (dn==4) answer = dns.Min();
+        else if (dn==3) answer = dm*dm/nm;
+        else if (nm==dm*dm) answer = Math.Abs(dns[0]*dns[0]-dns[1]*dns[1]);
+        else {
+                int p = nm/dm == dns[0]*dns[0] ? dns[0] : dns[1];
+                int q = nm/dm == dns[0]*dns[0] ? dns[1] : dns[0];
+            	answer = (10*p+q)*(10*p+q);
+    	};
+
+        return answer;
+    }
+}
+
+--------------------------------------------------end 2, 1
+using System;
+using System.Linq;
+
+public class Solution {
+    public int solution(int a, int b, int c, int d)
+    {
+        var list = new int[4]{ a, b, c, d};
+
+        var arr = list.GroupBy(g => g)
+                      .OrderByDescending(g => g.Count())
+                      .Select(s => (s.Key, s.Count()))
+                      .ToArray();
+
+        if(arr[0].Item2 == 4) // 4
+        {
+            return 1111 * arr[0].Item1;
+        }
+        else if(arr[0].Item2 == 3) // 3, 1
+        {
+            return (int)Math.Pow(10 * arr[0].Item1 + arr[1].Item1, 2);
+        }
+        else if(arr[0].Item2 == 2)
+        {
+            if(arr[1].Item2 == 2) // 2, 2
+            {
+                return (arr[0].Item1 + arr[1].Item1) * Math.Abs(arr[0].Item1 - arr[1].Item1);
+            }
+            else // 2, 1, 1
+            {
+                return arr[1].Item1 * arr[2].Item1;
+            }
+        }
+        else // 1, 1, 1, 1
+        {
+            return list.Min();
+        }
+
+        int answer = 0;
+        return answer;
+    }
+}
+
+--------------------------------------------------end 2, 2

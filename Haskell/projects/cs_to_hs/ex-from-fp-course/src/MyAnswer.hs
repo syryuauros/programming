@@ -817,23 +817,63 @@
 -- -- aaa 10
 ------------------------------------------------4.end
 
-aaa :: [Int] -> [Int]
-aaa is = reverse $ ddd is []
+-- aaa :: [Int] -> [Int]
+-- aaa is = reverse $ ddd is []
 
-bbb :: [Int] -> [Int] -> [Int]
-bbb (i1:_) [] = [i1]
-bbb (i1:is1) (i2:is2)
-  | i1 > i2 = i1:i2:is2
-  | otherwise = is2
+-- bbb :: [Int] -> [Int] -> [Int]
+-- bbb (i1:_) [] = [i1]
+-- bbb (i1:is1) (i2:is2)
+--   | i1 > i2 = i1:i2:is2
+--   | otherwise = is2
 
-ccc :: [Int] -> [Int] -> [Int]
-ccc (i1:is1) [] = is1
-ccc (i1:is1) (i2:is2)
-  | i1 > i2 = is1
-  | otherwise = (i1:is1)
+-- ccc :: [Int] -> [Int] -> [Int]
+-- ccc (i1:is1) [] = is1
+-- ccc (i1:is1) (i2:is2)
+--   | i1 > i2 = is1
+--   | otherwise = (i1:is1)
 
-ddd :: [Int] -> [Int] -> [Int]
-ddd [] is = is
-ddd is1 is2 = ddd (ccc is1 is2) (bbb is1 is2)
+-- ddd :: [Int] -> [Int] -> [Int]
+-- ddd [] is = is
+-- ddd is1 is2 = ddd (ccc is1 is2) (bbb is1 is2)
+
+-- --aaa [1,4,2,5,3]
 
 ------------------------------------------------5.end
+-----------------------------------------------------------------------------------
+------------------------------------day 7 -----------------------------------------
+-----------------------------------------------------------------------------------
+
+-- aaa :: Bool -> Bool -> Bool -> Bool -> Bool
+-- aaa b1 b2 b3 b4 = (b1 || b2) && (b3 || b4)
+
+-- --aaa True False False False
+
+------------------------------------------------1.end
+import Data.List (nub)
+
+aaa :: Int -> Int -> Int -> Int -> Int
+aaa i1 i2 i3 i4
+  | dn == 1 = 1111*i1
+  | dn == 4 = minimum $ bbb i1 i2 i3 i4
+  | dn == 3 = dm^2 `div` nm
+  | nm==dm^2 = abs $ (head dns)^2 - (dns!!1)^2
+  | otherwise = (10*p + q)^2
+  where
+    ns = bbb i1 i2 i3 i4
+    dns = nub ns
+    dn = length dns
+    dm = (ccc $ ns) !! 1
+    nm = (ccc $ ns) !! 0
+    p = sqrtv $ nm `div` dm
+    q = dm `div` p
+
+bbb :: Int -> Int -> Int -> Int -> [Int]
+bbb i1 i2 i3 i4 = i1:i2:i3:i4:[]
+
+ccc :: [Int] -> [Int]
+ccc is = product is : (product $ nub is) : []
+
+sqrtv :: Int -> Int
+sqrtv i1 = round $ sqrt (fromIntegral i1)
+
+------------------------------------------------2.end
