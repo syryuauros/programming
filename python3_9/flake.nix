@@ -1,9 +1,9 @@
 {
 
   inputs = {
-    haedosa.url = "github:haedosa/flakes/22.05";
+    haedosa.url = "github:haedosa/flakes/master";
     nixpkgs.follows = "haedosa/nixpkgs";
-    flake-utils.follows = "haedosa/flake-utils";
+    flake-utils.url = "github:numtide/flake-utils/main";
   };
 
   outputs = input@{self, nixpkgs, flake-utils, ...} :
