@@ -1,0 +1,3 @@
+#+title: Read Me
+
+./html/index.html -> nginx reverse proxy at port 7979, localhost:7979 or 192.168.12.135:7979

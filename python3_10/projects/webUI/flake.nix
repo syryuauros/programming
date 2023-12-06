@@ -16,7 +16,7 @@
 
       in rec {
         packages.python3_9 = pkgs.python3Full.withPackages(ps: with ps; [
-          toolz requests matplotlib flask
+          toolz requests matplotlib flask flask-cors
         ]);
         packages.gnuplot = pkgs.gnuplot;
         packages.unzip = pkgs.unzip;
