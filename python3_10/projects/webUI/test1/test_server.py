@@ -50,15 +50,17 @@ def add1_numbers():
 @app.route('/add2', methods=['POST'])
 def add2_numbers():
     data = request.get_json()
-    show_elem = np.array(data)
+    show_elem_origin = np.array(data)
+    show_elem = np.delete(show_elem_origin, 0, axis=0)
     col0 = show_elem[:,0]
     col1 = show_elem[:,1]
-    print(show_elem)
-    print("col0 = ")
-    print(col0)
-    print("col1 = ")
-    print(col1)
-    show_elem[:,2] = col1
+    col2 = col1.astype(float) * 2
+    # print(show_elem)
+    # print("col0 = ")
+    # print(col0)
+    # print("col1 = ")
+    # print(col1)
+    show_elem[:,2] = col2.astype(str)
     print(show_elem)
     dataModified = show_elem.tolist()
 

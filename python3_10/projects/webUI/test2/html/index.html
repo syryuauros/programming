@@ -113,6 +113,7 @@
             var csvData = document.getElementById("csvData").value;
             var csvDataAOA = convertToAOA(csvData);
             createHandsonTable(csvDataAOA);
+            drawchart();
         }
 
 
@@ -128,6 +129,7 @@
                     var csvDataAOA = convertToAOA(csvData);
 
                     createHandsonTable(csvDataAOA);
+                    drawchart();
                 };
 
                 reader.readAsText(file);
@@ -157,30 +159,8 @@
             console.log(data[2]);
 
             createHandsonTable(data);
-            // document.getElementById('result').innerText = data.result;
+            drawchart();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         function createHandsonTable(csvData) {
             const parsedData = csvData;
@@ -221,6 +201,79 @@
 
             hot = new Handsontable(hotElement, hotSettings);
         }
+
+        function drawchart() {
+            var xData = hot.getDataAtCol(0);
+            var yData1 = hot.getDataAtCol(1);
+            var yData2 = hot.getDataAtCol(2);
+            <!-- var rowsInTable = table.getElementsByTagName("tr"); -->
+
+            <!-- for (var i = 1; i < rowsInTable.length; i++) { -->
+            <!--     var cells = rowsInTable[i].getElementsByTagName("td"); -->
+            <!--     console.log("row: " + rows[i]); -->
+            <!--     console.log("cells: " + cells[1].textContent); -->
+            <!--     xData.push(parseFloat(cells[0].textContent)); -->
+            <!--     yData1.push(parseFloat(cells[1].textContent)); -->
+            <!--     yData2.push(parseFloat(cells[2].textContent)); -->
+            <!-- } -->
+
+            scatterChart.data.datasets = [
+                {
+                    label: 'data 1',
+                    data: xData.map((value, index) => ({ x: value, y: yData1[index] })),
+                    backgroundColor: "rgba(75, 192, 192, 0.6)",
+                    pointRadius: 2,
+                    pointHoverRadius: 2,
+                    pointStyle: 'rectRot',
+                    showLine: true,
+                    fill: false,
+                    borderWidth: 5,
+                    borderColor: "rgba(75, 192, 192, 0.6)",
+                    borderDash: [10, 10],
+                    tension: 0.5,
+                },
+                {
+                    label: 'data 2',
+                    data: xData.map((value, index) => ({ x: value, y: yData2[index] })),
+                    backgroundColor: "rgba(150, 100, 100, 0.6)",
+                    pointRadius: 2,
+                    pointHoverRadius: 2,
+                    showLine: true,
+                    fill: false,
+                    borderWidth: 3,
+                    borderColor: "rgba(150, 100, 100, 0.6)",
+                    borderDash: [10, 3, 20, 10],
+                }
+            ];
+
+            // Update scatter chart
+            scatterChart.update();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         function createTable(csvData) {
 
