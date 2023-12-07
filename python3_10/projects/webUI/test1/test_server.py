@@ -4,6 +4,8 @@ from flask_cors import CORS
 import flask
 import json
 
+num3 = float(0)
+
 app = Flask(__name__)
 CORS(app)
 
@@ -28,8 +30,22 @@ def add_numbers():
     data = request.get_json()
     num1 = data['num1']
     num2 = data['num2']
-    result = float(num1) + float(num2)
+    result = float(num1) + float(num2) + num3
     return jsonify({'result': str(result)})
+
+@app.route('/add1', methods=['POST'])
+def add1_numbers():
+    data = request.get_json()
+    # for sub_data in data:
+    #     print(sub_data)
+    print(type(data))
+    show_elem = data[1][2]
+    print(show_elem)
+    num1 = data[1][1]
+    num2 = data[3][1]
+    result = float(num1) + float(num2) + num3
+    return jsonify({'result': str(result)})
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=6969)
