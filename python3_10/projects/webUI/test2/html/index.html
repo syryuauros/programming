@@ -58,6 +58,8 @@
 
         <button onclick="parseCSV()">refresh data</button>
 
+        <button onclick="calculate()">send column data</button>
+
     </div>
 
     <div class="container-empty">
@@ -137,6 +139,48 @@
             var csvDataAOA = rows.map(row => row.split(/[\t,]/));
             return csvDataAOA;
         }
+
+        async function calculate() {
+            var col0 = hot.getDataAtCol(0)
+            var col1 = hot.getDataAtCol(1)
+            var data0 = hot.getData()
+
+            const response = await fetch('http://192.168.12.135:6969/add2', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data0)
+            });
+
+            const data = await response.json();
+            console.log(data[2]);
+
+            createHandsonTable(data);
+            // document.getElementById('result').innerText = data.result;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         function createHandsonTable(csvData) {
             const parsedData = csvData;

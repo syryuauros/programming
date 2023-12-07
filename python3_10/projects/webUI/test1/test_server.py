@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import flask
 import json
+import numpy as np
 
 num3 = float(0)
 
@@ -45,6 +46,28 @@ def add1_numbers():
     num2 = data[3][1]
     result = float(num1) + float(num2) + num3
     return jsonify({'result': str(result)})
+
+@app.route('/add2', methods=['POST'])
+def add2_numbers():
+    data = request.get_json()
+    show_elem = np.array(data)
+    col0 = show_elem[:,0]
+    col1 = show_elem[:,1]
+    print(show_elem)
+    print("col0 = ")
+    print(col0)
+    print("col1 = ")
+    print(col1)
+    show_elem[:,2] = col1
+    print(show_elem)
+    dataModified = show_elem.tolist()
+
+    # num1 = data[1]
+    # num2 = data[3]
+    # result = float(num1) + float(num2) + num3
+    # return jsonify({'result': str(result)})
+    return jsonify(dataModified)
+
 
 
 if __name__ == "__main__":
