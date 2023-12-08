@@ -81,14 +81,16 @@
     </div>
 
     <div class="chart-container">
-        <h2>Scatter Chart:</h2>
-        <canvas id="myChart" width="400" height="200"></canvas>
+        <h2>Charts:</h2>
+        <canvas id="myChart" width="400" height="180"></canvas>
+        <canvas id="myChart2" width="400" height="180"></canvas>
     </div>
 
     <script>
         // Initialize the scatter chart
         var fileInput = document.getElementById('csvFile');
         var ctx = document.getElementById('myChart').getContext('2d');
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
         var scatterChart = new Chart(ctx, {
             type: 'scatter', // Set the chart type to scatter
             data: {
@@ -106,6 +108,24 @@
                 }
             }
         });
+        var stemChart = new Chart(ctx2, {
+            type: 'bar', // Set the chart type to scatter
+            data: {
+                datasets: [],
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
         var hot;
 
         fileInput.addEventListener('change', function(event) {
@@ -226,44 +246,61 @@
         }
 
         function drawchart() {
-            var xData = hot.getDataAtCol(0);
-            var yData1 = hot.getDataAtCol(1);
-            var yData2 = hot.getDataAtCol(2);
-            <!-- var rowsInTable = table.getElementsByTagName("tr"); -->
-
-            <!-- for (var i = 1; i < rowsInTable.length; i++) { -->
-            <!--     var cells = rowsInTable[i].getElementsByTagName("td"); -->
-            <!--     console.log("row: " + rows[i]); -->
-            <!--     console.log("cells: " + cells[1].textContent); -->
-            <!--     xData.push(parseFloat(cells[0].textContent)); -->
-            <!--     yData1.push(parseFloat(cells[1].textContent)); -->
-            <!--     yData2.push(parseFloat(cells[2].textContent)); -->
-            <!-- } -->
+            var xData0 = hot.getDataAtCol(0);
+            var yData00 = hot.getDataAtCol(1);
+            var yData01 = hot.getDataAtCol(2);
+            var xData1 = hot.getDataAtCol(4);
+            var yData10 = hot.getDataAtCol(5);
 
             scatterChart.data.datasets = [
                 {
                     label: 'data 1',
-                    data: xData.map((value, index) => ({ x: value, y: yData1[index] })),
+                    data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
                     backgroundColor: "rgba(75, 192, 192, 0.6)",
-                    pointRadius: 2,
-                    pointHoverRadius: 2,
-                    pointStyle: 'rectRot',
+                    pointRadius: 3,
+                    pointHoverRadius: 3,
+                    //pointStyle: 'rectRot',
                     showLine: true,
                     fill: false,
-                    borderWidth: 5,
+                    borderWidth: 1,
                     borderColor: "rgba(75, 192, 192, 0.6)",
-                    borderDash: [10, 10],
+                    borderDash: [10, 2],
                     tension: 0.5,
                 },
                 {
                     label: 'data 2',
-                    data: xData.map((value, index) => ({ x: value, y: yData2[index] })),
+                    data: xData0.map((value, index) => ({ x: value, y: yData01[index] })),
                     backgroundColor: "rgba(150, 100, 100, 0.6)",
-                    pointRadius: 2,
-                    pointHoverRadius: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 0,
                     showLine: true,
                     fill: false,
                     borderWidth: 3,
+                    borderColor: "rgba(150, 100, 100, 0.6)",
+                    //borderDash: [10, 3, 20, 10],
+                }
+            ];
+
+            stemChart.data.datasets = [
+                {
+                    label: 'barData 1',
+                    type: 'bar',
+                    data: xData1.map((value, index) => ({ x: value, y: yData10[index] })),
+                    backgroundColor: "rgba(75, 192, 192, 0.6)",
+                    barThickness: 3,
+                    borderColor: "rgba(75, 192, 192, 0.6)",
+                    borderWidth: 1,
+                },
+                {
+                    label: 'pointData 2',
+                    type: 'scatter',
+                    data: xData1.map((value, index) => ({ x: value, y: yData10[index] })),
+                    backgroundColor: "rgba(150, 100, 100, 0.6)",
+                    pointRadius: 2,
+                    pointHoverRadius: 2,
+                    showLine: false,
+                    fill: false,
+                    borderWidth: 1,
                     borderColor: "rgba(150, 100, 100, 0.6)",
                     borderDash: [10, 3, 20, 10],
                 }
@@ -271,6 +308,7 @@
 
             // Update scatter chart
             scatterChart.update();
+            barChart.update();
         }
 
 
@@ -339,14 +377,14 @@
             var yData2 = [];
             var rowsInTable = table.getElementsByTagName("tr");
 
-            for (var i = 1; i < rowsInTable.length; i++) {
-                var cells = rowsInTable[i].getElementsByTagName("td");
-                console.log("row: " + rows[i]);
-                console.log("cells: " + cells[1].textContent);
-                xData.push(parseFloat(cells[0].textContent));
-                yData1.push(parseFloat(cells[1].textContent));
-                yData2.push(parseFloat(cells[2].textContent));
-            }
+            // for (var i = 1; i < rowsInTable.length; i++) {
+            //     var cells = rowsInTable[i].getElementsByTagName("td");
+            //     console.log("row: " + rows[i]);
+            //     console.log("cells: " + cells[1].textContent);
+            //     xData.push(parseFloat(cells[0].textContent));
+            //     yData1.push(parseFloat(cells[1].textContent));
+            //     yData2.push(parseFloat(cells[2].textContent));
+            // }
 
             // Update scatter chart data
             scatterChart.data.datasets = [
@@ -378,8 +416,20 @@
                 }
             ];
 
+            barChart.data.datasets = [
+                {
+                    label: 'barData 1',
+                    data: xData.map((value, index) => ({ x: value, y: yData1[index] })),
+                    backgroundColor: "rgba(75, 192, 192, 0.6)",
+                    borderColor: "rgba(75, 192, 192, 0.6)",
+                    borderWidth: 1,
+                },
+            ];
+
+
             // Update scatter chart
             scatterChart.update();
+            barChart.update();
         }
     </script>
 </body>
