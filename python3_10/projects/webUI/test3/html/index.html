@@ -60,9 +60,8 @@
         <h2>Paste CSV Data Here:</h2>
         <textarea id="csvData" placeholder="Paste CSV data here" rows="5" cols="27"></textarea>
 
-        <button onclick="parseCSV()">refresh data</button>
+        <button onclick="parseCSV()">adopt to table</button>
 
-        <button onclick="calculate()">send column data</button>
 
     </div>
 
@@ -72,6 +71,12 @@
 
     <div class="container-table">
         <h2>Table:</h2>
+
+        <button onclick="drawchart()">refresh graphs</button>
+        <button onclick="calculate()">calculate</button>
+
+
+        <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="handsonTable"></div>
     </div>
