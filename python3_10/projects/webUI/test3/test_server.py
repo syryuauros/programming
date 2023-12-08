@@ -70,7 +70,58 @@ def add2_numbers():
     # return jsonify({'result': str(result)})
     return jsonify(dataModified)
 
+@app.route('/FFT', methods=['POST'])
+def FFT_numbers():
 
+    data = request.get_json()
+    show_elem_origin = np.array(data)
+
+    if not can_be_float(show_elem_origin[0,:]):
+        show_elem = np.delete(show_elem_origin, 0, axis=0)
+    else:
+        show_elem = show_elem_origin
+    col0 = show_elem[:,0]
+    col1 = show_elem[:,1]
+
+    Fs = len(col0)
+    print("Fs :" + str(Fs))
+    T = 1/Fs
+    end_time = 1
+    time = np.linspace(0, end_time, Fs)
+
+    s_fft = np.fft.fft(col1.astype(float))
+    amplitude = abs(s_fft)*(2/len(s_fft))
+    frequency = np.fft.fftfreq(len(s_fft), T)
+    col2 = col1.astype(float) * 1
+    # print(show_elem)
+    # print("col0 = ")
+    # print(col0)
+    # print("col1 = ")
+    # print(col1)
+    show_elem[:,2] = col2.astype(str)
+    show_elem[:,4] = frequency.astype(str)
+    show_elem[:,5] = amplitude.astype(str)
+    # print(show_elem)
+    dataModified = show_elem.tolist()
+
+    # num1 = data[1]
+    # num2 = data[3]
+    # result = float(num1) + float(num2) + num3
+    # return jsonify({'result': str(result)})
+    return jsonify(dataModified)
+
+def can_be_float(arr):
+    k = 0
+    try:
+        for element in arr:
+            k = k + 1
+            if element is not None:
+                float(element)
+            else:
+                print("None type found in" + str(k) + "`th element")
+    except ValueError:
+        return False
+    return True
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=6969)

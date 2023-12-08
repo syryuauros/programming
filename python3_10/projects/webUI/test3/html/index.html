@@ -176,7 +176,7 @@
             var col1 = hot.getDataAtCol(1)
             var data0 = hot.getData()
 
-            const response = await fetch('http://192.168.12.135:6969/add2', {
+            const response = await fetch('http://192.168.12.135:6969/FFT', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -283,6 +283,7 @@
                     borderWidth: 3,
                     borderColor: "rgba(150, 100, 100, 0.6)",
                     //borderDash: [10, 3, 20, 10],
+                    tension:0.5
                 }
             ];
 
@@ -313,7 +314,7 @@
 
             // Update scatter chart
             scatterChart.update();
-            barChart.update();
+            stemChart.update();
         }
 
 
