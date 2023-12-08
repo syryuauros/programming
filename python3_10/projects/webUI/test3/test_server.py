@@ -73,7 +73,10 @@ def add2_numbers():
 @app.route('/FFT', methods=['POST'])
 def FFT_numbers():
 
-    data = request.get_json()
+    tr_json = request.get_json()
+    data = tr_json['data']
+    check = tr_json['check']
+    truncate_ratio = tr_json['truncateRatio']
     show_elem_origin = np.array(data)
 
     if not can_be_float(show_elem_origin[0,:]):
@@ -93,11 +96,32 @@ def FFT_numbers():
     amplitude = abs(s_fft)*(2/len(s_fft))
     frequency = np.fft.fftfreq(len(s_fft), T)
 
-    col2 = np.fft.ifft(s_fft).real
+    # fft_freq = frequency.copy()
+    # peak_index = amplitude[:int(len(amplitude)/2)].argsort()[-1]
+    # peak_freq = fft_freq[peak_index]
+    # fft_lx = s_fft.copy()
+    # fft_lx[fft_freq!=peak_freq] = 0
+    # amplitude_lx = abs(fft_lx)*(2/len(fft_lx))
+
+    # print("truncateRatio : " + str(truncate_ratio) + "," + str(tr_json))
+
+    if not check:
+        col2 = np.fft.ifft(s_fft).real
+        col5 = amplitude.astype(str)
+    else:
+
+        fft_lx = s_fft.copy()
+        amplitude_lx = amplitude.copy()
+        tr_ratio = float(truncate_ratio)/100
+        amplitude_lx[amplitude/amplitude.max() < tr_ratio] = 0
+        fft_lx[amplitude/amplitude.max() < tr_ratio] = 0
+
+        col2 = np.fft.ifft(fft_lx).real
+        col5 = amplitude_lx.astype(str)
+
     show_elem[:,2] = col2.astype(str)
     show_elem[:,4] = frequency.astype(str)
-    show_elem[:,5] = amplitude.astype(str)
-    # print(show_elem)
+    show_elem[:,5] = col5.astype(str)
     dataModified = show_elem.tolist()
 
     return jsonify(dataModified)
@@ -132,3 +156,4 @@ if __name__ == "__main__":
 #
 #
 #https://tms-dev-blog.com/python-backend-with-javascript-frontend-how-to/
+#출처: https://lifelong-education-dr-kim.tistory.com/entry/Python-numpy-FFT-IFFT-사용하기-주기분석 [독학하는 김박사:티스토리]

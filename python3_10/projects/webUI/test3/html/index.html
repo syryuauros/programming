@@ -74,7 +74,10 @@
 
         <button onclick="drawchart()">refresh graphs</button>
         <button onclick="calculate()">calculate</button>
-
+        <input type="checkbox" id="check1" value="">
+        <label for="label1">truncate </label>
+        <input type="text" size="2" value="5" style="text-align: center;" id="trInput">
+        <label for="label2">%</label>
 
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -108,7 +111,10 @@
                         position: 'bottom'
                     },
                     y: {
-                        beginAtZero: true
+                        // beginAtZero: true
+                        suggestedMin: -0.1,
+                        suggestedMax: 2.2
+
                     }
                 }
             }
@@ -122,15 +128,17 @@
                 scales: {
                     x: {
                         type: 'linear',
-                        position: 'bottom'
+                        position: 'bottom',
                     },
                     y: {
-                        beginAtZero: true
+                        // beginAtZero: true,
+                        suggestedMin: -0.1,
+                        suggestedMax: 2.2
                     }
                 }
             }
         });
-
+//https://www.chartjs.org/docs/latest/charts/mixed.html
         var hot;
 
         fileInput.addEventListener('change', function(event) {
@@ -175,17 +183,22 @@
             var col0 = hot.getDataAtCol(0)
             var col1 = hot.getDataAtCol(1)
             var data0 = hot.getData()
+            const check1 = document.getElementById('check1');
+            const trRatio = document.getElementById('trInput').value;
 
             const response = await fetch('http://192.168.12.135:6969/FFT', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data0)
+                body: JSON.stringify({
+                    check: check1.checked,
+                    data: data0,
+                    truncateRatio: trRatio
+                })
             });
 
             const data = await response.json();
-            console.log(data[2]);
 
             createHandsonTable(data);
             drawchart();
@@ -195,7 +208,7 @@
             const parsedData = csvData;
             const columnHeaders = ['Aa', 'Bb', 'Cc' ];
 
-            console.log("parsedData = " + typeof parsedData);
+            // console.log("parsedData = " + typeof parsedData);
 
             const hotElement = document.getElementById('handsonTable');
             const hotSettings = {
