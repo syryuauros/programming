@@ -92,22 +92,14 @@ def FFT_numbers():
     s_fft = np.fft.fft(col1.astype(float))
     amplitude = abs(s_fft)*(2/len(s_fft))
     frequency = np.fft.fftfreq(len(s_fft), T)
-    col2 = col1.astype(float) * 1
-    # print(show_elem)
-    # print("col0 = ")
-    # print(col0)
-    # print("col1 = ")
-    # print(col1)
+
+    col2 = np.fft.ifft(s_fft).real
     show_elem[:,2] = col2.astype(str)
     show_elem[:,4] = frequency.astype(str)
     show_elem[:,5] = amplitude.astype(str)
     # print(show_elem)
     dataModified = show_elem.tolist()
 
-    # num1 = data[1]
-    # num2 = data[3]
-    # result = float(num1) + float(num2) + num3
-    # return jsonify({'result': str(result)})
     return jsonify(dataModified)
 
 def can_be_float(arr):
