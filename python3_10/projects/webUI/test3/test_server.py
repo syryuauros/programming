@@ -83,8 +83,8 @@ def FFT_numbers():
         show_elem = np.delete(show_elem_origin, 0, axis=0)
     else:
         show_elem = show_elem_origin
-    col0 = show_elem[:,0]
-    col1 = show_elem[:,1]
+    col0 = show_elem[:,0].astype(float)
+    col1 = show_elem[:,1].astype(float)
 
     Fs = len(col0)
     print("Fs :" + str(Fs))
@@ -95,15 +95,6 @@ def FFT_numbers():
     s_fft = np.fft.fft(col1.astype(float))
     amplitude = abs(s_fft)*(2/len(s_fft))
     frequency = np.fft.fftfreq(len(s_fft), T)
-
-    # fft_freq = frequency.copy()
-    # peak_index = amplitude[:int(len(amplitude)/2)].argsort()[-1]
-    # peak_freq = fft_freq[peak_index]
-    # fft_lx = s_fft.copy()
-    # fft_lx[fft_freq!=peak_freq] = 0
-    # amplitude_lx = abs(fft_lx)*(2/len(fft_lx))
-
-    # print("truncateRatio : " + str(truncate_ratio) + "," + str(tr_json))
 
     if not check:
         col2 = np.fft.ifft(s_fft).real
@@ -126,6 +117,33 @@ def FFT_numbers():
 
     return jsonify(dataModified)
 
+    # fft_freq = frequency.copy()
+    # max_value = max(col1)
+    # min_value = min(col1)
+    # max_indices = find_max_indices(col1)
+    # min_indices = find_min_indices(col1)
+
+    #print("period check:" + str((max_indices[1]-max_indices[0])))
+    #print("period check:" + str((max_indices[1]-max_indices[0]) == (min_indices[1]-min_indices[0])))
+    # print("max value:" + str(max_value))
+    # print("min value:" + str(min_value))
+    # print("max indices:" + str(max_indices))
+    # print("max indices:" + str(min_indices))
+    #
+    #print("col1[1] :" + str(col1[25]))
+    #print("col1 :" + str(col1))
+    #
+    #peak_index = amplitude[:int(len(amplitude)/2)].argsort()[-1]
+    #peak_index = find_peaks(col1)
+    #print("peak index:" + str(peak_index))
+    # peak_freq = fft_freq[peak_index]
+    # fft_lx = s_fft.copy()
+    # fft_lx[fft_freq!=peak_freq] = 0
+    # amplitude_lx = abs(fft_lx)*(2/len(fft_lx))
+
+    # print("truncateRatio : " + str(truncate_ratio) + "," + str(tr_json))
+
+
 def can_be_float(arr):
     k = 0
     try:
@@ -138,6 +156,18 @@ def can_be_float(arr):
     except ValueError:
         return False
     return True
+
+def find_peaks(arr):
+    peak_indices = np.where((arr[1:-1] > arr[:-2]) & (arr[1:-1] > arr[2:]))[0] + 1
+    return peak_indices
+
+def find_max_indices(arr):
+    max_indices = np.where((arr == np.max(arr)))[0]
+    return max_indices
+
+def find_min_indices(arr):
+    min_indices = np.where((arr == np.min(arr)))[0]
+    return min_indices
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=6969)
