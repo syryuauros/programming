@@ -5,6 +5,40 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
     <style>
+
+         .button {
+            display: inline-block;
+            padding: 5px 20px;
+            background-color: #5D6D7E ;
+            color: #D6DBDF;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .button-1 {
+            display: inline-block;
+            padding: 5px 20px;
+            background-color: #5D6D7E ;
+            color: #E6B0AA;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .container-nav {
+            border: 1px dotted grey;
+              border-end-end-radius: 15px 15px;
+              border-start-end-radius: 15px 15px;
+              border-end-start-radius: 15px 15px;
+              border-start-start-radius: 15px 15px;
+            background-color: #85929E;
+            width: 5.8%;
+            text-align: center;
+            padding: 5px;
+            float: left;
+            overflow: hidden; /* Clear the float */
+
+        }
         .container-csv {
             border: 1px dotted grey;
               border-end-end-radius: 15px 15px;
@@ -15,13 +49,9 @@
             padding: 10px;
             float: left;
             overflow: hidden; /* Clear the float */
-            <!-- display: flex; -->
-            <!-- flex-direction: column; -->
-            <!-- justify-content: space-between; -->
-            <!-- height: 100vh; -->
         }
         .container-empty {
-            width: 1%;
+            width: 2%;
             float: left;
             overflow: hidden; /* Clear the float */
         }
@@ -31,9 +61,14 @@
               border-start-end-radius: 15px 15px;
               border-end-start-radius: 15px 15px;
               border-start-start-radius: 15px 15px;
-            width: 19.0%;
+            width: 18.0%;
             padding: 10px;
             text-align: center;
+            float: left;
+            overflow: hidden; /* Clear the float */
+        }
+        .container-empty {
+            width: 0.5%;
             float: left;
             overflow: hidden; /* Clear the float */
         }
@@ -43,14 +78,38 @@
               border-start-end-radius: 15px 15px;
               border-end-start-radius: 15px 15px;
               border-start-start-radius: 15px 15px;
-            width: 45%;
+            width: 42%;
             padding: 1px;
             text-align: center;
-            float: right;
+            float: left;
         }
+        .container-setting {
+            border: 1px dotted grey;
+              border-end-end-radius: 15px 15px;
+              border-start-end-radius: 15px 15px;
+              border-end-start-radius: 15px 15px;
+              border-start-start-radius: 15px 15px;
+            width: 13.6%;
+            padding: 10px;
+            text-align: center;
+            float: left;
+            overflow: hidden; /* Clear the float */
+        }
+
     </style>
 </head>
 <body>
+    <div class="container-nav">
+        <h3 style="color: #D5DBDB;"> Analysis tools </h3>
+        <a href="./index.html" class="button">home</a>
+        <h6></h6>
+        <a href="./index_FFT.html" class="button-1">FFT(t->f)</a>
+    </div>
+
+    <div class="container-empty">
+        <h2> </h2>
+    </div>
+
     <div class="container-csv">
 
         <h2>Load CSV File:</h2>
@@ -62,6 +121,8 @@
 
         <button onclick="parseCSV()">adopt to table</button>
 
+        <h2>export result to CSV:</h2>
+        <button onclick="exportToCSV()">export result to csv</button>
 
     </div>
 
@@ -96,6 +157,21 @@
         <canvas id="myChart2" width="320" height="160"></canvas>
     </div>
 
+    <div class="container-empty">
+        <h2> </h2>
+    </div>
+
+    <div class="container-setting">
+        <h2>axis setting:</h2>
+
+        <button onclick="modifyRange()">adopt setting</button>
+
+        <h1> </h1>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+        <div id="settingTable"></div>
+    </div>
+
+
     <script>
         // Initialize the scatter chart
         var fileInput = document.getElementById('csvFile');
@@ -122,7 +198,7 @@
             }
         });
         var stemChart = new Chart(ctx2, {
-            type: 'bar', // Set the chart type to scatter
+            type: 'scatter', // Set the chart type to scatter
             data: {
                 datasets: [],
             },
@@ -142,6 +218,25 @@
         });
 //https://www.chartjs.org/docs/latest/charts/mixed.html
         var hot;
+        const settingTableElement = document.getElementById('settingTable');
+        const settingTableSettings = {
+            data: [
+                [0, 1, -5, 5],
+                [0, 1, -5, 5],
+            ],
+            allowEmpty: true,
+            type: 'numeric',
+            numericFormat: {
+                pattern: '0,0.00',
+            },
+            colHeaders: ['xMin', 'xMax', 'yMin', 'yMax' ],
+            rowHeaders: true,
+            customBorders: true,
+            height: 'auto',
+            licenseKey: 'non-commercial-and-evaluation'
+        };
+
+        const settingTable = new Handsontable(settingTableElement, settingTableSettings);
 
         fileInput.addEventListener('change', function(event) {
             const selectedFile = event.target.files[0];
@@ -174,6 +269,20 @@
                 reader.readAsText(file);
             }
         }
+
+
+        function exportToCSV() {
+            var Data0 = hot.getData()
+            const csvFormat = Data0.map(row => row.join(',')).join('\n');
+            const blob = new Blob([csvFormat], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data0.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
 
         function convertToAOA(csvData) {
             var rows = csvData.split("\n");
@@ -208,8 +317,6 @@
 
         function createHandsonTable(csvData) {
             const parsedData = csvData;
-            const columnHeaders = ['Aa', 'Bb', 'Cc' ];
-
             // console.log("parsedData = " + typeof parsedData);
 
             const hotElement = document.getElementById('handsonTable');
@@ -265,12 +372,74 @@
             hot = new Handsontable(hotElement, hotSettings);
         }
 
+        function modifyRange() {
+            var xMin1 = settingTable.getDataAtCell(0,0);
+            var xMax1 = settingTable.getDataAtCell(0,1);
+            var yMin1 = settingTable.getDataAtCell(0,2);
+            var yMax1 = settingTable.getDataAtCell(0,3);
+
+            var xMin2 = settingTable.getDataAtCell(1,0);
+            var xMax2 = settingTable.getDataAtCell(1,1);
+            var yMin2 = settingTable.getDataAtCell(1,2);
+            var yMax2 = settingTable.getDataAtCell(1,3);
+
+            // console.log({ xMin1, xMax1, yMin1, yMax1 })
+            // console.log({ xMin2, xMax2, yMin2, yMax2 })
+
+            var xData0 = hot.getDataAtCol(0);
+            var yData00 = hot.getDataAtCol(1);
+            var yData01 = hot.getDataAtCol(2);
+            var xData1 = hot.getDataAtCol(4);
+            var yData10 = hot.getDataAtCol(5);
+
+
+
+            scatterChart.options.scales = {
+                x: {
+                    min: xMin1,
+                    max: xMax1,
+                },
+                y: {
+                    min: yMin1,
+                    max: yMax1,
+                }
+            };
+
+            stemChart.options.scales = {
+                x: {
+                    min: xMin2,
+                    max: xMax2,
+                },
+                y: {
+                    min: yMin2,
+                    max: yMax2,
+                }
+            };
+
+            scatterChart.update();
+            stemChart.update();
+        }
+
         function drawchart() {
             var xData0 = hot.getDataAtCol(0);
             var yData00 = hot.getDataAtCol(1);
             var yData01 = hot.getDataAtCol(2);
             var xData1 = hot.getDataAtCol(4);
             var yData10 = hot.getDataAtCol(5);
+
+            scatterChart.options.scales = {
+                x: {
+                    min: xData0.min,
+                    max: xData0.max
+                }
+            };
+
+            stemChart.options.scales = {
+                x: {
+                    min: xData0.min,
+                    max: xData0.max
+                }
+            };
 
             scatterChart.data.datasets = [
                 {
@@ -332,126 +501,6 @@
             stemChart.update();
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        function createTable(csvData) {
-
-            var table = document.getElementById("dataTable");
-
-            // Split CSV data into rows
-            var rows = csvData.split("\n");
-            console.log("rows: " + rows);
-
-            // Clear existing table content
-            table.innerHTML = "";
-
-
-            var digit_set = [ 0, 3, 3 ];
-
-            // Create a table row for each CSV row
-            for (var i = 0; i < rows.length; i++) {
-                var row = document.createElement("tr");
-                var columns = rows[i].split(/[\t,]/);
-
-                // Create table cells for each CSV column
-                for (var j = 0; j < columns.length; j++) {
-                    var cell = document.createElement(i === 0 ? "th" : "td"); // Use th for the first row as headers
-                    var fixedVal = parseFloat(columns[j]).toFixed(digit_set[j]);
-                    if (!isNaN(fixedVal)) {
-                        cell.textContent = fixedVal;
-                        //console.log("fixedVal: " + typeof fixedVal);
-                    } else {
-                        cell.textContent = columns[j];
-                    }
-                    row.appendChild(cell);
-                }
-
-                table.appendChild(row);
-            }
-
-            // Create scatter chart datasets using the data from the table
-            var xData = [];
-            var yData1 = [];
-            var yData2 = [];
-            var rowsInTable = table.getElementsByTagName("tr");
-
-            // for (var i = 1; i < rowsInTable.length; i++) {
-            //     var cells = rowsInTable[i].getElementsByTagName("td");
-            //     console.log("row: " + rows[i]);
-            //     console.log("cells: " + cells[1].textContent);
-            //     xData.push(parseFloat(cells[0].textContent));
-            //     yData1.push(parseFloat(cells[1].textContent));
-            //     yData2.push(parseFloat(cells[2].textContent));
-            // }
-
-            // Update scatter chart data
-            scatterChart.data.datasets = [
-                {
-                    label: 'data 1',
-                    data: xData.map((value, index) => ({ x: value, y: yData1[index] })),
-                    backgroundColor: "rgba(75, 192, 192, 0.6)",
-                    pointRadius: 2,
-                    pointHoverRadius: 2,
-                    pointStyle: 'rectRot',
-                    showLine: true,
-                    fill: false,
-                    borderWidth: 5,
-                    borderColor: "rgba(75, 192, 192, 0.6)",
-                    borderDash: [10, 10],
-                    tension: 0.5,
-                },
-                {
-                    label: 'data 2',
-                    data: xData.map((value, index) => ({ x: value, y: yData2[index] })),
-                    backgroundColor: "rgba(150, 100, 100, 0.6)",
-                    pointRadius: 2,
-                    pointHoverRadius: 2,
-                    showLine: true,
-                    fill: false,
-                    borderWidth: 3,
-                    borderColor: "rgba(150, 100, 100, 0.6)",
-                    borderDash: [10, 3, 20, 10],
-                }
-            ];
-
-            barChart.data.datasets = [
-                {
-                    label: 'barData 1',
-                    data: xData.map((value, index) => ({ x: value, y: yData1[index] })),
-                    backgroundColor: "rgba(75, 192, 192, 0.6)",
-                    borderColor: "rgba(75, 192, 192, 0.6)",
-                    borderWidth: 1,
-                },
-            ];
-
-
-            // Update scatter chart
-            scatterChart.update();
-            barChart.update();
-        }
     </script>
 </body>
 </html>
