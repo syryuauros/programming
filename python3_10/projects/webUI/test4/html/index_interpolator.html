@@ -139,8 +139,10 @@
     <div class="container-table">
         <h2>Input:</h2>
 
+        <label for="label1" style="color: white;">__________________________</label>
+        <label for="label1" style="color: white;">_</label>
+        <h1> </h1>
         <button onclick="drawchart()">refresh graphs</button>
-        <button onclick="calculate()">calculate</button>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table1"></div>
@@ -157,6 +159,8 @@
         <input type="text" size="2" value="0" style="text-align: center;" id="rangeMin">
         <input type="text" size="2" value="100" style="text-align: center;" id="rangeMax">
         <input type="text" size="2" value="1" style="text-align: center;" id="interval">
+        <h1> </h1>
+        <button onclick="calculate()">calculate</button>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table2"></div>
@@ -178,11 +182,11 @@
     <div class="container-setting">
         <h2>axis setting:</h2>
 
-        <button onclick="modifyRange()">adopt setting</button>
-
-        <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="settingTable"></div>
+
+        <h1> </h1>
+        <button onclick="modifyRange()">adopt setting</button>
     </div>
 
 
