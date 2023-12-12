@@ -39,7 +39,9 @@
             padding: 5px;
             float: left;
             overflow: hidden; /* Clear the float */
-
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
         }
         .container-csv {
             border: 1px dotted grey;
@@ -104,10 +106,10 @@
     <div class="container-nav">
         <h3 style="color: #D5DBDB;"> Analysis tools </h3>
         <a href="./index.html" target="_blank" class="button">home</a>
-        <h6></h6>
         <a href="./index_FFT.html" target="_blank" class="button">FFT(t->f)</a>
-        <h6></h6>
         <a href="./index_interpolator.html" target="_blank" class="button-1" style="font-size: 16px">interpolate</a>
+        <a href="https://apps.automeris.io/wpd/" target="_blank" class="button">Digitizer</a>
+
     </div>
 
     <div class="container-empty">
