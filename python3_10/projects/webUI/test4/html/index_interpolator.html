@@ -253,8 +253,7 @@
                     var csvData = e.target.result;
                     var csvDataAOA = convertToAOA(csvData);
 
-                    createHandsonTable(csvDataAOA);
-                    drawchart();
+                    createTable1(csvDataAOA);
                 };
 
                 reader.readAsText(file);
