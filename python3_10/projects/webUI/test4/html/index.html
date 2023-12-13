@@ -4,111 +4,16 @@
     <title>CSV to Table and Scatter Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
-    <style>
-        .button {
-            display: inline-block;
-            padding: 5px 5px;
-            background-color: #5D6D7E ;
-            color: #D6DBDF;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            width: 100px;
-        }
-        .button-1 {
-            display: inline-block;
-            padding: 5px 5px;
-            background-color: #5D6D7E ;
-            color: #E6B0AA;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            width: 100px;
-        }
-
-
-        .container-nav {
-            border: 1px dotted grey;
-              border-end-end-radius: 15px 15px;
-              border-start-end-radius: 15px 15px;
-              border-end-start-radius: 15px 15px;
-              border-start-start-radius: 15px 15px;
-            background-color: #85929E;
-            width: 5.8%;
-            text-align: center;
-            padding: 5px;
-            float: left;
-            overflow: hidden; /* Clear the float */
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-        .container-csv {
-            /* border: 1px dotted grey; */
-            /*   border-end-end-radius: 15px 15px; */
-            /*   border-start-end-radius: 15px 15px; */
-            /*   border-end-start-radius: 15px 15px; */
-            /*   border-start-start-radius: 15px 15px; */
-            width: 12.5%;
-            padding: 10px;
-            float: left;
-            overflow: hidden; /* Clear the float */
-        }
-        .container-empty {
-            width: 2%;
-            float: left;
-            overflow: hidden; /* Clear the float */
-        }
-        .container-table {
-            /* border: 1px dotted grey; */
-            /*   border-end-end-radius: 15px 15px; */
-            /*   border-start-end-radius: 15px 15px; */
-            /*   border-end-start-radius: 15px 15px; */
-            /*   border-start-start-radius: 15px 15px; */
-            width: 19.0%;
-            padding: 10px;
-            text-align: center;
-            float: left;
-            overflow: hidden; /* Clear the float */
-        }
-        .container-empty {
-            width: 1%;
-            float: left;
-            overflow: hidden; /* Clear the float */
-        }
-        .chart-container {
-            /* border: 1px dotted grey; */
-            /*   border-end-end-radius: 15px 15px; */
-            /*   border-start-end-radius: 15px 15px; */
-            /*   border-end-start-radius: 15px 15px; */
-            /*   border-start-start-radius: 15px 15px; */
-            width: 45%;
-            padding: 1px;
-            text-align: center;
-            float: left;
-        }
-        .container-setting {
-            /* border: 1px dotted grey; */
-            /*   border-end-end-radius: 15px 15px; */
-            /*   border-start-end-radius: 15px 15px; */
-            /*   border-end-start-radius: 15px 15px; */
-            /*   border-start-start-radius: 15px 15px; */
-            width: 14%;
-            padding: 10px;
-            text-align: center;
-            float: left;
-            overflow: hidden; /* Clear the float */
-        }
-
-    </style>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <div class="container-nav">
         <h3 style="color: #D5DBDB;"> Analysis tools </h3>
         <a href="./index.html" target="_blank" class="button-1">home</a>
-        <a href="./index_FFT.html" target="_blank" class="button">FFT(t->f)</a>
-        <a href="./index_interpolator.html" target="_blank" class="button" style="font-size: 16px">interpolate</a>
         <a href="https://apps.automeris.io/wpd/" target="_blank" class="button">Digitizer</a>
+        <a href="./index_interpolator.html" target="_blank" class="button" style="font-size: 16px">interpolate</a>
+        <a href="./index_FFT.html" target="_blank" class="button">FFT(t->f)</a>
+        <a href="./index_iFFT.html" target="_blank" class="button">iFFT(f->t)</a>
     </div>
 
     <div class="container-csv">
@@ -145,3 +50,102 @@
 
 
 <!-- https://handsontable.com/docs/javascript-data-grid/numeric-cell-type/ -->
+
+
+<!-- <style> -->
+<!--         .button { -->
+<!--             display: inline-block; -->
+<!--             padding: 5px 5px; -->
+<!--             background-color: #5D6D7E ; -->
+<!--             color: #D6DBDF; -->
+<!--             text-decoration: none; -->
+<!--             border-radius: 5px; -->
+<!--             font-weight: bold; -->
+<!--             width: 100px; -->
+<!--         } -->
+<!--         .button-1 { -->
+<!--             display: inline-block; -->
+<!--             padding: 5px 5px; -->
+<!--             background-color: #5D6D7E ; -->
+<!--             color: #E6B0AA; -->
+<!--             text-decoration: none; -->
+<!--             border-radius: 5px; -->
+<!--             font-weight: bold; -->
+<!--             width: 100px; -->
+<!--         } -->
+
+
+<!--         .container-nav { -->
+<!--             border: 1px dotted grey; -->
+<!--               border-end-end-radius: 15px 15px; -->
+<!--               border-start-end-radius: 15px 15px; -->
+<!--               border-end-start-radius: 15px 15px; -->
+<!--               border-start-start-radius: 15px 15px; -->
+<!--             background-color: #85929E; -->
+<!--             width: 5.8%; -->
+<!--             text-align: center; -->
+<!--             padding: 5px; -->
+<!--             float: left; -->
+<!--             overflow: hidden; /* Clear the float */ -->
+<!--             display: flex; -->
+<!--             flex-direction: column; -->
+<!--             gap: 7px; -->
+<!--         } -->
+<!--         .container-csv { -->
+<!--             /* border: 1px dotted grey; */ -->
+<!--             /*   border-end-end-radius: 15px 15px; */ -->
+<!--             /*   border-start-end-radius: 15px 15px; */ -->
+<!--             /*   border-end-start-radius: 15px 15px; */ -->
+<!--             /*   border-start-start-radius: 15px 15px; */ -->
+<!--             width: 12.5%; -->
+<!--             padding: 10px; -->
+<!--             float: left; -->
+<!--             overflow: hidden; /* Clear the float */ -->
+<!--         } -->
+<!--         .container-empty { -->
+<!--             width: 2%; -->
+<!--             float: left; -->
+<!--             overflow: hidden; /* Clear the float */ -->
+<!--         } -->
+<!--         .container-table { -->
+<!--             /* border: 1px dotted grey; */ -->
+<!--             /*   border-end-end-radius: 15px 15px; */ -->
+<!--             /*   border-start-end-radius: 15px 15px; */ -->
+<!--             /*   border-end-start-radius: 15px 15px; */ -->
+<!--             /*   border-start-start-radius: 15px 15px; */ -->
+<!--             width: 19.0%; -->
+<!--             padding: 10px; -->
+<!--             text-align: center; -->
+<!--             float: left; -->
+<!--             overflow: hidden; /* Clear the float */ -->
+<!--         } -->
+<!--         .container-empty { -->
+<!--             width: 1%; -->
+<!--             float: left; -->
+<!--             overflow: hidden; /* Clear the float */ -->
+<!--         } -->
+<!--         .chart-container { -->
+<!--             /* border: 1px dotted grey; */ -->
+<!--             /*   border-end-end-radius: 15px 15px; */ -->
+<!--             /*   border-start-end-radius: 15px 15px; */ -->
+<!--             /*   border-end-start-radius: 15px 15px; */ -->
+<!--             /*   border-start-start-radius: 15px 15px; */ -->
+<!--             width: 45%; -->
+<!--             padding: 1px; -->
+<!--             text-align: center; -->
+<!--             float: left; -->
+<!--         } -->
+<!--         .container-setting { -->
+<!--             /* border: 1px dotted grey; */ -->
+<!--             /*   border-end-end-radius: 15px 15px; */ -->
+<!--             /*   border-start-end-radius: 15px 15px; */ -->
+<!--             /*   border-end-start-radius: 15px 15px; */ -->
+<!--             /*   border-start-start-radius: 15px 15px; */ -->
+<!--             width: 14%; -->
+<!--             padding: 10px; -->
+<!--             text-align: center; -->
+<!--             float: left; -->
+<!--             overflow: hidden; /* Clear the float */ -->
+<!--         } -->
+
+<!--     </style> -->
