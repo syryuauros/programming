@@ -1,50 +1,10 @@
-    const settingTableElement = document.getElementById('settingTable');
-    const settingTableSettings = {
-        data: [
-            [0, 1, -5, 5],
-            [0, 1, -5, 5],
-            [0, 1, -5, 5],
-        ],
-        allowEmpty: true,
-        type: 'numeric',
-        numericFormat: {
-            pattern: '0,0.00',
-        },
-        colHeaders: ['xMin', 'xMax', 'yMin', 'yMax' ],
-        rowHeaders: true,
-        customBorders: true,
-        height: 'auto',
-        licenseKey: 'non-commercial-and-evaluation'
-    };
-    const settingTable = new Handsontable(settingTableElement, settingTableSettings);
-
-    const REFTableElement = document.getElementById('table3');
-    const REFTableSettings = {
-        data: [
-            [0, 0,],
-        ],
-        allowEmpty: true,
-        type: 'numeric',
-        numericFormat: {
-            pattern: '0,0.00',
-        },
-        colHeaders: ['time', 'intensity'],
-        rowHeaders: true,
-        customBorders: true,
-        height: 'auto',
-        licenseKey: 'non-commercial-and-evaluation'
-    };
-    const table3Content = new Handsontable(REFTableElement, REFTableSettings);
-
-
-
-    var fileInput = document.getElementById('csvFile');
     var ctx = document.getElementById('myChart').getContext('2d');
     var ctx2 = document.getElementById('myChart2').getContext('2d');
     var table1Content;
     var table2Content;
     const options = document.getElementsByName('options');
     const optionsChart = document.getElementsByName('optionsChart');
+    const optionsInput = document.getElementsByName('optionsInput');
 
     var scatterChart = new Chart(ctx, {
         type: 'scatter', // Set the chart type to scatter
@@ -81,62 +41,12 @@
         }
     });
 
-    fileInput.addEventListener('change', function(event) {
-        const selectedFile = event.target.files[0];
-        loadCSVFromFile();
-    });
-
-    function parseCSV() {
-        var csvData = document.getElementById("csvData").value;
-        var csvDataAOA = convertToAOA(csvData);
-        createTable1(csvDataAOA);
-        drawchart1();
-    }
-
-    function loadCSVFromFile() {
-        var fileInput = document.getElementById("csvFile");
-        var file = fileInput.files[0];
-
-        if (file) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                var csvData = e.target.result;
-                var csvDataAOA = convertToAOA(csvData);
-
-                createTable1(csvDataAOA);
-                drawchart1();
-            };
-
-            reader.readAsText(file);
-        }
-    }
-
-
-    function exportToCSV() {
-        var Data0 = table2Content.getData()
-        const csvFormat = Data0.map(row => row.join(',')).join('\n');
-        const blob = new Blob([csvFormat], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'data0.csv';
-        a.click();
-        URL.revokeObjectURL(url);
-    }
-
-
-    function convertToAOA(csvData) {
-        var rows = csvData.split("\n");
-        var csvDataAOA = rows.map(row => row.split(/[\t,]/));
-        return csvDataAOA;
-    }
 
     async function calculate() {
         var col0 = table1Content.getDataAtCol(0)
         var col1 = table1Content.getDataAtCol(1)
         var data0 = table1Content.getData()
-        options.forEach(option => {
+        optionsInput.forEach(option => {
             if (option.checked) {
                 selectedOption = option.value;
             }
@@ -151,7 +61,7 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                option: selectedOption,
+                optionsInput: selectedOption,
                 data: data0,
                 rangeMin: rangeMin,
                 rangeMax: rangeMax,
@@ -212,7 +122,7 @@
                 {
                     type: 'numeric',
                     numericFormat: {
-                        pattern: '0,0.000',
+                        pattern: '0,0.00',
                     }
                 },
                 {
@@ -234,6 +144,37 @@
         table2Content = new Handsontable(table2Element, table2Settings);
     }
 
+    function createTable3(csvData) {
+        const parsedData = csvData;
+        const table3Element = document.getElementById('table3');
+        const table3Settings = {
+            data: parsedData,
+            allowEmpty: true,
+            columns: [
+                {
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.00',
+                    }
+                },
+                {
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.000',
+                    }
+                },
+            ],
+            colHeaders: ['time', 'intensity' ],
+            rowHeaders: true,
+            customBorders: true,
+            dropdownMenu: false,
+            width: 'auto',
+            height: 'auto',
+            licenseKey: 'non-commercial-and-evaluation'
+        };
+
+        table3Content = new Handsontable(table3Element, table3Settings);
+    }
 
     function modifyRange() {
         var xMin1 = settingTable.getDataAtCell(0,0);

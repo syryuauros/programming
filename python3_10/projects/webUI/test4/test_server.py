@@ -93,6 +93,7 @@ def FFT_numbers():
 def iFFT_numbers():
 
     tr_json = request.get_json()
+    optionsInput = tr_json['optionsInput']
     data = tr_json['data']
     rangeMin = tr_json['rangeMin']
     rangeMax = tr_json['rangeMax']
@@ -107,9 +108,14 @@ def iFFT_numbers():
     show_elem = show_elem_origin.astype(float)
 
     col0 = show_elem[:,0].astype(float)
-    amp = show_elem[:,1].astype(float)
-    phase = show_elem[:,2].astype(float)
-    col1 = amp * len(col0) * np.exp(1j * phase)
+    if optionsInput=="ampPhase":
+        amp = show_elem[:,1].astype(float)
+        phase = show_elem[:,2].astype(float)
+        col1 = amp * len(col0) * np.exp(1j * phase)
+    else:
+        cReal = show_elem[:,1].astype(float)
+        cImag = show_elem[:,2].astype(float)
+        col1 = (cReal + 1j * cImag) * len(col0)
 
     intensity = np.fft.ifft(col1).real
     time = np.array(np.arange(float(0), float(1), float(1/len(col1)))).astype(float) * (float(rangeMax)-float(rangeMin)) + float(rangeMin)
