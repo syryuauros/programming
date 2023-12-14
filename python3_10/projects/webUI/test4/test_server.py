@@ -48,16 +48,13 @@ def FFT_numbers():
     col1 = show_elem[:,1].astype(float)
 
     Fs = len(col0)
-    print("Fs :" + str(Fs))
     T = 1/Fs
     end_time = 1
     time = np.linspace(0, end_time, Fs)
 
     s_fft = np.fft.fft(col1.astype(float))
-    print(s_fft)
     amplitude = abs(s_fft)/len(s_fft)
     phase = np.angle(s_fft)
-    #amplitude = abs(s_fft)*(2/len(s_fft))
     frequency = np.fft.fftfreq(len(s_fft), T)
 
     if not check:
@@ -143,10 +140,7 @@ def interpolate_numbers():
     col1 = show_elem[:,1].astype(float)
 
     xNew = np.array(np.arange(float(rangeMin),float(rangeMax),float(interval))).astype(float)
-    print("xnew:" + str(xNew))
-
     yNew = np.interp(xNew, col0, col1).astype(float)
-    print("ynew:" + str(yNew))
 
     result = np.column_stack((xNew.astype(str), yNew.astype(str)))
     dataModified = result.tolist()
