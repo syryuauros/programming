@@ -100,7 +100,7 @@
                     }
                 },
             ],
-            colHeaders: ['freq', 'amp', 'phase' ],
+            colHeaders: ['freq', 'amp/re', 'phs/im' ],
             rowHeaders: true,
             customBorders: true,
             dropdownMenu: false,
