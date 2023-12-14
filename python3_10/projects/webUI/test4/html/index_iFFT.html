@@ -56,13 +56,22 @@
 
 
 
-    <div class="container-table">
+    <div class="container-table" style="width: 10.8%;">
         <h2>Input:</h2>
 
-        <label for="label1" style="color: white;">__________________________</label>
-        <label for="label1" style="color: white;">_</label>
+        <form>
+            <label for="option-ampPhase">
+                <input type="radio" id="option-ampPhase" name="options" value="ampPhase" checked>
+                amplitue--phase
+            </label> <br>
+            <label for="option-realImag">
+                <input type="radio" id="option-realImag" name="options" value="realImag">
+                complex number
+            </label>
+        </form>
+
         <h1> </h1>
-        <button onclick="drawchart()">refresh graphs</button>
+        <button onclick="drawchart1()">refresh graphs</button>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table1"></div>
@@ -79,7 +88,6 @@
         <label for="label1">min ~ max, interval </label>
         <input type="text" size="2" value="0" style="text-align: center;" id="rangeMin">
         <input type="text" size="2" value="100" style="text-align: center;" id="rangeMax">
-        <input type="text" size="2" value="1" style="text-align: center;" id="interval">
         <h1> </h1>
         <button onclick="calculate()">calculate</button>
         <h1> </h1>
@@ -98,7 +106,7 @@
         <label for="label1" style="color: white;">__________________________</label>
         <label for="label1" style="color: white;">_</label>
         <h1> </h1>
-        <button onclick="drawchart()">refresh graphs</button>
+        <button onclick="drawchart2()">refresh graphs</button>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table3"></div>
@@ -113,6 +121,17 @@
 
     <div class="chart-container">
         <h3>frequency domain</h3>
+        <form>
+            <label for="option-amp">
+                <input type="radio" id="option-amp" name="optionsChart" value="amp" onchange="drawchart1()" checked>
+                amplitude(real)
+            </label>
+            <label for="option-phase">
+                <input type="radio" id="option-phase" name="optionsChart" value="phase" onchange="drawchart1()">
+                phase(imag)
+            </label>
+        </form>
+
         <canvas id="myChart2" width="320" height="160"></canvas>
 
         <h3>time domain</h3>
@@ -124,8 +143,6 @@
     <div class="container-empty">
         <h2> </h2>
     </div>
-
-
 
 
     <script src="./script_iFFT.js"></script>

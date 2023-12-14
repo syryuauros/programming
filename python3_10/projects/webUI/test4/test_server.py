@@ -54,6 +54,7 @@ def FFT_numbers():
     time = np.linspace(0, end_time, Fs)
 
     s_fft = np.fft.fft(col1.astype(float))
+    print(s_fft)
     amplitude = abs(s_fft)/len(s_fft)
     phase = np.angle(s_fft)
     #amplitude = abs(s_fft)*(2/len(s_fft))
@@ -63,7 +64,6 @@ def FFT_numbers():
         col2 = np.fft.ifft(s_fft).real
         col4 = amplitude.astype(str)
         col5 = phase.astype(str)
-        #col6 = s_fft.astype(str)
     else:
 
         fft_lx = s_fft.copy()
@@ -77,12 +77,14 @@ def FFT_numbers():
         col2 = np.fft.ifft(fft_lx).real
         col4 = amplitude_lx.astype(str)
         col5 = phase_lx.astype(str)
-        #col6 = fft_lx.astype(str)
 
+    complexelem = col4.astype(float) * np.exp(1j * col5.astype(float))
     show_elem[:,2] = col2.astype(str)
     show_elem[:,3] = frequency.astype(str)
     show_elem[:,4] = col4.astype(str)
     show_elem[:,5] = col5.astype(str)
+    show_elem[:,6] = complexelem.real.astype(str)
+    show_elem[:,7] = complexelem.imag.astype(str)
     dataModified = show_elem.tolist()
 
     return jsonify(dataModified)
@@ -92,49 +94,39 @@ def iFFT_numbers():
 
     tr_json = request.get_json()
     data = tr_json['data']
+    rangeMin = tr_json['rangeMin']
+    rangeMax = tr_json['rangeMax']
     show_elem_origin = np.array(data)
 
-    # if not can_be_float(show_elem_origin[0,:]):
-    #     show_elem = np.delete(show_elem_origin, 0, axis=0)
-    # else:
-    #     show_elem = show_elem_origin
-    show_elem = show_elem_origin
-    col0 = show_elem[:,0].astype(complex)
-    col1 = show_elem[:,1].astype(complex)
-    print("col1:" + str(col1))
+    if not can_be_float(show_elem_origin[0,:]):
+        show_elem_origin = np.delete(show_elem_origin, 0, axis=0)
+    else:
+        show_elem_origin = show_elem_origin
 
-    # Fs = len(col0)
-    # print("Fs :" + str(Fs))
-    # T = 1/Fs
-    # end_time = 1
-    # time = np.linspace(0, end_time, Fs)
+    sorted_indices = np.argsort(show_elem_origin.astype(float)[:, 0])
+    show_elem = show_elem_origin.astype(float)
 
-    # s_fft = np.fft.fft(col1.astype(float))
-    # amplitude = abs(s_fft)*(2/len(s_fft))
-    # frequency = np.fft.fftfreq(len(s_fft), T)
-
-    # fft_lx = s_fft.copy()
-    # amplitude_lx = amplitude.copy()
-    # tr_ratio = float(truncate_ratio)/100
-    # amplitude_lx[amplitude/amplitude.max() < tr_ratio] = 0
-    # fft_lx[amplitude/amplitude.max() < tr_ratio] = 0
+    col0 = show_elem[:,0].astype(float)
+    amp = show_elem[:,1].astype(float)
+    phase = show_elem[:,2].astype(float)
+    col1 = amp * len(col0) * np.exp(1j * phase)
 
     intensity = np.fft.ifft(col1).real
-    time = show_elem[:,0].astype(float)
-    #time = np.array(np.arange(float(0),float(1),float(1/len(col1)))).astype(float)
+    time = np.array(np.arange(float(0), float(1), float(1/len(col1)))).astype(float) * (float(rangeMax)-float(rangeMin)) + float(rangeMin)
 
     dataModified = np.column_stack((time.astype(str), intensity.astype(str))).tolist()
-
     return jsonify(dataModified)
 
 
 @app.route('/interpolate', methods=['POST'])
 def interpolate_numbers():
     tr_json = request.get_json()
+
     data = tr_json['data']
     rangeMin = tr_json['rangeMin']
     rangeMax = tr_json['rangeMax']
     interval = tr_json['interval']
+
     show_elem_origin = np.array(data)
 
     if not can_be_float(show_elem_origin[0,:]):

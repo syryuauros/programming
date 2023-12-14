@@ -190,9 +190,20 @@
                             pattern: '0,0.000',
                         }
                     },
-
+                    {
+                        type: 'numeric',
+                        numericFormat: {
+                            pattern: '0,0.000',
+                        }
+                    },
+                    {
+                        type: 'numeric',
+                        numericFormat: {
+                            pattern: '0,0.000',
+                        }
+                    },
                 ],
-                colHeaders: ['time', 'input', 'cal', 'freq', 'amp', 'phase' ],
+                colHeaders: ['time', 'input', 'cal', 'freq', 'amp', 'phase', 'real', 'image' ],
                 // colHeaders(index) {
                 //     return 'Col ' + (index + 1);
                 // },
@@ -280,9 +291,14 @@
 
             if (selectedOption == "amp") {
                 yData10 = hot.getDataAtCol(4);
-            } else {
+            } else if (selectedOption == "phase") {
                 yData10 = hot.getDataAtCol(5);
+            } else if (selectedOption == "real") {
+                yData10 = hot.getDataAtCol(6);
+            } else {
+                yData10 = hot.getDataAtCol(7);
             }
+
 
             scatterChart.options.scales = {
                 x: {

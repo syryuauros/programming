@@ -18,12 +18,33 @@
     };
     const settingTable = new Handsontable(settingTableElement, settingTableSettings);
 
+    const REFTableElement = document.getElementById('table3');
+    const REFTableSettings = {
+        data: [
+            [0, 0,],
+        ],
+        allowEmpty: true,
+        type: 'numeric',
+        numericFormat: {
+            pattern: '0,0.00',
+        },
+        colHeaders: ['time', 'intensity'],
+        rowHeaders: true,
+        customBorders: true,
+        height: 'auto',
+        licenseKey: 'non-commercial-and-evaluation'
+    };
+    const table3Content = new Handsontable(REFTableElement, REFTableSettings);
+
+
 
     var fileInput = document.getElementById('csvFile');
     var ctx = document.getElementById('myChart').getContext('2d');
     var ctx2 = document.getElementById('myChart2').getContext('2d');
     var table1Content;
     var table2Content;
+    const options = document.getElementsByName('options');
+    const optionsChart = document.getElementsByName('optionsChart');
 
     var scatterChart = new Chart(ctx, {
         type: 'scatter', // Set the chart type to scatter
@@ -115,6 +136,14 @@
         var col0 = table1Content.getDataAtCol(0)
         var col1 = table1Content.getDataAtCol(1)
         var data0 = table1Content.getData()
+        options.forEach(option => {
+            if (option.checked) {
+                selectedOption = option.value;
+            }
+        });
+        const rangeMin = document.getElementById('rangeMin').value;
+        const rangeMax = document.getElementById('rangeMax').value;
+
 
         const response = await fetch('http://192.168.12.135:6969/iFFT', {
             method: 'POST',
@@ -122,14 +151,17 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                option: selectedOption,
                 data: data0,
+                rangeMin: rangeMin,
+                rangeMax: rangeMax,
             })
         });
 
         const data = await response.json();
 
         createTable2(data);
-        drawchart();
+        drawchart2();
     }
 
     function createTable1(csvData) {
@@ -139,6 +171,12 @@
             data: parsedData,
             allowEmpty: true,
             columns: [
+                {
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.0',
+                    }
+                },
                 {
                     type: 'numeric',
                     numericFormat: {
@@ -152,7 +190,7 @@
                     }
                 },
             ],
-            colHeaders: ['freq', 'amp' ],
+            colHeaders: ['freq', 'amp', 'phase' ],
             rowHeaders: true,
             customBorders: true,
             dropdownMenu: false,
@@ -251,26 +289,69 @@
         stemChart.update();
     }
 
-    function drawchart() {
+    function drawchart1() {
         var xData0 = table1Content.getDataAtCol(0);
-        var yData00 = table1Content.getDataAtCol(1);
+
+        optionsChart.forEach(option => {
+            if (option.checked) {
+                selectedOption = option.value;
+            }
+        });
+
+        if (selectedOption == "amp") {
+            yData00 = table1Content.getDataAtCol(1);
+        } else {
+            yData00 = table1Content.getDataAtCol(2);
+        }
+
+
+        stemChart.options.scales = {
+            x: {
+                min: xData0.min,
+                max: xData0.max
+            }
+        };
+
+        stemChart.data.datasets = [
+            {
+                label: 'FFT amplitude',
+                type: 'bar',
+                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
+                backgroundColor: "rgba(75, 192, 192, 0.6)",
+                barThickness: 3,
+                borderColor: "rgba(75, 192, 192, 0.6)",
+                borderWidth: 1,
+            },
+            {
+                label: '',
+                type: 'scatter',
+                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
+                backgroundColor: "rgba(150, 100, 100, 0.6)",
+                pointRadius: 2,
+                pointHoverRadius: 2,
+                showLine: false,
+                fill: false,
+                borderWidth: 1,
+                borderColor: "rgba(150, 100, 100, 0.6)",
+                borderDash: [10, 3, 20, 10],
+            }
+        ];
+
+        stemChart.update();
+    }
+
+
+    function drawchart2() {
         var xData1 = table2Content.getDataAtCol(0);
         var yData10 = table2Content.getDataAtCol(1);
-        var xData2 = table2Content.getDataAtCol(0);
-        var yData20 = table2Content.getDataAtCol(1);
+        var xData2 = table3Content.getDataAtCol(0);
+        var yData20 = table3Content.getDataAtCol(1);
 
 
         scatterChart.options.scales = {
             x: {
                 min: xData1.min,
                 max: xData1.max
-            }
-        };
-
-        stemChart.options.scales = {
-            x: {
-                min: xData0.min,
-                max: xData0.max
             }
         };
 
@@ -303,71 +384,5 @@
                 tension:0.5
             }
         ];
-
-        stemChart.data.datasets = [
-            {
-                label: 'FFT amplitude',
-                type: 'bar',
-                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                barThickness: 3,
-                borderColor: "rgba(75, 192, 192, 0.6)",
-                borderWidth: 1,
-            },
-            {
-                label: '',
-                type: 'scatter',
-                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
-                backgroundColor: "rgba(150, 100, 100, 0.6)",
-                pointRadius: 2,
-                pointHoverRadius: 2,
-                showLine: false,
-                fill: false,
-                borderWidth: 1,
-                borderColor: "rgba(150, 100, 100, 0.6)",
-                borderDash: [10, 3, 20, 10],
-            }
-        ];
-
         scatterChart.update();
-        stemChart.update();
-    }
-
-    function drawchart1() {
-        var xData0 = table1Content.getDataAtCol(0);
-        var yData00 = table1Content.getDataAtCol(1);
-
-        stemChart.options.scales = {
-            x: {
-                min: xData0.min,
-                max: xData0.max
-            }
-        };
-
-        stemChart.data.datasets = [
-            {
-                label: 'FFT amplitude',
-                type: 'bar',
-                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                barThickness: 3,
-                borderColor: "rgba(75, 192, 192, 0.6)",
-                borderWidth: 1,
-            },
-            {
-                label: '',
-                type: 'scatter',
-                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
-                backgroundColor: "rgba(150, 100, 100, 0.6)",
-                pointRadius: 2,
-                pointHoverRadius: 2,
-                showLine: false,
-                fill: false,
-                borderWidth: 1,
-                borderColor: "rgba(150, 100, 100, 0.6)",
-                borderDash: [10, 3, 20, 10],
-            }
-        ];
-
-        stemChart.update();
     }
