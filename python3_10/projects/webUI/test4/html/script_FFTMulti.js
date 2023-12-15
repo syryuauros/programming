@@ -1,6 +1,7 @@
     var ctx = document.getElementById('myChart').getContext('2d');
     var ctx2 = document.getElementById('myChart2').getContext('2d');
     var ctx3 = document.getElementById('myChart3').getContext('2d');
+    var showIndex = document.getElementById('showIndex').value;
     const options = document.getElementsByName('options');
     const optionsChart = document.getElementsByName('optionsChart');
     const optionsInput = document.getElementsByName('optionsInput');
@@ -87,6 +88,8 @@
 
     async function calculate() {
         var data0 = table1Content.getData()
+        const checkTr = document.getElementById('checkTr');
+        const trRatio = document.getElementById('trInput').value;
         optionsInput.forEach(option => {
             if (option.checked) {
                 selectedOption = option.value;
@@ -99,7 +102,9 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                check: checkTr.checked,
                 data: data0,
+                truncateRatio: trRatio
             })
         });
 
@@ -176,6 +181,8 @@
     }
 
     function modifyRange() {
+        showIndex = document.getElementById('showIndex').value;
+
         var xMin1 = settingTable.getDataAtCell(0,0);
         var xMax1 = settingTable.getDataAtCell(0,1);
         var yMin1 = settingTable.getDataAtCell(0,2);
@@ -191,17 +198,12 @@
         var yMin3 = settingTable.getDataAtCell(2,2);
         var yMax3 = settingTable.getDataAtCell(2,3);
 
-        // console.log({ xMin1, xMax1, yMin1, yMax1 })
-        // console.log({ xMin2, xMax2, yMin2, yMax2 })
-
         var xData0 = table1Content.getDataAtCol(0);
-        var yData00 = table1Content.getDataAtCol(1);
+        var yData00 = table1Content.getDataAtCol(parseInt(showIndex));
         var xData1 = table2Content.getDataAtCol(0);
-        var yData10 = table2Content.getDataAtCol(1);
+        var yData10 = table2Content.getDataAtCol(parseInt(showIndex));
         var xData2 = table3Content.getDataAtCol(0);
-        var yData20 = table3Content.getDataAtCol(1);
-
-
+        var yData20 = table3Content.getDataAtCol(parseInt(showIndex));
 
         scatterChart.options.scales = {
             x: {
@@ -225,12 +227,12 @@
         };
         stemChart2.options.scales = {
             x: {
-                min: xMin2,
-                max: xMax2,
+                min: xMin3,
+                max: xMax3,
             },
             y: {
-                min: yMin2,
-                max: yMax2,
+                min: yMin3,
+                max: yMax3,
             }
         };
 
@@ -241,20 +243,10 @@
     }
 
     function drawchart3() {
+        showIndex = document.getElementById('showIndex').value;
         var xData0 = table4Content.getDataAtCol(0);
-
-        optionsRealImag.forEach(option => {
-            if (option.checked) {
-                selectedOption = option.value;
-            }
-        });
-
-        if (selectedOption == "real") {
-            yData00 = table4Content.getDataAtCol(1);
-        } else {
-            yData00 = table4Content.getDataAtCol(2);
-        }
-
+        var yData00 = table4Content.getDataAtCol(parseInt(showIndex));
+        console.log(showIndex)
 
         stemChart.options.scales = {
             x: {
@@ -292,20 +284,9 @@
     }
 
     function drawchart2() {
+        showIndex = document.getElementById('showIndex').value;
         var xData0 = table3Content.getDataAtCol(0);
-
-        optionsAmpPhs.forEach(option => {
-            if (option.checked) {
-                selectedOption = option.value;
-            }
-        });
-
-        if (selectedOption == "amp") {
-            yData00 = table3Content.getDataAtCol(1);
-        } else {
-            yData00 = table3Content.getDataAtCol(2);
-        }
-
+        var yData00 = table3Content.getDataAtCol(parseInt(showIndex));
 
         stemChart.options.scales = {
             x: {
@@ -344,11 +325,11 @@
 
 
     function drawchart1() {
+        showIndex = document.getElementById('showIndex').value;
         var xData1 = table1Content.getDataAtCol(0);
-        var yData10 = table1Content.getDataAtCol(1);
+        var yData10 = table1Content.getDataAtCol(parseInt(showIndex));
         var xData2 = table2Content.getDataAtCol(0);
-        var yData20 = table2Content.getDataAtCol(1);
-
+        var yData20 = table2Content.getDataAtCol(parseInt(showIndex));
 
         scatterChart.options.scales = {
             x: {

@@ -3,6 +3,7 @@
         data: [
             [500, 900, 0, 20],
             [0, 50, 0, 2],
+            [0, 50, 0, 2],
         ],
         allowEmpty: true,
         type: 'numeric',

@@ -48,10 +48,9 @@
         <button onclick="drawchart1()">refresh graphs</button>
         <button onclick="exportToCSV(1)">export</button>
         <h1> </h1>
-        <input type="checkbox" id="check1" value="">
-        <label for="label1">truncate </label>
-        <input type="text" size="2" value="5" style="text-align: center;" id="trInput">
-        <label for="label2">%</label>
+        <label for="label1">show graph: </label>
+        <input type="text" size="1" value="1" style="text-align: center;" id="showIndex" onchange="drawchart1(); drawchart2(); drawchart3();">
+        <label for="label2">th column</label>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table1"></div>
@@ -67,7 +66,11 @@
         <button onclick="drawchart1()">refresh graphs</button>
         <button onclick="exportToCSV(2)">export</button>
         <h1> </h1>
-        <button onclick="calculate()">calculate</button>
+        <button onclick="calculate()" style="color: red">cal</button>
+        <input type="checkbox" id="checkTr" value="">
+        <label for="label3">truncate </label>
+        <input type="text" size="2" value="5" style="text-align: center;" id="trInput">
+        <label for="label4">%</label>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table2"></div>

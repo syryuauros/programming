@@ -126,6 +126,8 @@ def FFTMulti_numbers():
 
     tr_json = request.get_json()
     data = tr_json['data']
+    check = tr_json['check']
+    truncate_ratio = tr_json['truncateRatio']
     show_elem_origin = np.array(data)
 
     if not can_be_float(show_elem_origin[0,:]):
@@ -165,22 +167,39 @@ def FFTMulti_numbers():
         amplitudeN = abs(s_fftN)/len(s_fftN)
         phaseN = np.angle(s_fftN)
 
-        s_iFFTN = np.fft.ifft(s_fftN).real
-        s_ampN = amplitudeN.astype(str)
-        s_phsN = phaseN.astype(str)
-        complexelemN = s_ampN.astype(float) * np.exp(1j * s_phsN.astype(float))
+        if not check:
+            s_iFFTN = np.fft.ifft(s_fftN).real
+            complexelemN = amplitudeN.astype(float) * np.exp(1j * phaseN.astype(float))
 
-        iFFT_elem[:,i] = s_iFFTN.astype(str)
-        amp_elem[:,i] = s_ampN
-        phs_elem[:,i] = s_phsN
-        real_elem[:,i] = complexelemN.real.astype(str)
-        imag_elem[:,i] = complexelemN.imag.astype(str)
+            iFFT_elem[:,i] = s_iFFTN.astype(str)
+            amp_elem[:,i] = amplitudeN.astype(str)
+            phs_elem[:,i] = phaseN.astype(str)
+            real_elem[:,i] = complexelemN.real.astype(str)
+            imag_elem[:,i] = complexelemN.imag.astype(str)
+        else:
+            s_fftL = s_fftN.copy()
+            amplitudeL = amplitudeN.copy()
+            phaseL = phaseN.copy()
 
-    iFFT_result = iFFT_elem.tolist()
-    amp_result = amp_elem.tolist()
-    phs_result = phs_elem.tolist()
-    real_result = real_elem.tolist()
-    imag_result = imag_elem.tolist()
+            tr_ratio = float(truncate_ratio)/100
+            amplitudeL[amplitudeN/amplitudeN.max() < tr_ratio] = 0
+            s_fftL[amplitudeN/amplitudeN.max() < tr_ratio] = 0
+            phaseL[amplitudeN/amplitudeN.max() < tr_ratio] = 0
+
+            s_iFFTL = np.fft.ifft(s_fftL).real
+            complexelemL = amplitudeL.astype(float) * np.exp(1j * phaseL.astype(float))
+
+            iFFT_elem[:,i] = s_iFFTL.astype(str)
+            amp_elem[:,i] = amplitudeL.astype(str)
+            phs_elem[:,i] = phaseL.astype(str)
+            real_elem[:,i] = complexelemL.real.astype(str)
+            imag_elem[:,i] = complexelemL.imag.astype(str)
+
+        iFFT_result = iFFT_elem.tolist()
+        amp_result = amp_elem.tolist()
+        phs_result = phs_elem.tolist()
+        real_result = real_elem.tolist()
+        imag_result = imag_elem.tolist()
 
     return jsonify({
         'iFFT_result': iFFT_result,
