@@ -121,6 +121,75 @@ def iFFT_numbers():
     return jsonify(dataModified)
 
 
+@app.route('/FFTMulti', methods=['POST'])
+def FFTMulti_numbers():
+
+    tr_json = request.get_json()
+    data = tr_json['data']
+    show_elem_origin = np.array(data)
+
+    if not can_be_float(show_elem_origin[0,:]):
+        show_elem_origin = np.delete(show_elem_origin, 0, axis=0)
+    else:
+        show_elem_origin = show_elem_origin
+
+    inpt_elem = show_elem_origin.astype(float)
+    iFFT_elem = inpt_elem.copy()
+    amp_elem = inpt_elem.copy()
+    phs_elem = inpt_elem.copy()
+    real_elem = inpt_elem.copy()
+    imag_elem = inpt_elem.copy()
+
+    inpt0 = inpt_elem[:,0].astype(float)
+    inpt1 = inpt_elem[:,1].astype(float)
+
+    Fs = len(inpt0)
+    T = 1/Fs
+    end_time = 1
+    time = np.linspace(0, end_time, Fs)
+
+    s_fft1 = np.fft.fft(inpt1.astype(float))
+    frequency = np.fft.fftfreq(len(s_fft1), T)
+
+    iFFT_elem[:,0] = frequency.astype(str)
+    amp_elem[:,0] = frequency.astype(str)
+    phs_elem[:,0] = frequency.astype(str)
+    real_elem[:,0] = frequency.astype(str)
+    imag_elem[:,0] = frequency.astype(str)
+
+    for i in range(1, len(inpt_elem[0])):
+
+        inptN = inpt_elem[:,i].astype(float)
+
+        s_fftN = np.fft.fft(inptN.astype(float))
+        amplitudeN = abs(s_fftN)/len(s_fftN)
+        phaseN = np.angle(s_fftN)
+
+        s_iFFTN = np.fft.ifft(s_fftN).real
+        s_ampN = amplitudeN.astype(str)
+        s_phsN = phaseN.astype(str)
+        complexelemN = s_ampN.astype(float) * np.exp(1j * s_phsN.astype(float))
+
+        iFFT_elem[:,i] = s_iFFTN.astype(str)
+        amp_elem[:,i] = s_ampN
+        phs_elem[:,i] = s_phsN
+        real_elem[:,i] = complexelemN.real.astype(str)
+        imag_elem[:,i] = complexelemN.imag.astype(str)
+
+    iFFT_result = iFFT_elem.tolist()
+    amp_result = amp_elem.tolist()
+    phs_result = phs_elem.tolist()
+    real_result = real_elem.tolist()
+    imag_result = imag_elem.tolist()
+
+    return jsonify({
+        'iFFT_result': iFFT_result,
+        'amp_result': amp_result,
+        'phs_result': phs_result,
+        'real_result': real_result,
+        'imag_result': imag_result,
+    })
+
 @app.route('/interpolate', methods=['POST'])
 def interpolate_numbers():
     tr_json = request.get_json()

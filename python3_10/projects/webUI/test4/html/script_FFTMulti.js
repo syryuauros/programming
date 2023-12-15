@@ -41,34 +41,27 @@
 
 
     async function calculate() {
-        var col0 = table1Content.getDataAtCol(0)
-        var col1 = table1Content.getDataAtCol(1)
         var data0 = table1Content.getData()
         optionsInput.forEach(option => {
             if (option.checked) {
                 selectedOption = option.value;
             }
         });
-        const rangeMin = document.getElementById('rangeMin').value;
-        const rangeMax = document.getElementById('rangeMax').value;
 
-
-        const response = await fetch('http://192.168.12.135:6969/iFFT', {
+        const response = await fetch('http://192.168.12.135:6969/FFTMulti', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                optionsInput: selectedOption,
                 data: data0,
-                rangeMin: rangeMin,
-                rangeMax: rangeMax,
             })
         });
 
         const data = await response.json();
+        const amp_result = data.amp_result;
 
-        createTable2(data);
+        createTable2(amp_result);
         drawchart2();
     }
 
@@ -79,7 +72,7 @@
             data: parsedData,
             type: 'numeric',
             numericFormat: {
-                pattern: '0,0.0',
+                pattern: '0,0.00',
             },
             allowEmpty: true,
             colHeaders: true,
@@ -99,22 +92,12 @@
         const table2Element = document.getElementById('table2');
         const table2Settings = {
             data: parsedData,
+            type: 'numeric',
+            numericFormat: {
+                pattern: '0,0.00',
+            },
             allowEmpty: true,
-            columns: [
-                {
-                    type: 'numeric',
-                    numericFormat: {
-                        pattern: '0,0.00',
-                    }
-                },
-                {
-                    type: 'numeric',
-                    numericFormat: {
-                        pattern: '0,0.000',
-                    }
-                },
-            ],
-            colHeaders: ['time', 'intensity' ],
+            colHeaders: true,
             rowHeaders: true,
             customBorders: true,
             dropdownMenu: false,
