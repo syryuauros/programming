@@ -235,7 +235,37 @@ def interpolate_numbers():
 
     return jsonify(dataModified)
 
+@app.route('/intpMulti', methods=['POST'])
+def intpMulti_numbers():
+    tr_json = request.get_json()
 
+    data = tr_json['data']
+    rangeMin = tr_json['rangeMin']
+    rangeMax = tr_json['rangeMax']
+    interval = tr_json['interval']
+
+    print(rangeMin, rangeMax, interval)
+
+    show_elem_origin = np.array(data)
+
+    if not can_be_float(show_elem_origin[0,:]):
+        inpt_elem = np.delete(show_elem_origin, 0, axis=0)
+    else:
+        inpt_elem = show_elem_origin
+
+    col0 = inpt_elem[:,0].astype(float)
+    col1 = inpt_elem[:,1].astype(float)
+    xNew = np.array(np.arange(float(rangeMin),float(rangeMax),float(interval))).astype(float)
+    yNew_elem = np.interp(xNew, col0, col1).astype(float)
+
+    for i in range(2, len(inpt_elem[0])):
+        colN = inpt_elem[:,i].astype(float)
+        yNew_elem = np.column_stack((np.interp(xNew, col0, colN).astype(float), yNew_elem))
+
+    result = np.column_stack((xNew.astype(str), yNew_elem.astype(str)))
+    dataModified = result.tolist()
+
+    return jsonify(dataModified)
 
 def can_be_float(arr):
     k = 0

@@ -4,7 +4,7 @@
     <title>CSV to Table and Scatter Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
-    <link rel="stylesheet" href="./styles_FFTMulti.css">
+    <link rel="stylesheet" href="./styles_intpMulti.css">
 </head>
 <body>
 
@@ -16,8 +16,8 @@
         <a href="./index_interpolator.html" target="_blank" class="button" style="font-size: 16px">interpolate</a>
         <a href="./index_FFT.html" target="_blank" class="button">FFT(t->f)</a>
         <a href="./index_iFFT.html" target="_blank" class="button">iFFT(f->t)</a>
-        <a href="./index_FFTMulti.html" target="_blank" class="button-1">FFT(multi)</a>
-        <a href="./index_intpMulti.html" target="_blank" class="button">intp(multi)</a>
+        <a href="./index_FFTMulti.html" target="_blank" class="button">FFT(multi)</a>
+        <a href="./index_intpMulti.html" target="_blank" class="button-1">intp(multi)</a>
     </div>
 
     <div class="container-empty">
@@ -31,9 +31,6 @@
         <h2>Paste CSV Data Here:</h2>
         <textarea id="csvData" placeholder="Paste CSV data here" rows="5" cols="27"></textarea>
         <button onclick="parseCSV()">adopt to table</button>
-
-        <h2>export All Data as CSV:</h2>
-        <button onclick="exportAllDataToCSV()" style="color: red">export All Data</button>
 
         <h2>axis setting:</h2>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -53,7 +50,7 @@
         <button onclick="exportToCSV(1)">export</button>
         <h1> </h1>
         <label for="label1">show graph: </label>
-        <input type="text" size="1" value="1" style="text-align: center;" id="showIndex" onchange="drawchart1(); drawchart2(); drawchart3();">
+        <input type="text" size="1" value="1" style="text-align: center;" id="showIndex" onchange="drawchart1()">
         <label for="label2">th column</label>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -63,18 +60,20 @@
     <div class="container-empty">
         <h2> </h2>
     </div>
-<!-- iFFT-Result /////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- intp-Result /////////////////////////////////////////////////////////////////////////////////////////// -->
     <div class="container-table">
-        <h2>iFFT-Result</h2>
+        <h2>intp-Result</h2>
         <h1> </h1>
         <button onclick="drawchart1()">refresh graphs</button>
         <button onclick="exportToCSV(2)">export</button>
-        <h1> </h1>
         <button onclick="calculate()" style="color: red">cal</button>
-        <input type="checkbox" id="checkTr" value="">
-        <label for="label3">truncate </label>
-        <input type="text" size="2" value="5" style="text-align: center;" id="trInput">
-        <label for="label4">%</label>
+        <h1> </h1>
+        <label for="label3">`min ~ max, intv` </label> <br>
+        <input type="text" size="1" value="500" style="text-align: center;" id="rangeMin">
+        <label for="label4">~</label>
+        <input type="text" size="1" value="900" style="text-align: center;" id="rangeMax">
+        <label for="label4">,</label>
+        <input type="text" size="1" value="1" style="text-align: center;" id="interval">
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table2"></div>
@@ -83,76 +82,10 @@
     <div class="container-empty">
         <h2> </h2>
     </div>
-
-<!-- amp-phase ///////////////////////////////////////////////////////////////////////////////////////////// -->
-    <div class="container-table">
-        <h2>amplitude-phase</h2>
-        <h1> </h1>
-        <button onclick="drawchart2()">refresh graphs</button>
-        <button onclick="exportToCSV(3)">export</button>
-        <h1> </h1>
-        <form>
-            <label for="option-amp">
-                <input type="radio" id="option-amp" name="optionsAmpPhs" value="amp" onchange="createTable3(); drawchart2();" checked>
-                amplitude
-            </label>
-            <label for="option-phs">
-                <input type="radio" id="option-phs" name="optionsAmpPhs" value="phs" onchange="createTable3(); drawchart2();">
-                phase
-            </label>
-        </form>
-
-        <h1> </h1>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-        <div id="table3"></div>
-    </div>
-
-    <div class="container-empty">
-        <h2> </h2>
-    </div>
-<!-- real-imag ///////////////////////////////////////////////////////////////////////////////////////////// -->
-    <div class="container-table">
-        <h2>real-imag</h2>
-        <h1> </h1>
-        <button onclick="drawchart3()">refresh graphs</button>
-        <button onclick="exportToCSV(4)">export</button>
-        <h1> </h1>
-        <form>
-            <label for="option-real">
-                <input type="radio" id="option-real" name="optionsRealImag" value="real" onchange="createTable4(); drawchart3();" checked>
-                real
-            </label>
-            <label for="option-imag">
-                <input type="radio" id="option-imag" name="optionsRealImag" value="imag" onchange="createTable4(); drawchart3();">
-                imag
-            </label>
-        </form>
-
-        <h1> </h1>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-        <div id="table4"></div>
-    </div>
-
-
-    <div class="container-empty">
-        <h2> </h2>
-    </div>
 <!-- Chart ///////////////////////////////////////////////////////////////////////////////////////////////// -->
     <div class="chart-container">
         <h3>time domain</h3>
         <canvas id="myChart" width="320" height="160"></canvas>
-
-        <h3>frequency domain(amp-phase)</h3>
-        <canvas id="myChart2" width="320" height="160"></canvas>
-
-        <h3>frequency domain(real-imag)</h3>
-        <canvas id="myChart3" width="320" height="160"></canvas>
-    </div>
-
-    </div>
-
-    <div class="container-empty">
-        <h2> </h2>
     </div>
 
     <div class="container-empty">
@@ -161,9 +94,9 @@
 
 <!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-    <script src="./script_FFTMulti.js"></script>
-    <script src="./script_FFTMulti_tables.js"></script>
-    <script src="./script_FFTMulti_csvIO.js"></script>
+    <script src="./script_intpMulti.js"></script>
+    <script src="./script_intpMulti_tables.js"></script>
+    <script src="./script_intpMulti_csvIO.js"></script>
     <script src="./script_common.js"></script>
 </body>
 </html>
