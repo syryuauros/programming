@@ -1,8 +1,8 @@
     var settingTableElement = document.getElementById('settingTable');
     var settingTableSettings = {
         data: [
-            [0, 50, 0, 2],
             [500, 900, 0, 20],
+            [0, 50, 0, 2],
         ],
         allowEmpty: true,
         type: 'numeric',

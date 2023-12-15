@@ -86,11 +86,11 @@
         <h1> </h1>
         <form>
             <label for="option-amp">
-                <input type="radio" id="option-amp" name="optionsAmpPhs" value="amp" onchange="" checked>
+                <input type="radio" id="option-amp" name="optionsAmpPhs" value="amp" onchange="createTable3(); drawchart2();" checked>
                 amplitude
             </label>
             <label for="option-phs">
-                <input type="radio" id="option-phs" name="optionsAmpPhs" value="phs" onchange="">
+                <input type="radio" id="option-phs" name="optionsAmpPhs" value="phs" onchange="createTable3(); drawchart2();">
                 phase
             </label>
         </form>
@@ -112,11 +112,11 @@
         <h1> </h1>
         <form>
             <label for="option-real">
-                <input type="radio" id="option-real" name="optionsRealImag" value="real" onchange="" checked>
+                <input type="radio" id="option-real" name="optionsRealImag" value="real" onchange="createTable4(); drawchart3();" checked>
                 real
             </label>
             <label for="option-imag">
-                <input type="radio" id="option-imag" name="optionsRealImag" value="imag" onchange="">
+                <input type="radio" id="option-imag" name="optionsRealImag" value="imag" onchange="createTable4(); drawchart3();">
                 imag
             </label>
         </form>
@@ -135,29 +135,10 @@
         <h3>time domain</h3>
         <canvas id="myChart" width="320" height="160"></canvas>
 
-        <h3>frequency domain</h3>
-        <form>
-            <label for="option-chartAmp">
-                <input type="radio" id="option-chartAmp" name="optionsChartAmpPhs" value="amp" onchange="drawchart2()" checked>
-                amplitude
-            </label>
-            <label for="option-chartPhase">
-                <input type="radio" id="option-chartPhase" name="optionsChartAmpPhs" value="phase" onchange="drawchart2()">
-                phase
-            </label>
-        </form>
+        <h3>frequency domain(amp-phase)</h3>
         <canvas id="myChart2" width="320" height="160"></canvas>
 
-        <form>
-            <label for="option-chartReal">
-                <input type="radio" id="option-chartReal" name="optionsChartRealImag" value="real" onchange="drawchart3()" checked>
-                real
-            </label>
-            <label for="option-chartImag">
-                <input type="radio" id="option-chartImag" name="optionsChartRealImag" value="image" onchange="drawchart3()">
-                imag
-            </label>
-        </form>
+        <h3>frequency domain(real-imag)</h3>
         <canvas id="myChart3" width="320" height="160"></canvas>
     </div>
 

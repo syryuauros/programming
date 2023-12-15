@@ -110,12 +110,36 @@
         real_result = data.real_result;
         imag_result = data.imag_result;
 
-        createTable2();
+        createTable2(iFFT_result);
         drawchart1();
-        createTable3();
-        drawchart2();
-        createTable4();
-        drawchart3();
+
+        optionsAmpPhs.forEach(option => {
+            if (option.checked) {
+                selectedOption = option.value;
+            }
+        });
+
+        if (selectedOption == "amp") {
+            createTable3(amp_result);
+            drawchart2();
+        } else {
+            createTable3(phs_result);
+            drawchart2();
+        }
+
+        optionsRealImag.forEach(option => {
+            if (option.checked) {
+                selectedOption = option.value;
+            }
+        });
+
+        if (selectedOption == "real") {
+            createTable4(real_result);
+            drawchart3();
+        } else {
+            createTable4(imag_result);
+            drawchart3();
+        }
     }
 
     function createTable1(csvData) {
@@ -137,7 +161,7 @@
     function createTable3() {
         const table3Element = document.getElementById('table3');
         const table3Settings = tableSettingsCommon;
-
+        
         optionsAmpPhs.forEach(option => {
             if (option.checked) {
                 selectedOption = option.value;
@@ -156,7 +180,6 @@
     function createTable4() {
         const table4Element = document.getElementById('table4');
         const table4Settings = tableSettingsCommon;
-
         optionsRealImag.forEach(option => {
             if (option.checked) {
                 selectedOption = option.value;
@@ -168,6 +191,7 @@
         } else {
             table4Settings.data = imag_result;
         }
+
 
         table4Content = new Handsontable(table4Element, table4Settings);
     }
@@ -202,6 +226,17 @@
 
         scatterChart.options.scales = {
             x: {
+                min: xMin2,
+                max: xMax2,
+            },
+            y: {
+                min: yMin2,
+                max: yMax2,
+            }
+        };
+
+        stemChart.options.scales = {
+            x: {
                 min: xMin1,
                 max: xMax1,
             },
@@ -210,31 +245,9 @@
                 max: yMax1,
             }
         };
-        stemChart.options.scales = {
-            x: {
-                min: xMin2,
-                max: xMax2,
-            },
-            y: {
-                min: yMin2,
-                max: yMax2,
-            }
-        };
-        stemChart2.options.scales = {
-            x: {
-                min: xMin2,
-                max: xMax2,
-            },
-            y: {
-                min: yMin2,
-                max: yMax2,
-            }
-        };
-
 
         scatterChart.update();
         stemChart.update();
-        stemChart2.update();
     }
 
     function drawchart3() {
