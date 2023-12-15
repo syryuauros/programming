@@ -4,6 +4,22 @@
     const optionsChart = document.getElementsByName('optionsChart');
     const optionsInput = document.getElementsByName('optionsInput');
 
+    const tableSettingsCommon = {
+        allowEmpty: true,
+        type: 'numeric',
+        numericFormat: {
+            pattern: '0,0.00',
+        },
+        allowEmpty: true,
+        colHeaders: true,
+        rowHeaders: true,
+        customBorders: true,
+        dropdownMenu: false,
+        width: 'auto',
+        height: 'auto',
+        licenseKey: 'non-commercial-and-evaluation'
+    };
+
     var scatterChart = new Chart(ctx, {
         type: 'scatter', // Set the chart type to scatter
         data: {
@@ -60,83 +76,33 @@
 
         const data = await response.json();
         const amp_result = data.amp_result;
+        const phs_result = data.phs_result;
 
         createTable2(amp_result);
+        createTable3(phs_result);
         drawchart2();
     }
 
     function createTable1(csvData) {
-        const parsedData = csvData;
         const table1Element = document.getElementById('table1');
-        const table1Settings = {
-            data: parsedData,
-            type: 'numeric',
-            numericFormat: {
-                pattern: '0,0.00',
-            },
-            allowEmpty: true,
-            colHeaders: true,
-            rowHeaders: true,
-            customBorders: true,
-            dropdownMenu: false,
-            width: 'auto',
-            height: 'auto',
-            licenseKey: 'non-commercial-and-evaluation'
-        };
+        const table1Settings = tableSettingsCommon;
+        table1Settings.data = csvData;
 
         table1Content = new Handsontable(table1Element, table1Settings);
     }
 
     function createTable2(csvData) {
-        const parsedData = csvData;
         const table2Element = document.getElementById('table2');
-        const table2Settings = {
-            data: parsedData,
-            type: 'numeric',
-            numericFormat: {
-                pattern: '0,0.00',
-            },
-            allowEmpty: true,
-            colHeaders: true,
-            rowHeaders: true,
-            customBorders: true,
-            dropdownMenu: false,
-            width: 'auto',
-            height: 'auto',
-            licenseKey: 'non-commercial-and-evaluation'
-        };
+        const table2Settings = tableSettingsCommon;
+        table2Settings.data = csvData;
 
         table2Content = new Handsontable(table2Element, table2Settings);
     }
 
     function createTable3(csvData) {
-        const parsedData = csvData;
         const table3Element = document.getElementById('table3');
-        const table3Settings = {
-            data: parsedData,
-            allowEmpty: true,
-            columns: [
-                {
-                    type: 'numeric',
-                    numericFormat: {
-                        pattern: '0,0.00',
-                    }
-                },
-                {
-                    type: 'numeric',
-                    numericFormat: {
-                        pattern: '0,0.000',
-                    }
-                },
-            ],
-            colHeaders: ['time', 'intensity' ],
-            rowHeaders: true,
-            customBorders: true,
-            dropdownMenu: false,
-            width: 'auto',
-            height: 'auto',
-            licenseKey: 'non-commercial-and-evaluation'
-        };
+        const table3Settings = tableSettingsCommon;
+        table3Settings.data = csvData;
 
         table3Content = new Handsontable(table3Element, table3Settings);
     }
