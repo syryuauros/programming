@@ -151,7 +151,7 @@ def FFTMulti_numbers():
     s_fft1 = np.fft.fft(inpt1.astype(float))
     frequency = np.fft.fftfreq(len(s_fft1), T)
 
-    iFFT_elem[:,0] = frequency.astype(str)
+    iFFT_elem[:,0] = inpt0
     amp_elem[:,0] = frequency.astype(str)
     phs_elem[:,0] = frequency.astype(str)
     real_elem[:,0] = frequency.astype(str)

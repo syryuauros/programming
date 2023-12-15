@@ -4,7 +4,7 @@
     <title>CSV to Table and Scatter Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles_FFTMulti.css">
 </head>
 <body>
 
@@ -42,11 +42,16 @@
         <h2> </h2>
     </div>
 <!-- Input ///////////////////////////////////////////////////////////////////////////////////////////////// -->
-    <div class="container-table" style="width: 10.8%;">
-        <h2>Input:</h2>
+    <div class="container-table">
+        <h2>Input</h2>
         <h1> </h1>
         <button onclick="drawchart1()">refresh graphs</button>
         <button onclick="exportToCSV(1)">export</button>
+        <h1> </h1>
+        <input type="checkbox" id="check1" value="">
+        <label for="label1">truncate </label>
+        <input type="text" size="2" value="5" style="text-align: center;" id="trInput">
+        <label for="label2">%</label>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table1"></div>
@@ -55,12 +60,14 @@
     <div class="container-empty">
         <h2> </h2>
     </div>
-<!-- amp /////////////////////////////////////////////////////////////////////////////////////////////////// -->
-    <div class="container-table" style="width: 10.8%">
-        <h2>amplitude:</h2>
+<!-- iFFT-Result /////////////////////////////////////////////////////////////////////////////////////////// -->
+    <div class="container-table">
+        <h2>iFFT-Result</h2>
+        <h1> </h1>
+        <button onclick="drawchart1()">refresh graphs</button>
+        <button onclick="exportToCSV(2)">export</button>
         <h1> </h1>
         <button onclick="calculate()">calculate</button>
-        <button onclick="exportToCSV(2)">export</button>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table2"></div>
@@ -69,15 +76,54 @@
     <div class="container-empty">
         <h2> </h2>
     </div>
-<!-- phase ///////////////////////////////////////////////////////////////////////////////////////////////// -->
-    <div class="container-table" style="width: 10.8%">
-        <h2>phase:</h2>
+
+<!-- amp-phase ///////////////////////////////////////////////////////////////////////////////////////////// -->
+    <div class="container-table">
+        <h2>amplitude-phase</h2>
         <h1> </h1>
         <button onclick="drawchart2()">refresh graphs</button>
         <button onclick="exportToCSV(3)">export</button>
         <h1> </h1>
+        <form>
+            <label for="option-amp">
+                <input type="radio" id="option-amp" name="optionsAmpPhs" value="amp" onchange="" checked>
+                amplitude
+            </label>
+            <label for="option-phs">
+                <input type="radio" id="option-phs" name="optionsAmpPhs" value="phs" onchange="">
+                phase
+            </label>
+        </form>
+
+        <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table3"></div>
+    </div>
+
+    <div class="container-empty">
+        <h2> </h2>
+    </div>
+<!-- real-imag ///////////////////////////////////////////////////////////////////////////////////////////// -->
+    <div class="container-table">
+        <h2>real-imag</h2>
+        <h1> </h1>
+        <button onclick="drawchart3()">refresh graphs</button>
+        <button onclick="exportToCSV(4)">export</button>
+        <h1> </h1>
+        <form>
+            <label for="option-real">
+                <input type="radio" id="option-real" name="optionsRealImag" value="real" onchange="" checked>
+                real
+            </label>
+            <label for="option-imag">
+                <input type="radio" id="option-imag" name="optionsRealImag" value="imag" onchange="">
+                imag
+            </label>
+        </form>
+
+        <h1> </h1>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+        <div id="table4"></div>
     </div>
 
 
@@ -85,27 +131,46 @@
         <h2> </h2>
     </div>
 <!-- Chart ///////////////////////////////////////////////////////////////////////////////////////////////// -->
-    <div class="chart-container" style="width: 40%;">
+    <div class="chart-container">
         <h3>time domain</h3>
         <canvas id="myChart" width="320" height="160"></canvas>
 
         <h3>frequency domain</h3>
         <form>
-            <label for="option-amp">
-                <input type="radio" id="option-amp" name="optionsChart" value="amp" onchange="drawchart1()" checked>
-                amplitude(real)
+            <label for="option-chartAmp">
+                <input type="radio" id="option-chartAmp" name="optionsChartAmpPhs" value="amp" onchange="drawchart2()" checked>
+                amplitude
             </label>
-            <label for="option-phase">
-                <input type="radio" id="option-phase" name="optionsChart" value="phase" onchange="drawchart1()">
-                phase(imag)
+            <label for="option-chartPhase">
+                <input type="radio" id="option-chartPhase" name="optionsChartAmpPhs" value="phase" onchange="drawchart2()">
+                phase
             </label>
         </form>
         <canvas id="myChart2" width="320" height="160"></canvas>
+
+        <form>
+            <label for="option-chartReal">
+                <input type="radio" id="option-chartReal" name="optionsChartRealImag" value="real" onchange="drawchart3()" checked>
+                real
+            </label>
+            <label for="option-chartImag">
+                <input type="radio" id="option-chartImag" name="optionsChartRealImag" value="image" onchange="drawchart3()">
+                imag
+            </label>
+        </form>
+        <canvas id="myChart3" width="320" height="160"></canvas>
+    </div>
+
     </div>
 
     <div class="container-empty">
         <h2> </h2>
     </div>
+
+    <div class="container-empty">
+        <h2> </h2>
+    </div>
+
 <!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
     <script src="./script_FFTMulti.js"></script>

@@ -1,8 +1,11 @@
     var ctx = document.getElementById('myChart').getContext('2d');
     var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var ctx3 = document.getElementById('myChart3').getContext('2d');
     const options = document.getElementsByName('options');
     const optionsChart = document.getElementsByName('optionsChart');
     const optionsInput = document.getElementsByName('optionsInput');
+    const optionsChartAmpPhs = document.getElementsByName('optionsChartAmpPhs');
+    const optionsChartRealImag = document.getElementsByName('optionsChartRealImag');
 
     const tableSettingsCommon = {
         allowEmpty: true,
@@ -54,6 +57,24 @@
             }
         }
     });
+    var stemChart2 = new Chart(ctx3, {
+        type: 'scatter', // Set the chart type to scatter
+        data: {
+            datasets: [],
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                },
+                y: {
+
+                }
+            }
+        }
+    });
+
 
 
     async function calculate() {
@@ -75,12 +96,18 @@
         });
 
         const data = await response.json();
+        const iFFT_result = data.iFFT_result;
         const amp_result = data.amp_result;
         const phs_result = data.phs_result;
+        const real_result = data.real_result;
+        const imag_result = data.imag_result;
 
-        createTable2(amp_result);
-        createTable3(phs_result);
+        createTable2(iFFT_result);
+        createTable3(amp_result);
+        createTable4(real_result);
+        drawchart1();
         drawchart2();
+        drawchart3();
     }
 
     function createTable1(csvData) {
@@ -105,6 +132,14 @@
         table3Settings.data = csvData;
 
         table3Content = new Handsontable(table3Element, table3Settings);
+    }
+
+    function createTable4(csvData) {
+        const table4Element = document.getElementById('table4');
+        const table4Settings = tableSettingsCommon;
+        table4Settings.data = csvData;
+
+        table4Content = new Handsontable(table4Element, table4Settings);
     }
 
     function modifyRange() {
@@ -161,19 +196,70 @@
         stemChart.update();
     }
 
-    function drawchart1() {
-        var xData0 = table1Content.getDataAtCol(0);
+    function drawchart3() {
+        var xData0 = table4Content.getDataAtCol(0);
 
-        optionsChart.forEach(option => {
+        optionsChartAmpPhs.forEach(option => {
+            if (option.checked) {
+                selectedOption = option.value;
+            }
+        });
+
+        if (selectedOption == "real") {
+            yData00 = table4Content.getDataAtCol(1);
+        } else {
+            yData00 = table4Content.getDataAtCol(2);
+        }
+
+
+        stemChart.options.scales = {
+            x: {
+                min: xData0.min,
+                max: xData0.max
+            }
+        };
+
+        stemChart2.data.datasets = [
+            {
+                label: 'FFT amplitude',
+                type: 'bar',
+                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
+                backgroundColor: "rgba(75, 192, 192, 0.6)",
+                barThickness: 3,
+                borderColor: "rgba(75, 192, 192, 0.6)",
+                borderWidth: 1,
+            },
+            {
+                label: '',
+                type: 'scatter',
+                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
+                backgroundColor: "rgba(150, 100, 100, 0.6)",
+                pointRadius: 2,
+                pointHoverRadius: 2,
+                showLine: false,
+                fill: false,
+                borderWidth: 1,
+                borderColor: "rgba(150, 100, 100, 0.6)",
+                borderDash: [10, 3, 20, 10],
+            }
+        ];
+
+        stemChart2.update();
+    }
+
+    function drawchart2() {
+        var xData0 = table3Content.getDataAtCol(0);
+
+        optionsChartAmpPhs.forEach(option => {
             if (option.checked) {
                 selectedOption = option.value;
             }
         });
 
         if (selectedOption == "amp") {
-            yData00 = table1Content.getDataAtCol(1);
+            yData00 = table3Content.getDataAtCol(1);
         } else {
-            yData00 = table1Content.getDataAtCol(2);
+            yData00 = table3Content.getDataAtCol(2);
         }
 
 
@@ -213,11 +299,11 @@
     }
 
 
-    function drawchart2() {
-        var xData1 = table2Content.getDataAtCol(0);
-        var yData10 = table2Content.getDataAtCol(1);
-        var xData2 = table3Content.getDataAtCol(0);
-        var yData20 = table3Content.getDataAtCol(1);
+    function drawchart1() {
+        var xData1 = table1Content.getDataAtCol(0);
+        var yData10 = table1Content.getDataAtCol(1);
+        var xData2 = table2Content.getDataAtCol(0);
+        var yData20 = table2Content.getDataAtCol(1);
 
 
         scatterChart.options.scales = {
@@ -230,7 +316,7 @@
         scatterChart.data.datasets = [
             {
                 label: 'Input',
-                data: xData2.map((value, index) => ({ x: value, y: yData20[index] })),
+                data: xData1.map((value, index) => ({ x: value, y: yData10[index] })),
                 backgroundColor: "rgba(75, 192, 192, 0.6)",
                 pointRadius: 3,
                 pointHoverRadius: 3,
@@ -244,7 +330,7 @@
             },
             {
                 label: 'Calculated',
-                data: xData1.map((value, index) => ({ x: value, y: yData10[index] })),
+                data: xData2.map((value, index) => ({ x: value, y: yData20[index] })),
                 backgroundColor: "rgba(150, 100, 100, 0.6)",
                 pointRadius: 0,
                 pointHoverRadius: 0,
