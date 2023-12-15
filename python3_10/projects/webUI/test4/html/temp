@@ -124,3 +124,50 @@
         col2 = np.fft.ifft(fft_lx).real
         col4 = amplitude_lx.astype(str)
         col5 = phase_lx.astype(str)
+
+        const table1Settings = {
+            data: parsedData,
+            type: 'numeric',
+            numericFormat: {
+                pattern: '0,0.00',
+            },
+            allowEmpty: true,
+            colHeaders: true,
+            rowHeaders: true,
+            customBorders: true,
+            dropdownMenu: false,
+            width: 'auto',
+            height: 'auto',
+            licenseKey: 'non-commercial-and-evaluation'
+        };
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        <form>
+            <label for="option-loadInput">
+                <input type="radio" id="option-loadInput" name="optionsLoad" value="loadInput" onchange="loadCSVFromFile()" checked>
+                Input
+            </label>
+            <label for="option-loadREF">
+                <input type="radio" id="option-loadREF" name="optionsLoad" value="loadREF" onchange="loadCSVFromFile()">
+                REF
+            </label>
+        </form>
+
+
+    const optionsChart = document.getElementsByName('optionsChart');
+
+        optionsChart.forEach(option => {
+            if (option.checked) {
+                selectedOption = option.value;
+            }
+        });
+
+        if (selectedOption == "amp") {
+            yData00 = table1Content.getDataAtCol(1);
+        } else {
+            yData00 = table1Content.getDataAtCol(2);
+        }
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        if (table1Content) { table1Content.destroy(); }

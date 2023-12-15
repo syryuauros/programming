@@ -42,6 +42,8 @@ function exportToCSV(keyStr) {
         var Data0 = table2Content.getData();
     } else if (keyStr == 3) {
         var Data0 = table3Content.getData();
+    } else if (keyStr == 4) {
+        var Data0 = table4Content.getData();
     } else {
         var Data0 = table1Content.getData();
     }

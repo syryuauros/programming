@@ -119,6 +119,7 @@
         }
 
         function createTable1(csvData) {
+            if (table1Content) { table1Content.destroy(); }
             const parsedData = csvData;
 
             const tableElement = document.getElementById('table1');
@@ -145,11 +146,11 @@
             };
 
             table1Content = new Handsontable(tableElement, tableSettings);
-            table2Content = table1Content
         }
 
 
         function createTable2(csvData) {
+            if (table2Content) { table2Content.destroy(); }
             const parsedData = csvData;
 
             const tableElement = document.getElementById('table2');

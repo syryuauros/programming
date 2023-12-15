@@ -119,7 +119,7 @@
     }
 
     function createTable1(csvData) {
-        const table1Element = document.getElementById('table1');
+        if (table1Content) { table1Content.destroy(); }
         const table1Settings = tableSettingsCommon;
         table1Settings.data = csvData;
 
@@ -127,6 +127,7 @@
     }
 
     function createTable2() {
+        if (table2Content) { table2Content.destroy(); }
         const table2Element = document.getElementById('table2');
         const table2Settings = tableSettingsCommon;
         table2Settings.data = iFFT_result;
@@ -135,6 +136,7 @@
     }
 
     function createTable3() {
+        if (table3Content) { table3Content.destroy(); }
         const table3Element = document.getElementById('table3');
         const table3Settings = tableSettingsCommon;
 
@@ -154,6 +156,7 @@
     }
 
     function createTable4() {
+        if (table4Content) { table4Content.destroy(); }
         const table4Element = document.getElementById('table4');
         const table4Settings = tableSettingsCommon;
 

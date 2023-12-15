@@ -75,6 +75,7 @@
     }
 
     function createTable1(csvData) {
+        if (table1Content) { table1Content.destroy(); }
         const parsedData = csvData;
         const table1Element = document.getElementById('table1');
         const table1Settings = {
@@ -113,6 +114,7 @@
     }
 
     function createTable2(csvData) {
+        if (table2Content) { table2Content.destroy(); }
         const parsedData = csvData;
         const table2Element = document.getElementById('table2');
         const table2Settings = {
@@ -145,6 +147,7 @@
     }
 
     function createTable3(csvData) {
+        if (table3Content) { table3Content.destroy(); }
         const parsedData = csvData;
         const table3Element = document.getElementById('table3');
         const table3Settings = {

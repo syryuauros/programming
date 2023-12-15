@@ -145,6 +145,7 @@
         }
 
         function createHandsonTable(csvData) {
+            if (hot) { hot.destroy(); }
             const parsedData = csvData;
             // console.log("parsedData = " + typeof parsedData);
 
