@@ -2,11 +2,13 @@
     var ctx2 = document.getElementById('myChart2').getContext('2d');
     var ctx3 = document.getElementById('myChart3').getContext('2d');
     var showIndex = document.getElementById('showIndex').value;
+    var showIndexBackup = showIndex;
     const options = document.getElementsByName('options');
     const optionsChart = document.getElementsByName('optionsChart');
     const optionsInput = document.getElementsByName('optionsInput');
     const optionsAmpPhs = document.getElementsByName('optionsAmpPhs');
     const optionsRealImag = document.getElementsByName('optionsRealImag');
+    const checkKeepAxis = document.getElementById('checkKeepAxis');
 
     var data;
     var iFFT_result;
@@ -14,7 +16,6 @@
     var phs_result;
     var real_result;
     var imag_result;
-
 
     const tableSettingsCommon = {
         allowEmpty: true,
@@ -30,6 +31,69 @@
         width: 'auto',
         height: 'auto',
         licenseKey: 'non-commercial-and-evaluation'
+    };
+
+    const chartSettingsScatLine = {
+        label: 'Input',
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        pointRadius: 3,
+        pointHoverRadius: 3,
+        //pointStyle: 'rectRot',
+        showLine: true,
+        fill: false,
+        borderWidth: 1,
+        borderColor: "rgba(75, 192, 192, 0.6)",
+        borderDash: [10, 2],
+        tension: 0.5,
+    };
+
+    const chartSettingsScatPoint = {
+        label: 'Calculated',
+        backgroundColor: "rgba(150, 100, 100, 0.6)",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        showLine: true,
+        fill: false,
+        borderWidth: 3,
+        borderColor: "rgba(150, 100, 100, 0.6)",
+        //borderDash: [10, 3, 20, 10],
+        tension:0.5
+    };
+
+
+    const chartSettingsBar = {
+        label: 'FFT amplitude',
+        type: 'bar',
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        barThickness: 3,
+        borderColor: "rgba(75, 192, 192, 0.6)",
+        borderWidth: 1,
+    };
+
+    const chartSettingsScatter = {
+        label: '',
+        type: 'scatter',
+        backgroundColor: "rgba(150, 100, 100, 0.6)",
+        pointRadius: 2,
+        pointHoverRadius: 2,
+        showLine: false,
+        fill: false,
+        borderWidth: 1,
+        borderColor: "rgba(150, 100, 100, 0.6)",
+        borderDash: [10, 3, 20, 10],
+    };
+
+    const chartSettingsTrace = {
+        label: '',
+        type: 'scatter',
+        backgroundColor: "rgba(128, 139, 150, 0.6)",
+        pointRadius: 2,
+        pointHoverRadius: 2,
+        showLine: false,
+        fill: false,
+        borderWidth: 1,
+        borderColor: "rgba(128, 139, 150, 0.6)",
+        borderDash: [10, 3, 20, 10],
     };
 
     var scatterChart = new Chart(ctx, {
@@ -246,79 +310,59 @@
         showIndex = document.getElementById('showIndex').value;
         var xData0 = table4Content.getDataAtCol(0);
         var yData00 = table4Content.getDataAtCol(parseInt(showIndex));
-        console.log(showIndex)
+        var yData00Backup = table4Content.getDataAtCol(parseInt(showIndexBackup));
 
-        stemChart.options.scales = {
-            x: {
-                min: xData0.min,
-                max: xData0.max
-            }
-        };
-
+        chartSettingsBar.data = xData0.map((value, index) => ({ x: value, y: yData00[index] }));
+        chartSettingsScatter.data = xData0.map((value, index) => ({ x: value, y: yData00[index] }));
         stemChart2.data.datasets = [
-            {
-                label: 'FFT amplitude',
-                type: 'bar',
-                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                barThickness: 3,
-                borderColor: "rgba(75, 192, 192, 0.6)",
-                borderWidth: 1,
-            },
-            {
-                label: '',
-                type: 'scatter',
-                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
-                backgroundColor: "rgba(150, 100, 100, 0.6)",
-                pointRadius: 2,
-                pointHoverRadius: 2,
-                showLine: false,
-                fill: false,
-                borderWidth: 1,
-                borderColor: "rgba(150, 100, 100, 0.6)",
-                borderDash: [10, 3, 20, 10],
-            }
+            chartSettingsBar, chartSettingsScatter,
         ];
 
+        chartSettingsTrace.data = xData0.map((value, index) => ({ x: value, y: yData00Backup[index] }));
+        stemChart2.data.datasets.push(
+            chartSettingsTrace,
+        )
+
+        if (!checkKeepAxis.checked) {
+            stemChart2.options.scales = {
+                x: {
+                    min: xData0.min,
+                    max: xData0.max
+                }
+            };
+        } else {
+        }
+
         stemChart2.update();
+        showIndexBackup = showIndex;
     }
 
     function drawchart2() {
         showIndex = document.getElementById('showIndex').value;
         var xData0 = table3Content.getDataAtCol(0);
         var yData00 = table3Content.getDataAtCol(parseInt(showIndex));
+        var yData00Backup = table4Content.getDataAtCol(parseInt(showIndexBackup));
 
-        stemChart.options.scales = {
-            x: {
-                min: xData0.min,
-                max: xData0.max
-            }
-        };
-
+        chartSettingsBar.data = xData0.map((value, index) => ({ x: value, y: yData00[index] }));
+        chartSettingsScatter.data = xData0.map((value, index) => ({ x: value, y: yData00[index] }));
         stemChart.data.datasets = [
-            {
-                label: 'FFT amplitude',
-                type: 'bar',
-                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                barThickness: 3,
-                borderColor: "rgba(75, 192, 192, 0.6)",
-                borderWidth: 1,
-            },
-            {
-                label: '',
-                type: 'scatter',
-                data: xData0.map((value, index) => ({ x: value, y: yData00[index] })),
-                backgroundColor: "rgba(150, 100, 100, 0.6)",
-                pointRadius: 2,
-                pointHoverRadius: 2,
-                showLine: false,
-                fill: false,
-                borderWidth: 1,
-                borderColor: "rgba(150, 100, 100, 0.6)",
-                borderDash: [10, 3, 20, 10],
-            }
+            chartSettingsBar, chartSettingsScatter,
         ];
+
+        chartSettingsTrace.data = xData0.map((value, index) => ({ x: value, y: yData00Backup[index] }));
+        stemChart.data.datasets.push(
+            chartSettingsTrace,
+        )
+
+        if (!checkKeepAxis.checked) {
+            stemChart.options.scales = {
+                x: {
+                    min: xData0.min,
+                    max: xData0.max
+                }
+            };
+        } else {
+        }
 
         stemChart.update();
     }
@@ -331,41 +375,20 @@
         var xData2 = table2Content.getDataAtCol(0);
         var yData20 = table2Content.getDataAtCol(parseInt(showIndex));
 
-        scatterChart.options.scales = {
-            x: {
-                min: xData1.min,
-                max: xData1.max
-            }
-        };
-
+        chartSettingsScatLine.data = xData1.map((value, index) => ({ x: value, y: yData10[index] }));
+        chartSettingsScatPoint.data = xData2.map((value, index) => ({ x: value, y: yData20[index] }));
         scatterChart.data.datasets = [
-            {
-                label: 'Input',
-                data: xData1.map((value, index) => ({ x: value, y: yData10[index] })),
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                pointRadius: 3,
-                pointHoverRadius: 3,
-                //pointStyle: 'rectRot',
-                showLine: true,
-                fill: false,
-                borderWidth: 1,
-                borderColor: "rgba(75, 192, 192, 0.6)",
-                borderDash: [10, 2],
-                tension: 0.5,
-            },
-            {
-                label: 'Calculated',
-                data: xData2.map((value, index) => ({ x: value, y: yData20[index] })),
-                backgroundColor: "rgba(150, 100, 100, 0.6)",
-                pointRadius: 0,
-                pointHoverRadius: 0,
-                showLine: true,
-                fill: false,
-                borderWidth: 3,
-                borderColor: "rgba(150, 100, 100, 0.6)",
-                //borderDash: [10, 3, 20, 10],
-                tension:0.5
-            }
+            chartSettingsScatLine, chartSettingsScatPoint,
         ];
+
+        if (!checkKeepAxis.checked) {
+            scatterChart.options.scales = {
+                x: {
+                    min: xData1.min,
+                    max: xData1.max
+                }
+            };
+        } else {
+        }
         scatterChart.update();
     }
