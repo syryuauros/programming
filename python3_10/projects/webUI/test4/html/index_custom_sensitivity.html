@@ -4,7 +4,7 @@
     <title>CSV to Table and Scatter Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
-    <link rel="stylesheet" href="./styles_intpMulti.css">
+    <link rel="stylesheet" href="./styles_custom_sensitivity.css">
 </head>
 <body>
 
@@ -12,13 +12,7 @@
     <div class="container-nav">
         <h3 style="color: #D5DBDB;"> Analysis tools </h3>
         <a href="./index.html" target="_blank" class="button">home</a>
-        <a href="https://apps.automeris.io/wpd/" target="_blank" class="button">Digitizer</a>
-        <a href="./index_interpolator.html" target="_blank" class="button" style="font-size: 16px">interpolate</a>
-        <a href="./index_FFT.html" target="_blank" class="button">FFT(t->f)</a>
-        <a href="./index_iFFT.html" target="_blank" class="button">iFFT(f->t)</a>
-        <a href="./index_FFTMulti.html" target="_blank" class="button">FFT(multi)</a>
-        <a href="./index_intpMulti.html" target="_blank" class="button-1">intp(multi)</a>
-        <a href="./index_custom.html" target="_blank" class="button">custom</a>
+        <a href="./index_custom_sensitivity.html" target="_blank" class="button-1">sensitivity</a>
     </div>
 
     <div class="container-empty">
@@ -33,48 +27,60 @@
         <textarea id="csvData" placeholder="Paste CSV data here" rows="5" cols="27"></textarea>
         <button onclick="parseCSV()">adopt to table</button>
 
+        <h2>export All Data as CSV:</h2>
+        <button onclick="exportAllDataToCSV()" style="color: red">export All Data</button>
+
         <h2>axis setting:</h2>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="settingTable"></div>
         <h1> </h1>
-        <button onclick="modifyRange()">adopt setting</button>
+        <button onclick="modifyRange()">adopt setting</button> <br>
+        <input type="checkbox" id="checkKeepAxis" value="">
+        <label for="label1">keep applying axis setting</label> <br>
+
+        <h2>corrlation_table:</h2>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+        <div id="correlationTable"></div>
+        <h1> </h1>
+
     </div>
 
     <div class="container-empty">
         <h2> </h2>
     </div>
 <!-- Input ///////////////////////////////////////////////////////////////////////////////////////////////// -->
-    <div class="container-table">
+    <div class="container-table" style="width: 25.5%;">
         <h2>Input</h2>
         <h1> </h1>
-        <button onclick="drawchart1()">refresh graphs</button>
         <button onclick="exportToCSV(1)">export</button>
-        <h1> </h1>
-        <label for="label1">show graph: </label>
-        <input type="text" size="1" value="1" style="text-align: center;" id="showIndex" onchange="drawchart1()">
-        <label for="label2">th column</label>
+        <button onclick="calculate()" style="color: red">cal</button>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+        <div id="table0"></div>
+        <h1> </h1>
         <div id="table1"></div>
     </div>
 
     <div class="container-empty">
         <h2> </h2>
     </div>
-<!-- intp-Result /////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- sensitivity /////////////////////////////////////////////////////////////////////////////////////////// -->
     <div class="container-table">
-        <h2>intp-Result</h2>
+        <h2>sensitivity</h2>
         <h1> </h1>
-        <button onclick="drawchart1()">refresh graphs</button>
+        <button onclick="drawchart1();drawchart2();drawchart3();">refresh graphs</button>
         <button onclick="exportToCSV(2)">export</button>
-        <button onclick="calculate()" style="color: red">cal</button>
         <h1> </h1>
-        <label for="label3">`min ~ max, intv` </label> <br>
-        <input type="text" size="1" value="500" style="text-align: center;" id="rangeMin">
-        <label for="label4">~</label>
-        <input type="text" size="1" value="900" style="text-align: center;" id="rangeMax">
-        <label for="label4">,</label>
-        <input type="text" size="1" value="1" style="text-align: center;" id="interval">
+        <form>
+            <label for="option-simple">
+                <input type="radio" id="option-simple" name="optionsSimpleNorm" value="simple" onchange="createTable2();drawchart1();drawchart2();drawchart3();" checked>
+                simple
+            </label>
+            <label for="option-norm">
+                <input type="radio" id="option-norm" name="optionsSimpleNorm" value="norm" onchange="createTable2();drawchart1();drawchart2();drawchart3();">
+                normalized_by_sigma
+            </label>
+        </form>
         <h1> </h1>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
         <div id="table2"></div>
@@ -87,6 +93,18 @@
     <div class="chart-container">
         <h3>time domain</h3>
         <canvas id="myChart" width="320" height="160"></canvas>
+
+        <h3>frequency domain(amp-phase)</h3>
+        <canvas id="myChart2" width="320" height="160"></canvas>
+
+        <h3>frequency domain(real-imag)</h3>
+        <canvas id="myChart3" width="320" height="160"></canvas>
+    </div>
+
+    </div>
+
+    <div class="container-empty">
+        <h2> </h2>
     </div>
 
     <div class="container-empty">
@@ -95,9 +113,9 @@
 
 <!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-    <script src="./script_intpMulti.js"></script>
-    <script src="./script_intpMulti_tables.js"></script>
-    <script src="./script_intpMulti_csvIO.js"></script>
+    <script src="./script_custom_sensitivity.js"></script>
+    <script src="./script_custom_sensitivity_tables.js"></script>
+    <script src="./script_custom_sensitivity_csvIO.js"></script>
     <script src="./script_common.js"></script>
 </body>
 </html>

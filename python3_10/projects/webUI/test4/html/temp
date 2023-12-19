@@ -171,3 +171,23 @@
 
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         if (table1Content) { table1Content.destroy(); }
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        optionsAmpPhs.forEach(option => {
+            if (option.checked) {
+                selectedOption = option.value;
+            }
+        });
+
+        if (selectedOption == "amp") {
+            table3Settings.data = amp_result;
+        } else {
+            table3Settings.data = phs_result;
+        }
+
+
+
+        var xData1 = table2Content.getDataAtCol(0);
+        var yData10 = table2Content.getDataAtCol(1);
+        var yData20 = table2Content.getDataAtCol(2);
+        var yData30 = table2Content.getDataAtCol(3);

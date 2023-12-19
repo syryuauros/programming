@@ -4,6 +4,7 @@ from flask_cors import CORS
 import flask
 import json
 import numpy as np
+import math
 
 num3 = float(0)
 
@@ -266,6 +267,62 @@ def intpMulti_numbers():
     dataModified = result.tolist()
 
     return jsonify(dataModified)
+
+
+@app.route('/custom_sensitivity', methods=['POST'])
+def custom_sensitivity_numbers():
+
+    tr_json = request.get_json()
+    data0 = tr_json['data0']
+    data1 = tr_json['data1']
+    data0Arr = np.array(data0).astype(float)
+    data1Arr = np.array(data1).astype(float)
+    data1ArrSort = data1Arr[data1Arr[:, 0].argsort()]
+
+    p1Center = data0Arr[:,0]
+    p2Center = data0Arr[:,2]
+    p3Center = data0Arr[:,4]
+    p1Delta = data0Arr[:,1]
+    p2Delta = data0Arr[:,3]
+    p3Delta = data0Arr[:,5]
+    target = data0Arr[:,6]
+
+    freq = data1ArrSort[:,0]
+    p1_0 = data1ArrSort[:,1]
+    p1_1 = data1ArrSort[:,2]
+    p2_0 = data1ArrSort[:,3]
+    p2_1 = data1ArrSort[:,4]
+    p3_0 = data1ArrSort[:,5]
+    p3_1 = data1ArrSort[:,6]
+    sigma = data1ArrSort[:,7]
+
+    s1 = (p1_1 - p1_0) / (2 * p1Delta)
+    s2 = (p2_1 - p2_0) / (2 * p2Delta)
+    s3 = (p3_1 - p3_0) / (2 * p3Delta)
+
+    sNorm1 = s1* (2 * p1Delta) * target/100 /sigma
+    sNorm2 = s2* (2 * p2Delta) * target/100 /sigma
+    sNorm3 = s3* (2 * p3Delta) * target/100 /sigma
+
+    dataModifiedArr1 = sNorm3.astype(str)
+    dataModifiedArr1 = np.column_stack((sNorm2.astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((sNorm1.astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((freq.astype(str), dataModifiedArr1))
+    dataModifiedArr0 = s3.astype(str)
+    dataModifiedArr0 = np.column_stack((s2.astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((s1.astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((freq.astype(str), dataModifiedArr0))
+
+    sCov12 = np.cov(s1, s2)[0,1] / math.sqrt(np.cov(s1, s2)[0,0] * np.cov(s1, s2)[1,1])
+    sCov13 = np.cov(s1, s3)[0,1] / math.sqrt(np.cov(s1, s3)[0,0] * np.cov(s1, s3)[1,1])
+    sCov23 = np.cov(s2, s3)[0,1] / math.sqrt(np.cov(s2, s3)[0,0] * np.cov(s2, s3)[1,1])
+
+    sCov = [[1, sCov12, sCov13], [sCov12, 1, sCov23], [sCov13, sCov23, 1]]
+
+    dataModified1 = dataModifiedArr1.tolist()
+    dataModified0 = dataModifiedArr0.tolist()
+    return jsonify({ 'data0': dataModified0, 'data1': dataModified1, 'dataCov':sCov })
+
 
 def can_be_float(arr):
     k = 0

@@ -73,26 +73,27 @@
     const chartSettingsScatter = {
         label: '',
         type: 'scatter',
-        backgroundColor: "rgba(150, 100, 100, 0.6)",
+        backgroundColor: "rgba(150, 100, 100, 0.9)",
         pointRadius: 2,
         pointHoverRadius: 2,
         showLine: false,
         fill: false,
         borderWidth: 1,
-        borderColor: "rgba(150, 100, 100, 0.6)",
+        borderColor: "rgba(150, 100, 100, 0.9)",
         borderDash: [10, 3, 20, 10],
     };
 
     const chartSettingsTrace = {
         label: '',
         type: 'scatter',
-        backgroundColor: "rgba(128, 139, 150, 0.6)",
+        backgroundColor: "rgba(128, 139, 150, 0.5)",
         pointRadius: 2,
+        pointStyle: 'rectRot',
         pointHoverRadius: 2,
         showLine: false,
         fill: false,
         borderWidth: 1,
-        borderColor: "rgba(128, 139, 150, 0.6)",
+        borderColor: "rgba(128, 139, 150, 0.5)",
         borderDash: [10, 3, 20, 10],
     };
 
@@ -318,10 +319,12 @@
             chartSettingsBar, chartSettingsScatter,
         ];
 
-        chartSettingsTrace.data = xData0.map((value, index) => ({ x: value, y: yData00Backup[index] }));
-        stemChart2.data.datasets.push(
-            chartSettingsTrace,
-        )
+        if (checkShowTrace.checked) {
+            chartSettingsTrace.data = xData0.map((value, index) => ({ x: value, y: yData00Backup[index] }));
+            stemChart2.data.datasets.push(
+                chartSettingsTrace,
+            )
+        } else { }
 
         if (!checkKeepAxis.checked) {
             stemChart2.options.scales = {
@@ -330,8 +333,7 @@
                     max: xData0.max
                 }
             };
-        } else {
-        }
+        } else { }
 
         stemChart2.update();
         showIndexBackup = showIndex;
@@ -349,10 +351,12 @@
             chartSettingsBar, chartSettingsScatter,
         ];
 
-        chartSettingsTrace.data = xData0.map((value, index) => ({ x: value, y: yData00Backup[index] }));
-        stemChart.data.datasets.push(
-            chartSettingsTrace,
-        )
+        if (checkShowTrace.checked) {
+            chartSettingsTrace.data = xData0.map((value, index) => ({ x: value, y: yData00Backup[index] }));
+            stemChart.data.datasets.push(
+                chartSettingsTrace,
+            )
+        } else { }
 
         if (!checkKeepAxis.checked) {
             stemChart.options.scales = {
