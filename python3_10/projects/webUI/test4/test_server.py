@@ -300,9 +300,9 @@ def custom_sensitivity_numbers():
     s2 = (p2_1 - p2_0) / (2 * p2Delta)
     s3 = (p3_1 - p3_0) / (2 * p3Delta)
 
-    sNorm1 = s1* (2 * p1Delta) * target/100 /sigma
-    sNorm2 = s2* (2 * p2Delta) * target/100 /sigma
-    sNorm3 = s3* (2 * p3Delta) * target/100 /sigma
+    sNorm1 = s1* (p1Center) * target/100 /sigma
+    sNorm2 = s2* (p2Center) * target/100 /sigma
+    sNorm3 = s3* (p3Center) * target/100 /sigma
 
     dataModifiedArr1 = sNorm3.astype(str)
     dataModifiedArr1 = np.column_stack((sNorm2.astype(str), dataModifiedArr1))
