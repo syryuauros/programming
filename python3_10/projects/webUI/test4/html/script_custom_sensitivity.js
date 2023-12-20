@@ -4,9 +4,6 @@
     const checkKeepAxis = document.getElementById('checkKeepAxis');
     var optionsSimpleNorm = document.getElementsByName('optionsSimpleNorm');
     var table2Content;
-    var dataForTable20;
-    var dataForTable21;
-    var dataCov;
 
     const tableSettingsCommon = {
         allowEmpty: true,
@@ -25,20 +22,6 @@
         licenseKey: 'non-commercial-and-evaluation'
     };
 
-    const chartSettingsScatLine = {
-        label: 'Input',
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-        pointRadius: 3,
-        pointHoverRadius: 3,
-        //pointStyle: 'rectRot',
-        showLine: true,
-        fill: false,
-        borderWidth: 1,
-        borderColor: "rgba(75, 192, 192, 0.6)",
-        borderDash: [10, 2],
-        tension: 0.5,
-    };
-
     const chartSettingsScatPoint = {
         label: 'Calculated',
         backgroundColor: "rgba(150, 100, 100, 0.6)",
@@ -50,6 +33,15 @@
         borderColor: "rgba(150, 100, 100, 0.6)",
         //borderDash: [10, 3, 20, 10],
         tension:0.5
+    };
+
+    const chartSettingsBarCommon = {
+        label: '',
+        type: 'bar',
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        barThickness: 3,
+        borderColor: "rgba(75, 192, 192, 0.6)",
+        borderWidth: 1,
     };
 
     var scatterChartPropertyCommon = {
@@ -122,6 +114,11 @@
         }
     });
 
+    var dataForTable20;
+    var dataForTable21;
+    var dataForTable22;
+    var dataCov;
+
    async function calculate() {
        var data0 = table0Content.getData();
        var data1 = table1Content.getData();
@@ -150,7 +147,7 @@
 
     function createTable1(csvData) {
         if (table1Content) { table1Content.destroy(); }
-        var table1Settings = tableSettingsCommon;
+        var table1Settings = Object.assign({}, tableSettingsCommon);
         table1Settings.data = csvData;
         table1Settings.colHeaders = [ 'freq', 'p1_0', 'p1_1', 'p2_0', 'p2_1', 'p3_0', 'p3_1', 'sigma' ];
 
@@ -160,7 +157,7 @@
     function createTable2() {
         if (table2Content) { table2Content.destroy(); }
         const table2Element = document.getElementById('table2');
-        const table2Settings = tableSettingsCommon;
+        const table2Settings = Object.assign({}, tableSettingsCommon);
 
        optionsSimpleNorm.forEach(option => {
            if (option.checked) {
@@ -174,6 +171,7 @@
            table2Settings.data = dataForTable21;
        }
         table2Settings.numericFormat.pattern = '0,0.000';
+        table2Settings.colHeaders = [ 'freq', 'p1', 'p2', 'p', ];
 
         table2Content = new Handsontable(table2Element, table2Settings);
     }
@@ -181,7 +179,7 @@
     function createCorrelationTable() {
         if (correlationTableContent) { correlationTableContent.destroy(); }
         var correlationTableElement = document.getElementById('correlationTable');
-        var correlationTableSettings = tableSettingsCommon;
+        var correlationTableSettings = Object.assign({}, tableSettingsCommon);
         correlationTableSettings.data = dataCov;
         correlationTableSettings.colHeaders = [ 'p1', 'p2', 'p3', ];
         correlationTableSettings.rowHeaders = [ 'p1', 'p2', 'p3', ];
@@ -244,11 +242,18 @@
     function drawchart1() {
         var xData1 = table2Content.getDataAtCol(0);
         var yData10 = table2Content.getDataAtCol(1);
+        var yData11 = table2Content.getDataAtCol(4);
 
-        chartSettingsScatPoint1 = Object.assign({}, chartSettingsScatPoint);
-        chartSettingsScatPoint1.data = xData1.map((value, index) => ({ x: value, y: yData10[index] }));
+        chartSettingsScatPoint1 = [Object.assign({}, chartSettingsScatPoint)];
+        chartSettingsScatPoint1[0].data = xData1.map((value, index) => ({ x: value, y: yData10[index] }));
+
+        chartSettingsScatPoint1.push(Object.assign({}, chartSettingsBarCommon));
+        chartSettingsScatPoint1[1].data = xData1.map((value, index) => ({ x: value, y: yData11[index] }));
+
+        console.log(chartSettingsScatPoint1);
         scatterChart1.data.datasets = [
-            chartSettingsScatPoint1,
+            chartSettingsScatPoint1[0],
+            chartSettingsScatPoint1[1],
         ];
 
         if (!checkKeepAxis.checked) {
@@ -266,11 +271,17 @@
     function drawchart2() {
         var xData1 = table2Content.getDataAtCol(0);
         var yData20 = table2Content.getDataAtCol(2);
+        var yData21 = table2Content.getDataAtCol(5);
 
-        chartSettingsScatPoint2 = Object.assign({}, chartSettingsScatPoint);
-        chartSettingsScatPoint2.data = xData1.map((value, index) => ({ x: value, y: yData20[index] }));
+        chartSettingsScatPoint2 = [Object.assign({}, chartSettingsScatPoint)];
+        chartSettingsScatPoint2[0].data = xData1.map((value, index) => ({ x: value, y: yData20[index] }));
+
+        chartSettingsScatPoint2.push(Object.assign({}, chartSettingsBarCommon));
+        chartSettingsScatPoint2[1].data = xData1.map((value, index) => ({ x: value, y: yData21[index] }));
+
         scatterChart2.data.datasets = [
-            chartSettingsScatPoint2,
+            chartSettingsScatPoint2[0],
+            chartSettingsScatPoint2[1],
         ];
 
         if (!checkKeepAxis.checked) {
@@ -288,11 +299,17 @@
     function drawchart3() {
         var xData1 = table2Content.getDataAtCol(0);
         var yData30 = table2Content.getDataAtCol(3);
+        var yData31 = table2Content.getDataAtCol(6);
 
-        chartSettingsScatPoint3 = Object.assign({}, chartSettingsScatPoint);
-        chartSettingsScatPoint3.data = xData1.map((value, index) => ({ x: value, y: yData30[index] }));
+        chartSettingsScatPoint3 = [Object.assign({}, chartSettingsScatPoint)];
+        chartSettingsScatPoint3[0].data = xData1.map((value, index) => ({ x: value, y: yData30[index] }));
+
+        chartSettingsScatPoint3.push(Object.assign({}, chartSettingsBarCommon));
+        chartSettingsScatPoint3[1].data = xData1.map((value, index) => ({ x: value, y: yData31[index] }));
+
         scatterChart3.data.datasets = [
-            chartSettingsScatPoint3,
+            chartSettingsScatPoint3[0],
+            chartSettingsScatPoint3[1],
         ];
 
         if (!checkKeepAxis.checked) {

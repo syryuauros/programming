@@ -304,14 +304,26 @@ def custom_sensitivity_numbers():
     sNorm2 = s2* (p2Center) * target/100 /sigma
     sNorm3 = s3* (p3Center) * target/100 /sigma
 
-    dataModifiedArr1 = sNorm3.astype(str)
-    dataModifiedArr1 = np.column_stack((sNorm2.astype(str), dataModifiedArr1))
-    dataModifiedArr1 = np.column_stack((sNorm1.astype(str), dataModifiedArr1))
-    dataModifiedArr1 = np.column_stack((freq.astype(str), dataModifiedArr1))
-    dataModifiedArr0 = s3.astype(str)
+    sNorm1Cut = [x if abs(x) >= 1 else 0 for x in sNorm1]
+    sNorm2Cut = [x if abs(x) >= 1 else 0 for x in sNorm2]
+    sNorm3Cut = [x if abs(x) >= 1 else 0 for x in sNorm3]
+
+    sZero = [0 for x in sNorm3]
+
+    dataModifiedArr0 = np.array(sZero).astype(str)
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((s3.astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((s2.astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((s1.astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((freq.astype(str), dataModifiedArr0))
+    dataModifiedArr1 = np.array(sNorm3Cut).astype(str)
+    dataModifiedArr1 = np.column_stack((np.array(sNorm2Cut).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((np.array(sNorm1Cut).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((sNorm3.astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((sNorm2.astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((sNorm1.astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((freq.astype(str), dataModifiedArr1))
 
     sCov12 = np.cov(s1, s2)[0,1] / math.sqrt(np.cov(s1, s2)[0,0] * np.cov(s1, s2)[1,1])
     sCov13 = np.cov(s1, s3)[0,1] / math.sqrt(np.cov(s1, s3)[0,0] * np.cov(s1, s3)[1,1])
@@ -319,9 +331,9 @@ def custom_sensitivity_numbers():
 
     sCov = [[1, sCov12, sCov13], [sCov12, 1, sCov23], [sCov13, sCov23, 1]]
 
-    dataModified1 = dataModifiedArr1.tolist()
     dataModified0 = dataModifiedArr0.tolist()
-    return jsonify({ 'data0': dataModified0, 'data1': dataModified1, 'dataCov':sCov })
+    dataModified1 = dataModifiedArr1.tolist()
+    return jsonify({ 'data0': dataModified0, 'data1': dataModified1, 'dataCov':sCov, })
 
 
 def can_be_float(arr):

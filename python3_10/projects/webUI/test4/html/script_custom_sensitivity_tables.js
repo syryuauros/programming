@@ -1,9 +1,9 @@
     var settingTableElement = document.getElementById('settingTable');
     var settingTableSettings = {
         data: [
-            [200, 700, -1, 1],
-            [0, 50, 0, 0.1],
-            [0, 50, -0.1, 0.05],
+            [200, 1000, -12, 12],
+            [200, 1000, -7, 7],
+            [200, 1000, -1, 3.5],
         ],
         allowEmpty: true,
         type: 'numeric',
@@ -49,7 +49,9 @@
     var table1Content = new Handsontable(table1Element, tableSettingsAtStart1);
 
     var table2Element = document.getElementById('table2');
-    var table2Content = new Handsontable(table2Element, tableSettingsAtStart);
+    tableSettingsAtStart2 = Object.assign({}, tableSettingsCommon);
+    tableSettingsAtStart2.colHeaders = [ 'freq', 'p1', 'p2', 'p', ];
+    var table2Content = new Handsontable(table2Element, tableSettingsAtStart2);
 
     var correlationTableElement = document.getElementById('correlationTable');
     tableSettingsAtStartC = Object.assign({}, tableSettingsAtStart);
