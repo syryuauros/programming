@@ -23,6 +23,28 @@
        drawchart3();
        createCorrelationTable();
     }
+    async function calCorRange() {
+    var data0 = table0Content.getData();
+    var data1 = table1Content.getData();
+    var dataRange = settingTable.getData();
+
+    const response = await fetch('http://192.168.12.135:6969/custom_sensitivity2', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            data0: data0,
+            data1: data1,
+            dataRange: dataRange,
+        })
+    });
+    data = await response.json();
+    dataCov = data.dataCov;
+
+    createCorrelationTable();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function createTable1(csvData) {
         if (table1Content) { table1Content.destroy(); }

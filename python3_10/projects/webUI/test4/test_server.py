@@ -346,6 +346,53 @@ def custom_sensitivity_numbers():
     dataModified1 = dataModifiedArr1.tolist()
     return jsonify({ 'data0': dataModified0, 'data1': dataModified1, 'dataCov':sCov, })
 
+@app.route('/custom_sensitivity2', methods=['POST'])
+def custom_sensitivity2_numbers():
+
+    tr_json = request.get_json()
+    data0 = tr_json['data0']
+    data1 = tr_json['data1']
+    dataRange = tr_json['dataRange']
+    data0Arr = np.array(data0).astype(float)
+    data1Arr = np.array(data1).astype(float)
+    dataRangeArr = np.array(dataRange).astype(float)
+    data1ArrSort = data1Arr[data1Arr[:, 0].argsort()]
+
+    p1Center = data0Arr[:,0]
+    p2Center = data0Arr[:,2]
+    p3Center = data0Arr[:,4]
+    p1Delta = data0Arr[:,1]
+    p2Delta = data0Arr[:,3]
+    p3Delta = data0Arr[:,5]
+    target = data0Arr[:,6]
+
+    freq = data1ArrSort[:,0]
+    p1_0 = data1ArrSort[:,1]
+    p1_1 = data1ArrSort[:,2]
+    p2_0 = data1ArrSort[:,3]
+    p2_1 = data1ArrSort[:,4]
+    p3_0 = data1ArrSort[:,5]
+    p3_1 = data1ArrSort[:,6]
+    sigma = data1ArrSort[:,7]
+
+    indexS = find_nearest(freq, dataRangeArr[0,0])
+    indexF = find_nearest(freq, dataRangeArr[0,1])
+
+    s1 = (p1_1 - p1_0) / (2 * p1Delta)
+    s2 = (p2_1 - p2_0) / (2 * p2Delta)
+    s3 = (p3_1 - p3_0) / (2 * p3Delta)
+
+    s1Range = s1[indexS:indexF]
+    s2Range = s2[indexS:indexF]
+    s3Range = s3[indexS:indexF]
+
+    sCov12Range = np.cov(s1Range, s2Range)[0,1] / math.sqrt(np.cov(s1Range, s2Range)[0,0] * np.cov(s1Range, s2Range)[1,1])
+    sCov13Range = np.cov(s1Range, s3Range)[0,1] / math.sqrt(np.cov(s1Range, s3Range)[0,0] * np.cov(s1Range, s3Range)[1,1])
+    sCov23Range = np.cov(s2Range, s3Range)[0,1] / math.sqrt(np.cov(s2Range, s3Range)[0,0] * np.cov(s2Range, s3Range)[1,1])
+
+    sCovRange = [[1, sCov12Range, sCov13Range], [sCov12Range, 1, sCov23Range], [sCov13Range, sCov23Range, 1]]
+
+    return jsonify({ 'dataCov':sCovRange, })
 
 def can_be_float(arr):
     k = 0
@@ -359,6 +406,10 @@ def can_be_float(arr):
     except ValueError:
         return False
     return True
+
+def find_nearest(array, value):
+    idx = np.abs(array - value).argmin()
+    return idx
 
 def find_peaks(arr):
     peak_indices = np.where((arr[1:-1] > arr[:-2]) & (arr[1:-1] > arr[2:]))[0] + 1
