@@ -261,7 +261,7 @@ def intpMulti_numbers():
 
     for i in range(2, len(inpt_elem[0])):
         colN = inpt_elem[:,i].astype(float)
-        yNew_elem = np.column_stack((np.interp(xNew, col0, colN).astype(float), yNew_elem))
+        yNew_elem = np.column_stack((yNew_elem, np.interp(xNew, col0, colN).astype(float)))
 
     result = np.column_stack((xNew.astype(str), yNew_elem.astype(str)))
     dataModified = result.tolist()

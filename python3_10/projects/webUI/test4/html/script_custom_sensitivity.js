@@ -38,10 +38,10 @@
     const chartSettingsBarCommon = {
         label: '',
         type: 'bar',
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        backgroundColor: "rgba(75, 192, 192, 0.3)",
         barThickness: 3,
-        borderColor: "rgba(75, 192, 192, 0.6)",
-        borderWidth: 1,
+        borderColor: "rgba(75, 192, 192, 0.3)",
+        borderWidth: 0,
     };
 
     const chartSettingsBarOverlap = {
@@ -50,7 +50,7 @@
         backgroundColor: "rgba(220, 118, 51, 0.3)",
         barThickness: 3,
         borderColor: "rgba(220, 118, 51, 0.3)",
-        borderWidth: 1,
+        borderWidth: 0,
     };
 
 
