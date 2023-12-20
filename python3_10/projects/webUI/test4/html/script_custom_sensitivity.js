@@ -44,23 +44,15 @@
         borderWidth: 1,
     };
 
-    var scatterChartPropertyCommon = {
-        type: 'scatter', // Set the chart type to scatter
-        data: {
-            datasets: [],
-        },
-        options: {
-            scales: {
-                x: {
-                    type: 'linear',
-                    position: 'bottom'
-                },
-                y: {
+    const chartSettingsBarOverlap = {
+        label: '',
+        type: 'bar',
+        backgroundColor: "rgba(220, 118, 51, 0.3)",
+        barThickness: 3,
+        borderColor: "rgba(220, 118, 51, 0.3)",
+        borderWidth: 1,
+    };
 
-                }
-            }
-        }
-    }
 
     var scatterChart1 = new Chart(ctx, {
         type: 'scatter', // Set the chart type to scatter
@@ -243,6 +235,7 @@
         var xData1 = table2Content.getDataAtCol(0);
         var yData10 = table2Content.getDataAtCol(1);
         var yData11 = table2Content.getDataAtCol(4);
+        var yData12 = table2Content.getDataAtCol(7);
 
         chartSettingsScatPoint1 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint1[0].data = xData1.map((value, index) => ({ x: value, y: yData10[index] }));
@@ -250,9 +243,14 @@
         chartSettingsScatPoint1.push(Object.assign({}, chartSettingsBarCommon));
         chartSettingsScatPoint1[1].data = xData1.map((value, index) => ({ x: value, y: yData11[index] }));
 
+        chartSettingsScatPoint1.push(Object.assign({}, chartSettingsBarOverlap));
+        chartSettingsScatPoint1[2].data = xData1.map((value, index) => ({ x: value, y: yData12[index] }));
+
+
         console.log(chartSettingsScatPoint1);
         scatterChart1.data.datasets = [
             chartSettingsScatPoint1[0],
+            chartSettingsScatPoint1[2],
             chartSettingsScatPoint1[1],
         ];
 
@@ -272,6 +270,7 @@
         var xData1 = table2Content.getDataAtCol(0);
         var yData20 = table2Content.getDataAtCol(2);
         var yData21 = table2Content.getDataAtCol(5);
+        var yData22 = table2Content.getDataAtCol(8);
 
         chartSettingsScatPoint2 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint2[0].data = xData1.map((value, index) => ({ x: value, y: yData20[index] }));
@@ -279,8 +278,12 @@
         chartSettingsScatPoint2.push(Object.assign({}, chartSettingsBarCommon));
         chartSettingsScatPoint2[1].data = xData1.map((value, index) => ({ x: value, y: yData21[index] }));
 
+        chartSettingsScatPoint2.push(Object.assign({}, chartSettingsBarOverlap));
+        chartSettingsScatPoint2[2].data = xData1.map((value, index) => ({ x: value, y: yData22[index] }));
+
         scatterChart2.data.datasets = [
             chartSettingsScatPoint2[0],
+            chartSettingsScatPoint2[2],
             chartSettingsScatPoint2[1],
         ];
 
@@ -300,6 +303,7 @@
         var xData1 = table2Content.getDataAtCol(0);
         var yData30 = table2Content.getDataAtCol(3);
         var yData31 = table2Content.getDataAtCol(6);
+        var yData32 = table2Content.getDataAtCol(9);
 
         chartSettingsScatPoint3 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint3[0].data = xData1.map((value, index) => ({ x: value, y: yData30[index] }));
@@ -307,8 +311,12 @@
         chartSettingsScatPoint3.push(Object.assign({}, chartSettingsBarCommon));
         chartSettingsScatPoint3[1].data = xData1.map((value, index) => ({ x: value, y: yData31[index] }));
 
+        chartSettingsScatPoint3.push(Object.assign({}, chartSettingsBarOverlap));
+        chartSettingsScatPoint3[2].data = xData1.map((value, index) => ({ x: value, y: yData32[index] }));
+
         scatterChart3.data.datasets = [
             chartSettingsScatPoint3[0],
+            chartSettingsScatPoint3[2],
             chartSettingsScatPoint3[1],
         ];
 

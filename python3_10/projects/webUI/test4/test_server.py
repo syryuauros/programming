@@ -308,16 +308,27 @@ def custom_sensitivity_numbers():
     sNorm2Cut = [x if abs(x) >= 1 else 0 for x in sNorm2]
     sNorm3Cut = [x if abs(x) >= 1 else 0 for x in sNorm3]
 
+    sNorm1CutCommon = [x if abs(x) >= 1 and abs(y) >= 1 and abs(z) >= 1 else 0 for x, y, z in zip(sNorm1, sNorm2, sNorm3)]
+    sNorm2CutCommon = [x if abs(x) >= 1 and abs(y) >= 1 and abs(z) >= 1 else 0 for x, y, z in zip(sNorm2, sNorm3, sNorm1)]
+    sNorm3CutCommon = [x if abs(x) >= 1 and abs(y) >= 1 and abs(z) >= 1 else 0 for x, y, z in zip(sNorm3, sNorm1, sNorm2)]
+
     sZero = [0 for x in sNorm3]
 
     dataModifiedArr0 = np.array(sZero).astype(str)
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((s3.astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((s2.astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((s1.astype(str), dataModifiedArr0))
     dataModifiedArr0 = np.column_stack((freq.astype(str), dataModifiedArr0))
-    dataModifiedArr1 = np.array(sNorm3Cut).astype(str)
+
+    dataModifiedArr1 = np.array(sNorm3CutCommon).astype(str)
+    dataModifiedArr1 = np.column_stack((np.array(sNorm2CutCommon).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((np.array(sNorm1CutCommon).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((np.array(sNorm3Cut).astype(str), dataModifiedArr1))
     dataModifiedArr1 = np.column_stack((np.array(sNorm2Cut).astype(str), dataModifiedArr1))
     dataModifiedArr1 = np.column_stack((np.array(sNorm1Cut).astype(str), dataModifiedArr1))
     dataModifiedArr1 = np.column_stack((sNorm3.astype(str), dataModifiedArr1))
