@@ -39,18 +39,22 @@
     var table1Element = document.getElementById('table1');
     tableSettingsAtStart1 = Object.assign({}, tableSettingsAtStart);
     var table1Content = new Handsontable(table1Element, tableSettingsAtStart1);
+    tableContent.table1 = new Handsontable(table1Element, tableSettingsAtStart1);
 
     var table2Element = document.getElementById('table2');
     tableSettingsAtStart2 = Object.assign({}, tableSettingsAtStart);
     var table2Content = new Handsontable(table2Element, tableSettingsAtStart2);
+    tableContent.table2 = new Handsontable(table2Element, tableSettingsAtStart2);
 
     var table3Element = document.getElementById('table3');
     tableSettingsAtStart3 = Object.assign({}, tableSettingsAtStart);
     var table3Content = new Handsontable(table3Element, tableSettingsAtStart3);
+    tableContent.table3 = new Handsontable(table3Element, tableSettingsAtStart3);
 
     var table4Element = document.getElementById('table4');
     tableSettingsAtStart4 = Object.assign({}, tableSettingsAtStart);
     var table4Content = new Handsontable(table4Element, tableSettingsAtStart4);
+    tableContent.table4 = new Handsontable(table4Element, tableSettingsAtStart4);
 
     var correlationTableElement = document.getElementById('correlationTable');
     tableSettingsAtStartC = Object.assign({}, tableSettingsAtStart);

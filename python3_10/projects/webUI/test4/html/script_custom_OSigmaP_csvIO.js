@@ -1,12 +1,17 @@
 
+var tableContent = {};
 var load1 = document.getElementById('load1');
-const optionsLoad = document.getElementsByName('optionsLoad');
-const optionsPaste = document.getElementsByName('optionsPaste');
+var load2 = document.getElementById('load2');
+var load3 = document.getElementById('load3');
+var load4 = document.getElementById('load4');
 
-load1.addEventListener('change', function(event) { loadCSVFromFile(1); });
+load1.addEventListener('change', function(event) { loadCSVFromFile(load1, 'table1'); });
+load2.addEventListener('change', function(event) { loadCSVFromFile(load2, 'table2'); });
+load3.addEventListener('change', function(event) { loadCSVFromFile(load3, 'table3'); });
+load4.addEventListener('change', function(event) { loadCSVFromFile(load4, 'table4'); });
 
-function loadCSVFromFile() {
-    var file = load1.files[0];
+function loadCSVFromFile(keyStr, tableName) {
+    var file = keyStr.files[0];
 
     if (file) {
         var reader = new FileReader();
@@ -14,18 +19,14 @@ function loadCSVFromFile() {
         reader.onload = function (e) {
             var csvData = e.target.result;
             var csvDataAOA = convertToAOA(csvData);
-            createTable1(csvDataAOA);
+            createTableAny(tableName, csvDataAOA);
         };
         reader.readAsText(file);
     }
 }
 
-function exportToCSV(keyStr) {
-    if (keyStr == 2) {
-        var Data0 = table2Content.getData();
-    } else {
-        var Data0 = table1Content.getData();
-    }
+function exportToCSV(tableName) {
+    var Data0 = tableContent[tableName].getData();
     const csvFormat = Data0.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvFormat], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);

@@ -46,6 +46,13 @@
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    function createTableAny(tableName, csvData) {
+        var tableElement = document.getElementById(tableName);
+        var tableSettings = Object.assign({}, tableSettingsCommon);
+        tableSettings.data = csvData;
+        tableContent[tableName] = new Handsontable(tableElement, tableSettings);
+    }
+
     function createTable1(csvData) {
         if (table1Content) { table1Content.destroy(); }
         var table1Settings = Object.assign({}, tableSettingsCommon);

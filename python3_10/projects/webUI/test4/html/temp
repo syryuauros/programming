@@ -191,3 +191,14 @@
         var yData10 = table2Content.getDataAtCol(1);
         var yData20 = table2Content.getDataAtCol(2);
         var yData30 = table2Content.getDataAtCol(3);
+
+
+    if (keyStr == 4) {
+        var Data0 = tableContent.tableName.getData();
+    } else if (keyStr == 3) {
+        var Data0 = tableContent.tableName.getData();
+    } else if (keyStr == 2) {
+        var Data0 = tableContent.tableName.getData();
+    } else {
+        var Data0 = tableContent.tableName.getData();
+    }
