@@ -23,51 +23,88 @@
     </div>
 
     <div class="container-grid0">
-        <div class="item">
-            <div class="container-grid1">
-                <div class="item">
-                </div>
-                <div class="item">
-                </div>
-                <div class="item">
-                </div>
-            </div>
-        </div>
 
         <div class="item">
             <div class="container-grid2">
                 <div class="item">
                     <h1>Input</h1>
-                    <button onclick="">generate noise data</button>
+                    <label for="load1">Load: </label>
+                    <input type="file" id="load1" accept=".csv">
+                    <button onclick="exportToCSV(1)">export</button> <br> <br>
                     <button onclick="">generate sensitivity</button> <br> <br>
+                    <button onclick="">generate noise data</button> <br> <br>
                     <div id="table1"></div>
                 </div>
+
                 <div class="item">
                     <h1>noise</h1>
+                    <input type="file" id="load2" accept=".csv">
+                    <button onclick="exportToCSV(2)">export</button> <br> <br>
                     <div id="table2"></div>
                 </div>
             </div>
         </div>
+
+
         <div class="item">
             <div class="container-grid2">
                 <div class="item">
                     <h1>sensitivity</h1>
+                    <label for="load3">Load: </label>
+                    <input type="file" id="load3" accept=".csv">
+                    <button onclick="exportToCSV(3)">export</button> <br> <br>
                     <div id="table3"></div>
                 </div>
+
                 <div class="item">
                     <h1>weight</h1>
+                    <input type="file" id="load4" accept=".csv">
+                    <button onclick="exportToCSV(4)">export</button> <br> <br>
                     <div id="table4"></div>
                 </div>
             </div>
         </div>
 
+
         <div class="item">
+            <h2>time domain</h2>
+            <canvas id="myChart" width="300" height="145"></canvas>
+
+            <h2>frequency domain(amp-phase)</h2>
+            <canvas id="myChart2" width="300" height="145"></canvas>
+
+            <h2>frequency domain(real-imag)</h2>
+            <canvas id="myChart3" width="300" height="145"></canvas>
         </div>
+
+
+        <div class="item">
+            <div class="container-grid1">
+                <div class="item">
+                    <h2>axis setting</h2>
+                    <div id="table5"></div> <br>
+                    <button onclick="modifyRange(); calCorRange();">adopt</button>
+                    <label for="labelAdopt" style="font-size: 14.5px; color: red;">(auto-recal: correlation_table)</label> <br> <br>
+                    <input type="checkbox" id="checkKeepAxis" value="">
+                    <label for="label1">keep applying axis setting</label> <br>
+                </div>
+
+                <div class="itemC">
+                    <h2>corrlation_table:</h2>
+                    <div id="correlationTable"></div>
+                </div>
+
+                <div class="item">
+                </div>
+            </div>
+        </div>
+
     </div>
 
 <!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
     <script src="./script_custom_OSigmaP_tables.js"></script>
+    <script src="./script_custom_OSigmaP_varAndSettings.js"></script>
 </body>
 </html>
 
