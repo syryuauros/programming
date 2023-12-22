@@ -38,6 +38,7 @@
 
                 <div class="item">
                     <h1>noise</h1>
+                    <label for="load2">Load: </label>
                     <input type="file" id="load2" accept=".csv">
                     <button onclick="exportToCSV(2)">export</button> <br> <br>
                     <div id="table2"></div>
@@ -58,6 +59,7 @@
 
                 <div class="item">
                     <h1>weight</h1>
+                    <label for="load4">Load: </label>
                     <input type="file" id="load4" accept=".csv">
                     <button onclick="exportToCSV(4)">export</button> <br> <br>
                     <div id="table4"></div>
@@ -103,8 +105,10 @@
 
 <!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
+    <script src="./script_custom_OSigmaP_csvIO.js"></script>
     <script src="./script_custom_OSigmaP_tables.js"></script>
     <script src="./script_custom_OSigmaP_varAndSettings.js"></script>
+    <script src="./script_custom_OSigmaP.js"></script>
 </body>
 </html>
 

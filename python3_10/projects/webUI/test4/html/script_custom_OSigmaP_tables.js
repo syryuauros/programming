@@ -20,7 +20,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var tableSettingsAtStart = {
         data: [
-            [, , , , , , ],
+            [, , , , , , , ],
         ],
         allowEmpty: true,
         type: 'numeric',
@@ -30,7 +30,8 @@
         colHeaders: true,
         rowHeaders: true,
         customBorders: true,
-        height: 'auto',
+        width: '100%',
+        height: '63.5%',
         renderAllRows: false,
         licenseKey: 'non-commercial-and-evaluation'
     };

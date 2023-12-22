@@ -43,14 +43,13 @@
     dataCov = data.dataCov;
 
     createCorrelationTable();
-}
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function createTable1(csvData) {
         if (table1Content) { table1Content.destroy(); }
         var table1Settings = Object.assign({}, tableSettingsCommon);
         table1Settings.data = csvData;
-        table1Settings.colHeaders = [ 'freq', 'p1_0', 'p1_1', 'p2_0', 'p2_1', 'p3_0', 'p3_1', 'sigma' ];
 
         table1Content = new Handsontable(table1Element, table1Settings);
     }

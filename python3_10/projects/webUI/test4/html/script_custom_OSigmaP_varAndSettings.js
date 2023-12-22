@@ -21,8 +21,8 @@
         rowHeaders: true,
         customBorders: true,
         dropdownMenu: false,
-        width: 'auto',
-        height: 'auto',
+        width: '100%',
+        height: '63.5%',
         viewportRowRenderingOffset: 10,
         licenseKey: 'non-commercial-and-evaluation'
     };
