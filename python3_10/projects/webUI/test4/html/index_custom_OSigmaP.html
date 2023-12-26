@@ -31,8 +31,7 @@
                     <label for="load1">Load: </label>
                     <input type="file" id="load1" accept=".csv">
                     <button onclick="exportToCSV('table1')">export</button> <br> <br>
-                    <button onclick="">generate sensitivity</button> <br> <br>
-                    <button onclick="">generate noise data</button> <br> <br>
+                    <div id="table0"></div>
                     <div id="table1"></div>
                 </div>
 
@@ -41,6 +40,7 @@
                     <label for="load2">Load: </label>
                     <input type="file" id="load2" accept=".csv">
                     <button onclick="exportToCSV('table2')">export</button> <br> <br>
+                    <button onclick="">generate noise data</button> <br> <br>
                     <div id="table2"></div>
                 </div>
             </div>
@@ -54,6 +54,15 @@
                     <label for="load3">Load: </label>
                     <input type="file" id="load3" accept=".csv">
                     <button onclick="exportToCSV('table3')">export</button> <br> <br>
+                    <button onclick="calSensitivity()">generate sensitivity</button>
+                        <label for="option-simple">
+                            <input type="radio" id="option-simple" name="optionsSimpleNorm" value="simple" onchange="createTableAny('table3',dataForTable20);drawchart1();drawchart2();drawchart3();">
+                            simple
+                        </label>
+                        <label for="option-norm">
+                            <input type="radio" id="option-norm" name="optionsSimpleNorm" value="norm" onchange="createTableAny('table3',dataForTable21);drawchart1();drawchart2();drawchart3();" checked>
+                            normalized-by-sigma
+                        </label> <br> <br>
                     <div id="table3"></div>
                 </div>
 
@@ -62,6 +71,7 @@
                     <label for="load4">Load: </label>
                     <input type="file" id="load4" accept=".csv">
                     <button onclick="exportToCSV('table4')">export</button> <br> <br>
+                    <button onclick="">generate unitary matrix</button> <br> <br>
                     <div id="table4"></div>
                 </div>
             </div>
@@ -69,13 +79,13 @@
 
 
         <div class="item">
-            <h2>time domain</h2>
+            <h2>p1 (sensitivity)</h2>
             <canvas id="myChart" width="300" height="145"></canvas>
 
-            <h2>frequency domain(amp-phase)</h2>
+            <h2>p2 (sensitivity)</h2>
             <canvas id="myChart2" width="300" height="145"></canvas>
 
-            <h2>frequency domain(real-imag)</h2>
+            <h2>p3 (sensitivity)</h2>
             <canvas id="myChart3" width="300" height="145"></canvas>
         </div>
 

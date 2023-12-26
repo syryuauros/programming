@@ -36,8 +36,15 @@
         licenseKey: 'non-commercial-and-evaluation'
     };
 
+    var table0Element = document.getElementById('table0');
+    tableSettingsAtStart0 = Object.assign({}, tableSettingsAtStart);
+    tableSettingsAtStart0.height = '13.5%';
+    tableSettingsAtStart0.colHeaders = [ ];
+    tableContent.table0 = new Handsontable(table0Element, tableSettingsAtStart0);
+
     var table1Element = document.getElementById('table1');
     tableSettingsAtStart1 = Object.assign({}, tableSettingsAtStart);
+    tableSettingsAtStart1.height = '50%';
     var table1Content = new Handsontable(table1Element, tableSettingsAtStart1);
     tableContent.table1 = new Handsontable(table1Element, tableSettingsAtStart1);
 

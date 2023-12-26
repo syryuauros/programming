@@ -1,4 +1,32 @@
-     async function calculate() {
+     async function calSensitivity() {
+       var data0 = tableContent.table0.getData();
+       var data1 = tableContent.table1.getData();
+
+       const response = await fetch('http://192.168.12.135:6969/custom_sensitivity', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({
+               data0: data0,
+               data1: data1,
+           })
+       });
+       data = await response.json();
+       dataForTable20 = data.data0;
+       dataForTable21 = data.data1;
+       dataCov = data.dataCov;
+
+       createTableAny('table3',dataForTable20);
+       drawchart1();
+       drawchart2();
+       drawchart3();
+
+       createCorrelationTable();
+    }
+
+
+    async function calculate() {
        var data0 = table0Content.getData();
        var data1 = table1Content.getData();
 
@@ -49,7 +77,45 @@
     function createTableAny(tableName, csvData) {
         var tableElement = document.getElementById(tableName);
         var tableSettings = Object.assign({}, tableSettingsCommon);
-        tableSettings.data = csvData;
+        tableSettings.data = [ ...csvData];
+
+        if (tableName == 'table1') {
+          tableSettings.height = '65%';
+          tableSettings.colHeaders = [ ];
+          tableSettingsAtStart0.colHeaders = [ ];
+          tableSettings.colHeaders = ['freq',];
+          console.log(csvData[0].length);
+          for (let i = 1; i < (csvData[0].length)/2; i++) {
+            tableSettings.colHeaders.push(...['p' + i +'_pre', 'p' + i + '_post',]);
+            tableSettingsAtStart0.colHeaders.push(...['p' + i +'_cen', 'p' + i + '_post',]);
+          }
+          tableSettings.colHeaders.push('sigma');
+          tableSettingsAtStart0.colHeaders.push('target(%)');
+          tableContent.table0 = new Handsontable(table0Element, tableSettingsAtStart0);
+        }
+      else if (tableName == 'table3') {
+        optionsSimpleNorm.forEach(option => {
+            if (option.checked) {
+                selectedOption = option.value;
+            }
+        });
+        if (selectedOption == "simple") {
+            tableSettings.data = dataForTable20;
+        } else {
+            tableSettings.data = dataForTable21;
+        }
+        console.log(csvData[0].length);
+        tableSettings.colHeaders = ['freq',];
+        for (let i = 1; i < 4; i++) {
+          tableSettings.colHeaders.push(...['p' + i + ',']);
+        }
+        for (let i = 1; i < 4; i++) {
+          tableSettings.colHeaders.push(...['overlapData', 'overlapData',]);
+        }
+
+
+      } else { }
+
         tableContent[tableName] = new Handsontable(tableElement, tableSettings);
     }
 
@@ -149,10 +215,10 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function drawchart1() {
-        var xData1 = table2Content.getDataAtCol(0);
-        var yData10 = table2Content.getDataAtCol(1);
-        var yData11 = table2Content.getDataAtCol(4);
-        var yData12 = table2Content.getDataAtCol(7);
+        var xData1 = tableContent.table3.getDataAtCol(0);
+        var yData10 = tableContent.table3.getDataAtCol(1);
+        var yData11 = tableContent.table3.getDataAtCol(4);
+        var yData12 = tableContent.table3.getDataAtCol(7);
 
         chartSettingsScatPoint1 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint1[0].data = xData1.map((value, index) => ({ x: value, y: yData10[index] }));
@@ -184,10 +250,10 @@
     }
 
     function drawchart2() {
-        var xData1 = table2Content.getDataAtCol(0);
-        var yData20 = table2Content.getDataAtCol(2);
-        var yData21 = table2Content.getDataAtCol(5);
-        var yData22 = table2Content.getDataAtCol(8);
+        var xData1 =  tableContent.table3.getDataAtCol(0);
+        var yData20 = tableContent.table3.getDataAtCol(2);
+        var yData21 = tableContent.table3.getDataAtCol(5);
+        var yData22 = tableContent.table3.getDataAtCol(8);
 
         chartSettingsScatPoint2 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint2[0].data = xData1.map((value, index) => ({ x: value, y: yData20[index] }));
@@ -217,10 +283,10 @@
     }
 
     function drawchart3() {
-        var xData1 = table2Content.getDataAtCol(0);
-        var yData30 = table2Content.getDataAtCol(3);
-        var yData31 = table2Content.getDataAtCol(6);
-        var yData32 = table2Content.getDataAtCol(9);
+        var xData1 =  tableContent.table3.getDataAtCol(0);
+        var yData30 = tableContent.table3.getDataAtCol(3);
+        var yData31 = tableContent.table3.getDataAtCol(6);
+        var yData32 = tableContent.table3.getDataAtCol(9);
 
         chartSettingsScatPoint3 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint3[0].data = xData1.map((value, index) => ({ x: value, y: yData30[index] }));

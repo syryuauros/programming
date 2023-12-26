@@ -22,7 +22,7 @@
         customBorders: true,
         dropdownMenu: false,
         width: '100%',
-        height: '63.5%',
+        height: '71.5%',
         viewportRowRenderingOffset: 10,
         licenseKey: 'non-commercial-and-evaluation'
     };
