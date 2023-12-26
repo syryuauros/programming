@@ -40,7 +40,11 @@
                     <label for="load2">Load: </label>
                     <input type="file" id="load2" accept=".csv">
                     <button onclick="exportToCSV('table2')">export</button> <br> <br>
-                    <button onclick="">generate noise data</button> <br> <br>
+                    <button onclick="genNoiseData()">generate noise data</button>
+                    <label for="label1"> sample#: </label>
+                    <input type="text" size="1" value="10" style="text-align: center;" id="sampleNum">
+                    <label for="label2">,  1 Sigma(%):</label>
+                    <input type="text" size="1" value="5" style="text-align: center;" id="oneSigma"> <br> <br>
                     <div id="table2"></div>
                 </div>
             </div>

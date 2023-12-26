@@ -25,66 +25,40 @@
        createCorrelationTable();
     }
 
+     async function genNoiseData() {
+       var data1 = tableContent.table1.getData();
+       var sampleNum = document.getElementById('sampleNum').value;
+       var oneSigma = document.getElementById('oneSigma').value;
 
-    async function calculate() {
-       var data0 = table0Content.getData();
-       var data1 = table1Content.getData();
-
-       const response = await fetch('http://192.168.12.135:6969/custom_sensitivity', {
+       const response = await fetch('http://192.168.12.135:6969/custom_OSigmaP_Noise', {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json',
            },
            body: JSON.stringify({
-               data0: data0,
-               data1: data1,
+             data1: data1,
+             sampleNum: sampleNum,
+             oneSigma: oneSigma,
            })
        });
        data = await response.json();
-       dataForTable20 = data.data0;
-       dataForTable21 = data.data1;
-       dataCov = data.dataCov;
+       data1 = data.data1;
 
-       createTable2();
-       drawchart1();
-       drawchart2();
-       drawchart3();
-       createCorrelationTable();
-    }
-    async function calCorRange() {
-    var data0 = table0Content.getData();
-    var data1 = table1Content.getData();
-    var dataRange = settingTable.getData();
-
-    const response = await fetch('http://192.168.12.135:6969/custom_sensitivity2', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            data0: data0,
-            data1: data1,
-            dataRange: dataRange,
-        })
-    });
-    data = await response.json();
-    dataCov = data.dataCov;
-
-    createCorrelationTable();
+       createTableAny('table2',data1);
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function createTableAny(tableName, csvData) {
         var tableElement = document.getElementById(tableName);
         var tableSettings = Object.assign({}, tableSettingsCommon);
-        tableSettings.data = [ ...csvData];
+        var sampleNum = document.getElementById('sampleNum').value;
+        tableSettings.data = csvData;
 
         if (tableName == 'table1') {
           tableSettings.height = '65%';
           tableSettings.colHeaders = [ ];
           tableSettingsAtStart0.colHeaders = [ ];
           tableSettings.colHeaders = ['freq',];
-          console.log(csvData[0].length);
           for (let i = 1; i < (csvData[0].length)/2; i++) {
             tableSettings.colHeaders.push(...['p' + i +'_pre', 'p' + i + '_post',]);
             tableSettingsAtStart0.colHeaders.push(...['p' + i +'_cen', 'p' + i + '_post',]);
@@ -92,8 +66,8 @@
           tableSettings.colHeaders.push('sigma');
           tableSettingsAtStart0.colHeaders.push('target(%)');
           tableContent.table0 = new Handsontable(table0Element, tableSettingsAtStart0);
-        }
-      else if (tableName == 'table3') {
+
+      } else if (tableName == 'table3') {
         optionsSimpleNorm.forEach(option => {
             if (option.checked) {
                 selectedOption = option.value;
@@ -104,7 +78,6 @@
         } else {
             tableSettings.data = dataForTable21;
         }
-        console.log(csvData[0].length);
         tableSettings.colHeaders = ['freq',];
         for (let i = 1; i < 4; i++) {
           tableSettings.colHeaders.push(...['p' + i + ',']);
@@ -113,7 +86,15 @@
           tableSettings.colHeaders.push(...['overlapData', 'overlapData',]);
         }
 
-
+      } else if (tableName == 'table2') {
+        tableSettings.colHeaders = ['freq',];
+        for (let i = 1; i < 4; i++) {
+          for (let j = 1; j < (parseInt(sampleNum)+1); j++) {
+            console.log(i, j)
+            console.log(sampleNum)
+            tableSettings.colHeaders.push(...['p' + i + ',']);
+          }
+        }
       } else { }
 
         tableContent[tableName] = new Handsontable(tableElement, tableSettings);

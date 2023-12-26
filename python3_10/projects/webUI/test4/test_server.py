@@ -5,6 +5,7 @@ import flask
 import json
 import numpy as np
 import math
+import random
 
 num3 = float(0)
 
@@ -393,6 +394,37 @@ def custom_sensitivity2_numbers():
     sCovRange = [[1, sCov12Range, sCov13Range], [sCov12Range, 1, sCov23Range], [sCov13Range, sCov23Range, 1]]
 
     return jsonify({ 'dataCov':sCovRange, })
+
+@app.route('/custom_OSigmaP_Noise', methods=['POST'])
+def custom_OSigmaP_Noise_numbers():
+
+    tr_json = request.get_json()
+    data1 = tr_json['data1']
+    sampleNum = tr_json['sampleNum']
+    oneSigma = tr_json['oneSigma']
+    data1Arr = np.array(data1).astype(float)
+    print(sampleNum)
+
+    freq = data1Arr[:,0]
+
+    pTmp = (data1Arr[:,1] + data1Arr[:,2])/2
+    dataModifiedArr1 = np.array(pTmp)
+
+    i = 1
+    while i < (len(data1Arr[0]))/2 :
+        pTmp = (data1Arr[:,2*i-1] + data1Arr[:,2*i])/2
+        j = 1
+        while j < (int(sampleNum) + 1) :
+            noise = random.gauss(pTmp, float(oneSigma)*pTmp/100)
+            dataModifiedArr1 = np.column_stack((noise, dataModifiedArr1))
+            j += 1
+        i += 1
+
+    dataModifiedArr1 = dataModifiedArr1[:, ::-1]
+    dataModifiedArr1[:,0] = freq
+
+    return jsonify({ 'data1':dataModifiedArr1.tolist(), })
+
 
 def can_be_float(arr):
     k = 0
