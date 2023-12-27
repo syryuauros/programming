@@ -69,4 +69,12 @@
     tableSettingsAtStartC.colHeaders = [ 'p1', 'p2', 'p3', ];
     var correlationTableContent = new Handsontable(correlationTableElement, tableSettingsAtStartC);
 
+    var oSigmaPTableElement = document.getElementById('oSigmaPTable');
+    tableSettingsAtStartOP = Object.assign({}, tableSettingsAtStart);
+    tableSettingsAtStartOP.data = [ ['', '', '',], ['', '', '',], ['', '', '',],];
+    tableSettingsAtStartOP.colHeaders = [ 'p1', 'p2', 'p3', ];
+    tableSettingsAtStartOP.rowHeaders = [ 'p1', 'p2', 'p3', ];
+    var correlationTableContent = new Handsontable(oSigmaPTableElement, tableSettingsAtStartOP);
+
+
     // tableSettingsAtStart4.colHeaders = [ 'freq', 'p1_0', 'p1_1', 'p2_0', 'p2_1', 'p3_0', 'p3_1', 'sigma' ];

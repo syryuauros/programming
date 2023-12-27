@@ -47,6 +47,26 @@
        createTableAny('table2',data1);
     }
 
+     async function calOSigmaP() {
+       var data2 = tableContent.table2.getData();
+       var data3 = tableContent.table3.getData();
+
+       const response = await fetch('http://192.168.12.135:6969/custom_OSigmaP_calOSigmaP', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({
+             data2: data2,
+             data3: data3,
+           })
+       });
+       data = await response.json();
+       dataOS = data.dataOS;
+
+       createTableAny('oSigmaPTable',dataOS);
+    }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function createTableAny(tableName, csvData) {
         var tableElement = document.getElementById(tableName);
@@ -68,6 +88,7 @@
           tableContent.table0 = new Handsontable(table0Element, tableSettingsAtStart0);
 
       } else if (tableName == 'table3') {
+        tableSettings.height = '71.3%';
         optionsSimpleNorm.forEach(option => {
             if (option.checked) {
                 selectedOption = option.value;
@@ -90,8 +111,6 @@
         tableSettings.colHeaders = ['freq',];
         for (let i = 1; i < 4; i++) {
           for (let j = 1; j < (parseInt(sampleNum)+1); j++) {
-            console.log(i, j)
-            console.log(sampleNum)
             tableSettings.colHeaders.push(...['p' + i + ',']);
           }
         }

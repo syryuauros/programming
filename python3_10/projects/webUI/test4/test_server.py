@@ -387,9 +387,9 @@ def custom_sensitivity2_numbers():
     s2Range = s2[indexS:indexF]
     s3Range = s3[indexS:indexF]
 
-    sCov12Range = np.cov(s1Range, s2Range)[0,1] / math.sqrt(np.cov(s1Range, s2Range)[0,0] * np.cov(s1Range, s2Range)[1,1])
-    sCov13Range = np.cov(s1Range, s3Range)[0,1] / math.sqrt(np.cov(s1Range, s3Range)[0,0] * np.cov(s1Range, s3Range)[1,1])
-    sCov23Range = np.cov(s2Range, s3Range)[0,1] / math.sqrt(np.cov(s2Range, s3Range)[0,0] * np.cov(s2Range, s3Range)[1,1])
+    sCov12Range = np.cov(s1Range, s2Range, bias=True)[0,1] / math.sqrt(np.cov(s1Range, s2Range, bias=True)[0,0] * np.cov(s1Range, s2Range, bias=True)[1,1])
+    sCov13Range = np.cov(s1Range, s3Range, bias=True)[0,1] / math.sqrt(np.cov(s1Range, s3Range, bias=True)[0,0] * np.cov(s1Range, s3Range, bias=True)[1,1])
+    sCov23Range = np.cov(s2Range, s3Range, bias=True)[0,1] / math.sqrt(np.cov(s2Range, s3Range, bias=True)[0,0] * np.cov(s2Range, s3Range, bias=True)[1,1])
 
     sCovRange = [[1, sCov12Range, sCov13Range], [sCov12Range, 1, sCov23Range], [sCov13Range, sCov23Range, 1]]
 
@@ -424,6 +424,37 @@ def custom_OSigmaP_Noise_numbers():
     dataModifiedArr1[:,0] = freq
 
     return jsonify({ 'data1':dataModifiedArr1.tolist(), })
+
+@app.route('/custom_OSigmaP_calOSigmaP', methods=['POST'])
+def custom_OSigmaP_calOSigmaP_numbers():
+
+    tr_json = request.get_json()
+    data2 = tr_json['data2']
+    # data3 = tr_json['data3']
+    data2Arr = np.array(data2).astype(float)
+    # data3Arr = np.array(data3).astype(float)
+
+    # freq = data3Arr[:,0]
+
+    # MatJIndexEnd = int((len(data3Arr[0])-1)/3)
+    # MatJ = np.array(data3Arr[:,MatJIndexEnd])
+    # i = MatJIndexEnd -1
+    # while i > 0:
+    #     MatJ = np.column_stack((data3Arr[:,i], MatJ))
+    #     i -= 1
+
+    ParamNum = 1
+    SampleNum = 3
+    MatYIndexEnd = int(1 + ParamNum * SampleNum)
+    i = MatYIndexEnd - SampleNum
+    MatY = np.array(data2Arr[:,i:MatYIndexEnd])
+    while i > 1:
+        MatY = np.row_stack((data2Arr[:,i-SampleNum:i], MatY))
+        i -= SampleNum
+
+    MatCovP = np.cov(MatY.astype(float), bias=True)
+
+    return jsonify({ 'dataOS':MatCovP.tolist(), })
 
 
 def can_be_float(arr):
