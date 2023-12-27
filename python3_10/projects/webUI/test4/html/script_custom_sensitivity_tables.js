@@ -37,7 +37,7 @@
     };
     var table0Element = document.getElementById('table0');
     tableSettingsAtStart0 = Object.assign({}, tableSettingsAtStart);
-    tableSettingsAtStart0.data = [ [1000, 50, 7000, 350, 10000, 500, 0.1 ] ];
+    tableSettingsAtStart0.data = [ [950, 50, 7000, 350, 10000, 500, 0.1 ] ];
     tableSettingsAtStart0.numericFormat.pattern = '0,0';
     tableSettingsAtStart0.colHeaders = [ 'p1Center', 'p1Delta', 'p2Center', 'p2Delta', 'p3Center', 'p3Delta','target(%)' ];
     var table0Content = new Handsontable(table0Element, tableSettingsAtStart0);

@@ -1,17 +1,39 @@
      async function calculate() {
        var data0 = table0Content.getData();
        var data1 = table1Content.getData();
+       var response;
+       var options2p3p = document.getElementsByName('options2p3p');
 
-       const response = await fetch('http://192.168.12.135:6969/custom_sensitivity', {
-           method: 'POST',
-           headers: {
-               'Content-Type': 'application/json',
-           },
-           body: JSON.stringify({
-               data0: data0,
-               data1: data1,
-           })
+       options2p3p.forEach(option => {
+           if (option.checked) {
+               selectedOption = option.value;
+           }
        });
+
+       if (selectedOption == '2p') {
+           response = await fetch('http://192.168.12.135:6969/custom_sensitivity', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                   data0: data0,
+                   data1: data1,
+               })
+           });
+       } else {
+            response = await fetch('http://192.168.12.135:6969/custom_sensitivity3P', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                   data0: data0,
+                   data1: data1,
+               })
+           });
+
+       }
        data = await response.json();
        dataForTable20 = data.data0;
        dataForTable21 = data.data1;

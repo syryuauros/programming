@@ -289,17 +289,96 @@ def custom_sensitivity_numbers():
     target = data0Arr[:,6]
 
     freq = data1ArrSort[:,0]
-    p1_0 = data1ArrSort[:,1]
-    p1_1 = data1ArrSort[:,2]
-    p2_0 = data1ArrSort[:,3]
-    p2_1 = data1ArrSort[:,4]
-    p3_0 = data1ArrSort[:,5]
-    p3_1 = data1ArrSort[:,6]
-    sigma = data1ArrSort[:,7]
+    pc = data1ArrSort[:,1]
+    sigma = data1ArrSort[:,len(data1ArrSort[0])-1]
+    p1_0 = data1ArrSort[:,2]
+    p1_1 = data1ArrSort[:,3]
+    p2_0 = data1ArrSort[:,4]
+    p2_1 = data1ArrSort[:,5]
+    p3_0 = data1ArrSort[:,6]
+    p3_1 = data1ArrSort[:,7]
 
     s1 = (p1_1 - p1_0) / (2 * p1Delta)
     s2 = (p2_1 - p2_0) / (2 * p2Delta)
     s3 = (p3_1 - p3_0) / (2 * p3Delta)
+
+    sNorm1 = s1* (p1Center) * target/100 /sigma
+    sNorm2 = s2* (p2Center) * target/100 /sigma
+    sNorm3 = s3* (p3Center) * target/100 /sigma
+
+    sNorm1Cut = [x if abs(x) >= 1 else 0 for x in sNorm1]
+    sNorm2Cut = [x if abs(x) >= 1 else 0 for x in sNorm2]
+    sNorm3Cut = [x if abs(x) >= 1 else 0 for x in sNorm3]
+
+    sNorm1CutCommon = [x if abs(x) >= 1 and abs(y) >= 1 and abs(z) >= 1 else 0 for x, y, z in zip(sNorm1, sNorm2, sNorm3)]
+    sNorm2CutCommon = [x if abs(x) >= 1 and abs(y) >= 1 and abs(z) >= 1 else 0 for x, y, z in zip(sNorm2, sNorm3, sNorm1)]
+    sNorm3CutCommon = [x if abs(x) >= 1 and abs(y) >= 1 and abs(z) >= 1 else 0 for x, y, z in zip(sNorm3, sNorm1, sNorm2)]
+
+    sZero = [0 for x in sNorm3]
+
+    dataModifiedArr0 = np.array(sZero).astype(str)
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((np.array(sZero).astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((s3.astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((s2.astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((s1.astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((freq.astype(str), dataModifiedArr0))
+
+    dataModifiedArr1 = np.array(sNorm3CutCommon).astype(str)
+    dataModifiedArr1 = np.column_stack((np.array(sNorm2CutCommon).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((np.array(sNorm1CutCommon).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((np.array(sNorm3Cut).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((np.array(sNorm2Cut).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((np.array(sNorm1Cut).astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((sNorm3.astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((sNorm2.astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((sNorm1.astype(str), dataModifiedArr1))
+    dataModifiedArr1 = np.column_stack((freq.astype(str), dataModifiedArr1))
+
+    sCov12 = np.cov(s1, s2)[0,1] / math.sqrt(np.cov(s1, s2)[0,0] * np.cov(s1, s2)[1,1])
+    sCov13 = np.cov(s1, s3)[0,1] / math.sqrt(np.cov(s1, s3)[0,0] * np.cov(s1, s3)[1,1])
+    sCov23 = np.cov(s2, s3)[0,1] / math.sqrt(np.cov(s2, s3)[0,0] * np.cov(s2, s3)[1,1])
+
+    sCov = [[1, sCov12, sCov13], [sCov12, 1, sCov23], [sCov13, sCov23, 1]]
+
+    dataModified0 = dataModifiedArr0.tolist()
+    dataModified1 = dataModifiedArr1.tolist()
+    return jsonify({ 'data0': dataModified0, 'data1': dataModified1, 'dataCov':sCov, })
+
+@app.route('/custom_sensitivity3P', methods=['POST'])
+def custom_sensitivity3P_numbers():
+
+    tr_json = request.get_json()
+    data0 = tr_json['data0']
+    data1 = tr_json['data1']
+    data0Arr = np.array(data0).astype(float)
+    data1Arr = np.array(data1).astype(float)
+    data1ArrSort = data1Arr[data1Arr[:, 0].argsort()]
+
+    p1Center = data0Arr[:,0]
+    p2Center = data0Arr[:,2]
+    p3Center = data0Arr[:,4]
+    p1Delta = data0Arr[:,1]
+    p2Delta = data0Arr[:,3]
+    p3Delta = data0Arr[:,5]
+    target = data0Arr[:,6]
+
+    freq = data1ArrSort[:,0]
+    pc = data1ArrSort[:,1]
+    sigma = data1ArrSort[:,len(data1ArrSort[0])-1]
+    p1_0 = data1ArrSort[:,2]
+    p1_1 = data1ArrSort[:,3]
+    p2_0 = data1ArrSort[:,4]
+    p2_1 = data1ArrSort[:,5]
+    p3_0 = data1ArrSort[:,6]
+    p3_1 = data1ArrSort[:,7]
+
+    s1 = (abs(p1_1 - pc) + abs(p1_0 - pc)) / (2 * p1Delta)
+    s2 = (abs(p2_1 - pc) + abs(p2_0 - pc)) / (2 * p2Delta)
+    s3 = (abs(p3_1 - pc) + abs(p3_0 - pc)) / (2 * p3Delta)
 
     sNorm1 = s1* (p1Center) * target/100 /sigma
     sNorm2 = s2* (p2Center) * target/100 /sigma
@@ -403,22 +482,17 @@ def custom_OSigmaP_Noise_numbers():
     sampleNum = tr_json['sampleNum']
     oneSigma = tr_json['oneSigma']
     data1Arr = np.array(data1).astype(float)
-    print(sampleNum)
 
     freq = data1Arr[:,0]
 
-    pTmp = (data1Arr[:,1] + data1Arr[:,2])/2
-    dataModifiedArr1 = np.array(pTmp)
+    pCenter = data1Arr[:,1]
+    dataModifiedArr1 = pCenter
 
-    i = 1
-    while i < (len(data1Arr[0]))/2 :
-        pTmp = (data1Arr[:,2*i-1] + data1Arr[:,2*i])/2
-        j = 1
-        while j < (int(sampleNum) + 1) :
-            noise = random.gauss(pTmp, float(oneSigma)*pTmp/100)
-            dataModifiedArr1 = np.column_stack((noise, dataModifiedArr1))
-            j += 1
-        i += 1
+    j = 1
+    while j < (int(sampleNum) + 1) :
+        noise = random.gauss(pCenter, float(oneSigma)*pCenter/100)
+        dataModifiedArr1 = np.column_stack((noise, dataModifiedArr1))
+        j += 1
 
     dataModifiedArr1 = dataModifiedArr1[:, ::-1]
     dataModifiedArr1[:,0] = freq
@@ -430,20 +504,20 @@ def custom_OSigmaP_calOSigmaP_numbers():
 
     tr_json = request.get_json()
     data2 = tr_json['data2']
-    # data3 = tr_json['data3']
+    data3 = tr_json['data3']
     data2Arr = np.array(data2).astype(float)
-    # data3Arr = np.array(data3).astype(float)
+    data3Arr = np.array(data3).astype(float)
 
-    # freq = data3Arr[:,0]
+    freq = data3Arr[:,0]
 
-    # MatJIndexEnd = int((len(data3Arr[0])-1)/3)
-    # MatJ = np.array(data3Arr[:,MatJIndexEnd])
-    # i = MatJIndexEnd -1
-    # while i > 0:
-    #     MatJ = np.column_stack((data3Arr[:,i], MatJ))
-    #     i -= 1
+    VecJIndexEnd = int((len(data3Arr[0])-1)/3)
+    VecJ = np.array(data3Arr[:,VecJIndexEnd])
+    i = VecJIndexEnd -1
+    while i > 0:
+        VecJ = np.hstack((data3Arr[:,i], VecJ))
+        i -= 1
 
-    ParamNum = 1
+    ParamNum = 3
     SampleNum = 3
     MatYIndexEnd = int(1 + ParamNum * SampleNum)
     i = MatYIndexEnd - SampleNum
@@ -452,9 +526,13 @@ def custom_OSigmaP_calOSigmaP_numbers():
         MatY = np.row_stack((data2Arr[:,i-SampleNum:i], MatY))
         i -= SampleNum
 
-    MatCovP = np.cov(MatY.astype(float), bias=True)
+    MatCovY = np.cov(MatY.astype(float), bias=True)
+    MatW = np.eye(len(MatY))
+    VecJT = VecJ.T
+    MatA1 = (MatW @ VecJ)
+    # MatA = np.linalg.inv(MatA1) @ MatJT @ MatW
 
-    return jsonify({ 'dataOS':MatCovP.tolist(), })
+    return jsonify({ 'dataOS':MatW.tolist(), })
 
 
 def can_be_float(arr):

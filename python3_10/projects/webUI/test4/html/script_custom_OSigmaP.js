@@ -78,8 +78,8 @@
           tableSettings.height = '65%';
           tableSettings.colHeaders = [ ];
           tableSettingsAtStart0.colHeaders = [ ];
-          tableSettings.colHeaders = ['freq',];
-          for (let i = 1; i < (csvData[0].length)/2; i++) {
+          tableSettings.colHeaders = ['freq', 'center',];
+          for (let i = 1; i < (csvData[0].length)/2-1; i++) {
             tableSettings.colHeaders.push(...['p' + i +'_pre', 'p' + i + '_post',]);
             tableSettingsAtStart0.colHeaders.push(...['p' + i +'_cen', 'p' + i + '_post',]);
           }
@@ -101,7 +101,7 @@
         }
         tableSettings.colHeaders = ['freq',];
         for (let i = 1; i < 4; i++) {
-          tableSettings.colHeaders.push(...['p' + i + ',']);
+          tableSettings.colHeaders.push(...['s' + i + ',']);
         }
         for (let i = 1; i < 4; i++) {
           tableSettings.colHeaders.push(...['overlapData', 'overlapData',]);
