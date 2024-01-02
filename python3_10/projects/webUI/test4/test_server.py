@@ -474,6 +474,54 @@ def custom_sensitivity2_numbers():
 
     return jsonify({ 'dataCov':sCovRange, })
 
+@app.route('/custom_sensitivity_for_OSP', methods=['POST'])
+def custom_sensitivity_for_OSP_numbers():
+
+    tr_json = request.get_json()
+    data0 = tr_json['data0']
+    data1 = tr_json['data1']
+    data0Arr = np.array(data0).astype(float)
+    data1Arr = np.array(data1).astype(float)
+    data1ArrSort = data1Arr[data1Arr[:, 0].argsort()]
+
+    p1Center = data0Arr[:,0]
+    p2Center = data0Arr[:,2]
+    p3Center = data0Arr[:,4]
+    p1Delta = data0Arr[:,1]
+    p2Delta = data0Arr[:,3]
+    p3Delta = data0Arr[:,5]
+    target = data0Arr[:,6]
+
+    freq = data1ArrSort[:,0]
+    pc = data1ArrSort[:,1]
+    sigma = data1ArrSort[:,len(data1ArrSort[0])-1]
+    p1_0 = data1ArrSort[:,2]
+    p1_1 = data1ArrSort[:,3]
+    p2_0 = data1ArrSort[:,4]
+    p2_1 = data1ArrSort[:,5]
+    p3_0 = data1ArrSort[:,6]
+    p3_1 = data1ArrSort[:,7]
+
+    s1 = (p1_1 - p1_0) / (2 * p1Delta)
+    s2 = (p2_1 - p2_0) / (2 * p2Delta)
+    s3 = (p3_1 - p3_0) / (2 * p3Delta)
+
+    sCov12 = np.cov(s1, s2)[0,1] / math.sqrt(np.cov(s1, s2)[0,0] * np.cov(s1, s2)[1,1])
+    sCov13 = np.cov(s1, s3)[0,1] / math.sqrt(np.cov(s1, s3)[0,0] * np.cov(s1, s3)[1,1])
+    sCov23 = np.cov(s2, s3)[0,1] / math.sqrt(np.cov(s2, s3)[0,0] * np.cov(s2, s3)[1,1])
+
+    sCov = [[1, sCov12, sCov13], [sCov12, 1, sCov23], [sCov13, sCov23, 1]]
+
+    dataModifiedArr0 = s3.astype(str)
+    dataModifiedArr0 = np.column_stack((s2.astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((s1.astype(str), dataModifiedArr0))
+    dataModifiedArr0 = np.column_stack((freq.astype(str), dataModifiedArr0))
+
+    dataModified0 = dataModifiedArr0.tolist()
+
+    return jsonify({ 'data0': dataModified0, 'dataCov':sCov, })
+
+
 @app.route('/custom_OSigmaP_Noise', methods=['POST'])
 def custom_OSigmaP_Noise_numbers():
 
@@ -499,40 +547,50 @@ def custom_OSigmaP_Noise_numbers():
 
     return jsonify({ 'data1':dataModifiedArr1.tolist(), })
 
+@app.route('/custom_OSigmaP_calCovY', methods=['POST'])
+def custom_OSigmaP_calCovY_numbers():
+
+    tr_json = request.get_json()
+    data2 = tr_json['data2']
+    sampleNum = tr_json['sampleNum']
+    data2Arr = np.array(data2).astype(float)
+
+    MatY = np.array(data2Arr[:,1:int(sampleNum)+1])
+    MatCovY = np.cov(MatY.astype(float), bias=True)
+
+    return jsonify({ 'dataCovY':MatCovY.tolist(), })
+
+
 @app.route('/custom_OSigmaP_calOSigmaP', methods=['POST'])
 def custom_OSigmaP_calOSigmaP_numbers():
 
     tr_json = request.get_json()
-    data2 = tr_json['data2']
     data3 = tr_json['data3']
-    data2Arr = np.array(data2).astype(float)
+    data4 = tr_json['data4']
+    paramNum = tr_json['paramNum']
+    dataNum = tr_json['dataNum']
     data3Arr = np.array(data3).astype(float)
+    data4Arr = np.array(data4).astype(float)
 
     freq = data3Arr[:,0]
 
-    VecJIndexEnd = int((len(data3Arr[0])-1)/3)
-    VecJ = np.array(data3Arr[:,VecJIndexEnd])
-    i = VecJIndexEnd -1
-    while i > 0:
-        VecJ = np.hstack((data3Arr[:,i], VecJ))
-        i -= 1
+    MatJ = np.array(data3Arr[:,1:paramNum+1])
+    MatCovY = np.array(data4Arr[:,0:dataNum])
 
-    ParamNum = 3
-    SampleNum = 3
-    MatYIndexEnd = int(1 + ParamNum * SampleNum)
-    i = MatYIndexEnd - SampleNum
-    MatY = np.array(data2Arr[:,i:MatYIndexEnd])
-    while i > 1:
-        MatY = np.row_stack((data2Arr[:,i-SampleNum:i], MatY))
-        i -= SampleNum
+    MatW = np.linalg.inv(MatCovY)
+    # MatW = np.eye(len(MatJ))
+    MatJT = MatJ.T
+    MatA1 = MatJT @ MatW @ MatJ
+    MatA = np.linalg.inv(MatA1) @ MatJT @ MatW
+    MatCovP = MatA @ MatCovY @MatA.T
+    MatG = np.linalg.inv(MatCovP)
+    VecOSP = 1/(np.sqrt(np.diagonal(MatG)))
+    VecSP = np.sqrt(np.diagonal(MatCovP))
+    MatOSPSP = VecSP
+    MatOSPSP = np.column_stack((VecOSP, MatOSPSP))
 
-    MatCovY = np.cov(MatY.astype(float), bias=True)
-    MatW = np.eye(len(MatY))
-    VecJT = VecJ.T
-    MatA1 = (MatW @ VecJ)
-    # MatA = np.linalg.inv(MatA1) @ MatJT @ MatW
-
-    return jsonify({ 'dataOS':MatW.tolist(), })
+    #return jsonify({ 'dataOS':VecSP.reshape(-1,1).tolist(), })
+    return jsonify({ 'dataOS':MatOSPSP.tolist(), })
 
 
 def can_be_float(arr):

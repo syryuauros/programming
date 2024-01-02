@@ -58,24 +58,16 @@
                     <label for="load3">Load: </label>
                     <input type="file" id="load3" accept=".csv">
                     <button onclick="exportToCSV('table3')">export</button> <br> <br>
-                    <button onclick="calSensitivity()">generate sensitivity</button>
-                        <label for="option-simple">
-                            <input type="radio" id="option-simple" name="optionsSimpleNorm" value="simple" onchange="createTableAny('table3',dataForTable20);drawchart1();drawchart2();drawchart3();">
-                            simple
-                        </label>
-                        <label for="option-norm">
-                            <input type="radio" id="option-norm" name="optionsSimpleNorm" value="norm" onchange="createTableAny('table3',dataForTable21);drawchart1();drawchart2();drawchart3();" checked>
-                            normalized-by-sigma
-                        </label> <br> <br>
+                    <button onclick="calSensitivity()">generate sensitivity</button><br> <br>
                     <div id="table3"></div>
                 </div>
 
                 <div class="item">
-                    <h1>weight</h1>
+                    <h1>Covariance(CovY)</h1>
                     <label for="load4">Load: </label>
                     <input type="file" id="load4" accept=".csv">
                     <button onclick="exportToCSV('table4')">export</button> <br> <br>
-                    <button onclick="">generate diagonal matrix</button>
+                    <button onclick="genCovY()">generate CovY</button>
                     <label for="option-unit">
                         <input type="radio" id="option-unit" name="optionsWeight" value="unit" onchange="" checked>
                         unit

@@ -2,7 +2,7 @@
        var data0 = tableContent.table0.getData();
        var data1 = tableContent.table1.getData();
 
-       const response = await fetch('http://192.168.12.135:6969/custom_sensitivity', {
+       const response = await fetch('http://192.168.12.135:6969/custom_sensitivity_for_OSP', {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json',
@@ -14,7 +14,6 @@
        });
        data = await response.json();
        dataForTable20 = data.data0;
-       dataForTable21 = data.data1;
        dataCov = data.dataCov;
 
        createTableAny('table3',dataForTable20);
@@ -47,9 +46,34 @@
        createTableAny('table2',data1);
     }
 
-     async function calOSigmaP() {
+     async function genCovY() {
        var data2 = tableContent.table2.getData();
        var data3 = tableContent.table3.getData();
+       var sampleNum = document.getElementById('sampleNum').value;
+       var oneSigma = document.getElementById('oneSigma').value;
+       var paramNum = (data3[0].length - 1);
+
+       const response = await fetch('http://192.168.12.135:6969/custom_OSigmaP_calCovY', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({
+             data2: data2,
+             sampleNum: sampleNum,
+           })
+       });
+       data = await response.json();
+       dataCovY = data.dataCovY;
+
+       createTableAny('table4',dataCovY);
+    }
+
+     async function calOSigmaP() {
+       var data3 = tableContent.table3.getData();
+       var data4 = tableContent.table4.getData();
+       var paramNum = (data3[0].length - 1);
+       var dataNum = (data4[0].length);
 
        const response = await fetch('http://192.168.12.135:6969/custom_OSigmaP_calOSigmaP', {
            method: 'POST',
@@ -57,8 +81,10 @@
                'Content-Type': 'application/json',
            },
            body: JSON.stringify({
-             data2: data2,
              data3: data3,
+             data4: data4,
+             paramNum: paramNum,
+             dataNum: dataNum,
            })
        });
        data = await response.json();
@@ -89,22 +115,10 @@
 
       } else if (tableName == 'table3') {
         tableSettings.height = '71.3%';
-        optionsSimpleNorm.forEach(option => {
-            if (option.checked) {
-                selectedOption = option.value;
-            }
-        });
-        if (selectedOption == "simple") {
-            tableSettings.data = dataForTable20;
-        } else {
-            tableSettings.data = dataForTable21;
-        }
+        tableSettings.data = dataForTable20;
         tableSettings.colHeaders = ['freq',];
         for (let i = 1; i < 4; i++) {
           tableSettings.colHeaders.push(...['s' + i + ',']);
-        }
-        for (let i = 1; i < 4; i++) {
-          tableSettings.colHeaders.push(...['overlapData', 'overlapData',]);
         }
 
       } else if (tableName == 'table2') {
