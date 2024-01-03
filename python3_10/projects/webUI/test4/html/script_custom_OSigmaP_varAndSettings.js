@@ -4,11 +4,13 @@
     const checkKeepAxis = document.getElementById('checkKeepAxis');
     var optionsCovY = document.getElementsByName('optionsCovY');
     var optionsWeight = document.getElementsByName('optionsWeight');
+    var optionsOSigmaP = document.getElementsByName('optionsOSigmaP');
     var table2Content;
     var dataForTable20;
     var dataForTable21;
     var dataForTable22;
     var dataCov;
+    var dataOS;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const tableSettingsCommon = {

@@ -638,13 +638,13 @@ def custom_OSigmaP_calOSigmaP_numbers():
     MatA = np.linalg.inv(MatA1) @ MatJT @ MatW
     MatCovP = MatA @ MatCovY @MatA.T
     MatG = np.linalg.inv(MatCovP)
-    # VecOSP = 1/(np.sqrt(np.diagonal(MatG)))
-    # VecSP = np.sqrt(np.diagonal(MatCovP))
-    # MatOSPSP = VecSP
-    # MatOSPSP = np.column_stack((VecOSP, MatOSPSP))
+    VecOSP = 1/(np.sqrt(np.abs((np.diagonal(MatG)))))
+    VecSP = np.sqrt(np.abs((np.diagonal(MatCovP))))
+    MatOSPSP = VecSP
+    MatOSPSP = np.column_stack((VecOSP, MatOSPSP))
 
     #return jsonify({ 'dataOS':VecSP.reshape(-1,1).tolist(), })
-    return jsonify({ 'dataOS':MatCovY.tolist(), })
+    return jsonify({ 'dataOSPSP':MatOSPSP.tolist(), 'dataG':MatG.tolist(), 'dataCovP':MatCovP.tolist(), })
 
 
 def can_be_float(arr):

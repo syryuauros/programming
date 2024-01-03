@@ -141,7 +141,23 @@
            })
        });
        data = await response.json();
-       dataOS = data.dataOS;
+       dataOSPSP = data.dataOSPSP;
+       dataG = data.dataG;
+       dataCovP = data.dataCovP;
+
+       optionsOSigmaP.forEach(option => {
+           if (option.checked) {
+               selectedOption = option.value;
+           }
+       });
+
+       if (selectedOption == "OSP,SP") {
+         dataOS = dataOSPSP;
+       } else if (selectedOption == "G") {
+         dataOS = dataG;
+       } else {
+         dataOS = dataCovP;
+       }
 
        createTableAny('oSigmaPTable',dataOS);
     }
@@ -184,6 +200,7 @@
 
       } else {
         tableSettings.colHeaders = [ ];
+        tableSettings.height = '71.3%';
         for (let i = 1; i < (parseInt(csvData.length)+1); i++) {
           tableSettings.colHeaders.push(...[ i ]);
         }
