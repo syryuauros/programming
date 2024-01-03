@@ -2,7 +2,8 @@
     var ctx2 = document.getElementById('myChart2').getContext('2d');
     var ctx3 = document.getElementById('myChart3').getContext('2d');
     const checkKeepAxis = document.getElementById('checkKeepAxis');
-    var optionsSimpleNorm = document.getElementsByName('optionsSimpleNorm');
+    var optionsCovY = document.getElementsByName('optionsCovY');
+    var optionsWeight = document.getElementsByName('optionsWeight');
     var table2Content;
     var dataForTable20;
     var dataForTable21;

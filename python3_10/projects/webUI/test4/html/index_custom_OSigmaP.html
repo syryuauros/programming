@@ -63,22 +63,22 @@
                 </div>
 
                 <div class="item">
-                    <h1>Covariance(CovY)</h1>
+                    <h1>covariance(CovY)</h1>
                     <label for="load4">Load: </label>
                     <input type="file" id="load4" accept=".csv">
                     <button onclick="exportToCSV('table4')">export</button> <br> <br>
                     <button onclick="genCovY()">generate CovY</button>
-                    <label for="option-unit">
-                        <input type="radio" id="option-unit" name="optionsWeight" value="unit" onchange="" checked>
-                        unit
+                    <label for="option-fromNoise">
+                        <input type="radio" id="option-fromNoise" name="optionsCovY" value="fromNoise" onchange="genCovY()" checked>
+                        fromNoise
                     </label>
                     <label for="option-rand">
-                        <input type="radio" id="option-rand" name="optionsWeight" value="rand" onchange="">
+                        <input type="radio" id="option-rand" name="optionsCovY" value="rand" onchange="genCovY()">
                         rand
                     </label>
-                    <label for="option-covInverse">
-                        <input type="radio" id="option-covInverse" name="optionsWeight" value="covInverse" onchange="">
-                        covP-1
+                    <label for="option-unit">
+                        <input type="radio" id="option-unit" name="optionsCovY" value="unit" onchange="genCovY()">
+                        unit
                     </label> <br> <br>
 
                     <div id="table4"></div>
@@ -88,42 +88,86 @@
 
 
         <div class="item">
-            <h2>p1 (sensitivity)</h2>
-            <canvas id="myChart" width="300" height="145"></canvas>
+            <div class="container-grid1">
+                <div class="item">
+                    <h2>axis setting</h2>
+                    <div id="axisTable"></div>
+                    <button onclick="modifyRange(); calCorRange();">adopt</button>
+                    <input type="checkbox" id="checkKeepAxis" value="">
+                    <label for="label1">keep applying axis setting</label>
+                </div>
 
-            <h2>p2 (sensitivity)</h2>
-            <canvas id="myChart2" width="300" height="145"></canvas>
+                <div class="item">
+                    <h2>corrlation_table</h2>
+                    <div id="correlationTable"></div>
+                </div>
 
-            <h2>p3 (sensitivity)</h2>
-            <canvas id="myChart3" width="300" height="145"></canvas>
+                <div class="item">
+                    <h2>OSigmaP_table</h2>
+                    <button style="color: red;" onclick="calOSigmaP();">cal OSigmaP</button>
+                    <div id="oSigmaPTable"></div>
+                </div>
+
+                <div class="item">
+                    <h1>weight</h1>
+                    <label for="load5">Load: </label>
+                    <input type="file" id="load5" accept=".csv">
+                    <button onclick="exportToCSV('table5')">export</button> <br> <br>
+                    <button onclick="genWeight()">generate weight</button>
+                    <label for="option-unitw">
+                        <input type="radio" id="option-unitw" name="optionsWeight" value="unit" onchange="genWeight()" checked>
+                        unit
+                    </label>
+                    <label for="option-randw">
+                        <input type="radio" id="option-randw" name="optionsWeight" value="rand" onchange="genWeight()">
+                        rand
+                    </label>
+                    <label for="option-covInverse">
+                        <input type="radio" id="option-covInverse" name="optionsWeight" value="covP-1" onchange="genWeight()">
+                        covP-1
+                    </label> <br> <br>
+
+                    <div id="table5"></div>
+                </div>
+
+            </div>
         </div>
 
 
         <div class="item">
-            <div class="container-grid1">
-                <div class="item">
-                    <h2>axis setting</h2>
-                    <div id="table5"></div> <br>
-                    <button onclick="modifyRange(); calCorRange();">adopt</button>
-                    <label for="labelAdopt" style="font-size: 14.5px; color: red;">(auto-recal: correlation_table)</label> <br> <br>
-                    <input type="checkbox" id="checkKeepAxis" value="">
-                    <label for="label1">keep applying axis setting</label> <br>
+            <div class="container-grid3">
+                <div class="itemChart">
+                    <h2>p1 (sensitivity)</h2>
+                    <canvas id="myChart" width="300" height="145"></canvas>
+                </div>
+
+                <div class="itemChart">
+                    <h2>p2 (sensitivity)</h2>
+                    <canvas id="myChart2" width="300" height="145"></canvas>
+                </div>
+
+                <div class="itemChart">
+                    <h2>p3 (sensitivity)</h2>
+                    <canvas id="myChart3" width="300" height="145"></canvas>
                 </div>
 
                 <div class="itemC">
-                    <h2>corrlation_table:</h2>
-                    <div id="correlationTable"></div>
+                    <div class="container-grid3-2">
+                        <div class="itemC">
+                            <h2>CovY</h2>
+                            <button onclick="">generate CovY</button>
+                        </div>
+                        <div class="itemC">
+                            <h2>Weight</h2>
+                            <button onclick="">generate CovY</button>
+                        </div>
+
+                    </div>
                 </div>
 
-                <div class="itemC">
-
-                    <button style="color: red;" onclick="calOSigmaP();">cal OSigmaP</button>
-                    <h2>OSigmaP_table:</h2>
-                    <div id="oSigmaPTable"></div>
-
-                </div>
             </div>
         </div>
+
 
     </div>
 

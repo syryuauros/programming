@@ -1,4 +1,4 @@
-    var settingTableElement = document.getElementById('table5');
+    var settingTableElement = document.getElementById('axisTable');
     var settingTableSettings = {
         data: [
             [200, 1000, -12, 12],
@@ -68,6 +68,12 @@
     tableSettingsAtStart4.data = [[ , ],];
     // var table4Content = new Handsontable(table4Element, tableSettingsAtStart4);
     tableContent.table4 = new Handsontable(table4Element, tableSettingsAtStart4);
+
+    var table5Element = document.getElementById('table5');
+    tableSettingsAtStart5 = Object.assign({}, tableSettingsAtStart);
+    tableSettingsAtStart5.data = [[ , ],];
+    // var table4Content = new Handsontable(table4Element, tableSettingsAtStart4);
+    tableContent.table5 = new Handsontable(table5Element, tableSettingsAtStart5);
 
     var correlationTableElement = document.getElementById('correlationTable');
     tableSettingsAtStartC = Object.assign({}, tableSettingsAtStart);

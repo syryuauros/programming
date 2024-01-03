@@ -547,8 +547,8 @@ def custom_OSigmaP_Noise_numbers():
 
     return jsonify({ 'data1':dataModifiedArr1.tolist(), })
 
-@app.route('/custom_OSigmaP_calCovY', methods=['POST'])
-def custom_OSigmaP_calCovY_numbers():
+@app.route('/custom_OSigmaP_genCovY', methods=['POST'])
+def custom_OSigmaP_genCovY_numbers():
 
     tr_json = request.get_json()
     data2 = tr_json['data2']
@@ -560,6 +560,59 @@ def custom_OSigmaP_calCovY_numbers():
 
     return jsonify({ 'dataCovY':MatCovY.tolist(), })
 
+@app.route('/custom_OSigmaP_genCovY_rand', methods=['POST'])
+def custom_OSigmaP_genCovY_rand_numbers():
+
+    tr_json = request.get_json()
+    dataNum = tr_json['dataNum']
+
+    MatCovY = np.diag(np.random.rand(dataNum))
+
+    return jsonify({ 'dataCovY':MatCovY.tolist(), })
+
+@app.route('/custom_OSigmaP_genCovY_unit', methods=['POST'])
+def custom_OSigmaP_genCovY_unit_numbers():
+
+    tr_json = request.get_json()
+    dataNum = tr_json['dataNum']
+
+    MatCovY = np.eye(dataNum)
+
+    return jsonify({ 'dataCovY':MatCovY.tolist(), })
+
+
+@app.route('/custom_OSigmaP_genWeight_unit', methods=['POST'])
+def custom_OSigmaP_genWeight_unit_numbers():
+
+    tr_json = request.get_json()
+    dataNum = tr_json['dataNum']
+
+    MatWeight = np.eye(dataNum)
+
+    return jsonify({ 'dataWeight':MatWeight.tolist(), })
+
+@app.route('/custom_OSigmaP_genWeight_rand', methods=['POST'])
+def custom_OSigmaP_genWeight_rand_numbers():
+
+    tr_json = request.get_json()
+    dataNum = tr_json['dataNum']
+
+    MatWeight = np.diag(np.random.rand(dataNum))
+
+    return jsonify({ 'dataWeight':MatWeight.tolist(), })
+
+@app.route('/custom_OSigmaP_genWeight_covP-1', methods=['POST'])
+def custom_OSigmaP_genWeight_covPi1_numbers():
+
+    tr_json = request.get_json()
+    data4 = tr_json['data4']
+    dataNum = tr_json['dataNum']
+    data4Arr = np.array(data4).astype(float)
+
+    MatWeight = np.linalg.inv(data4Arr)
+
+    return jsonify({ 'dataWeight':MatWeight.tolist(), })
+
 
 @app.route('/custom_OSigmaP_calOSigmaP', methods=['POST'])
 def custom_OSigmaP_calOSigmaP_numbers():
@@ -567,30 +620,31 @@ def custom_OSigmaP_calOSigmaP_numbers():
     tr_json = request.get_json()
     data3 = tr_json['data3']
     data4 = tr_json['data4']
+    data5 = tr_json['data5']
     paramNum = tr_json['paramNum']
     dataNum = tr_json['dataNum']
     data3Arr = np.array(data3).astype(float)
     data4Arr = np.array(data4).astype(float)
+    data5Arr = np.array(data5).astype(float)
 
     freq = data3Arr[:,0]
 
     MatJ = np.array(data3Arr[:,1:paramNum+1])
     MatCovY = np.array(data4Arr[:,0:dataNum])
 
-    MatW = np.linalg.inv(MatCovY)
-    # MatW = np.eye(len(MatJ))
+    MatW = np.array(data5Arr[:,0:dataNum])
     MatJT = MatJ.T
     MatA1 = MatJT @ MatW @ MatJ
     MatA = np.linalg.inv(MatA1) @ MatJT @ MatW
     MatCovP = MatA @ MatCovY @MatA.T
     MatG = np.linalg.inv(MatCovP)
-    VecOSP = 1/(np.sqrt(np.diagonal(MatG)))
-    VecSP = np.sqrt(np.diagonal(MatCovP))
-    MatOSPSP = VecSP
-    MatOSPSP = np.column_stack((VecOSP, MatOSPSP))
+    # VecOSP = 1/(np.sqrt(np.diagonal(MatG)))
+    # VecSP = np.sqrt(np.diagonal(MatCovP))
+    # MatOSPSP = VecSP
+    # MatOSPSP = np.column_stack((VecOSP, MatOSPSP))
 
     #return jsonify({ 'dataOS':VecSP.reshape(-1,1).tolist(), })
-    return jsonify({ 'dataOS':MatOSPSP.tolist(), })
+    return jsonify({ 'dataOS':MatCovY.tolist(), })
 
 
 def can_be_float(arr):

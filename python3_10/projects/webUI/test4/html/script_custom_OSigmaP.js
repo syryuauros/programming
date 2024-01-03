@@ -28,8 +28,9 @@
        var data1 = tableContent.table1.getData();
        var sampleNum = document.getElementById('sampleNum').value;
        var oneSigma = document.getElementById('oneSigma').value;
+       var arrival = 'http://192.168.12.135:6969/custom_OSigmaP_Noise';
 
-       const response = await fetch('http://192.168.12.135:6969/custom_OSigmaP_Noise', {
+       const response = await fetch(arrival, {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json',
@@ -50,10 +51,24 @@
        var data2 = tableContent.table2.getData();
        var data3 = tableContent.table3.getData();
        var sampleNum = document.getElementById('sampleNum').value;
-       var oneSigma = document.getElementById('oneSigma').value;
-       var paramNum = (data3[0].length - 1);
+       var dataNum = data3.length;
+       var arrival;
 
-       const response = await fetch('http://192.168.12.135:6969/custom_OSigmaP_calCovY', {
+       optionsCovY.forEach(option => {
+           if (option.checked) {
+               selectedOption = option.value;
+           }
+       });
+
+       if (selectedOption == "fromNoise") {
+         arrival = 'http://192.168.12.135:6969/custom_OSigmaP_genCovY';
+       } else if (selectedOption == "rand") {
+         arrival = 'http://192.168.12.135:6969/custom_OSigmaP_genCovY_rand';
+       } else {
+         arrival = 'http://192.168.12.135:6969/custom_OSigmaP_genCovY_unit';
+       }
+
+       const response = await fetch(arrival, {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json',
@@ -61,6 +76,7 @@
            body: JSON.stringify({
              data2: data2,
              sampleNum: sampleNum,
+             dataNum: dataNum,
            })
        });
        data = await response.json();
@@ -69,9 +85,45 @@
        createTableAny('table4',dataCovY);
     }
 
+     async function genWeight() {
+       var data4 = tableContent.table4.getData();
+       var dataNum = data4.length;
+       var arrival;
+
+       optionsWeight.forEach(option => {
+           if (option.checked) {
+               selectedOption = option.value;
+           }
+       });
+
+       if (selectedOption == "unit") {
+         arrival = 'http://192.168.12.135:6969/custom_OSigmaP_genWeight_unit';
+       } else if (selectedOption == "rand") {
+         arrival = 'http://192.168.12.135:6969/custom_OSigmaP_genWeight_rand';
+       } else {
+         arrival = 'http://192.168.12.135:6969/custom_OSigmaP_genWeight_covP-1';
+       }
+
+       const response = await fetch(arrival, {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({
+             data4: data4,
+             dataNum: dataNum,
+           })
+       });
+       data = await response.json();
+       dataWeight = data.dataWeight;
+
+       createTableAny('table5',dataWeight);
+    }
+
      async function calOSigmaP() {
        var data3 = tableContent.table3.getData();
        var data4 = tableContent.table4.getData();
+       var data5 = tableContent.table5.getData();
        var paramNum = (data3[0].length - 1);
        var dataNum = (data4[0].length);
 
@@ -83,6 +135,7 @@
            body: JSON.stringify({
              data3: data3,
              data4: data4,
+             data5: data5,
              paramNum: paramNum,
              dataNum: dataNum,
            })
@@ -128,7 +181,14 @@
             tableSettings.colHeaders.push(...['p' + i + ',']);
           }
         }
-      } else { }
+
+      } else {
+        tableSettings.colHeaders = [ ];
+        for (let i = 1; i < (parseInt(csvData.length)+1); i++) {
+          tableSettings.colHeaders.push(...[ i ]);
+        }
+
+      }
 
         tableContent[tableName] = new Handsontable(tableElement, tableSettings);
     }
