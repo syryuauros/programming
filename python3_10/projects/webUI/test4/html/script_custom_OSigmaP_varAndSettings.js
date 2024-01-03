@@ -143,10 +143,11 @@
         options: {
             scales: {
                 x: {
+                    display: false,
                     ticks: { display: false, }
                 },
                 y: {
-                    // display: false,
+                    display: false,
                     ticks: { display: false, },
                     reverse: true,
                 }
@@ -167,9 +168,11 @@
         options: {
             scales: {
                 x: {
+                    display: false,
                     ticks: { display: false, },
                 },
                 y: {
+                    display: false,
                     ticks: { display: false, },
                     reverse: true,
                 }

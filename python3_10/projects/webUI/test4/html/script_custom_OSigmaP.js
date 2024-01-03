@@ -377,6 +377,7 @@
 
     function drawDotChart1() {
       dataMatrix = tableContent.table4.getData();
+      dataNum = dataMatrix.length;
       console.log('dotChart1');
       console.log(dataMatrix);
 
@@ -385,7 +386,7 @@
       var zValues = [];
       var maxValue;
 
-      for (let i = 0; i < dataMatrix.length; i++) {
+      for (let i = 0; i < dataNum; i++) {
         for (let j = 0; j < dataMatrix[i].length; j++) {
           xValues.push(i); // X values based on matrix row index
           yValues.push(j); // Y values based on matrix column index
@@ -399,7 +400,7 @@
         datasets: [{
           data: xValues.map((value, index) => ({ x: value, y: yValues[index], value: zValues[index] })),
           pointBackgroundColor: zValues.map(value => `rgba(255, 99, 132, ${(Math.abs(value / maxValue))})`), // Customizing point colors based on values
-          pointRadius: 5, // Adjust the point size as needed
+          pointRadius: Math.round(120/dataNum), // Adjust the point size as needed
           pointStyle: 'rect', // Use bubble type to control individual point appearance
           borderWidth: 0,
           fill: true,
@@ -410,6 +411,7 @@
 
     function drawDotChart2() {
       var dataMatrix = tableContent.table5.getData();
+      dataNum = dataMatrix.length;
       var xValues = [];
       var yValues = [];
       var zValues = [];
@@ -429,7 +431,7 @@
         datasets: [{
           data: xValues.map((value, index) => ({ x: value, y: yValues[index], value: zValues[index] })),
           pointBackgroundColor: zValues.map(value => `rgba(255, 99, 132, ${(Math.abs(value / maxValue))})`), // Customizing point colors based on values
-          pointRadius: 5, // Adjust the point size as needed
+          pointRadius: Math.round(120/dataNum), // Adjust the point size as needed
           pointStyle: 'rect', // Use bubble type to control individual point appearance
           borderWidth: 0,
           fill: true,
