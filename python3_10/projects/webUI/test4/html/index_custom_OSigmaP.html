@@ -68,8 +68,9 @@
                     <input type="file" id="load4" accept=".csv">
                     <button onclick="exportToCSV('table4')">export</button> <br> <br>
                     <button onclick="genCovY()">generate CovY</button>
+                    <button onclick="drawDotChart1()">dr</button>
                     <label for="option-fromNoise">
-                        <input type="radio" id="option-fromNoise" name="optionsCovY" value="fromNoise" onchange="genCovY()" checked>
+                        <input type="radio" id="option-fromNoise" name="optionsCovY" value="fromNoise" onchange="genCovY();" checked>
                         fromNoise
                     </label>
                     <label for="option-rand">
@@ -95,10 +96,11 @@
                     <button onclick="modifyRange(); calCorRange();">adopt</button>
                     <input type="checkbox" id="checkKeepAxis" value="">
                     <label for="label1">keep applying axis setting</label>
+                    <button onclick="showAll();">show table</button>
                 </div>
 
                 <div class="item">
-                    <h2>corrlation_table</h2>
+                    <h2>correlation_table</h2>
                     <div id="correlationTable"></div>
                 </div>
 
@@ -126,17 +128,17 @@
                     <label for="load5">Load: </label>
                     <input type="file" id="load5" accept=".csv">
                     <button onclick="exportToCSV('table5')">export</button> <br> <br>
-                    <button onclick="genWeight()">generate weight</button>
+                    <button onclick="genWeight(); drawDotChart2();">generate weight</button>
                     <label for="option-unitw">
-                        <input type="radio" id="option-unitw" name="optionsWeight" value="unit" onchange="genWeight()" checked>
+                        <input type="radio" id="option-unitw" name="optionsWeight" value="unit" onchange="genWeight(); drawDotChart2();" checked>
                         unit
                     </label>
                     <label for="option-randw">
-                        <input type="radio" id="option-randw" name="optionsWeight" value="rand" onchange="genWeight()">
+                        <input type="radio" id="option-randw" name="optionsWeight" value="rand" onchange="genWeight(); drawDotChart2();">
                         rand
                     </label>
                     <label for="option-covInverse">
-                        <input type="radio" id="option-covInverse" name="optionsWeight" value="covP-1" onchange="genWeight()">
+                        <input type="radio" id="option-covInverse" name="optionsWeight" value="covP-1" onchange="genWeight(); drawDotChart2();">
                         covP-1
                     </label> <br> <br>
 
@@ -168,11 +170,11 @@
                     <div class="container-grid3-2">
                         <div class="itemC">
                             <h2>CovY</h2>
-                            <button onclick="">generate CovY</button>
+                            <canvas id="dotChart1" width="205" height="205"></canvas>
                         </div>
                         <div class="itemC">
                             <h2>Weight</h2>
-                            <button onclick="">generate CovY</button>
+                            <canvas id="dotChart2" width="205" height="205"></canvas>
                         </div>
 
                     </div>

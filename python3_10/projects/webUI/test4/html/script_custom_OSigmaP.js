@@ -163,6 +163,16 @@
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    function showAll() {
+      console.log('seperate');
+      console.log(tableContent.table0.getData());
+      console.log(tableContent.table1.getData());
+      console.log(tableContent.table2.getData());
+      console.log(tableContent.table3.getData());
+      console.log(tableContent.table4.getData());
+      console.log(tableContent.table5.getData());
+    }
+
     function createTableAny(tableName, csvData) {
         var tableElement = document.getElementById(tableName);
         var tableSettings = Object.assign({}, tableSettingsCommon);
@@ -208,36 +218,6 @@
       }
 
         tableContent[tableName] = new Handsontable(tableElement, tableSettings);
-    }
-
-    function createTable1(csvData) {
-        if (table1Content) { table1Content.destroy(); }
-        var table1Settings = Object.assign({}, tableSettingsCommon);
-        table1Settings.data = csvData;
-
-        table1Content = new Handsontable(table1Element, table1Settings);
-    }
-
-    function createTable2() {
-        if (table2Content) { table2Content.destroy(); }
-        const table2Element = document.getElementById('table2');
-        const table2Settings = Object.assign({}, tableSettingsCommon);
-
-       optionsSimpleNorm.forEach(option => {
-           if (option.checked) {
-               selectedOption = option.value;
-           }
-       });
-
-       if (selectedOption == "simple") {
-           table2Settings.data = dataForTable20;
-       } else {
-           table2Settings.data = dataForTable21;
-       }
-        table2Settings.numericFormat.pattern = '0,0.000';
-        table2Settings.colHeaders = [ 'freq', 'p1', 'p2', 'p', ];
-
-        table2Content = new Handsontable(table2Element, table2Settings);
     }
 
     function createCorrelationTable() {
@@ -308,32 +288,27 @@
     function drawchart1() {
         var xData1 = tableContent.table3.getDataAtCol(0);
         var yData10 = tableContent.table3.getDataAtCol(1);
-        var yData11 = tableContent.table3.getDataAtCol(4);
-        var yData12 = tableContent.table3.getDataAtCol(7);
 
         chartSettingsScatPoint1 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint1[0].data = xData1.map((value, index) => ({ x: value, y: yData10[index] }));
 
-        chartSettingsScatPoint1.push(Object.assign({}, chartSettingsBarCommon));
-        chartSettingsScatPoint1[1].data = xData1.map((value, index) => ({ x: value, y: yData11[index] }));
-
-        chartSettingsScatPoint1.push(Object.assign({}, chartSettingsBarOverlap));
-        chartSettingsScatPoint1[2].data = xData1.map((value, index) => ({ x: value, y: yData12[index] }));
-
-
-        console.log(chartSettingsScatPoint1);
         scatterChart1.data.datasets = [
             chartSettingsScatPoint1[0],
-            chartSettingsScatPoint1[2],
-            chartSettingsScatPoint1[1],
         ];
 
         if (!checkKeepAxis.checked) {
             scatterChart1.options.scales = {
                 x: {
-                    min: xData1.min,
-                    max: xData1.max
-                }
+                  min: xData1.min,
+                  max: xData1.max
+                },
+                y: {
+                    ticks: {
+                        callback: function(value, index, values) {
+                        return value.toExponential(1); // Convert ticks to scientific notation
+                        },
+                    },
+                },
             };
         } else {
         }
@@ -343,22 +318,12 @@
     function drawchart2() {
         var xData1 =  tableContent.table3.getDataAtCol(0);
         var yData20 = tableContent.table3.getDataAtCol(2);
-        var yData21 = tableContent.table3.getDataAtCol(5);
-        var yData22 = tableContent.table3.getDataAtCol(8);
 
         chartSettingsScatPoint2 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint2[0].data = xData1.map((value, index) => ({ x: value, y: yData20[index] }));
 
-        chartSettingsScatPoint2.push(Object.assign({}, chartSettingsBarCommon));
-        chartSettingsScatPoint2[1].data = xData1.map((value, index) => ({ x: value, y: yData21[index] }));
-
-        chartSettingsScatPoint2.push(Object.assign({}, chartSettingsBarOverlap));
-        chartSettingsScatPoint2[2].data = xData1.map((value, index) => ({ x: value, y: yData22[index] }));
-
         scatterChart2.data.datasets = [
             chartSettingsScatPoint2[0],
-            chartSettingsScatPoint2[2],
-            chartSettingsScatPoint2[1],
         ];
 
         if (!checkKeepAxis.checked) {
@@ -366,7 +331,14 @@
                 x: {
                     min: xData1.min,
                     max: xData1.max
-                }
+                },
+                y: {
+                    ticks: {
+                        callback: function(value, index, values) {
+                        return value.toExponential(1); // Convert ticks to scientific notation
+                        },
+                    },
+                },
             };
         } else {
         }
@@ -376,22 +348,12 @@
     function drawchart3() {
         var xData1 =  tableContent.table3.getDataAtCol(0);
         var yData30 = tableContent.table3.getDataAtCol(3);
-        var yData31 = tableContent.table3.getDataAtCol(6);
-        var yData32 = tableContent.table3.getDataAtCol(9);
 
         chartSettingsScatPoint3 = [Object.assign({}, chartSettingsScatPoint)];
         chartSettingsScatPoint3[0].data = xData1.map((value, index) => ({ x: value, y: yData30[index] }));
 
-        chartSettingsScatPoint3.push(Object.assign({}, chartSettingsBarCommon));
-        chartSettingsScatPoint3[1].data = xData1.map((value, index) => ({ x: value, y: yData31[index] }));
-
-        chartSettingsScatPoint3.push(Object.assign({}, chartSettingsBarOverlap));
-        chartSettingsScatPoint3[2].data = xData1.map((value, index) => ({ x: value, y: yData32[index] }));
-
         scatterChart3.data.datasets = [
             chartSettingsScatPoint3[0],
-            chartSettingsScatPoint3[2],
-            chartSettingsScatPoint3[1],
         ];
 
         if (!checkKeepAxis.checked) {
@@ -399,9 +361,79 @@
                 x: {
                     min: xData1.min,
                     max: xData1.max
-                }
+                },
+                y: {
+                    ticks: {
+                        callback: function(value, index, values) {
+                        return value.toExponential(1); // Convert ticks to scientific notation
+                        },
+                    },
+                },
             };
         } else {
         }
         scatterChart3.update();
+    }
+
+    function drawDotChart1() {
+      dataMatrix = tableContent.table4.getData();
+      console.log('dotChart1');
+      console.log(dataMatrix);
+
+      var xValues = [];
+      var yValues = [];
+      var zValues = [];
+      var maxValue;
+
+      for (let i = 0; i < dataMatrix.length; i++) {
+        for (let j = 0; j < dataMatrix[i].length; j++) {
+          xValues.push(i); // X values based on matrix row index
+          yValues.push(j); // Y values based on matrix column index
+          zValues.push(dataMatrix[i][j]); // Z values from the matrix
+        }
+      }
+
+      maxValue = Math.max(...zValues);
+
+      dotChart1.data = {
+        datasets: [{
+          data: xValues.map((value, index) => ({ x: value, y: yValues[index], value: zValues[index] })),
+          pointBackgroundColor: zValues.map(value => `rgba(255, 99, 132, ${(Math.abs(value / maxValue))})`), // Customizing point colors based on values
+          pointRadius: 5, // Adjust the point size as needed
+          pointStyle: 'rect', // Use bubble type to control individual point appearance
+          borderWidth: 0,
+          fill: true,
+        }]
+      };
+        dotChart1.update();
+    }
+
+    function drawDotChart2() {
+      var dataMatrix = tableContent.table5.getData();
+      var xValues = [];
+      var yValues = [];
+      var zValues = [];
+      var maxValue;
+
+      for (let i = 0; i < dataMatrix.length; i++) {
+        for (let j = 0; j < dataMatrix[i].length; j++) {
+          xValues.push(i); // X values based on matrix row index
+          yValues.push(j); // Y values based on matrix column index
+          zValues.push(dataMatrix[i][j]); // Z values from the matrix
+        }
+      }
+
+      maxValue = Math.max(...zValues);
+
+      dotChart2.data = {
+        datasets: [{
+          data: xValues.map((value, index) => ({ x: value, y: yValues[index], value: zValues[index] })),
+          pointBackgroundColor: zValues.map(value => `rgba(255, 99, 132, ${(Math.abs(value / maxValue))})`), // Customizing point colors based on values
+          pointRadius: 5, // Adjust the point size as needed
+          pointStyle: 'rect', // Use bubble type to control individual point appearance
+          borderWidth: 0,
+          fill: true,
+        }]
+      };
+        dotChart2.update();
     }
