@@ -3,9 +3,9 @@
 <head>
     <title>CSV to Table and Scatter Chart</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
-    <link rel="stylesheet" href="./styles_custom_OSigmaP.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
@@ -31,8 +31,6 @@
                     <label for="load1">Load: </label>
                     <input type="file" id="load1" accept=".csv">
                     <button onclick="exportToCSV('table1')">export</button> <br> <br>
-                    <div id="table0"></div>
-                    <div id="table1"></div>
                 </div>
 
                 <div class="item">
@@ -41,11 +39,8 @@
                     <input type="file" id="load2" accept=".csv">
                     <button onclick="exportToCSV('table2')">export</button> <br> <br>
                     <button onclick="genNoiseData()">generate noise data</button>
-                    <label for="label1"> sample#: </label>
-                    <input type="text" size="1" value="10" style="text-align: center;" id="sampleNum">
                     <label for="label2">,  1 Sigma(%):</label>
                     <input type="text" size="1" value="5" style="text-align: center;" id="oneSigma"> <br> <br>
-                    <div id="table2"></div>
                 </div>
             </div>
         </div>
@@ -55,13 +50,6 @@
             <div class="container-grid2">
                 <div class="item">
                     <h1>sensitivity</h1>
-                    <label for="load3">Load: </label>
-                    <input type="file" id="load3" accept=".csv">
-                    <button onclick="exportToCSV('table3')">export</button> <br> <br>
-                    <button onclick="calSensitivity()">generate sensitivity</button>
-                    <button onclick="drawchart1(); drawchart2(); drawchart3(); ">refresh graphs</button>
-                    <br> <br>
-                    <div id="table3"></div>
                 </div>
 
                 <div class="item">
