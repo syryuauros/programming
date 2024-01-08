@@ -4,6 +4,7 @@
     <title>CSV to Table and Scatter Chart</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
     <link rel="stylesheet" href="./styles_custom_OSigmaP.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js library -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 </head>
@@ -175,11 +176,11 @@
                     <div class="container-grid3-2">
                         <div class="itemC">
                             <h2>CovY</h2>
-                            <canvas id="dotChart1" width="205" height="175"></canvas>
+                            <div id="dotChart1" width="205" height="175"></div>
                         </div>
                         <div class="itemC">
                             <h2>Weight</h2>
-                            <canvas id="dotChart2" width="205" height="175"></canvas>
+                            <div id="dotChart2" width="205" height="175"></div>
                         </div>
 
                     </div>

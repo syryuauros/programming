@@ -1,8 +1,8 @@
     var ctx = document.getElementById('myChart').getContext('2d');
     var ctx2 = document.getElementById('myChart2').getContext('2d');
     var ctx3 = document.getElementById('myChart3').getContext('2d');
-    var dCtx1 = document.getElementById('dotChart1').getContext('2d');
-    var dCtx2 = document.getElementById('dotChart2').getContext('2d');
+    // var dCtx1 = document.getElementById('dotChart1').getContext('2d');
+    // var dCtx2 = document.getElementById('dotChart2').getContext('2d');
     const checkKeepAxis = document.getElementById('checkKeepAxis');
     var optionsCovY = document.getElementsByName('optionsCovY');
     var optionsWeight = document.getElementsByName('optionsWeight');
@@ -135,52 +135,52 @@
         }
     });
 
-    var dotChart1 = new Chart(dCtx1, {
-        type: 'scatter', // Set the chart type to scatter
-        data: {
-            datasets: [],
-        },
-        options: {
-            scales: {
-                x: {
-                    display: false,
-                    ticks: { display: false, }
-                },
-                y: {
-                    display: false,
-                    ticks: { display: false, },
-                    reverse: true,
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false,
-                }
-            },
-        }
-    });
+    // var dotChart1 = new Chart(dCtx1, {
+    //     type: 'scatter', // Set the chart type to scatter
+    //     data: {
+    //         datasets: [],
+    //     },
+    //     options: {
+    //         scales: {
+    //             x: {
+    //                 display: false,
+    //                 ticks: { display: false, }
+    //             },
+    //             y: {
+    //                 display: false,
+    //                 ticks: { display: false, },
+    //                 reverse: true,
+    //             }
+    //         },
+    //         plugins: {
+    //             legend: {
+    //                 display: false,
+    //             }
+    //         },
+    //     }
+    // });
 
-    var dotChart2 = new Chart(dCtx2, {
-        type: 'scatter', // Set the chart type to scatter
-        data: {
-            datasets: [],
-        },
-        options: {
-            scales: {
-                x: {
-                    display: false,
-                    ticks: { display: false, },
-                },
-                y: {
-                    display: false,
-                    ticks: { display: false, },
-                    reverse: true,
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false,
-                }
-            },
-        }
-    });
+    // var dotChart2 = new Chart(dCtx2, {
+    //     type: 'scatter', // Set the chart type to scatter
+    //     data: {
+    //         datasets: [],
+    //     },
+    //     options: {
+    //         scales: {
+    //             x: {
+    //                 display: false,
+    //                 ticks: { display: false, },
+    //             },
+    //             y: {
+    //                 display: false,
+    //                 ticks: { display: false, },
+    //                 reverse: true,
+    //             }
+    //         },
+    //         plugins: {
+    //             legend: {
+    //                 display: false,
+    //             }
+    //         },
+    //     }
+    // });

@@ -378,64 +378,109 @@
     function drawDotChart1() {
       dataMatrix = tableContent.table4.getData();
       dataNum = dataMatrix.length;
-      console.log('dotChart1');
-      console.log(dataMatrix);
 
-      var xValues = [];
-      var yValues = [];
-      var zValues = [];
-      var maxValue;
+      const data = [{
+        z: dataMatrix,
+        type: 'heatmap',
+        colorscale: 'Portland',
+      }];
 
-      for (let i = 0; i < dataNum; i++) {
-        for (let j = 0; j < dataMatrix[i].length; j++) {
-          xValues.push(i); // X values based on matrix row index
-          yValues.push(j); // Y values based on matrix column index
-          zValues.push(dataMatrix[i][j]); // Z values from the matrix
-        }
-      }
-
-      maxValue = Math.max(...zValues);
-
-      dotChart1.data = {
-        datasets: [{
-          data: xValues.map((value, index) => ({ x: value, y: yValues[index], value: zValues[index] })),
-          pointBackgroundColor: zValues.map(value => `rgba(255, 99, 132, ${(Math.abs(value / maxValue))})`), // Customizing point colors based on values
-          pointRadius: Math.round(120/dataNum), // Adjust the point size as needed
-          pointStyle: 'rect', // Use bubble type to control individual point appearance
-          borderWidth: 0,
-          fill: true,
-        }]
+      const layout = {
+        width: 300,
+        height: 200,
+        margin: {
+          l: 0,
+          r: 0,
+          t: 0,
+          b: 0,
+        },
+        showlegend: false,
+        xaxis: {
+          showticklabels: false,
+          showline: false,
+        },
+        yaxis: {
+          showticklabels: false,
+          showline: false,
+          autorange: 'reversed',
+        },
+        modeBarButtonsToRemove: ['toImage'],
+        coloraxis: {
+          showscale: true,
+          colorbar: {
+            thickness: 10,
+          },
+        },
       };
-        dotChart1.update();
+
+      Plotly.newPlot('dotChart1', data, layout );
+      // var xValues = [];
+      // var yValues = [];
+      // var zValues = [];
+      // var maxValue;
+
+      // for (let i = 0; i < dataNum; i++) {
+      //   for (let j = 0; j < dataMatrix[i].length; j++) {
+      //     xValues.push(i); // X values based on matrix row index
+      //     yValues.push(j); // Y values based on matrix column index
+      //     zValues.push(dataMatrix[i][j]); // Z values from the matrix
+      //   }
+      // }
+
+      // maxValue = Math.max(...zValues);
+
+      // dotChart1.data = {
+      //   datasets: [{
+      //     data: xValues.map((value, index) => ({ x: value, y: yValues[index], value: zValues[index] })),
+      //     pointBackgroundColor: zValues.map(value => `rgba(255, 99, 132, ${(Math.abs(value / maxValue))})`), // Customizing point colors based on values
+      //     pointRadius: Math.round(120/dataNum), // Adjust the point size as needed
+      //     pointStyle: 'rect', // Use bubble type to control individual point appearance
+      //     borderWidth: 0,
+      //     fill: true,
+      //   }]
+      // };
+      //
+
+      // dotChart1.update();
     }
 
     function drawDotChart2() {
-      var dataMatrix = tableContent.table5.getData();
+      dataMatrix = tableContent.table5.getData();
       dataNum = dataMatrix.length;
-      var xValues = [];
-      var yValues = [];
-      var zValues = [];
-      var maxValue;
 
-      for (let i = 0; i < dataMatrix.length; i++) {
-        for (let j = 0; j < dataMatrix[i].length; j++) {
-          xValues.push(i); // X values based on matrix row index
-          yValues.push(j); // Y values based on matrix column index
-          zValues.push(dataMatrix[i][j]); // Z values from the matrix
-        }
-      }
+      const data = [{
+        z: dataMatrix,
+        type: 'heatmap',
+        colorscale: 'Portland',
+      }];
 
-      maxValue = Math.max(...zValues);
-
-      dotChart2.data = {
-        datasets: [{
-          data: xValues.map((value, index) => ({ x: value, y: yValues[index], value: zValues[index] })),
-          pointBackgroundColor: zValues.map(value => `rgba(255, 99, 132, ${(Math.abs(value / maxValue))})`), // Customizing point colors based on values
-          pointRadius: Math.round(120/dataNum), // Adjust the point size as needed
-          pointStyle: 'rect', // Use bubble type to control individual point appearance
-          borderWidth: 0,
-          fill: true,
-        }]
+      const layout = {
+        width: 300,
+        height: 200,
+        margin: {
+          l: 0,
+          r: 0,
+          t: 0,
+          b: 0,
+        },
+        showlegend: false,
+        xaxis: {
+          showticklabels: false,
+          showline: false,
+        },
+        yaxis: {
+          showticklabels: false,
+          showline: false,
+          autorange: 'reversed',
+        },
+        modeBarButtonsToRemove: ['toImage'],
+        coloraxis: {
+          showscale: true,
+          colorbar: {
+            thickness: 10,
+          },
+        },
       };
-        dotChart2.update();
+
+      Plotly.newPlot('dotChart2', data, layout );
     }
