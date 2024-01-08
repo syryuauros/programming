@@ -9,3 +9,8 @@ https://chat.openai.com/c/0edc825c-4e23-47b4-b6ad-28deac724297
 using grid
 https://studiomeal.com/archives/533
 https://www.codingfactory.net/10599
+
+
+themes & templates
+wordpress: https://wordpress.com/ko/
+bootstrap: https://themes.getbootstrap.com/

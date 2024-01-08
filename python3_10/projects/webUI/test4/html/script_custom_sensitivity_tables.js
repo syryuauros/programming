@@ -45,7 +45,7 @@
     var table1Element = document.getElementById('table1');
     tableSettingsAtStart1 = Object.assign({}, tableSettingsAtStart);
     tableSettingsAtStart1.data = [ [0, 0, 0, 0, 0, 0, 0, 0,] ];
-    tableSettingsAtStart1.colHeaders = [ 'freq', 'pc', 'p1_0', 'p1_1', 'p2_0', 'p2_1', 'p3_0', 'p3_1', 'sigma' ];
+    tableSettingsAtStart1.colHeaders = [ 'freq', 'pcen', 'p1_0', 'p1_1', 'p2_0', 'p2_1', 'p3_0', 'p3_1', 'sigma' ];
     var table1Content = new Handsontable(table1Element, tableSettingsAtStart1);
 
     var table2Element = document.getElementById('table2');
