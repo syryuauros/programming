@@ -20,4 +20,4 @@ data = [{
     colorscale: 'Viridis' // Choose your desired color scale
 }];
 
-Plotly.newPlot('plot1', data, layout);
+Plotly.newPlot('plot1', data, layoutHeatMap, {scrollZoom: true});

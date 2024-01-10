@@ -11,11 +11,15 @@ function plotsChoose() {
   var selectedOption = radio('optT');
   heatMapPlot(selectedOption, 'plot1');
 }
-
-function plotT1() {
+function plotT1HeatMap() {
   dataPlotTemp = getDataFromSelectedRange('table1');
   heatMapPlotData(dataPlotTemp, 'plot1');
 }
+function plotT1Scatter() {
+  dataPlotTemp = getDataFromSelectedRange('table1');
+  scatterPlotData(dataPlotTemp, 'plot1');
+}
+
 
 
 
@@ -57,7 +61,7 @@ function heatMapPlot(tableName, plotName) {
       colorscale: 'Viridis' // Choose your desired color scale
   }];
 
-  Plotly.newPlot(plotName, dataTemp, layout);
+  Plotly.newPlot(plotName, dataTemp, layoutHeatMap, {scrollZoom: true});
 }
 
 function heatMapPlotData(dataPlotTemp, plotName) {
@@ -68,8 +72,28 @@ function heatMapPlotData(dataPlotTemp, plotName) {
       colorscale: 'Viridis' // Choose your desired color scale
   }];
 
-  Plotly.newPlot(plotName, dataTemp, layout);
+  Plotly.newPlot(plotName, dataTemp, layoutHeatMap, {scrollZoom: true});
 }
+
+function scatterPlotData(dataPlotTemp, plotName) {
+  var trace = {
+    x: getColumn(dataPlotTemp,0),
+    type: 'scatter',
+    colorscale: 'Viridis' // Choose your desired color scale
+  };
+
+  dataTemp = [];
+
+  for (i = 1; i <= dataPlotTemp[0].length-1; i++) {
+    traceTemp = Object.assign({}, trace);
+    traceTemp.y = getColumn(dataPlotTemp,i);
+    traceTemp.z = i;
+    dataTemp.push(traceTemp);
+  }
+
+  Plotly.newPlot(plotName, dataTemp, layoutScatter, configPlotCommon);
+}
+
 
 
 /////////////////////////////////////////////  general utils  /////////////////////////////////////////////////////////
@@ -81,4 +105,8 @@ function radio(optionName) {
     }
   });
   return selectedOption;
+}
+
+function getColumn(matrix, columnIndex) {
+  return matrix.map(row => row[columnIndex]);
 }

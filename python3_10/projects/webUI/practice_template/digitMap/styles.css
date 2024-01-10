@@ -201,6 +201,14 @@
         transform: translate(-50%, -40%);
         z-index: 10000;
       }
+      .legend-container {
+            position: absolute;
+            bottom: 10px; /* Adjust as needed */
+            right: 10px; /* Adjust as needed */
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+      }
 
       .show .popup {
         transform: translate(-50%, -50%);
