@@ -1,4 +1,4 @@
-tableSettingsAtStart1 = Object.assign({}, tableSettingsAtStart);
+var tableSettingsAtStart1 = Object.assign({}, tableSettingsAtStart);
 tableSettingsAtStart1.data = digitMap;
 tableSettingsAtStart1.height = '50%';
 // columnsConfig1 = columnsConfig.slice();
@@ -20,4 +20,4 @@ data = [{
     colorscale: 'Viridis' // Choose your desired color scale
 }];
 
-Plotly.newPlot('plot', data, layout);
+Plotly.newPlot('plot1', data, layout);

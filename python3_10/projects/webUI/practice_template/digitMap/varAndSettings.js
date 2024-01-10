@@ -21,7 +21,7 @@ const tableSettingsAtStart = {
     // numericFormat: {
     //     pattern: '0,0.000',
     // },
-    //renderer: scientificRenderer,
+    renderer: scientificRenderer,
     colHeaders: true,
     rowHeaders: true,
     customBorders: true,

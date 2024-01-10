@@ -189,9 +189,9 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #ffffff;
+        background-color: #F4F6F7  ;
         box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+        text-align: left;
 
         /* 임시 지정 */
         width: 100px;
@@ -199,6 +199,7 @@
 
         /* 초기에 약간 아래에 배치 */
         transform: translate(-50%, -40%);
+        z-index: 10000;
       }
 
       .show .popup {

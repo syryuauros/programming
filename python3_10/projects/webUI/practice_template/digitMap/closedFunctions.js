@@ -1,12 +1,22 @@
 
 ///////////////////////////////////////////////  UI level /////////////////////////////////////////////////////////
-function selectedDataToT2(tableName) {
-  var dataT2 = getDataFromSelectedRange(tableName);
-  tableSettingsAtStart2 = Object.assign({}, tableSettingsAtStart1);
-  tableSettingsAtStart2.data = dataT2;
-  if (tableContent.table2) { tableContent.table2.destroy() };
-  tableContent.table2 = new Handsontable(document.getElementById('table2'), tableSettingsAtStart2);
+function selectedDataTo(tableNameFrom, tableNameTo) {
+  tableSettingsAtStartSDT = Object.assign({}, tableSettingsAtStart);
+  tableSettingsAtStartSDT.data = getDataFromSelectedRange(tableNameFrom);
+  if (tableContent[tableNameTo]) { tableContent[tableNameTo].destroy() };
+  tableContent[tableNameTo] = new Handsontable(document.getElementById(tableNameTo), tableSettingsAtStartSDT);
 }
+
+function plotsChoose() {
+  var selectedOption = radio('optT');
+  heatMapPlot(selectedOption, 'plot1');
+}
+
+function plotT1() {
+  dataPlotTemp = getDataFromSelectedRange('table1');
+  heatMapPlotData(dataPlotTemp, 'plot1');
+}
+
 
 
 ///////////////////////////////////////////////  for table /////////////////////////////////////////////////////////
@@ -38,7 +48,7 @@ function getDataFromSelectedRange(tableName) {
 
 
 /////////////////////////////////////////////  for plot  /////////////////////////////////////////////////////////
-function plot1(tableName) {
+function heatMapPlot(tableName, plotName) {
   dataPlotTemp = tableContent[tableName].getData()
   zValuesTemp = dataPlotTemp.map(row => row.map(value => value));
   dataTemp = [{
@@ -47,5 +57,28 @@ function plot1(tableName) {
       colorscale: 'Viridis' // Choose your desired color scale
   }];
 
-  Plotly.newPlot('plot', dataTemp, layout);
+  Plotly.newPlot(plotName, dataTemp, layout);
+}
+
+function heatMapPlotData(dataPlotTemp, plotName) {
+  zValuesTemp = dataPlotTemp.map(row => row.map(value => value));
+  dataTemp = [{
+      z: zValuesTemp,
+      type: 'heatmap',
+      colorscale: 'Viridis' // Choose your desired color scale
+  }];
+
+  Plotly.newPlot(plotName, dataTemp, layout);
+}
+
+
+/////////////////////////////////////////////  general utils  /////////////////////////////////////////////////////////
+function radio(optionName) {
+  var options = document.getElementsByName(optionName);
+  options.forEach(option => {
+    if (option.checked) {
+        selectedOption = option.value;
+    }
+  });
+  return selectedOption;
 }
