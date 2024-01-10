@@ -3,14 +3,41 @@
 <head>
     <title>Title here</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
     <link rel="stylesheet" href="./styles.css">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <div id="plot"></div>
 
-    <script src="./script.js"></script>
+    <div class="container-grid0">
+        <div class="item">
+            <div class="container-grid2">
+                <div class="item">
+                    <h1>Table1</h1>
+                    <div id="table1"></div>
+                    <button onclick="plot1('table2')">plot</button> <br> <br>
+                    <button onclick="selectedDataToT2('table1')">selectedData</button> <br> <br>
+                </div>
+
+                <div class="item">
+                    <h1>Table2</h1>
+                    <div id="table2"></div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="itemC">
+            <h1>heatMap</h1>
+            <div id="plot"></div>
+        </div>
+    </div>
+
+    <script src="./closedFunctions.js"></script>
+    <script src="./varAndSettings.js"></script>
+    <script src="./defaultSetting.js"></script>
     <script src=""></script>
 </body>
 </html>

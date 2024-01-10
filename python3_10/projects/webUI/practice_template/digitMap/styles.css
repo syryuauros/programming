@@ -42,7 +42,7 @@
         }
         .container-grid0 {
           display: grid;
-          grid-template-columns: 1fr 1fr 1fr 1.3fr;
+          grid-template-columns: 1fr 1.5fr 1.5fr;
           gap: 0px; /* Gap between grid items */
           width: 93%;
           height: 1050px;
@@ -87,9 +87,9 @@
         }
         .itemC {
           border: 0px solid #ccc;
-          padding-left: 3px;
-          padding-right: 3px;
-          text-align: center;
+          padding-left: 20px;
+          padding-right: 70px;
+          text-align: left;
           overflow: auto;
         }
         .itemChart {
