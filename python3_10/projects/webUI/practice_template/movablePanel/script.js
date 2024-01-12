@@ -8,18 +8,19 @@ function createMovablePanel() {
   const panel = document.createElement('div');
   panel.className = 'panel';
   panel.id = panelName;
+  panel.style = 'color:red; z-Index: 1';
   panel.innerHTML = `
-    <div class="panel-header">
+    <div class="panel-header" onmousedown="bringToFront('${panelName}')">
       <span class="panel-title">${panelName}</span>
       <div class="panel-controls">
         <button class="panel-minimize" onclick="toggleMinimize('${panelName}')">-</button>
         <button class="panel-close" onclick="closePanel('${panelName}')">×</button>
       </div>
     </div>
-    <div class="panel-content">
+    <div class="panel-content" onmousedown="bringToFront('${panelName}')">
       <div id='${tableName}'></div>
     </div>
-    <div class="panel-resize-handle" onmousedown="handleMouseDown(event)"></div>
+    <div class="panel-resize-handle" onmousedown="bringToFront('${panelName}'); handleMouseDown(event);"></div>
   `;
 
   document.body.appendChild(panel);
@@ -124,6 +125,26 @@ function closePanel(panelName) {
   panel.style.display = 'none';
 }
 
+
+function bringToFront(panelID) {
+  const panels = document.querySelectorAll('.panel');
+  const panel = document.getElementById(panelID);
+
+  // Set the clicked panel to the highest z-index
+  let maxZIndex = 0;
+  let minZIndex = 0;
+  let count = 0;
+  panels.forEach(p => {
+    const zIndex = parseInt(window.getComputedStyle(p).zIndex, 10);
+    maxZIndex = Math.max(maxZIndex, zIndex);
+    minZIndex = Math.min(minZIndex, zIndex);
+    count++;
+    p.style.zIndex = p.style.zIndex - 1;
+  });
+
+  panel.style.zIndex = maxZIndex;
+  console.log(panel.style.zIndex);
+}
 
 
 

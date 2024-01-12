@@ -11,8 +11,9 @@ body {
   height: 200px;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
+  cursor: move;
 }
 
 .panel-header {
