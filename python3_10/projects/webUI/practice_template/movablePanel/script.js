@@ -8,12 +8,13 @@ function createMovablePanel() {
   const panel = document.createElement('div');
   panel.className = 'panel';
   panel.id = panelName;
-  panel.style = 'color:red; z-Index: 1';
+  panel.style = 'color:#EC7063; z-Index: 1';
   panel.innerHTML = `
     <div class="panel-header" onmousedown="bringToFront('${panelName}')">
       <span class="panel-title">${panelName}</span>
       <div class="panel-controls">
         <button class="panel-minimize" onclick="toggleMinimize('${panelName}')">-</button>
+        <button class="panel-minimize" onclick="toggleMaximize('${panelName}')">\u25A1</button>
         <button class="panel-close" onclick="closePanel('${panelName}')">×</button>
       </div>
     </div>
@@ -32,6 +33,7 @@ let isResizing = false;
 let offsetX, offsetY;
 let initialWidth, initialHeight;
 let isMinimized = false;
+let isMaximized = false;
 let currentPanel;
 
 document.addEventListener('mousedown', handleMouseDown);
@@ -120,6 +122,24 @@ function toggleMinimize(panelName) {
   }
 }
 
+function toggleMaximize(panelName) {
+  isMaximized = !isMaximized;
+  const panel = document.getElementById(panelName);
+
+  if (isMaximized) {
+    panel.style.left = '2px';
+    panel.style.top = '22px';
+    panel.style.height = '97.5%';
+    panel.style.width = '99.5%';
+    panel.style.overflow = 'hidden';
+  } else {
+    panel.style.height = '210px';
+    panel.style.width = '320px';
+    panel.style.overflow = 'hidden';
+  }
+}
+
+
 function closePanel(panelName) {
   const panel = document.getElementById(panelName);
   panel.style.display = 'none';
@@ -143,7 +163,6 @@ function bringToFront(panelID) {
   });
 
   panel.style.zIndex = maxZIndex;
-  console.log(panel.style.zIndex);
 }
 
 
