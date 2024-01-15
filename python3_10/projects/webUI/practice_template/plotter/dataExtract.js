@@ -1,16 +1,19 @@
 
+var plotCount = 0;
+
 function plotsChoose() {
   var selectedOption = radio('optT');
   heatMapPlot(selectedOption, 'plot1');
 }
 function plotT1HeatMap() {
   dataSelectedTemp = dataSelected;
-  console.log(dataSelected);
-  createNewPlot(plotSelectedName);
-  heatMapPlotData(dataSelectedTemp, plotSelectedName+'1');
+  createNewPlot(sheetName);
+  heatMapPlotData(dataSelectedTemp, 'plot'+plotCount);
 }
 function plotT1Scatter() {
-  scatterPlotData(dataSelected, 'plot1');
+  dataSelectedTemp = dataSelected;
+  createNewPlot(sheetName);
+  scatterPlotData(dataSelectedTemp, 'plot'+plotCount);
 }
 
 ///////////////////////////////////////////////  for table /////////////////////////////////////////////////////////
@@ -33,24 +36,28 @@ function getDataFromSelectedRange(tableName) {
 }
 
 /////////////////////////////////////////////  for plot  /////////////////////////////////////////////////////////
-function createNewPlot(plotName) {
+
+function createNewPlot(sheetName) {
+  plotCount++;
+  const plotName = 'plot' + plotCount;
+  const panelName = plotName+'_panel';
   const currentPlot = document.createElement('div');
   currentPlot.className = 'panel';
-  currentPlot.id = plotName;
-  currentPlot.style = 'color:#EC7063; z-Index: 1';
+  currentPlot.id = panelName;
+  currentPlot.style = 'color:#EC7063; z-Index: 1; width: 550px; height: 480px;';
   currentPlot.innerHTML = `
-    <div class="panel-header" onmousedown="bringToFront('${plotName}')">
-      <span class="panel-title">${plotName}</span>
+    <div class="panel-header" onmousedown="bringToFront('${panelName}')">
+      <span class="panel-title">${plotName}(${sheetName})</span>
       <div class="panel-controls">
-        <button class="panel-minimize" onclick="toggleMinimize('${plotName}')">-</button>
-        <button class="panel-minimize" onclick="toggleMaximize('${plotName}')">\u25A1</button>
-        <button class="panel-close" onclick="closePanel('${plotName}')">×</button>
+        <button class="panel-minimize" onclick="toggleMinimize('${panelName}')">-</button>
+        <button class="panel-minimize" onclick="toggleMaximize('${panelName}')">\u25A1</button>
+        <button class="panel-close" onclick="closePanel('${panelName}')">×</button>
       </div>
     </div>
-    <div class="panel-content" onmousedown="bringToFront('${plotName}'); handleMouseRightDown(event);">
-      <div id='${plotName}1'></div>
+    <div class="panel-content" onmousedown="bringToFront('${panelName}'); handleMouseRightDown(event);">
+      <div id='${plotName}'></div>
     </div>
-    <div class="panel-resize-handle" onmousedown="bringToFront('${plotName}'); handleMouseDown(event);"></div>
+    <div class="panel-resize-handle" onmousedown="bringToFront('${panelName}'); handleMouseDown(event);"></div>
     <script>
     </script/>
   `;

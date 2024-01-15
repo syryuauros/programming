@@ -162,6 +162,7 @@ function bringToFront(panelID) {
 }
 
 
+var sheetName;
 function handleMouseRightDown(e) {
   if (e.button == 2) {
     const panelContent = e.target.closest('.panel-content');
@@ -180,8 +181,7 @@ function handleMouseRightDown(e) {
     });
 
     dataSelected = getDataFromSelectedRange(currentTableName);
-    plotSelectedName = currentPanel.id.replace("sheet", "plot");
-    console.log(dataSelected);
+    sheetName = currentPanel.id;
   }
 }
 
