@@ -27,7 +27,12 @@ function createNewSheet() {
   `;
 
   document.body.appendChild(panel);
-  tableContent[tableName] = new Handsontable(document.getElementById(tableName), tableSettingsAtStart);
+  console.log(tableSettingsAtStart.data);
+  let tableSettingsAtStartTemp = JSON.parse(JSON.stringify(tableSettingsAtStart));
+  // tableSettingsAtStartTemp = {};
+  console.log(tableSettingsAtStartTemp.data);
+  tableContent[tableName] = new Handsontable(document.getElementById(tableName), tableSettingsAtStartTemp);
+  console.log(tableSettingsAtStart.data);
 }
 
 let isDragging = false;
@@ -169,20 +174,25 @@ function bringToFront(panelID) {
 
 
 function handleMouseRightDown(e) {
-  const panelContent = e.target.closest('.panel-content');
-  currentPanel = panelContent.closest('.panel');
-  currentPanel.addEventListener('contextmenu', (e) => {
-    e.preventDefault(); // Prevent the default context menu
-    popup.style.left = `${e.clientX}px`; // Set the popup position based on mouse coordinates
-    popup.style.top = `${e.clientY}px`;
-    popup.style.display = 'block';
-  document.addEventListener('click', (e) => {
-    if (e.target !== currentPanel) {
-      popup.style.display = 'none';
-    }
-  });
+  if (e.button == 2) {
+    const panelContent = e.target.closest('.panel-content');
+    currentPanel = panelContent.closest('.panel');
+    currentTableName = currentPanel.id.replace("sheet", "table");
+    currentPanel.addEventListener('contextmenu', (e) => {
+      e.preventDefault(); // Prevent the default context menu
+      popup.style.left = `${e.clientX}px`; // Set the popup position based on mouse coordinates
+      popup.style.top = `${e.clientY}px`;
+      popup.style.display = 'block';
+    });
+    document.addEventListener('click', (e) => {
+      if (e.target !== currentPanel) {
+        popup.style.display = 'none';
+      }
+    });
 
-  });
+    const dataSelected = getDataFromSelectedRange(currentTableName);
+    console.log(dataSelected);
+  }
 }
 
 
