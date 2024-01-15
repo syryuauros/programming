@@ -13,14 +13,17 @@
 <body>
   <button onclick="createNewSheet()">New Sheet</button>
   <div class="popup" id="popup" style="display: none;">
-      <button onclick="" style="width:100%;">heatMap</button>
-      <button onclick="" style="width:100%;">scatter</button>
-      <button onclick="window.open()" style="width:100%;">new</button>
+    <button onclick="plotT1HeatMap()" style="width:100%;">heatMap</button>
+    <button onclick="plotT1Scatter()" style="width:100%;">scatter</button>
+    <button onclick="window.open()" style="width:100%;">new</button>
   </div>
+  <!-- <div id="plot0"></div> -->
+  <!-- <div id="plot1"></div> -->
 
+
+  <script src="./dataExtract.js"></script>
   <script src="./varAndSettings.js"></script>
   <script src="./panels.js"></script>
-  <script src="./dataExtract.js"></script>
 </body>
 </html>
 

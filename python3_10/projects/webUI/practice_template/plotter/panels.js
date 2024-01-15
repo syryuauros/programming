@@ -27,12 +27,8 @@ function createNewSheet() {
   `;
 
   document.body.appendChild(panel);
-  console.log(tableSettingsAtStart.data);
   let tableSettingsAtStartTemp = JSON.parse(JSON.stringify(tableSettingsAtStart));
-  // tableSettingsAtStartTemp = {};
-  console.log(tableSettingsAtStartTemp.data);
   tableContent[tableName] = new Handsontable(document.getElementById(tableName), tableSettingsAtStartTemp);
-  console.log(tableSettingsAtStart.data);
 }
 
 let isDragging = false;
@@ -156,20 +152,13 @@ function closePanel(panelName) {
 function bringToFront(panelID) {
   const panels = document.querySelectorAll('.panel');
   const panel = document.getElementById(panelID);
-
   // Set the clicked panel to the highest z-index
-  let maxZIndex = 0;
-  let minZIndex = 0;
-  let count = 0;
   panels.forEach(p => {
     const zIndex = parseInt(window.getComputedStyle(p).zIndex, 10);
-    maxZIndex = Math.max(maxZIndex, zIndex);
-    minZIndex = Math.min(minZIndex, zIndex);
-    count++;
-    p.style.zIndex = p.style.zIndex - 1;
+    p.style.zIndex = 1;
   });
 
-  panel.style.zIndex = maxZIndex;
+  panel.style.zIndex = 2;
 }
 
 
@@ -190,7 +179,8 @@ function handleMouseRightDown(e) {
       }
     });
 
-    const dataSelected = getDataFromSelectedRange(currentTableName);
+    dataSelected = getDataFromSelectedRange(currentTableName);
+    plotSelectedName = currentPanel.id.replace("sheet", "plot");
     console.log(dataSelected);
   }
 }

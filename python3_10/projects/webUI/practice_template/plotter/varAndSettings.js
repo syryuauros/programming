@@ -2,6 +2,7 @@ var tableContent = {};
 var columnsConfig = [];
 var data;
 var zValues;
+var dataSelected;
 
 var legendOn = { showlegend: true, };
 var legendOff = { showlegend: false, };
