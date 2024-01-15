@@ -1,7 +1,7 @@
 let panelCounter = 0;
 
-function createMovablePanel() {
-  const panelName = `panel_${panelCounter}`;
+function createNewSheet() {
+  const panelName = `sheet${panelCounter}`;
   const tableName = `table${panelCounter}`;
   panelCounter++;
 
@@ -18,10 +18,12 @@ function createMovablePanel() {
         <button class="panel-close" onclick="closePanel('${panelName}')">×</button>
       </div>
     </div>
-    <div class="panel-content" onmousedown="bringToFront('${panelName}')">
+    <div class="panel-content" onmousedown="bringToFront('${panelName}'); handleMouseRightDown(event);">
       <div id='${tableName}'></div>
     </div>
     <div class="panel-resize-handle" onmousedown="bringToFront('${panelName}'); handleMouseDown(event);"></div>
+    <script>
+    </script/>
   `;
 
   document.body.appendChild(panel);
@@ -164,6 +166,27 @@ function bringToFront(panelID) {
 
   panel.style.zIndex = maxZIndex;
 }
+
+
+function handleMouseRightDown(e) {
+  const panelContent = e.target.closest('.panel-content');
+  currentPanel = panelContent.closest('.panel');
+  currentPanel.addEventListener('contextmenu', (e) => {
+    e.preventDefault(); // Prevent the default context menu
+    popup.style.left = `${e.clientX}px`; // Set the popup position based on mouse coordinates
+    popup.style.top = `${e.clientY}px`;
+    popup.style.display = 'block';
+  document.addEventListener('click', (e) => {
+    if (e.target !== currentPanel) {
+      popup.style.display = 'none';
+    }
+  });
+
+  });
+}
+
+
+
 
 
 
