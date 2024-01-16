@@ -80,6 +80,8 @@ function handleMouseMove(e) {
 
     currentPanel.style.width = `${Math.max(newWidth, 200)}px`; // Minimum width is set to 200px
     currentPanel.style.height = `${Math.max(newHeight, 100)}px`; // Minimum height is set to 100px
+    const currentPlotName = currentPanel.id.replace("_panel", "");
+    updatePlotSize(currentPlotName,Math.max(newWidth, 200),Math.max(newHeight, 100)*0.95);
   }
 }
 
@@ -128,17 +130,24 @@ function toggleMinimize(panelName) {
 function toggleMaximize(panelName) {
   isMaximized = !isMaximized;
   const panel = document.getElementById(panelName);
+  const currentPlotName = currentPanel.id.replace("_panel", "");
 
   if (isMaximized) {
     panel.style.left = '2px';
     panel.style.top = '22px';
-    panel.style.height = '97.5%';
     panel.style.width = '99.5%';
+    panel.style.height = '97.5%';
     panel.style.overflow = 'hidden';
+    try {
+      updatePlotSize(currentPlotName,window.innerWidth * 0.995,window.innerHeight * 0.945);
+    } catch (error) {  }
   } else {
-    panel.style.height = '210px';
     panel.style.width = '320px';
+    panel.style.height = '290px';
     panel.style.overflow = 'hidden';
+    try {
+      updatePlotSize(currentPlotName,320,265);
+    } catch (error) {  }
   }
 }
 
@@ -185,7 +194,18 @@ function handleMouseRightDown(e) {
   }
 }
 
+function updatePlotSize(plotName,w,h) {
+  // New layout options
+  var newLayout = {
+    width: w,
+    height: h,
+  };
 
+  // Update the layout
+  try {
+    Plotly.update(plotName, {}, newLayout);
+  } catch (error) {  }
+}
 
 
 
