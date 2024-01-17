@@ -42,7 +42,8 @@ body {
   right: 0;
   width: 10px;
   height: 10px;
-  background-color: #FEF9E7;
+  background-color: #3498db;
+  /* background-color: #FEF9E7; */
   /* background-color: #3498db; */
   cursor: nwse-resize; /* Cursor style for resizing diagonally */
 }
@@ -64,8 +65,8 @@ body {
 .panel-content {
   padding: 2px;
   overflow: auto;
-  height: calc(100% - 9px);
-  /* height: calc(100% - 0px); */
+  height: calc(110% - 30px);
+  /* height: calc(100% - 9px); */
 }
 
 .window {

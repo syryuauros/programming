@@ -10,3 +10,4 @@ REFs
 https://scikit-learn.org/stable/supervised_learning.html
 https://direction-f.tistory.com/74?category=954338
 https://direction-f.tistory.com/76
+https://ko.wikipedia.org/wiki/%EC%84%A0%ED%98%95_%ED%9A%8C%EA%B7%80
