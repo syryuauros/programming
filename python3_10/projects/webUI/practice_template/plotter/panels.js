@@ -1,5 +1,46 @@
 let panelCounter = 0;
 var plotCount = -1;
+const contextMenuHTable = {
+  items: {
+    editRowHeader: {
+      name: 'Edit Row Header',
+      callback: function(key, selection, event) {
+        var row = selection.start.row;
+        var currentLabel = tableContent[table0].getDataAtCell(row, 0);
+        var newLabel = prompt('Enter new label for Row ' + (row + 1), currentLabel);
+        if (newLabel !== null) {
+          hot.setDataAtCell(row, 0, newLabel);
+        }
+      }
+    },
+    exportSelectedData: {
+      name: 'Export Selected Data',
+      callback: function(key, selection, event) {
+        let tableName = this.view.hot.rootElement.id;
+        exportDataToCSV(getDataFromSelectedRange(tableName));
+      },
+    },
+    heatMapSelectedData: {
+      name: 'HeatMap Selected Data',
+      callback: function(key, selection, event) {
+        let tableName = this.view.hot.rootElement.id;
+        let sheetName = tableName.replace('table', 'sheet');
+        createNewPlot(sheetName);
+        heatMapPlotData(getDataFromSelectedRange(tableName), 'plot'+plotCount);
+      },
+    },
+    scatterPlotSelectedData: {
+      name: 'Scatter Plot Selected Data',
+      callback: function(key, selection, event) {
+        let tableName = this.view.hot.rootElement.id;
+        let sheetName = tableName.replace('table', 'sheet');
+        createNewPlot(sheetName);
+        scatterPlotData(getDataFromSelectedRange(tableName), 'plot'+plotCount);
+      },
+    },
+
+  },
+};
 
 function createNewSheet() {
   const panelName = `sheet${panelCounter}`;
@@ -14,8 +55,8 @@ function createNewSheet() {
     <div class="panel-header" onmousedown="bringToFront('${panelName}')">
       <span contenteditable="true" spellcheck="false" class="panel-title">${panelName}</span>
       <div class="panel-controls">
-        <button class="panel-minimize" onclick="loadCSVFile('${tableName}')">l</button>
-        <button class="panel-minimize" onclick="exportToCSV('${tableName}')">e</button>
+        <button class="panel-minimize" onclick="loadCSVFile('${tableName}')">\u2193</button>
+        <button class="panel-minimize" onclick="exportToCSV('${tableName}')">\u2191</button>
         <button class="panel-minimize" onclick="toggleMinimize('${panelName}')">-</button>
         <button class="panel-minimize" onclick="toggleMaximize('${panelName}')">\u25A1</button>
         <button class="panel-close" onclick="closePanel('${panelName}')">×</button>
@@ -31,6 +72,7 @@ function createNewSheet() {
 
   document.body.appendChild(panel);
   let tableSettingsAtStartTemp = JSON.parse(JSON.stringify(tableSettingsAtStart));
+  tableSettingsAtStartTemp.contextMenu = contextMenuHTable;
   tableContent[tableName] = new Handsontable(document.getElementById(tableName), tableSettingsAtStartTemp);
 }
 
@@ -286,6 +328,17 @@ function exportToCSV(tableName) {
     URL.revokeObjectURL(url);
 }
 
+function exportDataToCSV(Data0) {
+    const csvFormat = Data0.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvFormat], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data0.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 function convertToAOA(csvData) {
     var rows = csvData.split("\n");
     var csvDataAOA = rows.map(row => row.split(/[\t,]/));
@@ -295,6 +348,7 @@ function convertToAOA(csvData) {
 function createTableAny(tableName, csvData) {
     var tableElement = document.getElementById(tableName);
     let tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
+    tableSettings.contextMenu = contextMenuHTable;
     tableSettings.data = csvData;
     tableContent[tableName] = new Handsontable(tableElement, tableSettings);
 }

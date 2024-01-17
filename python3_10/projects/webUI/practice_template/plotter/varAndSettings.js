@@ -50,7 +50,7 @@ const tableSettingsAtStart = {
     renderAllRows: false,
     outsideClickDeselects: false,
     selectionMode: 'multiple',
-    licenseKey: 'non-commercial-and-evaluation'
+    licenseKey: 'non-commercial-and-evaluation',
 };
 
 
