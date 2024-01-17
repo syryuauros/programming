@@ -1,0 +1,12 @@
+#+title: Readme
+
+nix flake update
+nix flake check
+nix develop -> if it is annoying to input this everytime then use direnv
+'Shift+h' show hidden file -> .envrc -> direnv allow
+
+
+REFs
+https://scikit-learn.org/stable/supervised_learning.html
+https://direction-f.tistory.com/74?category=954338
+https://direction-f.tistory.com/76

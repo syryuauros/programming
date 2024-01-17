@@ -1,4 +1,5 @@
 let panelCounter = 0;
+var plotCount = -1;
 
 function createNewSheet() {
   const panelName = `sheet${panelCounter}`;
@@ -11,8 +12,10 @@ function createNewSheet() {
   panel.style = 'color:#EC7063; z-Index: 1';
   panel.innerHTML = `
     <div class="panel-header" onmousedown="bringToFront('${panelName}')">
-      <span class="panel-title">${panelName}</span>
+      <span contenteditable="true" spellcheck="false" class="panel-title">${panelName}</span>
       <div class="panel-controls">
+        <button class="panel-minimize" onclick="loadCSVFile('${tableName}')">l</button>
+        <button class="panel-minimize" onclick="exportToCSV('${tableName}')">e</button>
         <button class="panel-minimize" onclick="toggleMinimize('${panelName}')">-</button>
         <button class="panel-minimize" onclick="toggleMaximize('${panelName}')">\u25A1</button>
         <button class="panel-close" onclick="closePanel('${panelName}')">×</button>
@@ -29,6 +32,35 @@ function createNewSheet() {
   document.body.appendChild(panel);
   let tableSettingsAtStartTemp = JSON.parse(JSON.stringify(tableSettingsAtStart));
   tableContent[tableName] = new Handsontable(document.getElementById(tableName), tableSettingsAtStartTemp);
+}
+
+
+function createNewPlot(sheetName) {
+  plotCount++;
+  const plotName = 'plot' + plotCount;
+  const panelName = plotName+'_panel';
+  const currentPlot = document.createElement('div');
+  currentPlot.className = 'panel';
+  currentPlot.id = panelName;
+  currentPlot.style = 'color:#EC7063; z-Index: 1; width: 550px; height: 480px;';
+  currentPlot.innerHTML = `
+    <div class="panel-header" onmousedown="bringToFront('${panelName}')">
+      <span contenteditable="true" spellcheck="false" class="panel-title">${plotName}(${sheetName})</span>
+      <div class="panel-controls">
+        <button class="panel-minimize" onclick="toggleMinimize('${panelName}')">-</button>
+        <button class="panel-minimize" onclick="toggleMaximize('${panelName}')">\u25A1</button>
+        <button class="panel-close" onclick="closePanel('${panelName}')">×</button>
+      </div>
+    </div>
+    <div class="panel-content" onmousedown="bringToFront('${panelName}'); handleMouseRightDown(event);">
+      <div id='${plotName}'></div>
+    </div>
+    <div class="panel-resize-handle" onmousedown="bringToFront('${panelName}'); handleMouseDown(event);"></div>
+    <script>
+    </script/>
+  `;
+
+  document.body.appendChild(currentPlot);
 }
 
 let isDragging = false;
@@ -207,6 +239,65 @@ function updatePlotSize(plotName,w,h) {
   } catch (error) {  }
 }
 
+
+function loadCSVFile(tableName) {
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.csv';
+  fileInput.addEventListener('change', handleFileSelection);
+  fileInput.click();
+
+  function handleFileSelection() {
+    const output = document.getElementById('output');
+
+    // Check if a file is selected
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      // Callback function when reading is completed
+      reader.onload = function (e) {
+        const csvData = e.target.result;
+        var csvDataAOA = convertToAOA(csvData);
+        createTableAny(tableName,csvDataAOA);
+        // Display the CSV data in the output element
+        // output.textContent = csvData;
+        // You can parse the CSV data and perform further processing here
+        // Example: parseCSV(csvData);
+      };
+
+      // Read the file as text
+      reader.readAsText(file);
+    } else {
+      output.textContent = 'Please select a CSV file.';
+    }
+  }
+}
+
+function exportToCSV(tableName) {
+    var Data0 = tableContent[tableName].getData();
+    const csvFormat = Data0.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvFormat], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data0.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function convertToAOA(csvData) {
+    var rows = csvData.split("\n");
+    var csvDataAOA = rows.map(row => row.split(/[\t,]/));
+    return csvDataAOA;
+}
+
+function createTableAny(tableName, csvData) {
+    var tableElement = document.getElementById(tableName);
+    let tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
+    tableSettings.data = csvData;
+    tableContent[tableName] = new Handsontable(tableElement, tableSettings);
+}
 
 
 

@@ -1,5 +1,4 @@
 
-var plotCount = 0;
 
 function plotsChoose() {
   var selectedOption = radio('optT');
@@ -37,34 +36,6 @@ function getDataFromSelectedRange(tableName) {
 
 /////////////////////////////////////////////  for plot  /////////////////////////////////////////////////////////
 
-function createNewPlot(sheetName) {
-  plotCount++;
-  const plotName = 'plot' + plotCount;
-  const panelName = plotName+'_panel';
-  const currentPlot = document.createElement('div');
-  currentPlot.className = 'panel';
-  currentPlot.id = panelName;
-  currentPlot.style = 'color:#EC7063; z-Index: 1; width: 550px; height: 480px;';
-  currentPlot.innerHTML = `
-    <div class="panel-header" onmousedown="bringToFront('${panelName}')">
-      <span class="panel-title">${plotName}(${sheetName})</span>
-      <div class="panel-controls">
-        <button class="panel-minimize" onclick="toggleMinimize('${panelName}')">-</button>
-        <button class="panel-minimize" onclick="toggleMaximize('${panelName}')">\u25A1</button>
-        <button class="panel-close" onclick="closePanel('${panelName}')">×</button>
-      </div>
-    </div>
-    <div class="panel-content" onmousedown="bringToFront('${panelName}'); handleMouseRightDown(event);">
-      <div id='${plotName}'></div>
-    </div>
-    <div class="panel-resize-handle" onmousedown="bringToFront('${panelName}'); handleMouseDown(event);"></div>
-    <script>
-    </script/>
-  `;
-
-  document.body.appendChild(currentPlot);
-}
-
 
 
 function heatMapPlot(tableName, plotName) {
@@ -73,7 +44,7 @@ function heatMapPlot(tableName, plotName) {
   dataTemp = [{
       z: zValuesTemp,
       type: 'heatmap',
-      colorscale: 'Viridis' // Choose your desired color scale
+      colorscale: 'Viridis' // Choose your desired color scaln
   }];
 
   Plotly.newPlot(plotName, dataTemp, layoutHeatMap, {scrollZoom: true});
