@@ -1,7 +1,69 @@
 let panelCounter = 0;
 var plotCount = -1;
 const contextMenuHTable = {
+  //https://handsontable.com/docs/8.2.0/demo-context-menu.html
   items: {
+    'col_right': {
+      name: 'insert column'
+    },
+    'remove_col': {
+      name: 'remove column(s)'
+    },
+    'row_below': {
+      name: 'insert row'
+    },
+    'remove_row': {
+      name: 'remove row(s)'
+    },
+    freeze: {
+      name: 'freeze(unfreeze: set A1)',
+      callback: function(key, selection, event) {
+        var sel = this.getSelected();
+        this.updateSettings({
+          fixedRowsTop: sel[0][2],
+          fixedColumnsLeft: sel[0][3],
+        });
+      },
+    },
+    "sp1": '---------',
+
+    plot: {
+      name: 'Plot selected Data',
+      submenu: {
+        items: [
+          {
+            key: 'plot:heatMap',
+            name: 'heatMap',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              let sheetName = tableName.replace('table', 'sheet');
+              createNewPlot(sheetName);
+              heatMapPlotData(getDataFromSelectedRange(tableName), 'plot'+plotCount);
+            },
+          },
+          {
+            key: 'plot:scatter',
+            name: 'scatter',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              let sheetName = tableName.replace('table', 'sheet');
+              createNewPlot(sheetName);
+              scatterPlotData(getDataFromSelectedRange(tableName), 'plot'+plotCount);
+            },
+          },
+
+        ]
+      },
+    },
+
+    exportSelectedData: {
+      name: 'Export Selected Data',
+      callback: function(key, selection, event) {
+        let tableName = this.view.hot.rootElement.id;
+        exportDataToCSV(getDataFromSelectedRange(tableName));
+      },
+    },
+
     editRowHeader: {
       name: 'Edit Row Header',
       callback: function(key, selection, event) {
@@ -13,32 +75,6 @@ const contextMenuHTable = {
         }
       }
     },
-    exportSelectedData: {
-      name: 'Export Selected Data',
-      callback: function(key, selection, event) {
-        let tableName = this.view.hot.rootElement.id;
-        exportDataToCSV(getDataFromSelectedRange(tableName));
-      },
-    },
-    heatMapSelectedData: {
-      name: 'HeatMap Selected Data',
-      callback: function(key, selection, event) {
-        let tableName = this.view.hot.rootElement.id;
-        let sheetName = tableName.replace('table', 'sheet');
-        createNewPlot(sheetName);
-        heatMapPlotData(getDataFromSelectedRange(tableName), 'plot'+plotCount);
-      },
-    },
-    scatterPlotSelectedData: {
-      name: 'Scatter Plot Selected Data',
-      callback: function(key, selection, event) {
-        let tableName = this.view.hot.rootElement.id;
-        let sheetName = tableName.replace('table', 'sheet');
-        createNewPlot(sheetName);
-        scatterPlotData(getDataFromSelectedRange(tableName), 'plot'+plotCount);
-      },
-    },
-
   },
 };
 
@@ -72,6 +108,7 @@ function createNewSheet() {
 
   document.body.appendChild(panel);
   let tableSettingsAtStartTemp = JSON.parse(JSON.stringify(tableSettingsAtStart));
+  //tableSettingsAtStartTemp.contextMenu = ['row_below', 'col_right'];
   tableSettingsAtStartTemp.contextMenu = contextMenuHTable;
   tableContent[tableName] = new Handsontable(document.getElementById(tableName), tableSettingsAtStartTemp);
 }
