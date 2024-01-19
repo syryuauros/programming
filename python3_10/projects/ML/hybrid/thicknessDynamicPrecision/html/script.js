@@ -25,6 +25,28 @@ const digitMap = [
 const contextMenuHTable = {
   //https://handsontable.com/docs/8.2.0/demo-context-menu.html
   items: {
+    plot: {
+      name: 'Plot selected Data',
+      submenu: {
+        items: [
+          {
+            key: 'plot:heatMap',
+            name: 'heatMap',
+            callback: function(key, selection, event) {
+              heatMapPlotData(getDataFromSelectedRange('table1'), 'plot1');
+            },
+          },
+          {
+            key: 'plot:scatter',
+            name: 'scatter',
+            callback: function(key, selection, event) {
+              scatterPlotData(getDataFromSelectedRange('table1'), 'plot1');
+            },
+          },
+        ]
+      },
+    },
+    "sp1": '---------',
     'col_right': {
       name: 'insert column'
     },
@@ -49,28 +71,6 @@ const contextMenuHTable = {
     },
     "sp1": '---------',
 
-    plot: {
-      name: 'Plot selected Data',
-      submenu: {
-        items: [
-          {
-            key: 'plot:heatMap',
-            name: 'heatMap',
-            callback: function(key, selection, event) {
-              heatMapPlotData(getDataFromSelectedRange('table1'), 'plot1');
-            },
-          },
-          {
-            key: 'plot:scatter',
-            name: 'scatter',
-            callback: function(key, selection, event) {
-              scatterPlotData(getDataFromSelectedRange('table1'), 'plot1');
-            },
-          },
-        ]
-      },
-    },
-
     exportSelectedData: {
       name: 'Export Selected Data',
       callback: function(key, selection, event) {
@@ -82,26 +82,28 @@ const contextMenuHTable = {
 };
 
 const tableSettingsAtStart = {
-    data: [
-        [ , ],
-    ],
-    allowEmpty: true,
-    type: 'numeric',
-    // numericFormat: {
-    //     pattern: '0,0.000',
-    // },
-    //renderer: scientificRenderer,
-    //contextMenu: contextMenuTest,
-    manualColumnFreeze: true,
-    colHeaders: true,
-    rowHeaders: true,
-    customBorders: true,
-    width: '100%',
-    height: '95.5%',
-    renderAllRows: false,
-    outsideClickDeselects: false,
-    selectionMode: 'multiple',
-    licenseKey: 'non-commercial-and-evaluation'
+  data: [
+    [ , ],
+  ],
+  allowEmpty: true,
+  type: 'numeric',
+  // numericFormat: {
+  //     pattern: '0,0.000',
+  // },
+  //renderer: scientificRenderer,
+  //contextMenu: contextMenuTest,
+  manualColumnFreeze: true,
+  colHeaders: true,
+  rowHeaders: true,
+  manualColumnResize: true,
+  manualRowResize: true,
+  customBorders: true,
+  width: '100%',
+  height: '95.5%',
+  renderAllRows: false,
+  outsideClickDeselects: false,
+  selectionMode: 'multiple',
+  licenseKey: 'non-commercial-and-evaluation',
 };
 
 ///////////////////////////////////////////////  for plotly /////////////////////////////////////////////////////////
@@ -342,4 +344,27 @@ function radio(optionName) {
 
 function getColumn(matrix, columnIndex) {
   return matrix.map(row => row[columnIndex]);
+}
+
+
+
+/////////////////////////////////////////////  server side  /////////////////////////////////////////////////////////
+async function cal() {
+  var data1 = tableContent.table1.getData();
+  var colsToBeDel = document.getElementById('colsToBeDel').value;
+  console.log(colsToBeDel);
+
+  const response = await fetch('http://192.168.12.135:7001/DynamicPrec_delCols', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      data1: data1,
+      colsToBeDel: colsToBeDel,
+    })
+  });
+  const data = await response.json();
+  console.log(data.data);
+  createTableAny('table1', data.data);
 }

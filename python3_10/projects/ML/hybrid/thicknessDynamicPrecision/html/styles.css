@@ -29,15 +29,15 @@
         .item-header {
           background-color: #FEF9E7;
           /* background-color: #ddd; */
-          padding: 5px;
-          cursor: move;
+          padding: 1px;
+          /* cursor: move; */
           display: flex;
           justify-content: space-between;
           align-items: center;
         }
 
         .item-title {
-          font-size: 15px;
+          font-size: 13px;
           font-weight: bold;
         }
 
