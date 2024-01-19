@@ -57,14 +57,14 @@ const contextMenuHTable = {
             key: 'plot:heatMap',
             name: 'heatMap',
             callback: function(key, selection, event) {
-              console.log('hi2');
+              heatMapPlotData(getDataFromSelectedRange('table1'), 'plot1');
             },
           },
           {
             key: 'plot:scatter',
             name: 'scatter',
             callback: function(key, selection, event) {
-              console.log('hi2');
+              scatterPlotData(getDataFromSelectedRange('table1'), 'plot1');
             },
           },
         ]
@@ -106,8 +106,8 @@ const tableSettingsAtStart = {
 
 ///////////////////////////////////////////////  for plotly /////////////////////////////////////////////////////////
 const layoutHeatMap = {
-  width: 550,
-  height: 450,
+  width: 450,
+  height: 350,
   margin: {
     l: 0,
     r: 0,
@@ -126,8 +126,8 @@ const layoutHeatMap = {
 
 
 const layoutScatter = {
-  width: 550,
-  height: 450,
+  width: 450,
+  height: 350,
   margin: {
     l: 30,
     r: 10,
