@@ -45,7 +45,7 @@ const tableSettingsAtStart = {
     colHeaders: true,
     rowHeaders: true,
     customBorders: true,
-  manualColumnFreeze: true,
+    manualColumnFreeze: true,
     width: '100%',
     height: '90%',
     renderAllRows: false,
