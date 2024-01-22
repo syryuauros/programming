@@ -17,15 +17,48 @@ def DynamicPrec_delCols_numbers():
 
     tr_json = request.get_json()
     data1 = tr_json['data1']
-    colsToBeDel = tr_json['colsToBeDel']
+    header1 = tr_json['header1']
     data1Arr = np.array(data1).astype(str)
-    columns_to_be_delete = [int(x) for x in colsToBeDel.split()]
+    header1Arr = np.array(header1).astype(str)
+    print('empty or null cell indices:' ,find_empty_indices(data1Arr))
 
-    headers = data1Arr[0]
-    data_essential = delete_columns(remove_empty_none_rows_decreasing(data1Arr),columns_to_be_delete)
-    #freq = data1Arr[:,1::]
+    data1_mod1 = data1Arr.astype(float)
+    thickness = data1_mod1[:,1]
+    header1_mod1 = insert_col_left(header1Arr, 'NTh', axis=0)
 
-    return jsonify({ 'headers':headers.reshape(-1,1).tolist(), 'data':data_essential.tolist(), })
+    cuttingRatio = 0.1
+    cuttingIndices = [-1]
+    avgs = []
+    nominalThickness = []
+    thicknessNum = len(thickness) - 1
+
+    for i in range(thicknessNum):
+        if thickness[i+1] > thickness[i]*(1+cuttingRatio) or thickness[i+1] < thickness[i]*(1-cuttingRatio) :
+            cuttingIndices.append(i)
+    cuttingIndices.append(thicknessNum)
+
+    for i in range(len(cuttingIndices)-1):
+        startingIndex = cuttingIndices[i]+1
+        endIndex = cuttingIndices[i+1]+1
+        rangedThickness = thickness[startingIndex:endIndex]
+        avg = sum(rangedThickness)/(len(rangedThickness))
+        avgs.append(avg)
+        for j in range(endIndex-startingIndex):
+            nominalThickness.append(avg)
+        #print(startingIndex, endIndex, len(rangedThickness), avg, sum(rangedThickness))
+
+    data1_mod2 = insert_col_left(data1_mod1, nominalThickness)
+
+    return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), })
+
+def find_empty_indices(array_of_arrays):
+    empty_cells = (array_of_arrays == "") | (array_of_arrays == None)
+    row_indices, col_indices = np.where(empty_cells)
+    return list(zip(row_indices, col_indices))
+
+def insert_col_left(arr, inserts, axis=1):
+    modified_arr = np.insert(arr, 0, inserts, axis)
+    return modified_arr
 
 def remove_empty_none_rows_decreasing(arr):
     empty_none_row_mask = ~np.all(np.logical_or(arr == '', arr == 'None'), axis=1)

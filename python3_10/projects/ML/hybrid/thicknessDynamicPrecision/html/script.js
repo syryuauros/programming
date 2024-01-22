@@ -118,6 +118,44 @@ const contextMenuHTable = {
   },
 };
 
+function calt() {
+  let tableName = 'table1';
+  let colsToBeDelStr = document.getElementById('colsToBeDel').value;
+  let colsToBeDel = strToArrNum(colsToBeDelStr);
+
+  removeColumns(tableName,colsToBeDel);
+  rowToHeader(tableName);
+  removeRows(tableName,[0]);
+  removeEmptyRows(tableName);
+}
+
+function removeColumns(tableName, columnIndexes) {
+  if (!Array.isArray(columnIndexes)) {
+    console.error('Invalid input. Please provide an array of column indexes.');
+    return;
+  }
+  columnIndexes.reverse().forEach(function(col) {
+    tableContent[tableName].alter('remove_col', col);
+  });
+}
+
+function removeRows(tableName, rowIndexes) {
+  if (!Array.isArray(rowIndexes)) {
+    console.error('Invalid input. Please provide an array of row indexes.');
+    return;
+  }
+
+  rowIndexes.reverse().forEach(function(row) {
+    tableContent[tableName].alter('remove_row', row);
+  });
+}
+
+function insertColumn(tableName, columnIndex) {
+  tableContent[tableName].getSettings().data[0].splice(columnIndex, 0, null); // Insert null values in the first row
+  tableContent[tableName].render(); // Force Handsontable to re-render
+}
+
+
 function removeEmptyRows(tableName) {
   var emptyRows = [];
 
@@ -126,16 +164,13 @@ function removeEmptyRows(tableName) {
       emptyRows.push(index);
     }
   });
-  console.log(emptyRows);
 
   if (emptyRows.length > 0) {
     for (i=0; i<emptyRows.length; i++) {
-      console.log(emptyRows[i]);
       tableContent[tableName].alter('remove_row', emptyRows[i]-i);
     }
   }
 }
-
 function removeEmptyCols(tableName) {
   var emptyCols = [];
 
@@ -150,9 +185,6 @@ function removeEmptyCols(tableName) {
   });
 }
 
-function removeCols(tableName, cols) {
-    tableContent[tableName].alter('remove_col', cols[0]);
-}
 
 function rowToHeader(tableName, rowNum = 0) {
   var selectedRow = tableContent[tableName].getDataAtRow(rowNum);
@@ -426,13 +458,17 @@ function getColumn(matrix, columnIndex) {
   return matrix.map(row => row[columnIndex]);
 }
 
+function strToArrNum(str) {
+  let arrayOfNumbers = str.split(' ').map(Number);
+  return arrayOfNumbers;
+}
+
 
 
 /////////////////////////////////////////////  server side  /////////////////////////////////////////////////////////
 async function cal() {
   var data1 = tableContent.table1.getData();
-  var colsToBeDel = document.getElementById('colsToBeDel').value;
-  console.log(colsToBeDel);
+  var header1 = tableContent.table1.getColHeader();
 
   const response = await fetch('http://192.168.12.135:7001/DynamicPrec_delCols', {
     method: 'POST',
@@ -441,10 +477,12 @@ async function cal() {
     },
     body: JSON.stringify({
       data1: data1,
-      colsToBeDel: colsToBeDel,
+      header1: header1,
     })
   });
   const data = await response.json();
-  console.log(data.data);
-  createTableAny('table1', data.data);
+  createTableAny('table1', data.data1);
+  tableContent['table1'].updateSettings({
+    colHeaders: data.header1,
+  });
 }
