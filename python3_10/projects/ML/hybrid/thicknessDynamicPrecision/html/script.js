@@ -22,6 +22,9 @@ const digitMap = [
 
 
 ///////////////////////////////////////////////  for table /////////////////////////////////////////////////////////
+
+
+
 const contextMenuHTable = {
   //https://handsontable.com/docs/8.2.0/demo-context-menu.html
   items: {
@@ -46,6 +49,41 @@ const contextMenuHTable = {
         ]
       },
     },
+    dataPrcs: {
+      name: 'Data Processing',
+      submenu: {
+        items: [
+          {
+            key: 'dataPrcs:rowToHeader',
+            name: 'rowToHeader',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              var sel = this.getSelected();
+              rowToHeader(tableName, sel[0][0]);
+            },
+          },
+          {
+            key: 'dataPrcs:trimEmpty',
+            name: 'trimEmpty',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              removeEmptyRows(tableName);
+              removeEmptyCols(tableName);
+            },
+          },
+          {
+            key: 'dataPrcs:exportSelectedData',
+            name: 'exportSelectedData',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              exportDataToCSV(getDataFromSelectedRange(tableName));
+            },
+          },
+
+        ]
+      },
+    },
+
     "sp1": '---------',
     'col_right': {
       name: 'insert column'
@@ -69,17 +107,59 @@ const contextMenuHTable = {
         });
       },
     },
-    "sp1": '---------',
+    "sp2": '---------',
 
-    exportSelectedData: {
-      name: 'Export Selected Data',
+    tableInfo: {
+      name: 'Table Info',
       callback: function(key, selection, event) {
-        let tableName = this.view.hot.rootElement.id;
-        exportDataToCSV(getDataFromSelectedRange(tableName));
+        console.log("tableID:", this.view.hot.rootElement.id);
       },
     },
   },
 };
+
+function removeEmptyRows(tableName) {
+  var emptyRows = [];
+
+  tableContent[tableName].getData().forEach(function(rowData, index) {
+    if (rowData.every(cell => cell === null || cell === '')) {
+      emptyRows.push(index);
+    }
+  });
+  console.log(emptyRows);
+
+  if (emptyRows.length > 0) {
+    for (i=0; i<emptyRows.length; i++) {
+      console.log(emptyRows[i]);
+      tableContent[tableName].alter('remove_row', emptyRows[i]-i);
+    }
+  }
+}
+
+function removeEmptyCols(tableName) {
+  var emptyCols = [];
+
+  tableContent[tableName].getData()[0].forEach(function(cell, col) {
+    if (tableContent[tableName].getData().every(row => row[col] === null || row[col] === '')) {
+      emptyCols.push(col);
+    }
+  });
+
+  emptyCols.reverse().forEach(function(col) {
+    tableContent[tableName].alter('remove_col', col);
+  });
+}
+
+function removeCols(tableName, cols) {
+    tableContent[tableName].alter('remove_col', cols[0]);
+}
+
+function rowToHeader(tableName, rowNum = 0) {
+  var selectedRow = tableContent[tableName].getDataAtRow(rowNum);
+  tableContent[tableName].updateSettings({
+    colHeaders: selectedRow,
+  });
+}
 
 const tableSettingsAtStart = {
   data: [

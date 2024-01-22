@@ -22,8 +22,7 @@ def DynamicPrec_delCols_numbers():
     columns_to_be_delete = [int(x) for x in colsToBeDel.split()]
 
     headers = data1Arr[0]
-    data_essential = delete_rows(delete_columns(remove_empty_none_rows_decreasing(data1Arr),columns_to_be_delete),0)
-    print(data1Arr)
+    data_essential = delete_columns(remove_empty_none_rows_decreasing(data1Arr),columns_to_be_delete)
     #freq = data1Arr[:,1::]
 
     return jsonify({ 'headers':headers.reshape(-1,1).tolist(), 'data':data_essential.tolist(), })
