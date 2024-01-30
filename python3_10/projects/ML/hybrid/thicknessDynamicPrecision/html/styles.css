@@ -77,14 +77,21 @@
         }
         .container-grid1 {
           display: grid;
-          grid-template-columns: 460px 1fr;
+          grid-template-columns: 460px 1000px 1fr;
           gap: 0px; /* Gap between grid items */
           width: 100%;
           height: 100%;
         }
         .container-grid2 {
           display: grid;
-          grid-template-rows: 1.5fr 1fr;
+          grid-template-rows: 1.3fr 1fr;
+          gap: 0px; /* Gap between grid items */
+          width: 100%;
+          height: 100%;
+        }
+        .container-grid2-2 {
+          display: grid;
+          grid-template-rows: 1fr 8fr;
           gap: 0px; /* Gap between grid items */
           width: 100%;
           height: 100%;

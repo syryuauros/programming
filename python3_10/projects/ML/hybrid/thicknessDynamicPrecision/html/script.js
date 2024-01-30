@@ -19,6 +19,15 @@ const digitMap = [
   [0.5, 0.7, 0.9, 0.2, 0.6]
   // Add more rows as needed
 ];
+const PredictInit = [
+  [0.1, 0.3,],
+  [0.2, 0.4,],
+  [0.3, 0.5,],
+  [0.4, 0.6,],
+  [0.5, 0.7,]
+  // Add more rows as needed
+];
+
 
 
 ///////////////////////////////////////////////  for table /////////////////////////////////////////////////////////
@@ -293,9 +302,18 @@ const configPlotCommon = {
 
 ///////////////////////////////////////////////  table1 ititial /////////////////////////////////////////////////////////
 var tableSettingsAtStart1 = JSON.parse(JSON.stringify(tableSettingsAtStart));
+var tableSettingsAtStart2 = JSON.parse(JSON.stringify(tableSettingsAtStart));
+var tableSettingsAtStart3 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart1.contextMenu = contextMenuHTable;
+tableSettingsAtStart2.contextMenu = contextMenuHTable;
+tableSettingsAtStart3.contextMenu = contextMenuHTable;
 tableSettingsAtStart1.data = digitMap;
+tableSettingsAtStart2.data = digitMap;
+tableSettingsAtStart3.data = PredictInit;
+tableSettingsAtStart3.colHeaders = ['REF', 'Pred'];
 tableContent.table1 = new Handsontable(document.getElementById('table1'), tableSettingsAtStart1);
+tableContent.table2 = new Handsontable(document.getElementById('table2'), tableSettingsAtStart2);
+tableContent.table3 = new Handsontable(document.getElementById('table3'), tableSettingsAtStart3);
 
 zValues = (tableContent.table1.getData()).map(row => row.map(value => value));
 data = [{
@@ -485,4 +503,6 @@ async function cal() {
   tableContent['table1'].updateSettings({
     colHeaders: data.header1,
   });
+
+  createTableAny('table3', data.refpred);
 }

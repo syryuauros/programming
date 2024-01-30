@@ -5,8 +5,8 @@ import flask
 import json
 import numpy as np
 import math
-import random
-import pandas as pd
+# import random
+# import pandas as pd
 from sklearn.model_selection import train_test_split
 import lightgbm as lgbm  # light gradient boosting machine
 
@@ -57,7 +57,7 @@ def DynamicPrec_delCols_numbers():
         #print(startingIndex, endIndex, len(rangedThickness), avg, sum(rangedThickness))
 
     data1_mod2 = insert_col_left(data1_mod1, nominalThickness)
-    train_Y = data1_mod2[:,[0]]
+    train_Y = data1_mod2[:,[2]]
     train_X = data1_mod2[:,3:(len(data1_mod2[0])-1)]
 
     #data1_mod2_1 = insert_col_left(data1_mod1, nominalThickness)
@@ -119,8 +119,13 @@ def DynamicPrec_delCols_numbers():
         print('tst_y: ',tst_y)
         print('pred_len: ', len(pred))
         print('pred: ', pred)
+        # print('tst_y: ',np.transpose(tst_y)[0])
+        print('predM: ', np.transpose([pred]))
 
-    return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), })
+        refpred = insert_col_left(np.transpose([pred]), np.transpose(tst_y)[0])
+        print('refpred: ', refpred)
+
+    return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), 'refpred': refpred.tolist(), })
 
 def find_empty_indices(array_of_arrays):
     empty_cells = (array_of_arrays == "") | (array_of_arrays == None)
