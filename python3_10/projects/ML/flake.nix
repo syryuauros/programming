@@ -17,6 +17,7 @@
       in rec {
         packages.python3_10 = pkgs.python3Full.withPackages(ps: with ps; [
           toolz requests matplotlib flask flask-cors scikit-learn numpy scipy pandas
+          tqdm lightgbm
         ]);
         packages.gnuplot = pkgs.gnuplot;
         packages.unzip = pkgs.unzip;
