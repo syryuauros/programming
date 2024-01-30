@@ -6,6 +6,10 @@ import json
 import numpy as np
 import math
 import random
+import pandas as pd
+from sklearn.model_selection import train_test_split
+import lightgbm as lgbm  # light gradient boosting machine
+
 
 num3 = float(0)
 
@@ -20,16 +24,18 @@ def DynamicPrec_delCols_numbers():
     header1 = tr_json['header1']
     data1Arr = np.array(data1).astype(str)
     header1Arr = np.array(header1).astype(str)
-    print('empty or null cell indices:' ,find_empty_indices(data1Arr))
+    print('empty or null cell indices(if it represent [] then fine!!):' ,find_empty_indices(data1Arr))
 
     data1_mod1 = data1Arr.astype(float)
     thickness = data1_mod1[:,1]
-    header1_mod1 = insert_col_left(header1Arr, 'NTh', axis=0)
+    header1_mod1 = insert_col_left(header1Arr, [ 'Index', 'NTh'], axis=0)
 
     cuttingRatio = 0.1
     cuttingIndices = [-1]
     avgs = []
     nominalThickness = []
+    indices = []
+    k = 0
     thicknessNum = len(thickness) - 1
 
     for i in range(thicknessNum):
@@ -45,9 +51,74 @@ def DynamicPrec_delCols_numbers():
         avgs.append(avg)
         for j in range(endIndex-startingIndex):
             nominalThickness.append(avg)
+            indices.append(k)
+            k = k + 1
         #print(startingIndex, endIndex, len(rangedThickness), avg, sum(rangedThickness))
+        #
 
-    data1_mod2 = insert_col_left(data1_mod1, nominalThickness)
+
+    data1_mod2_1 = insert_col_left(data1_mod1, nominalThickness)
+    data1_mod2 = insert_col_left(data1_mod2_1, indices)
+    train_data = pd.DataFrame(data1_mod2, columns= header1_mod1.tolist())
+    train_data = train_data.set_index('Index')
+    # print(train_data)
+
+    train_Y = train_data.iloc[:,[0]]
+    train_X = train_data.iloc[:,3:(len(data1_mod2[0])-1)]
+
+    print(train_X)
+    # print(len(data1_mod2[0]-2)-1)
+    print(train_Y)
+
+    trn_X, tst_X, trn_y, tst_y = train_test_split(train_X, train_Y, test_size=0.05, shuffle=True)
+
+    # train_set = lgbm.Dataset(trn_X, trn_y)
+
+    # valid_set = lgbm.Dataset(tst_X, tst_y)
+
+    lgb_param = {'objective': 'regression',
+                'n_estimators': 100,
+                'drop_rate': 0.8,
+                'skip_drop': 0.8,
+                'learning_rate' : 0.5,
+                'max_depth' : 6,
+                'random_state' : 42,
+                'metric' : 'l1',   # L1=abs(Y-f(x)), L1 means how different the two values are
+                'colsample_bytree' : 0.7,
+                'subsample' : 0.7,
+                'num_leaves' : 6,
+                }
+
+    trn_X = trn_X.astype('float32')
+    tst_X = tst_X.astype('float32')
+
+    trn_y = trn_y.astype('float32')
+    tst_y = tst_y.astype('float32')
+
+    # # # trn_X.info(memory_usage='deep')
+    models = {}
+    # print("train_Y")
+
+    for col in trn_y.columns:
+        train_set = lgbm.Dataset(trn_X, trn_y[col])
+        print(trn_X.shape[0])
+        print(trn_y[col].shape[-1])
+        # print(trn_y[col].nunique())
+        valid_set = lgbm.Dataset(tst_X, tst_y[col])
+    #     print(tst_X)
+    #     print(tst_y[col])
+
+        model = lgbm.train(lgb_param, train_set=train_set, valid_sets=valid_set,
+                            num_boost_round = 1000, verbose_eval=10)
+        models[col] = model
+        print(col)
+        save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model1.txt'
+        model.save_model(save_path)
+
+        pred = model.predict(tst_X)
+        print('tst_y: ',tst_y)
+        print('pred_len: ', len(pred))
+        print('pred: ', pred)
 
     return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), })
 
