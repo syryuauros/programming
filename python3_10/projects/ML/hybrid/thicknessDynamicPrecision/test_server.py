@@ -28,7 +28,8 @@ def DynamicPrec_delCols_numbers():
 
     data1_mod1 = data1Arr.astype(float)
     thickness = data1_mod1[:,1]
-    header1_mod1 = insert_col_left(header1Arr, [ 'Index', 'NTh'], axis=0)
+    header1_mod1 = insert_col_left(header1Arr, [ 'NTh'], axis=0)
+    #header1_mod1 = insert_col_left(header1Arr, [ 'Index', 'NTh'], axis=0)
 
     cuttingRatio = 0.1
     cuttingIndices = [-1]
@@ -54,27 +55,23 @@ def DynamicPrec_delCols_numbers():
             indices.append(k)
             k = k + 1
         #print(startingIndex, endIndex, len(rangedThickness), avg, sum(rangedThickness))
-        #
 
+    data1_mod2 = insert_col_left(data1_mod1, nominalThickness)
+    train_Y = data1_mod2[:,[0]]
+    train_X = data1_mod2[:,3:(len(data1_mod2[0])-1)]
 
-    data1_mod2_1 = insert_col_left(data1_mod1, nominalThickness)
-    data1_mod2 = insert_col_left(data1_mod2_1, indices)
-    train_data = pd.DataFrame(data1_mod2, columns= header1_mod1.tolist())
-    train_data = train_data.set_index('Index')
-    # print(train_data)
-
-    train_Y = train_data.iloc[:,[0]]
-    train_X = train_data.iloc[:,3:(len(data1_mod2[0])-1)]
+    #data1_mod2_1 = insert_col_left(data1_mod1, nominalThickness)
+    #data1_mod2 = insert_col_left(data1_mod2_1, indices)
+    #train_data = pd.DataFrame(data1_mod2, columns= header1_mod1.tolist())
+    #train_data = train_data.set_index('Index')
+    #print(train_data)
+    # train_Y = train_daoc[:,[0]]
+    # train_X = train_data.iloc[:,3:(len(data1_mod2[0])-1)]
 
     print(train_X)
-    # print(len(data1_mod2[0]-2)-1)
     print(train_Y)
 
     trn_X, tst_X, trn_y, tst_y = train_test_split(train_X, train_Y, test_size=0.05, shuffle=True)
-
-    # train_set = lgbm.Dataset(trn_X, trn_y)
-
-    # valid_set = lgbm.Dataset(tst_X, tst_y)
 
     lgb_param = {'objective': 'regression',
                 'n_estimators': 100,
@@ -99,12 +96,15 @@ def DynamicPrec_delCols_numbers():
     models = {}
     # print("train_Y")
 
-    for col in trn_y.columns:
-        train_set = lgbm.Dataset(trn_X, trn_y[col])
-        print(trn_X.shape[0])
-        print(trn_y[col].shape[-1])
+    for col in range(len(trn_y[0])):
+        train_set = lgbm.Dataset(trn_X, trn_y[:,col])
+        valid_set = lgbm.Dataset(tst_X, tst_y[:,col])
+    #for col in trn_y.columns:
+        #train_set = lgbm.Dataset(trn_X, trn_y[col])
+        #print(trn_X.shape[0])
+        #print(trn_y[col].shape[-1])
         # print(trn_y[col].nunique())
-        valid_set = lgbm.Dataset(tst_X, tst_y[col])
+        #valid_set = lgbm.Dataset(tst_X, tst_y[col])
     #     print(tst_X)
     #     print(tst_y[col])
 
