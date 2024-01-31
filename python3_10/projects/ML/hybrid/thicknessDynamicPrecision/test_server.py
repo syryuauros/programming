@@ -16,8 +16,9 @@ num3 = float(0)
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/DynamicPrec_delCols', methods=['POST'])
-def DynamicPrec_delCols_numbers():
+models = {}
+@app.route('/DynamicPrec_train', methods=['POST'])
+def DynamicPrec_train_numbers():
 
     tr_json = request.get_json()
     data1 = tr_json['data1']
@@ -93,7 +94,6 @@ def DynamicPrec_delCols_numbers():
     tst_y = tst_y.astype('float32')
 
     # # # trn_X.info(memory_usage='deep')
-    models = {}
     # print("train_Y")
 
     for col in range(len(trn_y[0])):
@@ -110,8 +110,8 @@ def DynamicPrec_delCols_numbers():
 
         model = lgbm.train(lgb_param, train_set=train_set, valid_sets=valid_set,
                             num_boost_round = 1000, verbose_eval=10)
-        models[col] = model
-        print(col)
+        models[0] = model
+        print('tst_X: ', tst_X)
         save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model1.txt'
         model.save_model(save_path)
 
@@ -124,10 +124,28 @@ def DynamicPrec_delCols_numbers():
 
         refpred = insert_col_left(np.transpose([pred]), np.transpose(tst_y)[0])
         refpred = insert_col_left(refpred, pred / np.transpose(tst_y)[0] * 100)
-        # print('refpred: ', refpred)
+        print('refpred: ', refpred)
 
     return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
 
+
+@app.route('/DynamicPrec_predict', methods=['POST'])
+def DynamicPrec_predict_numbers():
+    tr_json = request.get_json()
+    data2 = tr_json['data2']
+    header2 = tr_json['header2']
+    data2Arr = np.array(data2).astype(str)
+    header2Arr = np.array(header2).astype(str)
+    print('empty or null cell indices(if it represent [] then fine!!):' ,find_empty_indices(data2Arr))
+
+    data2_mod1 = data2Arr.astype(float)
+    pred = models[0].predict(data2_mod1)
+
+    refpred = insert_col_left(np.transpose([pred]), np.zeros(len(pred)))
+    refpred = insert_col_left(refpred, np.zeros(len(pred)))
+
+    return jsonify({ 'refpred': refpred.tolist(),  })
+#################################################### functions general ####################################################
 def find_empty_indices(array_of_arrays):
     empty_cells = (array_of_arrays == "") | (array_of_arrays == None)
     row_indices, col_indices = np.where(empty_cells)
@@ -180,6 +198,7 @@ def find_min_indices(arr):
     min_indices = np.where((arr == np.min(arr)))[0]
     return min_indices
 
+############################################### host set #######################################################
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=7001)
 #

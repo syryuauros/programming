@@ -484,21 +484,25 @@ function strToArrNum(str) {
 }
 
 function removeElementsFromArray(arr, n) {
+  arrCopy = deepCopyArray(arr);
   // Check if the array is not empty and n is a valid number
-  if (arr.length > 0 && Number.isInteger(n) && n >= 0) {
+  if (arrCopy.length > 0 && Number.isInteger(n) && n >= 0) {
     // Remove the first n elements
-    arr.splice(0, n);
+    arrCopy.splice(0, n);
   }
-  return arr;
+  return arrCopy;
 }
 
+function deepCopyArray(arr) {
+  return [...arr];
+}
 
 /////////////////////////////////////////////  server side  /////////////////////////////////////////////////////////
-async function cal() {
+async function train() {
   var data1 = tableContent.table1.getData();
   var header1 = tableContent.table1.getColHeader();
 
-  const response = await fetch('http://192.168.12.135:7001/DynamicPrec_delCols', {
+  const response = await fetch('http://192.168.12.135:7001/DynamicPrec_train', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -508,6 +512,7 @@ async function cal() {
       header1: header1,
     })
   });
+
   const data = await response.json();
   createTableAny('table1', data.data1);
   tableContent['table1'].updateSettings({
@@ -528,8 +533,32 @@ async function cal() {
   tableContent['table3'].updateSettings({
     colHeaders: [ 'pred/ref(%)', 'REF', 'Predict'],
     numericFormat: {
-      pattern: '0,0.00',
+      pattern: '0,0.0',
     },
   });
+}
 
+async function predict() {
+  var data2 = tableContent.table2.getData();
+  var header2 = tableContent.table2.getColHeader();
+
+  const response = await fetch('http://192.168.12.135:7001/DynamicPrec_predict', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      data2: data2,
+      header2: header2,
+    })
+  });
+
+  const data = await response.json();
+  createTableAny('table3', data.refpred);
+  tableContent['table3'].updateSettings({
+    colHeaders: [ 'pred/ref(%)', 'REF', 'Predict'],
+    numericFormat: {
+      pattern: '0,0.0',
+    },
+  });
 }
