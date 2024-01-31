@@ -139,7 +139,8 @@ def DynamicPrec_predict_numbers():
     print('empty or null cell indices(if it represent [] then fine!!):' ,find_empty_indices(data2Arr))
 
     data2_mod1 = data2Arr.astype(float)
-    pred = models[0].predict(data2_mod1)
+    model = models[0]
+    pred = model.predict(data2_mod1)
 
     refpred = insert_col_left(np.transpose([pred]), np.zeros(len(pred)))
     refpred = insert_col_left(refpred, np.zeros(len(pred)))

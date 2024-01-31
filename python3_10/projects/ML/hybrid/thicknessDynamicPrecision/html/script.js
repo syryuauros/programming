@@ -32,7 +32,11 @@ const PredictInit = [
 
 ///////////////////////////////////////////////  for table /////////////////////////////////////////////////////////
 
-
+const hyperformulaInstance = HyperFormula.buildEmpty({
+  // to use an external HyperFormula instance,
+  // initialize it with the `'internal-use-in-handsontable'` license key
+  licenseKey: 'internal-use-in-handsontable',
+});
 
 const contextMenuHTable = {
   //https://handsontable.com/docs/8.2.0/demo-context-menu.html
@@ -497,6 +501,42 @@ function deepCopyArray(arr) {
   return [...arr];
 }
 
+function replaceSpecificColumn(arr, columnIndex, replacement) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].length > columnIndex) {
+      arr[i][columnIndex] = replacement;
+    } else {
+      console.error(`Column index ${columnIndex} is out of bounds for row ${i}.`);
+    }
+  }
+}
+
+function replaceColToCol(arr, columnIndex, replacement) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].length > columnIndex) {
+      arr[i][columnIndex] = replacement[columnIndex];
+    } else {
+      console.error(`Column index ${columnIndex} is out of bounds for row ${i}.`);
+    }
+  }
+}
+
+function replaceColToExpr(arr, columnIndex, expr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].length > columnIndex) {
+      arr[i][columnIndex] = replaceCharacter(expr, '~', i+1);
+    } else {
+      console.error(`Column index ${columnIndex} is out of bounds for row ${i}.`);
+    }
+  }
+}
+
+function replaceCharacter(inputString, charToReplace, replacementChar) {
+  const regex = new RegExp(charToReplace, 'g');
+  const resultString = inputString.replace(regex, replacementChar);
+  return resultString;
+}
+
 /////////////////////////////////////////////  server side  /////////////////////////////////////////////////////////
 async function train() {
   var data1 = tableContent.table1.getData();
@@ -554,11 +594,16 @@ async function predict() {
   });
 
   const data = await response.json();
+  table3Data = replaceColToExpr(data.refpred, 0, '=B~/C~*100');
+  //table3Data = replaceSpecificColumn(data.refpred, 0, '=B1/C1*100');
   createTableAny('table3', data.refpred);
   tableContent['table3'].updateSettings({
     colHeaders: [ 'pred/ref(%)', 'REF', 'Predict'],
     numericFormat: {
       pattern: '0,0.0',
+    },
+    formulas: {
+      engine: HyperFormula,
     },
   });
 }
