@@ -58,7 +58,7 @@ def DynamicPrec_delCols_numbers():
 
     data1_mod2 = insert_col_left(data1_mod1, nominalThickness)
     train_Y = data1_mod2[:,[2]]
-    train_X = data1_mod2[:,3:(len(data1_mod2[0])-1)]
+    train_X = data1_mod2[:,3:(len(data1_mod2[0]))]
 
     #data1_mod2_1 = insert_col_left(data1_mod1, nominalThickness)
     #data1_mod2 = insert_col_left(data1_mod2_1, indices)
@@ -116,16 +116,17 @@ def DynamicPrec_delCols_numbers():
         model.save_model(save_path)
 
         pred = model.predict(tst_X)
-        print('tst_y: ',tst_y)
-        print('pred_len: ', len(pred))
-        print('pred: ', pred)
-        # print('tst_y: ',np.transpose(tst_y)[0])
-        print('predM: ', np.transpose([pred]))
+        # print('tst_y: ',tst_y)
+        # print('pred_len: ', len(pred))
+        # print('pred: ', pred)
+        # # print('tst_y: ',np.transpose(tst_y)[0])
+        # print('predM: ', pred / np.transpose(tst_y)[0] * 100)
 
         refpred = insert_col_left(np.transpose([pred]), np.transpose(tst_y)[0])
-        print('refpred: ', refpred)
+        refpred = insert_col_left(refpred, pred / np.transpose(tst_y)[0] * 100)
+        # print('refpred: ', refpred)
 
-    return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), 'refpred': refpred.tolist(), })
+    return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
 
 def find_empty_indices(array_of_arrays):
     empty_cells = (array_of_arrays == "") | (array_of_arrays == None)

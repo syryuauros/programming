@@ -20,11 +20,11 @@ const digitMap = [
   // Add more rows as needed
 ];
 const PredictInit = [
-  [0.1, 0.3,],
-  [0.2, 0.4,],
-  [0.3, 0.5,],
-  [0.4, 0.6,],
-  [0.5, 0.7,]
+  [10, 0.3, 3],
+  [20, 0.4, 2],
+  [30, 0.5, 1.67],
+  [40, 0.6, 1.5],
+  [50, 0.7, 1.4]
   // Add more rows as needed
 ];
 
@@ -45,14 +45,16 @@ const contextMenuHTable = {
             key: 'plot:heatMap',
             name: 'heatMap',
             callback: function(key, selection, event) {
-              heatMapPlotData(getDataFromSelectedRange('table1'), 'plot1');
+              let tableName = this.view.hot.rootElement.id;
+              heatMapPlotData(getDataFromSelectedRange(tableName), 'plot1');
             },
           },
           {
             key: 'plot:scatter',
             name: 'scatter',
             callback: function(key, selection, event) {
-              scatterPlotData(getDataFromSelectedRange('table1'), 'plot1');
+              let tableName = this.view.hot.rootElement.id;
+              scatterPlotData(getDataFromSelectedRange(tableName), 'plot1');
             },
           },
         ]
@@ -310,7 +312,7 @@ tableSettingsAtStart3.contextMenu = contextMenuHTable;
 tableSettingsAtStart1.data = digitMap;
 tableSettingsAtStart2.data = digitMap;
 tableSettingsAtStart3.data = PredictInit;
-tableSettingsAtStart3.colHeaders = ['REF', 'Pred'];
+tableSettingsAtStart3.colHeaders = [ 'pred/ref(%)', 'REF', 'Predict'];
 tableContent.table1 = new Handsontable(document.getElementById('table1'), tableSettingsAtStart1);
 tableContent.table2 = new Handsontable(document.getElementById('table2'), tableSettingsAtStart2);
 tableContent.table3 = new Handsontable(document.getElementById('table3'), tableSettingsAtStart3);
@@ -481,6 +483,14 @@ function strToArrNum(str) {
   return arrayOfNumbers;
 }
 
+function removeElementsFromArray(arr, n) {
+  // Check if the array is not empty and n is a valid number
+  if (arr.length > 0 && Number.isInteger(n) && n >= 0) {
+    // Remove the first n elements
+    arr.splice(0, n);
+  }
+  return arr;
+}
 
 
 /////////////////////////////////////////////  server side  /////////////////////////////////////////////////////////
@@ -502,7 +512,24 @@ async function cal() {
   createTableAny('table1', data.data1);
   tableContent['table1'].updateSettings({
     colHeaders: data.header1,
+    renderer: scientificRenderer,
+  });
+
+  createTableAny('table2', data.tst_X);
+  tableContent['table2'].updateSettings({
+    colHeaders: removeElementsFromArray(data.header1, 3),
+    // numericFormat: {
+    //   pattern: '0,0.00',
+    // },
+    renderer: scientificRenderer,
   });
 
   createTableAny('table3', data.refpred);
+  tableContent['table3'].updateSettings({
+    colHeaders: [ 'pred/ref(%)', 'REF', 'Predict'],
+    numericFormat: {
+      pattern: '0,0.00',
+    },
+  });
+
 }
