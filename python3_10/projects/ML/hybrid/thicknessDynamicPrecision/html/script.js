@@ -235,8 +235,8 @@ const tableSettingsAtStart = {
 
 ///////////////////////////////////////////////  for plotly /////////////////////////////////////////////////////////
 const layoutHeatMap = {
-  width: 450,
-  height: 350,
+  width: 550,
+  height: 420,
   margin: {
     l: 0,
     r: 0,
@@ -255,8 +255,8 @@ const layoutHeatMap = {
 
 
 const layoutScatter = {
-  width: 450,
-  height: 350,
+  width: 550,
+  height: 420,
   margin: {
     l: 30,
     r: 10,
@@ -281,8 +281,54 @@ const layoutScatter = {
   },
 };
 
+const configPlotHeatMap = {
+  scrollZoom: true,
+  displaylogo: false,
+  modeBarButtonsToAdd: [
+  {
+    name: 'color scales',
+    icon: icon1,
+    click: function(plot1) {
+      popup2.style.left = `700px`;
+      popup2.style.display = 'block';
+    },
+  },
+  {
+    name: 'set minMax',
+    icon: icon1,
+    click: function(plot1) {
+      popup.style.left = `700px`;
+      popup.style.display = 'block';
+    },
+  },
+  ],
+  modeBarButtonsToRemove: [
+    'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
+  ],
+};
 
-const configPlotCommon = {
+function closePopUp() {
+  popup.style.display = 'none';
+}
+function closePopUp2() {
+  popup2.style.display = 'none';
+}
+
+function applyMinMax() {
+  let zMin = document.getElementById('zMin').value;
+  let zMax = document.getElementById('zMax').value;
+  Plotly.update('plot1', {zmin: zMin, zmax: zMax,});
+  closePopUp();
+}
+
+function updateColorScale() {
+  var selectBox = document.getElementById("color-scale-select");
+  var selectedValue = selectBox.value;
+  Plotly.update('plot1', {colorscale: selectedValue,});
+  closePopUp2();
+}
+
+const configPlotScatter = {
   scrollZoom: true,
   displaylogo: false,
   modeBarButtonsToAdd: [
@@ -328,7 +374,7 @@ data = [{
     colorscale: 'Viridis' // Choose your desired color scale
 }];
 
-Plotly.newPlot('plot1', data, layoutHeatMap, {scrollZoom: true});
+Plotly.newPlot('plot1', data, layoutHeatMap, configPlotHeatMap);
 
 
 ///////////////////////////////////////////////  functions for IO /////////////////////////////////////////////////////////
@@ -356,6 +402,37 @@ function loadCSVFile(tableName) {
     }
   }
 }
+
+var dataTxt;
+function readAndParseTextFile() {
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+
+  fileInput.addEventListener('change', handleFileSelection);
+  fileInput.click();
+
+  function handleFileSelection() {
+    if (fileInput.files.length > 0) {
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        try {
+          const txtData = event.target.result;
+          console.log(dataTxt);
+          // console.log('txt Data', txtData);
+          dataTxt = deepCopy(txtData);
+          // console.log(dataTxt);
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+        }
+      };
+      reader.readAsText(fileInput.files[0]);
+    } else {
+      console.log('No file selected.');
+    }
+  }
+}
+
 
 function exportToCSV(tableName) {
     var Data0 = tableContent[tableName].getData();
@@ -394,6 +471,11 @@ function createTableAny(tableName, csvData) {
     tableContent[tableName] = new Handsontable(tableElement, tableSettings);
 }
 
+function dataInsideOut(innerData, ouputData) {
+  outputData = deepCopy(innerData);
+  return outputData;
+}
+
 ///////////////////////////////////////////////  for table /////////////////////////////////////////////////////////
 function scientificRenderer(instance, td, row, col, prop, value, cellProperties) {
   Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -427,23 +509,29 @@ function heatMapPlot(tableName, plotName) {
   dataPlotTemp = tableContent[tableName].getData()
   zValuesTemp = dataPlotTemp.map(row => row.map(value => value));
   dataTemp = [{
-      z: zValuesTemp,
-      type: 'heatmap',
-      colorscale: 'Viridis' // Choose your desired color scale
+    z: zValuesTemp,
+    type: 'heatmap',
+    colorscale: 'Viridis', // Choose your desired color scale
+    zmin: 0,
+    zmax: 100,
   }];
 
-  Plotly.newPlot(plotName, dataTemp, layoutHeatMap, {scrollZoom: true});
+  // Plotly.newPlot(plotName, dataTemp, layoutHeatMap, {scrollZoom: true});
+  Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configPlotHeatMap);
 }
 
 function heatMapPlotData(dataPlotTemp, plotName) {
   zValuesTemp = dataPlotTemp.map(row => row.map(value => value));
   dataTemp = [{
-      z: zValuesTemp,
-      type: 'heatmap',
-      colorscale: 'Viridis' // Choose your desired color scale
+    z: zValuesTemp,
+    type: 'heatmap',
+    colorscale: 'Viridis', // Choose your desired color scale
+    zmin: 0,
+    zmax: 100,
   }];
 
-  Plotly.newPlot(plotName, dataTemp, layoutHeatMap, {scrollZoom: true});
+  // Plotly.newPlot(plotName, dataTemp, layoutHeatMap, {scrollZoom: true});
+  Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configPlotHeatMap);
 }
 
 function scatterPlotData(dataPlotTemp, plotName) {
@@ -462,7 +550,7 @@ function scatterPlotData(dataPlotTemp, plotName) {
     dataTemp.push(traceTemp);
   }
 
-  Plotly.newPlot(plotName, dataTemp, layoutScatter, configPlotCommon);
+  Plotly.newPlot(plotName, dataTemp, layoutScatter, configPlotScatter);
 }
 
 
@@ -499,6 +587,21 @@ function removeElementsFromArray(arr, n) {
 
 function deepCopyArray(arr) {
   return [...arr];
+}
+
+function deepCopy(data) {
+  try {
+    // Convert the data to JSON format using JSON.stringify
+    const jsonString = JSON.stringify(data);
+
+    // Parse the JSON string to create a deep copy
+    const deepCopy = JSON.parse(jsonString);
+
+    return deepCopy;
+  } catch (error) {
+    console.error('Error deep copying data:', error);
+    return null;
+  }
 }
 
 function replaceSpecificColumn(arr, columnIndex, replacement) {
@@ -606,4 +709,9 @@ async function predict() {
       engine: HyperFormula,
     },
   });
+}
+
+async function loadTrain() {
+  readAndParseTextFile();
+  await console.log(dataTxt);
 }

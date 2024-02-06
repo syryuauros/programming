@@ -5,6 +5,7 @@ import flask
 import json
 import numpy as np
 import math
+import os
 # import random
 # import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -112,6 +113,7 @@ def DynamicPrec_train_numbers():
                             num_boost_round = 1000, verbose_eval=10)
         models[0] = model
         print('tst_X: ', tst_X)
+        current_directory = os.getcwd()
         save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model1.txt'
         model.save_model(save_path)
 

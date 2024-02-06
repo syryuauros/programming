@@ -16,6 +16,34 @@
 </head>
 <body>
 
+    <div class="popup" id="popup" style="height: 150px; width: 130px; display: none;">
+        <button class="button" onclick="closePopUp()">X</button> <br>
+        <label for="labelZmin">min: </label>
+        <input type="text" size="4px" value="0" id="zMin" > <br> <br>
+        <label for="labelZmax">max: </label>
+        <input type="text" size="3.5px" value="10" id="zMax" > <br> <br>
+        <button onclick="applyMinMax()" style="width:60px; textalign:right;">apply</button> <br> <br>
+    </div>
+
+    <div class="popup" id="popup2" style="height: 95px; width: 98px; display: none;">
+        <button class="button" onclick="closePopUp2()">X</button> <br>
+        <select id="color-scale-select">
+            <option value="Viridis">Viridis</option>
+            <option value="Blackbody">Blackbody</option>
+            <option value="Bluered">Bluered</option>
+            <option value="Blues">Blues</option>
+            <option value="Earth">Earth</option>
+            <option value="Electric">Electric</option>
+            <option value="Hot">Hot</option>
+            <option value="Greys">Greys</option>
+            <option value="Jet">Jet</option>
+            <option value="Plasma">Plasma</option>
+            <option value="Portland">Portland</option>
+        </select> <br>
+        <button class="button-apply" onclick="updateColorScale()" >apply</button>
+    </div>
+
+
     <div class="container-grid0">
         <div class="item">
             <div class="container-nav">
@@ -56,9 +84,10 @@
                                         <div class="item-controls">
                                         </div>
                                     </div>
-                                    <button onclick="calt()">delete columns</button>
-                                    <input type="text" size="70px" value="0 1 2 3 4 5 6 8 11 12 13 14 15 16 27 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57" id="colsToBeDel" >
+                                    <button onclick="calt()">data pre-process</button>
+                                    <input type="text" size="0px" value="0 1 2 3 4 5 6 8 11 12 13 14 15 16 27 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57" id="colsToBeDel" >
                                     <button onclick="train()">train</button>
+                                    <button onclick="loadTrain()">load train</button>
                                 </div>
 
                                 <div class="item">
