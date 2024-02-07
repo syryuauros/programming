@@ -1,4 +1,5 @@
 var tableContent = {};
+var dm = {};
 var columnsConfig = [];
 var data;
 var zValues;
@@ -208,10 +209,12 @@ function rowToHeader(tableName, rowNum = 0) {
   });
 }
 
+
 const tableSettingsAtStart = {
   data: [
     [ , ],
   ],
+  filters: true,
   allowEmpty: true,
   type: 'numeric',
   // numericFormat: {
@@ -353,16 +356,28 @@ const configPlotScatter = {
 };
 
 ///////////////////////////////////////////////  table1 ititial /////////////////////////////////////////////////////////
+let table1Dm = true;
+let table2Dm = false;
+let table3Dm = false;
+
+dm['table1'] = true;
+
 var tableSettingsAtStart1 = JSON.parse(JSON.stringify(tableSettingsAtStart));
-var tableSettingsAtStart2 = JSON.parse(JSON.stringify(tableSettingsAtStart));
-var tableSettingsAtStart3 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart1.contextMenu = contextMenuHTable;
-tableSettingsAtStart2.contextMenu = contextMenuHTable;
-tableSettingsAtStart3.contextMenu = contextMenuHTable;
 tableSettingsAtStart1.data = digitMap;
+tableSettingsAtStart1.dropdownMenu = table1Dm;
+
+var tableSettingsAtStart2 = JSON.parse(JSON.stringify(tableSettingsAtStart));
+tableSettingsAtStart2.contextMenu = contextMenuHTable;
 tableSettingsAtStart2.data = digitMap;
+tableSettingsAtStart2.dropdownMenu = table2Dm;
+
+var tableSettingsAtStart3 = JSON.parse(JSON.stringify(tableSettingsAtStart));
+tableSettingsAtStart3.contextMenu = contextMenuHTable;
 tableSettingsAtStart3.data = PredictInit;
+tableSettingsAtStart3.dropdownMenu = table3Dm;
 tableSettingsAtStart3.colHeaders = [ 'pred/ref(%)', 'REF', 'Predict'];
+
 tableContent.table1 = new Handsontable(document.getElementById('table1'), tableSettingsAtStart1);
 tableContent.table2 = new Handsontable(document.getElementById('table2'), tableSettingsAtStart2);
 tableContent.table3 = new Handsontable(document.getElementById('table3'), tableSettingsAtStart3);
@@ -497,6 +512,14 @@ function createTableAny(tableName, csvData) {
     tableSettings.contextMenu = contextMenuHTable;
     tableSettings.data = csvData;
     tableContent[tableName] = new Handsontable(tableElement, tableSettings);
+}
+
+function toggleDropdownMenu(tableName) {
+  let dmSwitch = tableName + 'Dm';
+  dm[tableName] = !dm[tableName];
+  tableContent[tableName].updateSettings({
+    dropdownMenu: dm[tableName],
+  });
 }
 
 function dataInsideOut(innerData, ouputData) {
