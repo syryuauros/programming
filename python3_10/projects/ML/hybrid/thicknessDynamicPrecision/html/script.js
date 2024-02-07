@@ -404,35 +404,63 @@ function loadCSVFile(tableName) {
 }
 
 var dataTxt;
+// async function readAndParseTextFile() {
+//   const fileInput = document.createElement('input');
+//   fileInput.type = 'file';
+
+//   fileInput.addEventListener('change', handleFileSelection);
+//   fileInput.click();
+
+//   function handleFileSelection() {
+//     if (fileInput.files.length > 0) {
+//       const reader = new FileReader();
+
+//       reader.onload = function (event) {
+//         try {
+//           const txtData = event.target.result;
+//           // console.log(dataTxt);
+//           // console.log('txt Data', txtData);
+//           dataTxt = deepCopy(txtData);
+//           // console.log(dataTxt);
+//         } catch (error) {
+//           console.error('Error parsing JSON:', error);
+//         }
+//       };
+//       reader.readAsText(fileInput.files[0]);
+//     } else {
+//       console.log('No file selected.');
+//     }
+//   }
+// }
+
 function readAndParseTextFile() {
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
+  return new Promise((resolve, reject) => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
 
-  fileInput.addEventListener('change', handleFileSelection);
-  fileInput.click();
+    fileInput.addEventListener('change', handleFileSelection);
+    fileInput.click();
 
-  function handleFileSelection() {
-    if (fileInput.files.length > 0) {
-      const reader = new FileReader();
+    function handleFileSelection() {
+      if (fileInput.files.length > 0) {
+        const reader = new FileReader();
 
-      reader.onload = function (event) {
-        try {
-          const txtData = event.target.result;
-          console.log(dataTxt);
-          // console.log('txt Data', txtData);
-          dataTxt = deepCopy(txtData);
-          // console.log(dataTxt);
-        } catch (error) {
-          console.error('Error parsing JSON:', error);
-        }
-      };
-      reader.readAsText(fileInput.files[0]);
-    } else {
-      console.log('No file selected.');
+        reader.onload = function (event) {
+          try {
+            const txtData = event.target.result;
+            dataTxt = deepCopy(txtData);
+            resolve(txtData);
+          } catch (error) {
+            reject(error);
+          }
+        };
+        reader.readAsText(fileInput.files[0]);
+      } else {
+        reject('No file selected.');
+      }
     }
-  }
+  });
 }
-
 
 function exportToCSV(tableName) {
     var Data0 = tableContent[tableName].getData();
@@ -712,6 +740,17 @@ async function predict() {
 }
 
 async function loadTrain() {
-  readAndParseTextFile();
-  await console.log(dataTxt);
+  await readAndParseTextFile();
+  console.log(dataTxt);
+}
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+function test1() {
+  setTimeout(() => {
+    dataTxt = 'a';
+    console.log(dataTxt);
+  },300);
 }

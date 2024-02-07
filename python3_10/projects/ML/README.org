@@ -12,3 +12,6 @@ https://direction-f.tistory.com/74?category=954338
 https://direction-f.tistory.com/76
 https://ko.wikipedia.org/wiki/%EC%84%A0%ED%98%95_%ED%9A%8C%EA%B7%80
 https://hyperformula.handsontable.com/guide/client-side-installation.html
+
++ about async functions, how to act a function syncronous way, (callback, Promise, await)
+https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve
