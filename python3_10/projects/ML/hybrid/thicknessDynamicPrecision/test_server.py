@@ -30,13 +30,14 @@ def DynamicPrec_train_numbers():
 
     data1_mod1 = data1Arr.astype(float)
     thickness = data1_mod1[:,1]
-    header1_mod1 = insert_col_left(header1Arr, [ 'NTh'], axis=0)
+    header1_mod1 = insert_col_left(header1Arr, [ 'deviation', 'Th_avg' ], axis=0)
     #header1_mod1 = insert_col_left(header1Arr, [ 'Index', 'NTh'], axis=0)
 
     cuttingRatio = 0.1
     cuttingIndices = [-1]
     avgs = []
     nominalThickness = []
+    deviations = []
     indices = []
     k = 0
     thicknessNum = len(thickness) - 1
@@ -54,13 +55,15 @@ def DynamicPrec_train_numbers():
         avgs.append(avg)
         for j in range(endIndex-startingIndex):
             nominalThickness.append(avg)
+            deviations.append(rangedThickness[j]-avg)
             indices.append(k)
             k = k + 1
         #print(startingIndex, endIndex, len(rangedThickness), avg, sum(rangedThickness))
 
     data1_mod2 = insert_col_left(data1_mod1, nominalThickness)
-    train_Y = data1_mod2[:,[2]]
-    train_X = data1_mod2[:,3:(len(data1_mod2[0]))]
+    data1_mod2 = insert_col_left(data1_mod2, deviations)
+    train_Y = data1_mod2[:,[0,1]]
+    train_X = data1_mod2[:,2:(len(data1_mod2[0]))]
 
     #data1_mod2_1 = insert_col_left(data1_mod1, nominalThickness)
     #data1_mod2 = insert_col_left(data1_mod2_1, indices)
@@ -111,21 +114,23 @@ def DynamicPrec_train_numbers():
 
         model = lgbm.train(lgb_param, train_set=train_set, valid_sets=valid_set,
                             num_boost_round = 1000, verbose_eval=10)
-        models[0] = model
+        models[col] = model
         print('tst_X: ', tst_X)
         current_directory = os.getcwd()
         save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model1.txt'
         model.save_model(save_path)
 
-        pred = model.predict(tst_X)
+        pred = models[0].predict(tst_X)
         # print('tst_y: ',tst_y)
         # print('pred_len: ', len(pred))
         # print('pred: ', pred)
         # # print('tst_y: ',np.transpose(tst_y)[0])
         # print('predM: ', pred / np.transpose(tst_y)[0] * 100)
 
-        refpred = insert_col_left(np.transpose([pred]), np.transpose(tst_y)[0])
-        refpred = insert_col_left(refpred, pred / np.transpose(tst_y)[0] * 100)
+        refpred = insert_col_left(np.transpose(np.transpose(tst_X)[1] - [pred]), np.transpose(tst_X)[1] - np.transpose(tst_y)[0])
+        refpred = insert_col_left(refpred, (np.transpose(tst_X)[1] - pred) / (np.transpose(tst_X)[1] - np.transpose(tst_y)[0]) * 100)
+        # refpred = insert_col_left(np.transpose([pred]+ np.transpose(tst_y)[1]), np.transpose(tst_y)[0] + np.transpose(tst_y)[1])
+        # refpred = insert_col_left(refpred, (pred + np.transpose(tst_y)[1]) / (np.transpose(tst_y)[0]+ np.transpose(tst_y)[1]) * 100)
         print('refpred: ', refpred)
 
     return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
@@ -145,7 +150,7 @@ def DynamicPrec_predict_numbers():
     print(model)
     pred = model.predict(data2_mod1)
 
-    refpred = insert_col_left(np.transpose([pred]), np.zeros(len(pred)))
+    refpred = insert_col_left(np.transpose(data2_mod1[:,1] - [pred]), np.zeros(len(pred)))
     refpred = insert_col_left(refpred, np.zeros(len(pred)))
 
     return jsonify({ 'refpred': refpred.tolist(),  })

@@ -693,7 +693,7 @@ async function train() {
 
   createTableAny('table2', data.tst_X);
   tableContent['table2'].updateSettings({
-    colHeaders: removeElementsFromArray(data.header1, 3),
+    colHeaders: removeElementsFromArray(data.header1, 2),
     // numericFormat: {
     //   pattern: '0,0.00',
     // },
