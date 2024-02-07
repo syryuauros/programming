@@ -142,12 +142,26 @@ def DynamicPrec_predict_numbers():
 
     data2_mod1 = data2Arr.astype(float)
     model = models[0]
+    print(model)
     pred = model.predict(data2_mod1)
 
     refpred = insert_col_left(np.transpose([pred]), np.zeros(len(pred)))
     refpred = insert_col_left(refpred, np.zeros(len(pred)))
 
     return jsonify({ 'refpred': refpred.tolist(),  })
+
+
+@app.route('/DynamicPrec_loadTrain', methods=['POST'])
+def DynamicPrec_loadTrain_numbers():
+    tr_json = request.get_json()
+    trainData = tr_json['trainData']
+
+    models[0] = lgbm.Booster(model_file=None, model_str=trainData)
+    # models[0] = lgbm.Booster(model_file='/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model1.txt')
+    print(models[0])
+
+    return jsonify({ })
+
 #################################################### functions general ####################################################
 def find_empty_indices(array_of_arrays):
     empty_cells = (array_of_arrays == "") | (array_of_arrays == None)

@@ -742,6 +742,17 @@ async function predict() {
 async function loadTrain() {
   await readAndParseTextFile();
   console.log(dataTxt);
+
+  const response = await fetch('http://192.168.12.135:7001/DynamicPrec_loadTrain', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      trainData: dataTxt,
+    })
+  });
+
 }
 
 function sleep(ms) {
