@@ -150,7 +150,9 @@ def DynamicPrec_predict_numbers():
     print(model)
     pred = model.predict(data2_mod1)
 
-    refpred = insert_col_left(np.transpose(data2_mod1[:,1] - [pred]), np.zeros(len(pred)))
+    refpred = insert_col_left(np.transpose(data2_mod1[:,1] - [pred]), np.transpose(data2_mod1[:,1]))
+    refpred = insert_col_left(refpred, np.zeros(len(pred)))
+    refpred = insert_col_left(refpred, np.zeros(len(pred)))
     refpred = insert_col_left(refpred, np.zeros(len(pred)))
 
     return jsonify({ 'refpred': refpred.tolist(),  })

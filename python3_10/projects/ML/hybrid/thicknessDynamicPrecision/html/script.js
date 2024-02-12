@@ -12,6 +12,13 @@ var icon1 = {
   'path': 'M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z'
 }
 
+var iconPallete = {
+  'width': 512,
+  'height': 512,
+  'path': 'M512 256c0 .9 0 1.8 0 2.7c-.4 36.5-33.6 61.3-70.1 61.3H344c-26.5 0-48 21.5-48 48c0 3.4 .4 6.7 1 9.9c2.1 10.2 6.5 20 10.8 29.9c6.1 13.8 12.1 27.5 12.1 42c0 31.8-21.6 60.7-53.4 62c-3.5 .1-7 .2-10.6 .2C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm0-96a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm96 96a32 32 0 1 0 0-64 32 32 0 1 0 0 64z'
+}
+//download svg file from font-awesome, cat [path]/file.svg
+
 const digitMap = [
   [0.1, 0.3, 0.5, 0.7, 0.9],
   [0.2, 0.4, 0.6, 0.8, 1.0],
@@ -34,8 +41,6 @@ const PredictInit = [
 ///////////////////////////////////////////////  for table /////////////////////////////////////////////////////////
 
 const hyperformulaInstance = HyperFormula.buildEmpty({
-  // to use an external HyperFormula instance,
-  // initialize it with the `'internal-use-in-handsontable'` license key
   licenseKey: 'internal-use-in-handsontable',
 });
 
@@ -171,7 +176,6 @@ function insertColumn(tableName, columnIndex) {
   tableContent[tableName].render(); // Force Handsontable to re-render
 }
 
-
 function removeEmptyRows(tableName) {
   var emptyRows = [];
 
@@ -187,6 +191,7 @@ function removeEmptyRows(tableName) {
     }
   }
 }
+
 function removeEmptyCols(tableName) {
   var emptyCols = [];
 
@@ -200,7 +205,6 @@ function removeEmptyCols(tableName) {
     tableContent[tableName].alter('remove_col', col);
   });
 }
-
 
 function rowToHeader(tableName, rowNum = 0) {
   var selectedRow = tableContent[tableName].getDataAtRow(rowNum);
@@ -268,10 +272,12 @@ const layoutScatter = {
   },
   dragmode: 'zoom',
   xaxis: {
+    type: 'log',
     showaline: true,
     showticklabels: true,
   },
   yaxis: {
+    type: 'log',
     showline: true,
     showticklabels: true,
   },
@@ -290,7 +296,8 @@ const configPlotHeatMap = {
   modeBarButtonsToAdd: [
   {
     name: 'color scales',
-    icon: icon1,
+    // icon: { symbol: icons.legend, x: 0, y: 0 },
+    icon: iconPallete,
     click: function(plot1) {
       popup2.style.left = `700px`;
       popup2.style.display = 'block';
@@ -317,7 +324,7 @@ function closePopUp2() {
   popup2.style.display = 'none';
 }
 
-function applyMinMax() {
+function applyMinMaxColor() {
   let zMin = document.getElementById('zMin').value;
   let zMax = document.getElementById('zMax').value;
   Plotly.update('plot1', {zmin: zMin, zmax: zMax,});
@@ -356,7 +363,7 @@ const configPlotScatter = {
 };
 
 ///////////////////////////////////////////////  table1 ititial /////////////////////////////////////////////////////////
-let table1Dm = true;
+let table1Dm = false;
 let table2Dm = false;
 let table3Dm = false;
 
@@ -419,35 +426,6 @@ function loadCSVFile(tableName) {
 }
 
 var dataTxt;
-// async function readAndParseTextFile() {
-//   const fileInput = document.createElement('input');
-//   fileInput.type = 'file';
-
-//   fileInput.addEventListener('change', handleFileSelection);
-//   fileInput.click();
-
-//   function handleFileSelection() {
-//     if (fileInput.files.length > 0) {
-//       const reader = new FileReader();
-
-//       reader.onload = function (event) {
-//         try {
-//           const txtData = event.target.result;
-//           // console.log(dataTxt);
-//           // console.log('txt Data', txtData);
-//           dataTxt = deepCopy(txtData);
-//           // console.log(dataTxt);
-//         } catch (error) {
-//           console.error('Error parsing JSON:', error);
-//         }
-//       };
-//       reader.readAsText(fileInput.files[0]);
-//     } else {
-//       console.log('No file selected.');
-//     }
-//   }
-// }
-
 function readAndParseTextFile() {
   return new Promise((resolve, reject) => {
     const fileInput = document.createElement('input');
@@ -554,7 +532,6 @@ function getDataFromSelectedRange(tableName) {
   return selectedData;
 }
 
-
 /////////////////////////////////////////////  for plot  /////////////////////////////////////////////////////////
 function heatMapPlot(tableName, plotName) {
   dataPlotTemp = tableContent[tableName].getData()
@@ -585,9 +562,22 @@ function heatMapPlotData(dataPlotTemp, plotName) {
   Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configPlotHeatMap);
 }
 
+let markerSymbol = [ 'circle', 'square', 'diamond', 'cross' ];
+let markerSize = [ '7', '0', '2', '9' ];
+let dashType = [ 'solid', 'dot', 'dash', 'dashdot' ];
+let lineWidth = [ '1', '1', '0', '2' ];
 function scatterPlotData(dataPlotTemp, plotName) {
   var trace = {
     x: getColumn(dataPlotTemp,0),
+    mode: 'markers+lines',
+    marker: {
+      symbol: 'circle', // Set the marker type here ('circle', 'square', 'diamond', 'cross', 'x', 'triangle-up', 'triangle-down', 'triangle-left', 'triangle-right', 'pentagon', 'hexagon', 'hexagram', 'star', etc.)
+      size: 7,
+    },
+    line: {
+      dash: 'dash', // Set the dash type here ('solid', 'dot', 'dash', 'longdash', 'dashdot', 'longdashdot')
+      width: 0,
+    },
     type: 'scatter',
     colorscale: 'Viridis' // Choose your desired color scale
   };
@@ -598,13 +588,13 @@ function scatterPlotData(dataPlotTemp, plotName) {
     traceTemp = Object.assign({}, trace);
     traceTemp.y = getColumn(dataPlotTemp,i);
     traceTemp.z = i;
+    traceTemp.marker = { symbol: markerSymbol[i-1], size: markerSize[i-1], }
+    traceTemp.line = { dash: dashType[i-1], width: lineWidth[i-1], };
     dataTemp.push(traceTemp);
   }
 
   Plotly.newPlot(plotName, dataTemp, layoutScatter, configPlotScatter);
 }
-
-
 
 /////////////////////////////////////////////  general utils  /////////////////////////////////////////////////////////
 function radio(optionName) {
@@ -691,6 +681,17 @@ function replaceCharacter(inputString, charToReplace, replacementChar) {
   return resultString;
 }
 
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+function test1() {
+  setTimeout(() => {
+    dataTxt = 'a';
+    console.log(dataTxt);
+  },300);
+}
+
 /////////////////////////////////////////////  server side  /////////////////////////////////////////////////////////
 async function train() {
   var data1 = tableContent.table1.getData();
@@ -748,11 +749,12 @@ async function predict() {
   });
 
   const data = await response.json();
-  table3Data = replaceColToExpr(data.refpred, 0, '=B~/C~*100');
+  table3Data = replaceColToExpr(data.refpred, 0, '=d~/c~*100');
+  table3Data = replaceColToExpr(data.refpred, 1, '=e~/c~*100');
   //table3Data = replaceSpecificColumn(data.refpred, 0, '=B1/C1*100');
   createTableAny('table3', data.refpred);
   tableContent['table3'].updateSettings({
-    colHeaders: [ 'pred/ref(%)', 'REF', 'Predict'],
+    colHeaders: [ 'th/ref(%)', 'pred/ref(%)', 'REF', 'thickness', 'Predict'],
     numericFormat: {
       pattern: '0,0.0',
     },
@@ -776,15 +778,4 @@ async function loadTrain() {
     })
   });
 
-}
-
-function sleep(ms) {
-  return new Promise((r) => setTimeout(r, ms));
-}
-
-function test1() {
-  setTimeout(() => {
-    dataTxt = 'a';
-    console.log(dataTxt);
-  },300);
 }
