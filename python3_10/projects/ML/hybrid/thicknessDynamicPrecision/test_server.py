@@ -117,7 +117,7 @@ def DynamicPrec_train_numbers():
         models[col] = model
         print('tst_X: ', tst_X)
         current_directory = os.getcwd()
-        save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model1.txt'
+        save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model2.txt'
         model.save_model(save_path)
 
         pred = models[0].predict(tst_X)
@@ -131,7 +131,7 @@ def DynamicPrec_train_numbers():
         refpred = insert_col_left(refpred, (np.transpose(tst_X)[1] - pred) / (np.transpose(tst_X)[1] - np.transpose(tst_y)[0]) * 100)
         # refpred = insert_col_left(np.transpose([pred]+ np.transpose(tst_y)[1]), np.transpose(tst_y)[0] + np.transpose(tst_y)[1])
         # refpred = insert_col_left(refpred, (pred + np.transpose(tst_y)[1]) / (np.transpose(tst_y)[0]+ np.transpose(tst_y)[1]) * 100)
-        print('refpred: ', refpred)
+        # print('refpred: ', refpred)
 
     return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
 
@@ -147,9 +147,10 @@ def DynamicPrec_predict_numbers():
 
     data2_mod1 = data2Arr.astype(float)
     model = models[0]
-    print(model)
+    # print(model)
     pred = model.predict(data2_mod1)
 
+    #refpred = insert_col_left(np.transpose([pred]), np.transpose(data2_mod1[:,1]))
     refpred = insert_col_left(np.transpose(data2_mod1[:,1] - [pred]), np.transpose(data2_mod1[:,1]))
     refpred = insert_col_left(refpred, np.zeros(len(pred)))
     refpred = insert_col_left(refpred, np.zeros(len(pred)))
@@ -164,7 +165,7 @@ def DynamicPrec_loadTrain_numbers():
     trainData = tr_json['trainData']
 
     models[0] = lgbm.Booster(model_file=None, model_str=trainData)
-    # models[0] = lgbm.Booster(model_file='/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model1.txt')
+    #models[0] = lgbm.Booster(model_file='/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model2.txt')
     print(models[0])
 
     return jsonify({ })
