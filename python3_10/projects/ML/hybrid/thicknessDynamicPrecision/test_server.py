@@ -117,7 +117,7 @@ def DynamicPrec_train_numbers():
         models[col] = model
         print('tst_X: ', tst_X)
         current_directory = os.getcwd()
-        save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model2.txt'
+        save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model2.txt' + str(col)
         model.save_model(save_path)
 
         pred = models[0].predict(tst_X)
@@ -146,9 +146,11 @@ def DynamicPrec_predict_numbers():
     print('empty or null cell indices(if it represent [] then fine!!):' ,find_empty_indices(data2Arr))
 
     data2_mod1 = data2Arr.astype(float)
+    print('data2_mod1: ', data2_mod1)
     model = models[0]
-    # print(model)
+    print('this predict: ', model)
     pred = model.predict(data2_mod1)
+    print('pred: ', pred)
 
     #refpred = insert_col_left(np.transpose([pred]), np.transpose(data2_mod1[:,1]))
     refpred = insert_col_left(np.transpose(data2_mod1[:,1] - [pred]), np.transpose(data2_mod1[:,1]))

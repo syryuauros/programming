@@ -371,17 +371,17 @@ let table3Dm = false;
 dm['table1'] = true;
 
 var tableSettingsAtStart1 = JSON.parse(JSON.stringify(tableSettingsAtStart));
-// tableSettingsAtStart1.contextMenu = contextMenuHTable;
+tableSettingsAtStart1.contextMenu = contextMenuHTable;
 tableSettingsAtStart1.data = digitMap;
 tableSettingsAtStart1.dropdownMenu = table1Dm;
 
 var tableSettingsAtStart2 = JSON.parse(JSON.stringify(tableSettingsAtStart));
-// tableSettingsAtStart2.contextMenu = contextMenuHTable;
+tableSettingsAtStart2.contextMenu = contextMenuHTable;
 tableSettingsAtStart2.data = digitMap;
 tableSettingsAtStart2.dropdownMenu = table2Dm;
 
 var tableSettingsAtStart3 = JSON.parse(JSON.stringify(tableSettingsAtStart));
-// tableSettingsAtStart3.contextMenu = contextMenuHTable;
+tableSettingsAtStart3.contextMenu = contextMenuHTable;
 tableSettingsAtStart3.data = PredictInit;
 tableSettingsAtStart3.dropdownMenu = table3Dm;
 tableSettingsAtStart3.colHeaders = [ 'pred/ref(%)', 'REF', 'Predict'];
@@ -581,7 +581,7 @@ function heatMapPlotRange(tableName, plotName, colNums) {
 }
 
 let markerSymbol = [ 'circle', 'square', 'diamond', 'cross' ];
-let markerSize = [ '1', '7', '7', '9' ];
+let markerSize = [ '5', '7', '7', '9' ];
 let dashType = [ 'dot', 'solid', 'dash', 'dashdot' ];
 let lineWidth = [ '3', '0', '0', '2' ];
 function scatterPlotData(dataPlotTemp, plotName) {
