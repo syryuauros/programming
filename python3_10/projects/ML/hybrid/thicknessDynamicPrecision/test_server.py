@@ -31,7 +31,6 @@ def DynamicPrec_train_numbers():
     data1_mod1 = data1Arr.astype(float)
     thickness = data1_mod1[:,1]
     header1_mod1 = insert_col_left(header1Arr, [ 'deviation', 'Th_avg' ], axis=0)
-    #header1_mod1 = insert_col_left(header1Arr, [ 'Index', 'NTh'], axis=0)
 
     cuttingRatio = 0.1
     cuttingIndices = [-1]
@@ -73,8 +72,8 @@ def DynamicPrec_train_numbers():
     # train_Y = train_daoc[:,[0]]
     # train_X = train_data.iloc[:,3:(len(data1_mod2[0])-1)]
 
-    print(train_X)
-    print(train_Y)
+    # print(train_X)
+    # print(train_Y)
 
     trn_X, tst_X, trn_y, tst_y = train_test_split(train_X, train_Y, test_size=0.05, shuffle=True)
 
@@ -115,7 +114,7 @@ def DynamicPrec_train_numbers():
         model = lgbm.train(lgb_param, train_set=train_set, valid_sets=valid_set,
                             num_boost_round = 1000, verbose_eval=10)
         models[col] = model
-        print('tst_X: ', tst_X)
+        # print('tst_X: ', tst_X)
         current_directory = os.getcwd()
         save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model2.txt' + str(col)
         model.save_model(save_path)

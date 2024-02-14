@@ -281,7 +281,7 @@ const layoutScatter = {
     showline: true,
     showticklabels: true,
   },
-  // showlegend: false,
+  showlegend: false,
   legend: {
     x: 0.20,
     y: 0.95,
@@ -299,36 +299,38 @@ const configPlotHeatMap = {
     // icon: { symbol: icons.legend, x: 0, y: 0 },
     icon: iconPallete,
     click: function(plot1) {
-      popup2.style.left = `700px`;
-      popup2.style.display = 'block';
-    },
-  },
-  {
-    name: 'set minMax',
-    icon: icon1,
-    click: function(plot1) {
-      popup.style.left = `700px`;
-      popup.style.display = 'block';
+      openPopUp2();
     },
   },
   ],
   modeBarButtonsToRemove: [
-    'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
+    'toImage', 'resetScale2d', 'zoomOut2d', 'zoomIn2d', 'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
   ],
 };
 
-function closePopUp() {
-  popup.style.display = 'none';
+function openPopUp2() {
+  popup2.style.left = `700px`;
+  popup2.style.display = 'block';
 }
+
 function closePopUp2() {
   popup2.style.display = 'none';
+}
+
+function openPopUp(popUpId) {
+  popUpId.style.left = `700px`;
+  popUpId.style.display = 'block';
+}
+
+function closePopUp(popUpId) {
+  popUpId.style.display = 'none';
 }
 
 function applyMinMaxColor() {
   let zMin = document.getElementById('zMin').value;
   let zMax = document.getElementById('zMax').value;
   Plotly.update('plot1', {zmin: zMin, zmax: zMax,});
-  closePopUp();
+  closePopUp2();
 }
 
 function updateColorScale() {
@@ -343,22 +345,61 @@ const configPlotScatter = {
   displaylogo: false,
   modeBarButtonsToAdd: [
   {
-    name: 'legend on',
+    name: 'legend on/off',
     icon: icon1,
     click: function(plot1) {
-      Plotly.relayout(plot1, legendOn);
+      // Plotly.relayout(plot1, legendOn);
+      showlegendMark = ! plot1.layout.showlegend;
+      Plotly.relayout(plot1, { showlegend: showlegendMark, });
     },
   },
   {
-    name: 'legend off',
+    name: 'axis setup',
     icon: icon1,
     click: function(plot1) {
-      Plotly.relayout(plot1, legendOff);
+      openPopUp(popupScatter1);
     },
   },
+  {
+    name: 'user setup',
+    icon: icon1,
+    click: function(plot1) {
+      //generateSelectBoxes(plot1.data.length, innerHtml1 );
+      // generateElems('selectContainer', 'input', 4, innerHtml1);
+      const numElem = parseInt(plot1.data.length);
+      // const elemContainer = document.getElementById('selectContainer');
+      // elemContainer.innerHTML = ''; // Clear previous select boxes
+
+      let strLW = ""; let strLT = ""; let strMR = ""; let strMT = "";
+      //let strLW = "line width : "; let strLT = "line Type  : "; let strMR = "mark radius: "; let strMT = "mark type  : ";
+      for (let i = 0; i < numElem; i++) {
+        //   const inputs = document.createElement('input');
+        //   inputs.innerHTML = innerHtml1;
+        //   inputs.setAttribute('type', 'text');
+        //   inputs.setAttribute('value', '1 1 1 1')
+        //   //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
+        //   elemContainer.appendChild(elems);
+        strLabel = " line  type:\n mark  type:\n line width:\nmark radius:\n";
+        strLT = strLT + 's ';
+        strMT = strMT + 'o ';
+        strLW = strLW + '1 ';
+        strMR = strMR + '1 ';
+        strAll = strLT + "\n" +strMT + "\n" + strLW + "\n" + strMR;
+      }
+      // document.getElementById("LW").value = strLW;
+      // document.getElementById("LT").value = strLT;
+      // document.getElementById("MR").value = strMR;
+      // document.getElementById("MT").value = strMT;
+      document.getElementById("labelScatterUserSet").value = strLabel;
+      document.getElementById("scatterUserSet").value = strAll;
+
+      openPopUp(popupScatter2);
+    },
+  },
+
   ],
   modeBarButtonsToRemove: [
-    'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
+    'select2d', 'lasso2d', 'toImage', 'resetScale2d', 'zoomOut2d', 'zoomIn2d', 'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
   ],
 };
 
@@ -563,9 +604,9 @@ function heatMapPlotData(dataPlotTemp, plotName) {
 }
 
 let markerSymbol = [ 'circle', 'square', 'diamond', 'cross' ];
-let markerSize = [ '7', '0', '2', '9' ];
-let dashType = [ 'solid', 'dot', 'dash', 'dashdot' ];
-let lineWidth = [ '1', '1', '0', '2' ];
+let markerSize = [ '7', '1', '2',  ];
+let dashType = [ 'solid', 'dot', 'dash',  ];
+let lineWidth = [ '0', '0', '0', ];
 function scatterPlotData(dataPlotTemp, plotName) {
   var trace = {
     x: getColumn(dataPlotTemp,0),
@@ -579,7 +620,7 @@ function scatterPlotData(dataPlotTemp, plotName) {
       width: 0,
     },
     type: 'scatter',
-    colorscale: 'Viridis' // Choose your desired color scale
+    colorscale: 'Hot' // Choose your desired color scale
   };
 
   dataTemp = [];
@@ -595,6 +636,87 @@ function scatterPlotData(dataPlotTemp, plotName) {
 
   Plotly.newPlot(plotName, dataTemp, layoutScatter, configPlotScatter);
 }
+
+
+let axisType = [ 'linear', 'linear' ];
+let xRange = [ 0, 1.0 ];
+let yRange = [ -0.2, 1.2 ];
+function scatterPlotUpdate() {
+
+  axisType[0] = document.getElementById("xScale-select").value;
+  axisType[1] = document.getElementById("yScale-select").value;
+  xRange[0] = document.getElementById("xMin").value;
+  xRange[1] = document.getElementById("xMax").value;
+  yRange[0] = document.getElementById("yMin").value;
+  yRange[1] = document.getElementById("yMax").value;
+
+  Plotly.relayout(plot1, {
+    xaxis: {
+      type: axisType[0],
+      showaline: true,
+      showticklabels: true,
+      range: xRange,
+    },
+    yaxis: {
+      type: axisType[1],
+      showaline: true,
+      showticklabels: true,
+      range: yRange,
+    },
+  });
+}
+
+function scatterPlotUpdate2() {
+  lines = document.getElementById("scatterUserSet").value.split("\n");
+  elemsLT = lines[0].split(" ");
+  elemsMT = lines[1].split(" ");
+  elemsLW = lines[2].split(" ");
+  elemsMR = lines[3].split(" ");
+  elemsLT.pop();
+  elemsMT.pop();
+  elemsLW.pop();
+  elemsMR.pop();
+  elemNum = elemsLT.length;
+
+  let updatedTraceData = Object.assign({}, plot1);
+
+  for (i = 0; i < elemNum; i++) {
+    updatedTraceData.data[i].line.dash = convertElemsLT(elemsLT[i]);
+    updatedTraceData.data[i].marker.symbol = convertElemsMT(elemsMT[i]);
+    updatedTraceData.data[i].line.width = parseInt(elemsLW[i]);
+    updatedTraceData.data[i].marker.size = parseInt(elemsMR[i]);
+    console.log(convertElemsMT(elemsMT[i]));
+  }
+  Plotly.react('plot1', updatedTraceData.data, updatedTraceData.layout);
+}
+
+function convertElemsLT(elemsLT) {
+  if (elemsLT == 's') { return 'solid' }
+  else if (elemsLT == 't') { return 'dot' }
+  else if (elemsLT == 'h') { return 'dash' }
+  else if (elemsLT == 'l') { return 'longdash' }
+  else if (elemsLT == 'd') { return 'dashdot' }
+  else if (elemsLT == 'w') { return 'longdashdot' }
+  else {  }
+}
+
+function convertElemsMT(elemsMT) {
+  if (elemsMT == 'o') { return 'circle' }
+  else if (elemsMT == 's') { return 'square' }
+  else if (elemsMT == 'd') { return 'diamond' }
+  else if (elemsMT == '+') { return 'cross' }
+  else if (elemsMT == 'x') { return 'x' }
+  else if (elemsMT == 'u') { return 'triangle-up' }
+  else if (elemsMT == 'd') { return 'triangle-down' }
+  else if (elemsMT == 'l') { return 'triangle-left' }
+  else if (elemsMT == 'r') { return 'triangle-right' }
+  else if (elemsMT == 'p') { return 'pentagon' }
+  else if (elemsMT == 'h') { return 'hexagon' }
+  else if (elemsMT == 'g') { return 'hexagram' }
+  else if (elemsMT == 'r') { return 'star' }
+  else {  }
+}
+
 
 /////////////////////////////////////////////  general utils  /////////////////////////////////////////////////////////
 function radio(optionName) {
@@ -684,6 +806,35 @@ function replaceCharacter(inputString, charToReplace, replacementChar) {
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
+
+let innerHtml1 = '<option value="1">Option 1</option><option value="2">Option 2</option>';
+function generateSelectBoxes(boxNum, innerHtml) {
+  const numSelects = parseInt(boxNum);
+  //const numSelects = parseInt(document.getElementById('numSelects').value, 10);
+  const selectContainer = document.getElementById('selectContainer');
+  selectContainer.innerHTML = ''; // Clear previous select boxes
+
+  for (let i = 0; i < numSelects; i++) {
+    const select = document.createElement('select');
+    select.innerHTML = innerHtml;
+    //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
+    selectContainer.appendChild(select);
+  }
+}
+
+function generateElems(container, elem, elemNum, innerHtml) {
+  const numElem = parseInt(elemNum);
+  const elemContainer = document.getElementById(container);
+  elemContainer.innerHTML = ''; // Clear previous select boxes
+
+  for (let i = 0; i < numElem; i++) {
+    const elems = document.createElement(elem);
+    elems.innerHTML = innerHtml;
+    //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
+    elemContainer.appendChild(elems);
+  }
+}
+
 
 function test1() {
   setTimeout(() => {
