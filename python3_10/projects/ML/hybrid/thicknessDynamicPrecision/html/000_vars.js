@@ -1,11 +1,17 @@
 // 001_base0.js
 //  innerHtml1
 //
+// 002_base1.js
+//  dataTxt; // readAndParseTextFile()
+
 // 003_handsontable0.js
 //  hyperformulaInstance
 //  contextMenuHTable
 //  tableSettingsAtStart
-
+//
+//  plotly.js
+//   layoutHeatMap
+//   layoutScatter
 
 var tableContent = {};
 var dm = {};
@@ -49,7 +55,7 @@ let innerHtml1 = '<option value="1">Option 1</option><option value="2">Option 2<
 
 
 /////////////////////////////////////////// 002_base1.js //////////////////////////////////////////////////////
-//
+var dataTxt; // readAndParseTextFile()
 
 
 /////////////////////////////////////////// 003_handsontable0.js //////////////////////////////////////////////////////
@@ -176,4 +182,57 @@ const tableSettingsAtStart = {
   outsideClickDeselects: false,
   selectionMode: 'multiple',
   licenseKey: 'non-commercial-and-evaluation',
+};
+
+
+
+///////////////////////////////////////////////  for plotly /////////////////////////////////////////////////////////
+
+const layoutHeatMap = {
+  width: 550,
+  height: 420,
+  margin: {
+    l: 0,
+    r: 0,
+    t: 0,
+    b: 0,
+  },
+  dragmode: 'zoom',
+  xaxis: {
+    showticklabels: false,
+  },
+  yaxis: {
+    showticklabels: false,
+    autorange: 'reversed',
+  },
+};
+
+
+const layoutScatter = {
+  width: 550,
+  height: 420,
+  margin: {
+    l: 30,
+    r: 10,
+    t: 10,
+    b: 20,
+  },
+  dragmode: 'zoom',
+  xaxis: {
+    type: 'log',
+    showaline: true,
+    showticklabels: true,
+  },
+  yaxis: {
+    type: 'log',
+    showline: true,
+    showticklabels: true,
+  },
+  showlegend: false,
+  legend: {
+    x: 0.20,
+    y: 0.95,
+    xanchor: 'right',
+    yanchor: 'top',
+  },
 };

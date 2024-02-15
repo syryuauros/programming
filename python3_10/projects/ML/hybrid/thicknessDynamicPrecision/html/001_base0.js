@@ -1,4 +1,5 @@
 // radio(optionName) {
+//
 // getColumn(matrix, columnIndex) {
 // strToArrNum(str) {
 // deepCopyArray(arr) {
@@ -6,9 +7,14 @@
 // replaceSpecificColumn(arr, columnIndex, replacement) {
 // replaceColToCol(arr, columnIndex, replacement) {
 // replaceCharacter(inputString, charToReplace, replacementChar) {
-// sleep(ms) {
+//
+// convertToAOA(csvData) {
+// exportDataToCSV(Data0) {
+//
 // generateSelectBoxes(boxNum, innerHtml) {
 // generateElems(container, elem, elemNum, innerHtml) {
+//
+// sleep(ms) {
 // test1() {
 
 function radio(optionName) {
@@ -73,9 +79,24 @@ function replaceCharacter(inputString, charToReplace, replacementChar) {
   return resultString;
 }
 
-function sleep(ms) {
-  return new Promise((r) => setTimeout(r, ms));
+
+function convertToAOA(csvData) {
+    var rows = csvData.split("\n");
+    var csvDataAOA = rows.map(row => row.split(/[\t,]/));
+    return csvDataAOA;
 }
+
+function exportDataToCSV(Data0) {
+    const csvFormat = Data0.map(row => row.join(',')).join('\n'); //data0 is array of array
+    const blob = new Blob([csvFormat], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data0.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 
 function generateSelectBoxes(boxNum, innerHtml) {
   const numSelects = parseInt(boxNum);
@@ -102,6 +123,11 @@ function generateElems(container, elem, elemNum, innerHtml) {
     //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
     elemContainer.appendChild(elems);
   }
+}
+
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
 }
 
 function test1() {
