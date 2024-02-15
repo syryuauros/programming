@@ -1,7 +1,11 @@
+
 // removeElementsFromArray(arr, n) {
 // replaceColToExpr(arr, columnIndex, expr) {
 // readAndParseTextFile() {
 
+var dataTxt; // readAndParseTextFile()
+
+////////////////////////////////////////////// functions ///////////////////////////////////////////////////////////////
 function removeElementsFromArray(arr, n) {
   arrCopy = deepCopyArray(arr);
   // Check if the array is not empty and n is a valid number
@@ -11,7 +15,6 @@ function removeElementsFromArray(arr, n) {
   }
   return arrCopy;
 }
-
 
 function replaceColToExpr(arr, columnIndex, expr) {
   for (let i = 0; i < arr.length; i++) {

@@ -1,3 +1,7 @@
+
+// hyperformulaInstance
+// tableSettingsAtStart
+
 // calt() {
 // createTableAny(tableName, csvData) {
 //
@@ -12,6 +16,42 @@
 // scientificRenderer(instance, td, row, col, prop, value, cellProperties) {
 // getDataFromSelectedRange(tableName) {
 
+var tableContent = {};
+var dm = {};
+
+////////////////////////////////////////////////////// configs /////////////////////////////////////////////////////
+const hyperformulaInstance = HyperFormula.buildEmpty({
+  licenseKey: 'internal-use-in-handsontable',
+});
+
+const tableSettingsAtStart = {
+  data: [
+    [ , ],
+  ],
+  filters: true,
+  allowEmpty: true,
+  type: 'numeric',
+  // numericFormat: {
+  //     pattern: '0,0.000',
+  // },
+  //renderer: scientificRenderer,
+  //contextMenu: contextMenuTest,
+  manualColumnFreeze: true,
+  colHeaders: true,
+  rowHeaders: true,
+  manualColumnResize: true,
+  manualRowResize: true,
+  customBorders: true,
+  width: '100%',
+  height: '95.5%',
+  renderAllRows: false,
+  outsideClickDeselects: false,
+  selectionMode: 'multiple',
+  licenseKey: 'non-commercial-and-evaluation',
+};
+
+
+////////////////////////////////////////////////////// functions ////////////////////////////////////////////////
 function calt() {
   let tableName = 'table1';
   let colsToBeDelStr = document.getElementById('colsToBeDel').value;

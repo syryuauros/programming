@@ -1,3 +1,4 @@
+
 // radio(optionName) {
 //
 // getColumn(matrix, columnIndex) {
@@ -17,6 +18,9 @@
 // sleep(ms) {
 // test1() {
 
+let innerHtml1 = '<option value="1">Option 1</option><option value="2">Option 2</option>';
+
+/////////////////////////////////////////////// functions ////////////////////////////////////////////////////////
 function radio(optionName) {
   var options = document.getElementsByName(optionName);
   options.forEach(option => {
