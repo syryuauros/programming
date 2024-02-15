@@ -5,119 +5,6 @@
 
 ///////////////////////////////////////////////  for plotly /////////////////////////////////////////////////////////
 
-const configPlotHeatMap = {
-  scrollZoom: true,
-  displaylogo: false,
-  modeBarButtonsToAdd: [
-  {
-    name: 'color scales',
-    // icon: { symbol: icons.legend, x: 0, y: 0 },
-    icon: iconPallete,
-    click: function(plot1) {
-      openPopUp2();
-    },
-  },
-  ],
-  modeBarButtonsToRemove: [
-    'toImage', 'resetScale2d', 'zoomOut2d', 'zoomIn2d', 'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
-  ],
-};
-
-function openPopUp2() {
-  popup2.style.left = `800px`;
-  popup2.style.display = 'block';
-}
-
-function closePopUp2() {
-  popup2.style.display = 'none';
-}
-
-function openPopUp(popUpId) {
-  popUpId.style.left = `950px`;
-  popUpId.style.display = 'block';
-}
-
-function closePopUp(popUpId) {
-  popUpId.style.display = 'none';
-}
-
-function applyMinMaxColor() {
-  let zMin = document.getElementById('zMin').value;
-  let zMax = document.getElementById('zMax').value;
-  Plotly.update('plot1', {zmin: zMin, zmax: zMax,});
-  closePopUp2();
-}
-
-function updateColorScale() {
-  var selectBox = document.getElementById("color-scale-select");
-  var selectedValue = selectBox.value;
-  Plotly.update('plot1', {colorscale: selectedValue,});
-  closePopUp2();
-}
-
-const configPlotScatter = {
-  scrollZoom: true,
-  displaylogo: false,
-  modeBarButtonsToAdd: [
-  {
-    name: 'legend on/off',
-    icon: icon1,
-    click: function(plot1) {
-      // Plotly.relayout(plot1, legendOn);
-      showlegendMark = ! plot1.layout.showlegend;
-      Plotly.relayout(plot1, { showlegend: showlegendMark, });
-    },
-  },
-  {
-    name: 'axis setup',
-    icon: icon1,
-    click: function(plot1) {
-      openPopUp(popupScatter1);
-    },
-  },
-  {
-    name: 'user setup',
-    icon: icon1,
-    click: function(plot1) {
-      //generateSelectBoxes(plot1.data.length, innerHtml1 );
-      // generateElems('selectContainer', 'input', 4, innerHtml1);
-      const numElem = parseInt(plot1.data.length);
-      // const elemContainer = document.getElementById('selectContainer');
-      // elemContainer.innerHTML = ''; // Clear previous select boxes
-
-      let strLW = ""; let strLT = ""; let strMR = ""; let strMT = "";
-      //let strLW = "line width : "; let strLT = "line Type  : "; let strMR = "mark radius: "; let strMT = "mark type  : ";
-      for (let i = 0; i < numElem; i++) {
-        //   const inputs = document.createElement('input');
-        //   inputs.innerHTML = innerHtml1;
-        //   inputs.setAttribute('type', 'text');
-        //   inputs.setAttribute('value', '1 1 1 1')
-        //   //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
-        //   elemContainer.appendChild(elems);
-        strLabel = " line  type:\n mark  type:\n line width:\nmark radius:";
-        strLT = strLT + 's ';
-        strMT = strMT + 'o ';
-        strLW = strLW + '1 ';
-        strMR = strMR + '1 ';
-        strAll = strLT + "\n" +strMT + "\n" + strLW + "\n" + strMR;
-      }
-      // document.getElementById("LW").value = strLW;
-      // document.getElementById("LT").value = strLT;
-      // document.getElementById("MR").value = strMR;
-      // document.getElementById("MT").value = strMT;
-      document.getElementById("labelScatterUserSet").value = strLabel;
-      document.getElementById("scatterUserSet").value = strAll;
-
-      openPopUp(popupScatter2);
-    },
-  },
-
-  ],
-  modeBarButtonsToRemove: [
-    'select2d', 'lasso2d', 'toImage', 'resetScale2d', 'zoomOut2d', 'zoomIn2d', 'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
-  ],
-};
-
 ///////////////////////////////////////////////  table1 ititial /////////////////////////////////////////////////////////
 let table1Dm = false;
 let table2Dm = false;
@@ -181,8 +68,8 @@ function heatMapPlotData(dataPlotTemp, plotName) {
     z: zValuesTemp,
     type: 'heatmap',
     colorscale: 'Viridis', // Choose your desired color scale
-    zmin: 0,
-    zmax: 100,
+    zmin: 95,
+    zmax: 105,
   }];
 
   // Plotly.newPlot(plotName, dataTemp, layoutHeatMap, {scrollZoom: true});
@@ -190,9 +77,9 @@ function heatMapPlotData(dataPlotTemp, plotName) {
 }
 
 let markerSymbol = [ 'circle', 'square', 'diamond', 'cross' ];
-let markerSize = [ '7', '1', '2',  ];
-let dashType = [ 'solid', 'dot', 'dash',  ];
-let lineWidth = [ '0', '0', '0', ];
+let markerSize = [ '7', '1', '2', '5' ];
+let dashType = [ 'solid', 'dot', 'dash', 'longdash' ];
+let lineWidth = [ '0', '0', '0', '1' ];
 function scatterPlotData(dataPlotTemp, plotName) {
   var trace = {
     x: getColumn(dataPlotTemp,0),

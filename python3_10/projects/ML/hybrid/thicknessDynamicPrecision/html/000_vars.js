@@ -236,3 +236,75 @@ const layoutScatter = {
     yanchor: 'top',
   },
 };
+
+const configPlotHeatMap = {
+  scrollZoom: true,
+  displaylogo: false,
+  modeBarButtonsToAdd: [
+  {
+    name: 'color scales',
+    icon: iconPallete,
+    click: function(plot1) {
+      openPopUp(popup2, 495, 750);
+    },
+  },
+  ],
+  modeBarButtonsToRemove: [
+    'toImage', 'resetScale2d', 'zoomOut2d', 'zoomIn2d', 'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
+  ],
+};
+
+const configPlotScatter = {
+  scrollZoom: true,
+  displaylogo: false,
+  modeBarButtonsToAdd: [
+  {
+    name: 'legend on/off',
+    icon: icon1,
+    click: function(plot1) {
+      showlegendMark = ! plot1.layout.showlegend;
+      Plotly.relayout(plot1, { showlegend: showlegendMark, });
+    },
+  },
+  {
+    name: 'axis setup',
+    icon: icon1,
+    click: function(plot1) {
+      openPopUp(popupScatter1, 495, 750);
+    },
+  },
+  {
+    name: 'user setup',
+    icon: icon1,
+    click: function(plot1) {
+      //generateSelectBoxes(plot1.data.length, innerHtml1 );
+      // generateElems('selectContainer', 'input', 4, innerHtml1);
+      const numElem = parseInt(plot1.data.length);
+
+      let strLW = ""; let strLT = ""; let strMR = ""; let strMT = "";
+      for (let i = 0; i < numElem; i++) {
+        //   const inputs = document.createElement('input');
+        //   inputs.innerHTML = innerHtml1;
+        //   inputs.setAttribute('type', 'text');
+        //   inputs.setAttribute('value', '1 1 1 1')
+        //   //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
+        //   elemContainer.appendChild(elems);
+        strLabel = " line  type:\n mark  type:\n line width:\nmark radius:";
+        strLT = strLT + 's ';
+        strMT = strMT + 'o ';
+        strLW = strLW + '1 ';
+        strMR = strMR + '1 ';
+        strAll = strLT + "\n" +strMT + "\n" + strLW + "\n" + strMR;
+      }
+      document.getElementById("labelScatterUserSet").value = strLabel;
+      document.getElementById("scatterUserSet").value = strAll;
+
+      openPopUp(popupScatter2, 495, 750);
+    },
+  },
+
+  ],
+  modeBarButtonsToRemove: [
+    'select2d', 'lasso2d', 'toImage', 'resetScale2d', 'zoomOut2d', 'zoomIn2d', 'toggleSpikelines', 'hoverClosestCartesian', 'hoverCompareCartesian',
+  ],
+};

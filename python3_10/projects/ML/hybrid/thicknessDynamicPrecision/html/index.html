@@ -18,8 +18,11 @@
 </head>
 <body>
 
-    <div class="popup" id="popup2" style="height: 175px; width: 120px; display: none;">
-        <button class="button" onclick="closePopUp2()">X</button> <br>
+    <div class="popup" id="popup2" style="height: 140px; width: 150px; display: none;">
+        <button class="button" onclick="closePopUp(popup2)">X</button> <br>
+        <label for="labelZrange">range: </label>
+        <input type="text" size="7px" value="95 105" id="zRange" > <br> <br>
+        <label for="labelColorScale">scale: </label>
         <select id="color-scale-select">
             <option value="Viridis">Viridis</option>
             <option value="Blackbody">Blackbody</option>
@@ -33,11 +36,7 @@
             <option value="Plasma">Plasma</option>
             <option value="Portland">Portland</option>
         </select> <br> <br>
-        <label for="labelZmin">min: </label>
-        <input type="text" size="4px" value="0" id="zMin" > <br> <br>
-        <label for="labelZmax">max: </label>
-        <input type="text" size="4px" value="10" id="zMax" > <br>
-        <button class="button-apply" onclick="updateColorScale(); applyMinMaxColor();" >apply</button>
+        <button class="button-apply" onclick="applyColorScale(plot1, 'color-scale-select'); applyMinMaxColor(plot1, 'zRange');" >apply</button>
     </div>
 
 
@@ -142,7 +141,7 @@
                                 <div class="item-controls">
                                     <!-- <button class="button-menu" onclick="">&#x2699</button> -->
                                     <button class="button-menu" onclick=""><i class="fas fa-user-gear"></i></button>
-                                    <button class="button-menu" onclick="openPopUp2()"><i class="fas fa-palette"></i></button>
+                                    <button class="button-menu" onclick="openPopUp(popup2, 495, 750)"><i class="fas fa-palette"></i></button>
                                 </div>
                             </div>
                             <div id="plot1"></div>
@@ -205,6 +204,7 @@
     <script src="003_handsontable0.js"></script>
     <script src="004_handsontable1(001).js"></script>
     <script src="005_handsontable2(001,003).js"></script>
+    <script src="006_plotly0.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
