@@ -69,44 +69,46 @@
     </div>
 
 
-    <div class="popup" id="popupScatter2" style="height: 165px; width: 1120px; display: none;">
-        <button class="button" onclick="closePopUp(popupScatter2)">X</button> <br>
+    <div class="popup" id="popupScatter2" style="background-color: #FCFCFC; border: 2px solid #ccc;height: 140px; width: 510px; display: none;">
+        <button class="button-popuphead" onclick="closePopUp(popupScatter2)">X</button> <br>
         <div class="container-grid2-4">
             <div class="itemC">
                 <div class="container-grid2-3">
-                    <div class="itemC" style="text-align: center;">
-                        <select id="lineType-select">
-                            <option value="circle">circle</option>
-                            <option value="square">square</option>
-                            <option value="diamond">diamond</option>
-                            <option value="cross">cross</option>
-                            <option value="x">x</option>
-                            <option value="triangle-up">triangle-up</option>
-                            <option value="triangle-down">triangle-down</option>
-                            <option value="triangle-left">triangle-left</option>
-                            <option value="triangle-right">triangle-right</option>
-                            <option value="pentagon">pentagon</option>
-                            <option value="hexagon">hexagon</option>
-                            <option value="hexagram">hexagram</option>
-                            <option value="star">star</option>
-                        </select>        <br>
-                        <select id="markType-select">
-                            <option value="solid">solid</option>
-                            <option value="dot">dot</option>
-                            <option value="dash">dash</option>
-                            <option value="longdash">longdash</option>
-                            <option value="dashdot">dashdot</option>
-                            <option value="longdashdot">longdashdot</option>
-                        </select>
-                    </div>
                     <div class="itemC">
-                        <textarea id="labelScatterUserSet" rows="5" cols="12" style="color: grey; border: 0px; resize: none;" > </textarea>
-                        <textarea id="scatterUserSet" rows="5" cols="95" style="border: 0px; resize: none;" > </textarea>
+                        <textarea id="labelScatterUserSet" rows="4" cols="8" style="background-color:
+#FCFCFC; color: grey; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none;" > </textarea>
+                        <textarea id="scatterUserSet" rows="4" cols="42" style="background-color:
+#FCFCFC; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none;" > </textarea>
                     </div>
                 </div>
             </div>
         </div>
-        <button class="button-apply" onclick="scatterPlotUpdate2()" >apply</button>
+        <button class="button-apply2" onclick="scatterPlotUpdate2(plot1)" >apply</button>
+        <select id="markType-select">
+            <option value="">line type</option>
+            <option value="solid">s:solid</option>
+            <option value="dot">t:dot</option>
+            <option value="dash">h:dash</option>
+            <option value="longdash">l:long-dash</option>
+            <option value="dashdot">d:dash-dot</option>
+            <option value="longdashdot">w:long-dash-dot</option>
+        </select>
+        <select id="lineType-select">
+            <option value="">mark type</option>
+            <option value="circle">o:circle</option>
+            <option value="square">s:square</option>
+            <option value="diamond">d:diamond</option>
+            <option value="cross">+:cross</option>
+            <option value="x">x:x</option>
+            <option value="triangle-up">u:triangle-up</option>
+            <option value="triangle-down">d:triangle-down</option>
+            <option value="triangle-left">l:triangle-left</option>
+            <option value="triangle-right">r:triangle-right</option>
+            <option value="pentagon">p:pentagon</option>
+            <option value="hexagon">h:hexagon</option>
+            <option value="hexagram">g:hexagram</option>
+            <option value="star">r:star</option>
+        </select>
     </div>
 
 

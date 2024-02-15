@@ -309,7 +309,7 @@ const configPlotHeatMap = {
 };
 
 function openPopUp2() {
-  popup2.style.left = `700px`;
+  popup2.style.left = `800px`;
   popup2.style.display = 'block';
 }
 
@@ -318,7 +318,7 @@ function closePopUp2() {
 }
 
 function openPopUp(popUpId) {
-  popUpId.style.left = `700px`;
+  popUpId.style.left = `950px`;
   popUpId.style.display = 'block';
 }
 
@@ -379,7 +379,7 @@ const configPlotScatter = {
         //   inputs.setAttribute('value', '1 1 1 1')
         //   //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
         //   elemContainer.appendChild(elems);
-        strLabel = " line  type:\n mark  type:\n line width:\nmark radius:\n";
+        strLabel = " line  type:\n mark  type:\n line width:\nmark radius:";
         strLT = strLT + 's ';
         strMT = strMT + 'o ';
         strLW = strLW + '1 ';
@@ -666,7 +666,7 @@ function scatterPlotUpdate() {
   });
 }
 
-function scatterPlotUpdate2() {
+function scatterPlotUpdate2(plotId) {
   lines = document.getElementById("scatterUserSet").value.split("\n");
   elemsLT = lines[0].split(" ");
   elemsMT = lines[1].split(" ");
@@ -678,7 +678,7 @@ function scatterPlotUpdate2() {
   elemsMR.pop();
   elemNum = elemsLT.length;
 
-  let updatedTraceData = Object.assign({}, plot1);
+  let updatedTraceData = Object.assign({}, plotId);
 
   for (i = 0; i < elemNum; i++) {
     updatedTraceData.data[i].line.dash = convertElemsLT(elemsLT[i]);
