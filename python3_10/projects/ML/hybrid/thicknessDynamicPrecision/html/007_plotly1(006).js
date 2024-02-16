@@ -223,6 +223,7 @@ function scatterPlotSelectColumn(tableName, plotName, colNums) {
   };
 
   dataTemp = [];
+  var headerTemp = getHeaderFromTable(tableName);
 
   for (i = 1; i <= colNums.length-1; i++) {
     traceTemp = Object.assign({}, trace);
@@ -230,6 +231,7 @@ function scatterPlotSelectColumn(tableName, plotName, colNums) {
     traceTemp.z = i;
     traceTemp.marker = { symbol: markerSymbol[i-1], size: markerSize[i-1], }
     traceTemp.line = { dash: dashType[i-1], width: lineWidth[i-1], };
+    traceTemp.name = headerTemp[colNums[i]];
     dataTemp.push(traceTemp);
   }
 
