@@ -6,13 +6,13 @@
 // heatMapPlotData(dataPlotTemp, plotName) {
 // scatterPlotData(dataPlotTemp, plotName) {
 //
-// scatterPlotUpdate() {
+// scatterPlotUpdate(plotId) {
 // scatterPlotUpdate2(plotId) {
 //
 // convertElemsLT(elemsLT) {
 // convertElemsMT(elemsMT) {
 
-
+let defaultPlotId = 'plot1';
 let axisType = [ 'linear', 'linear' ];
 let xRange = [ 0, 1.0 ];
 let yRange = [ -0.2, 1.2 ];
@@ -35,10 +35,11 @@ const configPlotHeatMap = {
   displaylogo: false,
   modeBarButtonsToAdd: [
   {
+    plotId: defaultPlotId,
     name: 'color scales',
     icon: iconPallete,
-    click: function(plot1) {
-      openPopUp(popup2, 495, 750);
+    click: function() {
+      openPopUp(this.plotId, popup2, 495, 750);
     },
   },
   ],
@@ -52,29 +53,32 @@ const configPlotScatter = {
   displaylogo: false,
   modeBarButtonsToAdd: [
   {
+    plotId: defaultPlotId,
     name: 'legend on/off',
     icon: icon1,
-    click: function(plot1) {
+    click: function() {
       showlegendMark = ! plot1.layout.showlegend;
-      Plotly.relayout(plot1, { showlegend: showlegendMark, });
+      Plotly.relayout(this.plotId, { showlegend: showlegendMark, });
     },
   },
   {
+    plotId: defaultPlotId,
     name: 'axis setup',
     icon: icon1,
-    click: function(plot1) {
-      openPopUp(popupScatter1, 495, 750);
+    click: function() {
+      openPopUp(this.plotId, popupScatter1, 495, 750);
     },
   },
   {
+    plotId: defaultPlotId,
     name: 'user setup',
     icon: icon1,
-    click: function(plot1) {
+    click: function() {
       //generateSelectBoxes(plot1.data.length, innerHtml1 );
       // generateElems('selectContainer', 'input', 4, innerHtml1);
       const numElem = parseInt(plot1.data.length);
 
-      let strLW = ""; let strLT = ""; let strMR = ""; let strMT = "";
+      let strColor = ""; let strLW = ""; let strLT = ""; let strMR = ""; let strMT = "";
       for (let i = 0; i < numElem; i++) {
         //   const inputs = document.createElement('input');
         //   inputs.innerHTML = innerHtml1;
@@ -82,17 +86,17 @@ const configPlotScatter = {
         //   inputs.setAttribute('value', '1 1 1 1')
         //   //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
         //   elemContainer.appendChild(elems);
-        strLabel = " line  type:\n mark  type:\n line width:\nmark radius:";
+        strLabel = " color:\n line  type:\n mark  type:\n line width:\nmark radius:";
         strLT = strLT + 's ';
         strMT = strMT + 'o ';
         strLW = strLW + '1 ';
         strMR = strMR + '1 ';
-        strAll = strLT + "\n" +strMT + "\n" + strLW + "\n" + strMR;
+        strAll = strColor + "\n" + strLT + "\n" +strMT + "\n" + strLW + "\n" + strMR;
       }
       document.getElementById("labelScatterUserSet").value = strLabel;
       document.getElementById("scatterUserSet").value = strAll;
 
-      openPopUp(popupScatter2, 495, 750);
+      openPopUp(this.plotId, popupScatter2, 495, 750);
     },
   },
 
@@ -126,7 +130,9 @@ function heatMapPlotData(dataPlotTemp, plotName) {
     zmin: 95,
     zmax: 105,
   }];
-  Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configPlotHeatMap);
+  configs = deepCopy(configPlotHeatMap);
+  configs.modeBarButtonsToAdd[0].plotId = plotName;
+  Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configs);
 }
 
 function scatterPlotData(dataPlotTemp, headerTemp, plotName) {
@@ -154,10 +160,14 @@ function scatterPlotData(dataPlotTemp, headerTemp, plotName) {
     traceTemp.name = headerTemp[i];
     dataTemp.push(traceTemp);
   }
-  Plotly.newPlot(plotName, dataTemp, layoutScatter, configPlotScatter);
+  configs = deepCopy(configPlotScatter);
+  for (var i = 0; i < configs.modeBarButtonsToAdd.length; i++) {
+    configs.modeBarButtonsToAdd[i].plotId = plotName;
+  }
+  Plotly.newPlot(plotName, dataTemp, layoutScatter, configs);
 }
 
-function scatterPlotUpdate() {
+function scatterPlotUpdate(plotId) {
   axisType[0] = document.getElementById("xScale-select").value;
   axisType[1] = document.getElementById("yScale-select").value;
   xRange[0] = document.getElementById("xMin").value;
@@ -165,7 +175,7 @@ function scatterPlotUpdate() {
   yRange[0] = document.getElementById("yMin").value;
   yRange[1] = document.getElementById("yMax").value;
 
-  Plotly.relayout(plot1, {
+  Plotly.relayout(plotId, {
     xaxis: {
       type: axisType[0],
       showaline: true,
@@ -183,24 +193,27 @@ function scatterPlotUpdate() {
 
 function scatterPlotUpdate2(plotId) {
   lines = document.getElementById("scatterUserSet").value.split("\n");
-  elemsLT = lines[0].split(" ");
-  elemsMT = lines[1].split(" ");
-  elemsLW = lines[2].split(" ");
-  elemsMR = lines[3].split(" ");
-  elemsLT.pop();
-  elemsMT.pop();
-  elemsLW.pop();
-  elemsMR.pop();
+  elemsColor = lines[0].split(" ");
+  elemsLT = lines[1].split(" ");
+  elemsMT = lines[2].split(" ");
+  elemsLW = lines[3].split(" ");
+  elemsMR = lines[4].split(" ");
+  elemsColor = removeEmptyStringsFromArray(elemsColor);
+  elemsLT = removeEmptyStringsFromArray(elemsLT);
+  elemsMT = removeEmptyStringsFromArray(elemsMT);
+  elemsLW = removeEmptyStringsFromArray(elemsLW);
+  elemsMR = removeEmptyStringsFromArray(elemsMR);
   elemNum = elemsLT.length;
 
-  let updatedTraceData = Object.assign({}, plotId);
+  let updatedTraceData = Object.assign({}, window[plotId]); //window[pName] accesses the global object (assuming plot1 is defined globally) and retrieves the value associated with the key 'plot1', which is the object plot1.
 
   for (i = 0; i < elemNum; i++) {
+    console.log(elemsColor[i]);
+    updatedTraceData.data[i].line.color = elemsColor[i];
     updatedTraceData.data[i].line.dash = convertElemsLT(elemsLT[i]);
     updatedTraceData.data[i].marker.symbol = convertElemsMT(elemsMT[i]);
     updatedTraceData.data[i].line.width = parseInt(elemsLW[i]);
     updatedTraceData.data[i].marker.size = parseInt(elemsMR[i]);
-    console.log(convertElemsMT(elemsMT[i]));
   }
   Plotly.react('plot1', updatedTraceData.data, updatedTraceData.layout);
 }

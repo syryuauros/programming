@@ -11,10 +11,13 @@
 // removeEmptyRows(tableName) {
 // removeEmptyCols(tableName) {
 // rowToHeader(tableName, rowNum = 0) {
+// getHeaderFromTable(tableName) {
 //
 // toggleDropdownMenu(tableName) {
 // scientificRenderer(instance, td, row, col, prop, value, cellProperties) {
 // getDataFromSelectedRange(tableName) {
+// getHeaderFromSelectedRange(tableName) {
+
 
 var tableContent = {};
 var dm = {};
@@ -70,7 +73,7 @@ const contextMenuHTable = {
             name: 'scatter',
             callback: function(key, selection, event) {
               let tableName = this.view.hot.rootElement.id;
-              scatterPlotData(getDataFromSelectedRange(tableName), getHeaderFromTable(tableName), 'plot1');
+              scatterPlotData(getDataFromSelectedRange(tableName), getHeaderFromSelectedRange(tableName), 'plot1');
             },
           },
         ]
@@ -256,4 +259,18 @@ function getDataFromSelectedRange(tableName) {
   }
 
   return selectedData;
+}
+
+function getHeaderFromSelectedRange(tableName) {
+  var selected = tableContent[tableName].getSelected(); // Get the selected range coordinates [startRow, startCol, endRow, endCol]
+  var selectedData = [];
+
+  var headerOriginal = getHeaderFromTable(tableName);
+  var rowData = [];
+  for (var i = 0; i <= selected.length-1; i++) {
+    for (var col = selected[i][1]; col <= selected[i][3]; col++) {
+      rowData.push(headerOriginal[col]);
+    }
+  }
+  return rowData;
 }

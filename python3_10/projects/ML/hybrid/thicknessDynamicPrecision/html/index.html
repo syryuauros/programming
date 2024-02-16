@@ -36,7 +36,7 @@
             <option value="Plasma">Plasma</option>
             <option value="Portland">Portland</option>
         </select> <br> <br>
-        <button class="button-apply" onclick="applyColorScale(plot1, 'color-scale-select'); applyMinMaxColor(plot1, 'zRange');" >apply</button>
+        <button class="button-apply" onclick="applyColorScale(popUpTarget, 'color-scale-select'); applyMinMaxColor(plot1, 'zRange');" >apply</button>
     </div>
 
 
@@ -64,25 +64,25 @@
         <label for="labelYmax">, ymax: </label>
         <input type="text" size="3px" value="1" id="yMax" > <br> <br>
 
-        <button class="button-apply" onclick="scatterPlotUpdate()" >apply</button>
+        <button class="button-apply" onclick="scatterPlotUpdate(popUpTarget)" >apply</button>
     </div>
 
 
-    <div class="popup" id="popupScatter2" style="height: 140px; width: 510px; display: none;">
+    <div class="popup" id="popupScatter2" style="height: 165px; width: 510px; display: none;">
         <button class="button" onclick="closePopUp(popupScatter2)">X</button> <br>
         <div class="container-grid2-4">
             <div class="itemC">
                 <div class="container-grid2-3">
                     <div class="itemC">
-                        <textarea id="labelScatterUserSet" rows="4" cols="8" style="background-color:
+                        <textarea id="labelScatterUserSet" rows="5" cols="8" style="background-color:
 #FDFAF2; color: grey; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none; text-align: right;" > </textarea>
-                        <textarea id="scatterUserSet" rows="4" cols="42" style="background-color:
+                        <textarea id="scatterUserSet" rows="5" cols="42" style="background-color:
 #FDFAF2; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none;" > </textarea>
                     </div>
                 </div>
             </div>
         </div>
-        <button class="button-apply" onclick="scatterPlotUpdate2(plot1)" >apply</button>
+        <button class="button-apply" onclick="scatterPlotUpdate2(popUpTarget)" >apply</button>
         <select id="markType-select">
             <option value="">line type</option>
             <option value="solid">s:solid</option>
@@ -141,7 +141,7 @@
                                 <div class="item-controls">
                                     <!-- <button class="button-menu" onclick="">&#x2699</button> -->
                                     <button class="button-menu" onclick=""><i class="fas fa-user-gear"></i></button>
-                                    <button class="button-menu" onclick="openPopUp(popup2, 495, 750)"><i class="fas fa-palette"></i></button>
+                                    <button class="button-menu" onclick="openPopUp(plot1, popup2, 495, 750)"><i class="fas fa-palette"></i></button>
                                 </div>
                             </div>
                             <div id="plot1"></div>

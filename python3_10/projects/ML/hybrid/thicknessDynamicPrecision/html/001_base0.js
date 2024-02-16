@@ -5,9 +5,11 @@
 // strToArrNum(str) {
 // deepCopyArray(arr) {
 // deepCopy(data) {
+// deepCopy(obj) {
 // replaceSpecificColumn(arr, columnIndex, replacement) {
 // replaceColToCol(arr, columnIndex, replacement) {
 // replaceCharacter(inputString, charToReplace, replacementChar) {
+// removeEmptyStringsFromArray(arr) {
 //
 // convertToAOA(csvData) {
 // exportDataToCSV(Data0) {
@@ -57,6 +59,23 @@ function deepCopy(data) {
   }
 }
 
+function deepCopy(obj) {
+    if (typeof obj !== 'object' || obj === null) {
+        // If obj is not an object, or is null, return it directly
+        return obj;
+    }
+    // Create a new object or array to hold the copied properties
+    var copy = Array.isArray(obj) ? [] : {};
+    // Iterate over each property of the original object
+    for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            // Recursively copy each property
+            copy[key] = deepCopy(obj[key]);
+        }
+    }
+    return copy;
+}
+
 function replaceSpecificColumn(arr, columnIndex, replacement) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].length > columnIndex) {
@@ -83,6 +102,11 @@ function replaceCharacter(inputString, charToReplace, replacementChar) {
   return resultString;
 }
 
+function removeEmptyStringsFromArray(arr) {
+    return arr.filter(function(element) {
+        return element.trim() !== ''; // Remove elements that are empty strings after trimming
+    });
+}
 
 function convertToAOA(csvData) {
     var rows = csvData.split("\n");

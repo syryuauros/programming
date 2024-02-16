@@ -12,6 +12,8 @@ let markerSize = [ '7', '1', '2', '5' ];
 let dashType = [ 'solid', 'dot', 'dash', 'longdash' ];
 let lineWidth = [ '0', '0', '0', '1' ];
 
+let popUpTarget;
+
 // var legendOn = { showlegend: true, };
 // var legendOff = { showlegend: false, };
 
@@ -67,12 +69,13 @@ const layoutScatter = {
 }
 
 ////////////////////////////////////////////// function //////////////////////////////////////////////////////
-function openPopUp(popUpId, top, left) {
+function openPopUp(plotId, popUpId, top, left) {
   topPosition = top + 'px';
   leftPosition = left + 'px';
   popUpId.style.top = topPosition;
   popUpId.style.left = leftPosition;
   popUpId.style.display = 'block';
+  popUpTarget = plotId;
 }
 
 function closePopUp(popUpId) {
