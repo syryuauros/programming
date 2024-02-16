@@ -1,4 +1,5 @@
 
+// dataPreProcess()
 // train() {
 // predict() {
 // loadTrain() {
@@ -56,6 +57,17 @@ data = [{
 Plotly.newPlot('plot1', data, layoutHeatMap, configPlotHeatMap);
 
 ///////////////////////////////////////////// actions (functions with void IO) /////////////////////////////////////////////////////////
+function dataPreProcess() {
+  let tableName = 'table1';
+  let colsToBeDelStr = document.getElementById('colsToBeDel').value;
+  let colsToBeDel = strToArrNum(colsToBeDelStr);
+
+  removeColumns(tableName,colsToBeDel);
+  rowToHeader(tableName);
+  removeRows(tableName,[0]);
+  removeEmptyRows(tableName);
+}
+
 async function train() {
   var data1 = tableContent.table1.getData();
   var header1 = tableContent.table1.getColHeader();

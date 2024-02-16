@@ -1,8 +1,8 @@
 
 // hyperformulaInstance
 // tableSettingsAtStart
+// contextMenuHTable
 
-// calt() {
 // createTableAny(tableName, csvData) {
 //
 // removeColumns(tableName, columnIndexes) {
@@ -50,18 +50,102 @@ const tableSettingsAtStart = {
   licenseKey: 'non-commercial-and-evaluation',
 };
 
+const contextMenuHTable = {
+  //https://handsontable.com/docs/8.2.0/demo-context-menu.html
+  items: {
+    plot: {
+      name: 'Plot selected Data',
+      submenu: {
+        items: [
+          {
+            key: 'plot:heatMap',
+            name: 'heatMap',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              heatMapPlotData(getDataFromSelectedRange(tableName), 'plot1');
+            },
+          },
+          {
+            key: 'plot:scatter',
+            name: 'scatter',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              scatterPlotData(getDataFromSelectedRange(tableName), getHeaderFromTable(tableName), 'plot1');
+            },
+          },
+        ]
+      },
+    },
+    dataPrcs: {
+      name: 'Data Processing',
+      submenu: {
+        items: [
+          {
+            key: 'dataPrcs:rowToHeader',
+            name: 'rowToHeader',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              var sel = this.getSelected();
+              rowToHeader(tableName, sel[0][0]);
+            },
+          },
+          {
+            key: 'dataPrcs:trimEmpty',
+            name: 'trimEmpty',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              removeEmptyRows(tableName);
+              removeEmptyCols(tableName);
+            },
+          },
+          {
+            key: 'dataPrcs:exportSelectedData',
+            name: 'exportSelectedData',
+            callback: function(key, selection, event) {
+              let tableName = this.view.hot.rootElement.id;
+              exportDataToCSV(getDataFromSelectedRange(tableName));
+            },
+          },
+
+        ]
+      },
+    },
+
+    "sp1": '---------',
+    'col_right': {
+      name: 'insert column'
+    },
+    'remove_col': {
+      name: 'remove column(s)'
+    },
+    'row_below': {
+      name: 'insert row'
+    },
+    'remove_row': {
+      name: 'remove row(s)'
+    },
+    freeze: {
+      name: 'freeze(unfreeze: set A1)',
+      callback: function(key, selection, event) {
+        var sel = this.getSelected();
+        this.updateSettings({
+          fixedRowsTop: sel[0][2],
+          fixedColumnsLeft: sel[0][3],
+        });
+      },
+    },
+    "sp2": '---------',
+
+    tableInfo: {
+      name: 'Table Info',
+      callback: function(key, selection, event) {
+        console.log("tableID:", this.view.hot.rootElement.id);
+      },
+    },
+  },
+};
 
 ////////////////////////////////////////////////////// functions ////////////////////////////////////////////////
-function calt() {
-  let tableName = 'table1';
-  let colsToBeDelStr = document.getElementById('colsToBeDel').value;
-  let colsToBeDel = strToArrNum(colsToBeDelStr);
-
-  removeColumns(tableName,colsToBeDel);
-  rowToHeader(tableName);
-  removeRows(tableName,[0]);
-  removeEmptyRows(tableName);
-}
 
 function createTableAny(tableName, csvData) {
     var tableElement = document.getElementById(tableName);
@@ -132,6 +216,11 @@ function rowToHeader(tableName, rowNum = 0) {
   tableContent[tableName].updateSettings({
     colHeaders: selectedRow,
   });
+}
+
+function getHeaderFromTable(tableName) {
+  var header = tableContent[tableName].getColHeader();
+  return header;
 }
 
 

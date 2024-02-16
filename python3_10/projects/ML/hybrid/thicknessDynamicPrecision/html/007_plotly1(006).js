@@ -17,6 +17,18 @@ let axisType = [ 'linear', 'linear' ];
 let xRange = [ 0, 1.0 ];
 let yRange = [ -0.2, 1.2 ];
 
+let icon1 = {
+  'width': 500,
+  'height': 600,
+  'path': 'M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z'
+};
+let iconPallete = {
+  'width': 512,
+  'height': 512,
+  'path': 'M512 256c0 .9 0 1.8 0 2.7c-.4 36.5-33.6 61.3-70.1 61.3H344c-26.5 0-48 21.5-48 48c0 3.4 .4 6.7 1 9.9c2.1 10.2 6.5 20 10.8 29.9c6.1 13.8 12.1 27.5 12.1 42c0 31.8-21.6 60.7-53.4 62c-3.5 .1-7 .2-10.6 .2C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm0-96a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm96 96a32 32 0 1 0 0-64 32 32 0 1 0 0 64z'
+};
+//download svg file from font-awesome, cat [path]/file.svg
+
 /////////////////////////////////////////////// configs ///////////////////////////////////////////////////////
 const configPlotHeatMap = {
   scrollZoom: true,
@@ -110,14 +122,14 @@ function heatMapPlotData(dataPlotTemp, plotName) {
   dataTemp = [{
     z: zValuesTemp,
     type: 'heatmap',
-    colorscale: 'Viridis', // Choose your desired color scale
+    colorscale: 'Plasma', // Choose your desired color scale
     zmin: 95,
     zmax: 105,
   }];
   Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configPlotHeatMap);
 }
 
-function scatterPlotData(dataPlotTemp, plotName) {
+function scatterPlotData(dataPlotTemp, headerTemp, plotName) {
   var trace = {
     x: getColumn(dataPlotTemp,0),
     mode: 'markers+lines',
@@ -139,6 +151,7 @@ function scatterPlotData(dataPlotTemp, plotName) {
     traceTemp.z = i;
     traceTemp.marker = { symbol: markerSymbol[i-1], size: markerSize[i-1], }
     traceTemp.line = { dash: dashType[i-1], width: lineWidth[i-1], };
+    traceTemp.name = headerTemp[i];
     dataTemp.push(traceTemp);
   }
   Plotly.newPlot(plotName, dataTemp, layoutScatter, configPlotScatter);

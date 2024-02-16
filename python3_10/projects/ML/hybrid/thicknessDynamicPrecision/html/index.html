@@ -62,27 +62,27 @@
         <label for="labelXmax">xmax: </label>
         <input type="text" size="3px" value="1" id="xMax" >
         <label for="labelYmax">, ymax: </label>
-        <input type="text" size="3px" value="1" id="yMax" > <br>
+        <input type="text" size="3px" value="1" id="yMax" > <br> <br>
 
         <button class="button-apply" onclick="scatterPlotUpdate()" >apply</button>
     </div>
 
 
-    <div class="popup" id="popupScatter2" style="background-color: #FCFCFC; border: 2px solid #ccc;height: 140px; width: 510px; display: none;">
-        <button class="button-popuphead" onclick="closePopUp(popupScatter2)">X</button> <br>
+    <div class="popup" id="popupScatter2" style="height: 140px; width: 510px; display: none;">
+        <button class="button" onclick="closePopUp(popupScatter2)">X</button> <br>
         <div class="container-grid2-4">
             <div class="itemC">
                 <div class="container-grid2-3">
                     <div class="itemC">
                         <textarea id="labelScatterUserSet" rows="4" cols="8" style="background-color:
-#FCFCFC; color: grey; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none;" > </textarea>
+#FDFAF2; color: grey; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none; text-align: right;" > </textarea>
                         <textarea id="scatterUserSet" rows="4" cols="42" style="background-color:
-#FCFCFC; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none;" > </textarea>
+#FDFAF2; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none;" > </textarea>
                     </div>
                 </div>
             </div>
         </div>
-        <button class="button-apply2" onclick="scatterPlotUpdate2(plot1)" >apply</button>
+        <button class="button-apply" onclick="scatterPlotUpdate2(plot1)" >apply</button>
         <select id="markType-select">
             <option value="">line type</option>
             <option value="solid">s:solid</option>
@@ -155,7 +155,7 @@
                                         <div class="item-controls">
                                         </div>
                                     </div>
-                                    <button onclick="calt()">data pre-process</button>
+                                    <button onclick="dataPreProcess()">data pre-process</button>
                                     <input type="text" size="0px" value="0 1 2 3 4 5 6 8 11 12 13 14 15 16 27 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57" id="colsToBeDel" >
                                     <button onclick="train()">train</button>
                                     <button onclick="loadTrain()">load train</button>

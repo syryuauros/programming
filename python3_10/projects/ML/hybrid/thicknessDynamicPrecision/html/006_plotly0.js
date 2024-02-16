@@ -57,7 +57,7 @@ const layoutScatter = {
     showline: true,
     showticklabels: true,
   },
-  showlegend: false,
+  showlegend: true,
   legend: {
     x: 0.20,
     y: 0.95,

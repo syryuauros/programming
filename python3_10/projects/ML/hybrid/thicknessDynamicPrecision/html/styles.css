@@ -2,7 +2,8 @@
             display: inline-block;
             padding: 5px 5px;
             margin-bottom: 5px;
-            background-color: #FEF9E7 ;
+            background-color: #EDBB99 ;
+            /* background-color: #FEF9E7 ; */
             color: red;
             font-size: 8px;
             text-decoration: none;
@@ -39,6 +40,9 @@
             font-weight: bold;
             text-align: center;
             width: 50%;
+        }
+        .button-apply:hover {
+          background-color: #ABB2B9;
         }
         .button-apply2 {
             display: inline-block;
@@ -289,10 +293,11 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        background-color: white  ;
+        background-color: #FDFAF2  ;
         /* background-color: #F4F6F7  ; */
         box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
         text-align: center;
+        border: 2px solid #ccc;
 
         /* 임시 지정 */
         width: 100px;
