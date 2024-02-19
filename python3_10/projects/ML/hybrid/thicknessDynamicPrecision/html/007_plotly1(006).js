@@ -13,6 +13,8 @@
 //
 // convertElemsLT(elemsLT) {
 // convertElemsMT(elemsMT) {
+//
+// userSettingPopUp() {}
 
 let defaultPlotId = 'plot1';
 let axisType = [ 'linear', 'linear' ];
@@ -58,7 +60,13 @@ const configPlotHeatMap = {
     name: 'color scales',
     icon: iconPallete,
     click: function() {
-      openPopUp(this.plotId, popup2, 495, 750);
+      // popUpOpenClose(popup2, 660, 785);
+      if (popup2.style.display == 'none'){
+        openPopUp(this.plotId, popup2, 660, 785);
+      }
+      else {
+        closePopUp(popup2);
+      }
     },
   },
   ],
@@ -83,39 +91,47 @@ const configPlotScatter = {
   {
     plotId: defaultPlotId,
     name: 'axis setup',
-    icon: iconArrowUpDownLeftRight,
+    icon: iconSliders,
     click: function() {
-      openPopUp(this.plotId, popupScatter1, 495, 750);
+      if (popupScatter1.style.display == 'none'){
+        openPopUp(this.plotId, popupScatter1, 675, 820);
+      }
+      else {
+        console.log('here');
+        closePopUp(popupScatter1);
+      }
     },
   },
   {
     plotId: defaultPlotId,
     name: 'user setup',
-    icon: iconSliders,
+    icon: iconPallete,
     click: function() {
-      //generateSelectBoxes(plot1.data.length, innerHtml1 );
-      // generateElems('selectContainer', 'input', 4, innerHtml1);
-      const numElem = parseInt(plot1.data.length);
+      const numElem = parseInt(window[this.plotId].data.length);
 
-      let strColor = ""; let strLW = ""; let strLT = ""; let strMR = ""; let strMT = "";
-      for (let i = 0; i < numElem; i++) {
-        //   const inputs = document.createElement('input');
-        //   inputs.innerHTML = innerHtml1;
-        //   inputs.setAttribute('type', 'text');
-        //   inputs.setAttribute('value', '1 1 1 1')
-        //   //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
-        //   elemContainer.appendChild(elems);
-        strLabel = " color:\n line  type:\n mark  type:\n line width:\nmark radius:";
-        strLT = strLT + 's ';
-        strMT = strMT + 'o ';
-        strLW = strLW + '1 ';
-        strMR = strMR + '1 ';
-        strAll = strColor + "\n" + strLT + "\n" +strMT + "\n" + strLW + "\n" + strMR;
-      }
-      document.getElementById("labelScatterUserSet").value = strLabel;
-      document.getElementById("scatterUserSet").value = strAll;
+      if (!strTest(document.getElementById("scatterUserSet").value)) {
+        let strColor = ""; let strLW = ""; let strLT = ""; let strMR = ""; let strMT = "";
+        for (let i = 0; i < numElem; i++) {
+          //   const inputs = document.createElement('input');
+          //   inputs.innerHTML = innerHtml1;
+          //   inputs.setAttribute('type', 'text');
+          //   inputs.setAttribute('value', '1 1 1 1')
+          //   //select.innerHTML = '<option value="1">Option 1</option><option value="2">Option 2</option>'; // Add options as needed
+          //   elemContainer.appendChild(elems);
+          strLabel = " color:\n line  type:\n mark  type:\n line width:\nmark radius:";
+          strLT = strLT + 's ';
+          strMT = strMT + 'o ';
+          strLW = strLW + '1 ';
+          strMR = strMR + '1 ';
+          strAll = strColor + "\n" + strLT + "\n" +strMT + "\n" + strLW + "\n" + strMR;
+        }
+        document.getElementById("labelScatterUserSet").value = strLabel;
+        document.getElementById("scatterUserSet").value = strAll;
+      } else {}
 
-      openPopUp(this.plotId, popupScatter2, 495, 750);
+      if (popupScatter2.style.display == 'none'){
+        openPopUp(this.plotId, popupScatter2, 490, 675);
+      } else { closePopUp(popupScatter2); }
     },
   },
 
@@ -314,4 +330,48 @@ function convertElemsMT(elemsMT) {
   else if (elemsMT == 'g') { return 'hexagram' }
   else if (elemsMT == 'r') { return 'star' }
   else {  }
+}
+
+
+function userSettingPopUp(plotId) {
+  if (plotId.data[0].type == 'heatmap') {
+    popUpOpenClose(plotId, popup2, 660, 785);
+  }
+  else if (plotId.data[0].type == 'scatter') {
+    popUpOpenClose(plotId, popupScatter1, 675, 820);
+    popUpOpenClose2(plotId, popupScatter2, 490, 675);
+
+  } else {}
+}
+
+function popUpOpenClose(plotId, popUpId, left, top) {
+  if (popUpId.style.display == 'none'){
+    openPopUp(plotId, popUpId, left, top);
+  }
+  else {
+    closePopUp(popUpId);
+  }
+}
+
+function popUpOpenClose2(plotId, popUpId, left, top) {
+  const numElem = parseInt(plotId.data.length);
+
+  if (!strTest(document.getElementById("scatterUserSet").value)) {
+    let strColor = ""; let strLW = ""; let strLT = ""; let strMR = ""; let strMT = "";
+    for (let i = 0; i < numElem; i++) {
+      strLabel = " color:\n line  type:\n mark  type:\n line width:\nmark radius:";
+      strLT = strLT + 's ';
+      strMT = strMT + 'o ';
+      strLW = strLW + '1 ';
+      strMR = strMR + '1 ';
+      strAll = strColor + "\n" + strLT + "\n" +strMT + "\n" + strLW + "\n" + strMR;
+    }
+    document.getElementById("labelScatterUserSet").value = strLabel;
+    document.getElementById("scatterUserSet").value = strAll;
+  } else {}
+
+  if (popUpId.style.display == 'none'){
+    console.log(plotId.id);
+    openPopUp(plotId.id, popUpId, 490, 675);
+  } else { closePopUp(popUpId); }
 }

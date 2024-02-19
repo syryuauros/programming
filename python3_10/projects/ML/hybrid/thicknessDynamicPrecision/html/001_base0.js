@@ -1,6 +1,8 @@
 
 // radio(optionName) {
 //
+// strTest(str) {
+//
 // getColumn(matrix, columnIndex) {
 // strToArrNum(str) {
 // deepCopyArray(arr) {
@@ -31,6 +33,11 @@ function radio(optionName) {
     }
   });
   return selectedOption;
+}
+
+function strTest(strs) {
+  const regex = /[^ ]/;
+  return regex.test(strs);  // return true, when any character except but 'space' exists
 }
 
 function getColumn(matrix, columnIndex) {
