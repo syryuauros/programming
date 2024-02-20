@@ -18,18 +18,24 @@ app = Flask(__name__)
 CORS(app)
 
 models = {}
+colIndexThickness = 4;
 @app.route('/DynamicPrec_train', methods=['POST'])
 def DynamicPrec_train_numbers():
 
     tr_json = request.get_json()
     data1 = tr_json['data1']
     header1 = tr_json['header1']
+    colIndexThk = tr_json['colIndexThk']
     data1Arr = np.array(data1).astype(str)
     header1Arr = np.array(header1).astype(str)
     print('empty or null cell indices(if it represent [] then fine!!):' ,find_empty_indices(data1Arr))
 
-    data1_mod1 = data1Arr.astype(float)
-    thickness = data1_mod1[:,1]
+    data1_mod = convert_to_float_with_ascii_sum(data1Arr)
+    data1_mod1 = data1_mod.astype(float)
+    print(int(colIndexThk))
+    #data1_mod1 = (np.vectorize(convert_to_float_or_ascii_sum)(data1Arr)).astype(float)
+
+    thickness = data1_mod1[:,colIndexThickness]
     header1_mod1 = insert_col_left(header1Arr, [ 'deviation', 'Th_avg' ], axis=0)
 
     cuttingRatio = 0.1
@@ -152,9 +158,10 @@ def DynamicPrec_predict_numbers():
     print('pred: ', pred)
 
     #refpred = insert_col_left(np.transpose([pred]), np.transpose(data2_mod1[:,1]))
-    refpred = insert_col_left(np.transpose(data2_mod1[:,1] - [pred]), np.transpose(data2_mod1[:,1]))
-    refpred = insert_col_left(refpred, np.zeros(len(pred)))
-    refpred = insert_col_left(refpred, np.zeros(len(pred)))
+    #refpred = insert_col_left(np.transpose(data2_mod1[:,colIndexThickness] - [pred]), np.transpose(data2_mod1[:,colIndexThickness]))
+    refpred = insert_col_left(np.transpose([np.zeros(len(pred))]), np.zeros(len(pred)))
+    refpred = insert_col_left(refpred, (data2_mod1[:,colIndexThickness] - [pred]))
+    refpred = insert_col_left(refpred, np.transpose(data2_mod1[:,colIndexThickness]))
     refpred = insert_col_left(refpred, np.zeros(len(pred)))
 
     return jsonify({ 'refpred': refpred.tolist(),  })
@@ -224,7 +231,28 @@ def find_min_indices(arr):
     min_indices = np.where((arr == np.min(arr)))[0]
     return min_indices
 
-############################################### host set #######################################################
+def convert_to_float_with_ascii_sum(a):
+    """
+    Convert non-float elements in a 2D numpy array to the sum of their ASCII values.
+
+    Parameters:
+    a (numpy.ndarray): Input 2D numpy array.
+
+    Returns:
+    numpy.ndarray: Modified 2D numpy array.
+    """
+    # Create a copy of the input array to avoid modifying the original array
+    a_modified = a.copy()
+
+    # Iterate through each element of 'a' and convert non-float elements to sum of ASCII values
+    for i in range(a_modified.shape[0]):
+        for j in range(a_modified.shape[1]):
+            try:
+                float(a_modified[i, j])  # Try converting to float
+            except ValueError:
+                a_modified[i, j] = np.sum([ord(c) for c in str(a_modified[i, j])])
+
+    return a_modified############################################### host set #######################################################
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=7001)
 #

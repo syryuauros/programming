@@ -15,6 +15,9 @@
 // convertElemsMT(elemsMT) {
 //
 // userSettingPopUp() {}
+// popUpOpenClose(plotId, popUpId, left, top) {
+// popUpOpenClose2(plotId, popUpId, left, top) {
+
 
 let defaultPlotId = 'plot1';
 let axisType = [ 'linear', 'linear' ];
@@ -213,9 +216,9 @@ function heatMapPlotSelectColumn(tableName, plotName, colNums) {
   var dataTemp = [{
     z: zValuesTemp,
     type: 'heatmap',
-    colorscale: 'Hot', // Choose your desired color scale
-    zmin: 95,
-    zmax: 105,
+    colorscale: 'Plasma', // Choose your desired color scale
+    zmin: 0,
+    zmax: 10,
   }];
 
   Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configPlotHeatMap);

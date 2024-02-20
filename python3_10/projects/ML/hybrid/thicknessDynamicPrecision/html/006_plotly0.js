@@ -7,10 +7,10 @@
 // applyMinMaxColor(plotName, inputIdName) {
 // applyColorScale(plotName, inputIdName) {
 
-let markerSymbol = [ 'circle', 'square', 'diamond', 'cross' ]; //scatterPlotData
-let markerSize = [ '7', '1', '2', '5' ];
-let dashType = [ 'solid', 'dot', 'dash', 'longdash' ];
-let lineWidth = [ '0', '0', '0', '1' ];
+let dashType = [ 'dot', 'solid', 'solid', ];
+let markerSymbol = [ 'circle', 'circle', 'triangle-up',  ]; //scatterPlotData
+let lineWidth = [ '1', '0', '0', ];
+let markerSize = [ '1', '8', '5',  ];
 
 let popUpTarget;
 

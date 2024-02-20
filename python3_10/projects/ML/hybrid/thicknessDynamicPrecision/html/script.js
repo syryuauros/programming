@@ -71,6 +71,7 @@ function dataPreProcess() {
 async function train() {
   var data1 = tableContent.table1.getData();
   var header1 = tableContent.table1.getColHeader();
+  var colIndexThk = document.getElementById('colIndexThk').value;
 
   const response = await fetch('http://192.168.12.135:7001/DynamicPrec_train', {
     method: 'POST',
@@ -80,6 +81,7 @@ async function train() {
     body: JSON.stringify({
       data1: data1,
       header1: header1,
+      colIndexThk: colIndexThk,
     })
   });
 
@@ -124,12 +126,12 @@ async function predict() {
   });
 
   const data = await response.json();
-  table3Data = replaceColToExpr(data.refpred, 0, '=d~/c~*100');
-  table3Data = replaceColToExpr(data.refpred, 1, '=e~/c~*100');
+  table3Data = replaceColToExpr(data.refpred, 3, '=abs(b~/a~*100 - 100)');
+  table3Data = replaceColToExpr(data.refpred, 4, '=abs(c~/a~*100 - 100)');
   //table3Data = replaceSpecificColumn(data.refpred, 0, '=B1/C1*100');
   createTableAny('table3', data.refpred);
   tableContent['table3'].updateSettings({
-    colHeaders: [ 'th/ref(%)', 'pred/ref(%)', 'REF', 'thickness', 'Predict'],
+    colHeaders: [ 'REF', 'thickness', 'Predict', 'th_err(%)', 'pred_err(%)', ],
     numericFormat: {
       pattern: '0,0.0',
     },

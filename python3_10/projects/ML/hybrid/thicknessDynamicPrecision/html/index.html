@@ -156,10 +156,15 @@
                                         </div>
                                     </div>
                                     <button onclick="dataPreProcess()">data pre-process</button>
-                                    <input type="text" size="0px" value="0 1 2 3 4 5 6 8 11 12 13 14 15 16 27 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57" id="colsToBeDel" >
+                                    <input type="text" size="0px" value="0 3 4 5 8 11 12 13 14 15 16 27 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57" id="colsToBeDel" >
+<!-- 0 1 2 3 4 5 6 8 11 12 13 14 15 16 27 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 -->
+                                    <label for="colIndexThk">thk_col:  </label>
+                                    <input type="text" size="1px" value="4" id="colIndexThk" >
+
                                     <button onclick="train()">train</button>
-                                    <button onclick="loadTrain()">load train</button>                                    <button onclick="heatMapPlotSelectColumn('table3', 'plot1', [0,1])">heatMap</button>
-                                    <button onclick="scatterPlotSelectColumn('table3', 'plot1', [2, 2,3,4])">linear check</button>
+                                    <button onclick="loadTrain()">load train</button>                                    <button onclick="heatMapPlotSelectColumn('table3', 'plot1', [3,4])">heatMap</button>
+                                    <button onclick="scatterPlotSelectColumn('table3', 'plot1', [0, 3,4])">scatter</button>
+                                    <button onclick="scatterPlotSelectColumn('table3', 'plot1', [0, 0,1,2])">linear check</button>
                                     <!-- <button onclick="console.log(selectContainer.children[1].value)">printSelec</button> -->
                                     <div id="selectContainer"></div>
                                 </div>
