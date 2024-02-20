@@ -23,6 +23,7 @@ const PredictInit = [
 let table1Dm = false;
 let table2Dm = false;
 let table3Dm = false;
+let table4Dm = false;
 
 dm['table1'] = true;
 ///////////////////////////////////////////////  table1 ititial /////////////////////////////////////////////////////////
@@ -63,9 +64,52 @@ function dataPreProcess() {
   let colsToBeDel = strToArrNum(colsToBeDelStr);
 
   removeColumns(tableName,colsToBeDel);
+  removeEmptyRows(tableName);
   rowToHeader(tableName);
   removeRows(tableName,[0]);
-  removeEmptyRows(tableName);
+  calTemp(tableName,4);
+}
+
+function calTemp(tableName, thk_index) {
+  var data1 = tableContent.table1.getData();
+  var thickness = getColumn(data1,4);
+  var cuttingRatio = 0.1;
+  var cuttingIndices = [-1];
+  var avgs = []; var nominalThickness = []; var deviations = [];
+  var thicknessNum = thickness.length;
+
+  for (let i = 0; i < thicknessNum; i++) {
+    if (thickness[i+1] > thickness[i]*(1+cuttingRatio) ||  thickness[i+1] < thickness[i]*(1-cuttingRatio)) {
+      cuttingIndices.push(i);
+    }
+  }
+  cuttingIndices.push(thicknessNum-1);
+
+  for (let i = 0; i < cuttingIndices.length - 1; i++) {
+    startIndex = cuttingIndices[i] + 1;
+    endIndex = cuttingIndices[i+1]+1;
+    rangedThickness = thickness.slice(startIndex, endIndex);
+    avg = sumArray(rangedThickness)/rangedThickness.length;
+    avgs.push(avg);
+
+    for (let j = startIndex; j < endIndex; j++) {
+      nominalThickness.push(avg);
+      deviations.push(rangedThickness[j - startIndex] - avg);
+    }
+  }
+  data1_mod1 = addColumnData(data1, nominalThickness);
+  data1_mod2 = addColumnData(data1_mod1, deviations);
+  console.log(data1_mod2);
+}
+
+function sumArray(array) {
+  return array.reduce((acc, curr) => acc + parseFloat(curr), 0);
+}
+
+function addColumnData(arr, a) {
+    return arr.map((row, index) => {
+        return [a[index], ...row];
+    });
 }
 
 async function train() {

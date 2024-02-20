@@ -128,7 +128,7 @@
         }
         .container-grid1 {
           display: grid;
-          grid-template-columns: 560px 900px 1fr;
+          grid-template-columns: 560px 800px 1fr;
           gap: 0px; /* Gap between grid items */
           width: 100%;
           height: 100%;
@@ -142,7 +142,7 @@
         }
         .container-grid2-2 {
           display: grid;
-          grid-template-rows: 1fr 8fr;
+          grid-template-rows: 3fr 6fr;
           gap: 0px; /* Gap between grid items */
           width: 100%;
           height: 100%;
@@ -165,10 +165,11 @@
         }
         .container-grid3 {
           display: grid;
-          grid-template-rows: 1fr 1fr 1fr 1fr;
+          grid-template-columns: 1.1fr 3fr;
           gap: 0px; /* Gap between grid items */
           width: 100%;
-          height: 1035px;
+          height: 100%;
+          overflow: hidden;
         }
         .container-grid3-2 {
           display: grid;
@@ -185,7 +186,7 @@
           border: 1px solid #ccc;
           padding: 1px;
           text-align: left;
-          overflow: auto;
+          overflow: hidden;
         }
         .itemC {
           font-family: Arial, sans-serif;
