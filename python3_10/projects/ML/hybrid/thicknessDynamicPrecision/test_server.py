@@ -36,39 +36,43 @@ def DynamicPrec_train_numbers():
     #data1_mod1 = (np.vectorize(convert_to_float_or_ascii_sum)(data1Arr)).astype(float)
 
     thickness = data1_mod1[:,colIndexThickness]
-    header1_mod1 = insert_col_left(header1Arr, [ 'deviation', 'Th_avg' ], axis=0)
+    # header1_mod1 = insert_col_left(header1Arr, [ 'deviation', 'Th_avg' ], axis=0)
 
-    cuttingRatio = 0.1
-    cuttingIndices = [-1]
-    avgs = []
-    nominalThickness = []
-    deviations = []
-    indices = []
-    k = 0
-    thicknessNum = len(thickness) - 1
+    # cuttingRatio = 0.1
+    # cuttingIndices = [-1]
+    # avgs = []
+    # nominalThickness = []
+    # deviations = []
+    # indices = []
+    # k = 0
+    # thicknessNum = len(thickness) - 1
 
-    for i in range(thicknessNum):
-        if thickness[i+1] > thickness[i]*(1+cuttingRatio) or thickness[i+1] < thickness[i]*(1-cuttingRatio) :
-            cuttingIndices.append(i)
-    cuttingIndices.append(thicknessNum)
+    # for i in range(thicknessNum):
+    #     if thickness[i+1] > thickness[i]*(1+cuttingRatio) or thickness[i+1] < thickness[i]*(1-cuttingRatio) :
+    #         cuttingIndices.append(i)
+    # cuttingIndices.append(thicknessNum)
 
-    for i in range(len(cuttingIndices)-1):
-        startingIndex = cuttingIndices[i]+1
-        endIndex = cuttingIndices[i+1]+1
-        rangedThickness = thickness[startingIndex:endIndex]
-        avg = sum(rangedThickness)/(len(rangedThickness))
-        avgs.append(avg)
-        for j in range(endIndex-startingIndex):
-            nominalThickness.append(avg)
-            deviations.append(rangedThickness[j]-avg)
-            indices.append(k)
-            k = k + 1
+    # for i in range(len(cuttingIndices)-1):
+    #     startingIndex = cuttingIndices[i]+1
+    #     endIndex = cuttingIndices[i+1]+1
+    #     rangedThickness = thickness[startingIndex:endIndex]
+    #     avg = sum(rangedThickness)/(len(rangedThickness))
+    #     avgs.append(avg)
+    #     for j in range(endIndex-startingIndex):
+    #         nominalThickness.append(avg)
+    #         deviations.append(rangedThickness[j]-avg)
+    #         indices.append(k)
+    #         k = k + 1
         #print(startingIndex, endIndex, len(rangedThickness), avg, sum(rangedThickness))
 
-    data1_mod2 = insert_col_left(data1_mod1, nominalThickness)
-    data1_mod2 = insert_col_left(data1_mod2, deviations)
-    train_Y = data1_mod2[:,[0,1]]
-    train_X = data1_mod2[:,2:(len(data1_mod2[0]))]
+    # data1_mod2 = insert_col_left(data1_mod1, nominalThickness)
+    # data1_mod2 = insert_col_left(data1_mod2, deviations)
+    # train_Y = data1_mod2[:,[0,1]]
+    # train_X = data1_mod2[:,2:(len(data1_mod2[0]))]
+
+    train_Y = data1_mod1[:,[0,1]]
+    train_X = data1_mod1[:,2:(len(data1_mod1[0]))]
+
 
     #data1_mod2_1 = insert_col_left(data1_mod1, nominalThickness)
     #data1_mod2 = insert_col_left(data1_mod2_1, indices)
@@ -138,7 +142,7 @@ def DynamicPrec_train_numbers():
         # refpred = insert_col_left(refpred, (pred + np.transpose(tst_y)[1]) / (np.transpose(tst_y)[0]+ np.transpose(tst_y)[1]) * 100)
         # print('refpred: ', refpred)
 
-    return jsonify({ 'data1':data1_mod2.tolist(), 'header1':header1_mod1.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
+    return jsonify({ 'data1':data1_mod1.tolist(), 'header1':header1Arr.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
 
 
 @app.route('/DynamicPrec_predict', methods=['POST'])

@@ -72,6 +72,8 @@ function dataPreProcess() {
 
 function calTemp(tableName, thk_index) {
   var data1 = tableContent.table1.getData();
+  var header1 = tableContent.table1.getColHeader();
+
   var thickness = getColumn(data1,4);
   var cuttingRatio = 0.1;
   var cuttingIndices = [-1];
@@ -97,9 +99,17 @@ function calTemp(tableName, thk_index) {
       deviations.push(rangedThickness[j - startIndex] - avg);
     }
   }
+
   data1_mod1 = addColumnData(data1, nominalThickness);
   data1_mod2 = addColumnData(data1_mod1, deviations);
-  console.log(data1_mod2);
+  header1.unshift('Th_avg');
+  header1.unshift('deviation');
+
+  createTableAny('table1', data1_mod2);
+  tableContent['table1'].updateSettings({
+    colHeaders: header1,
+    renderer: scientificRenderer,
+  });
 }
 
 function sumArray(array) {
