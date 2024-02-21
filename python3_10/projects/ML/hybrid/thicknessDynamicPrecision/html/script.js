@@ -60,19 +60,42 @@ Plotly.newPlot('plot1', data, layoutHeatMap, configPlotHeatMap);
 ///////////////////////////////////////////// actions (functions with void IO) /////////////////////////////////////////////////////////
 function dataPreProcess() {
   let tableName = 'table1';
+  let data = tableContent[tableName].getData();
   let colsToBeDelStr = document.getElementById('colsToBeDel').value;
   let colsToBeDel = strToArrNum(colsToBeDelStr);
 
-  removeColumns(tableName,colsToBeDel);
-  removeEmptyRows(tableName);
-  rowToHeader(tableName);
-  removeRows(tableName,[0]);
-  calTemp(tableName,4);
+  let dataSelected = deleteColumns(data, colsToBeDel);
+  let dataTrimed = deleteEmptyRows(dataSelected);
+  let header = dataTrimed[0];
+  let data_mod = deleteRows(dataTrimed, [0]);
+
+  let dataYIndicies = [0];
+  let dataNeutral = [1];
+
+
+  calTemp(tableName,4, data_mod, header);
+  seperateDataXY(tableName, getRange(0,data_mod[0].length + 1, concatArrays(dataYIndicies, dataNeutral)), dataYIndicies);
+
+
+  // removeColumns(tableName,colsToBeDel);
+  // removeEmptyRows(tableName);
+  // rowToHeader(tableName);
+  // removeRows(tableName,[0]);
+  // calTemp(tableName,4);
 }
 
-function calTemp(tableName, thk_index) {
-  var data1 = tableContent.table1.getData();
-  var header1 = tableContent.table1.getColHeader();
+function seperateDataXY(tableName, xIndicies, yIndicies) {
+  let dataAll = tableContent[tableName].getData();
+  let dataX = pickColumns(dataAll, xIndicies);
+  let dataY = pickColumns(dataAll, yIndicies);
+
+  console.log(dataX);
+  console.log(dataY);
+}
+
+function calTemp(tableName, thk_index, data1, header1) {
+  // var data1 = tableContent.table1.getData();
+  // var header1 = tableContent.table1.getColHeader();
 
   var thickness = getColumn(data1,4);
   var cuttingRatio = 0.1;
@@ -100,8 +123,8 @@ function calTemp(tableName, thk_index) {
     }
   }
 
-  data1_mod1 = addColumnData(data1, nominalThickness);
-  data1_mod2 = addColumnData(data1_mod1, deviations);
+  data1_mod1 = addColumnDataHead(data1, nominalThickness);
+  data1_mod2 = addColumnDataHead(data1_mod1, deviations);
   header1.unshift('Th_avg');
   header1.unshift('deviation');
 
@@ -116,7 +139,7 @@ function sumArray(array) {
   return array.reduce((acc, curr) => acc + parseFloat(curr), 0);
 }
 
-function addColumnData(arr, a) {
+function addColumnDataHead(arr, a) {
     return arr.map((row, index) => {
         return [a[index], ...row];
     });

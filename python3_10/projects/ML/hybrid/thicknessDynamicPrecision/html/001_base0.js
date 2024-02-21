@@ -2,8 +2,19 @@
 // radio(optionName) {
 //
 // strTest(str) {
+// concatArrays(arr1, arr2) {
 //
+// getRange(start, end) {
 // getColumn(matrix, columnIndex) {
+// pickColumns(matrix, columnIndices) {
+// deleteColumn(matrix, columnIndex) {
+// insertColumn(matrix, columnIndex, columnData) {
+// deleteColumns(matrix, columnIndices) {
+// deleteRows(matrix, rowIndices) {
+// deleteEmptyRows(matrix) {
+
+
+//
 // strToArrNum(str) {
 // deepCopyArray(arr) {
 // deepCopy(data) {
@@ -40,8 +51,75 @@ function strTest(strs) {
   return regex.test(strs);  // return true, when any character except but 'space' exists
 }
 
+function concatArrays(arr1, arr2) {
+  return arr1.concat(arr2);
+}
+
+function getRange(start, end, exclude) {
+  let result = [];
+  for (let i = start; i <= end; i++) {
+    if (!exclude.includes(i)) {
+      result.push(i);
+    }
+  }
+  return result;
+}
+
 function getColumn(matrix, columnIndex) {
   return matrix.map(row => row[columnIndex]);
+}
+
+function pickColumns(matrix, columnIndices) {
+    return matrix.map(row =>
+        columnIndices.map(index => row[index])
+    );
+}
+
+function deleteColumn(matrix, columnIndex) {
+    return matrix.map(row => {
+        row.splice(columnIndex, 1);
+        return row;
+    });
+}
+
+function deleteColumns(matrix, columnIndices) {
+  // Iterate over each row in the array
+  for (let i = 0; i < matrix.length; i++) {
+    // Iterate over each column index to delete
+    for (let j = columnIndices.length - 1; j >= 0; j--) {
+      const columnIndex = columnIndices[j];
+      // Remove the element at the specified column index
+      matrix[i].splice(columnIndex, 1);
+    }
+  }
+  return matrix;
+}
+
+function deleteRows(matrix, rowIndices) {
+    // Sort row indices in descending order to avoid index shifting when deleting rows
+    rowIndices.sort((a, b) => b - a);
+
+    // Iterate over row indices and delete corresponding rows
+    rowIndices.forEach(index => {
+        matrix.splice(index, 1);
+    });
+
+    return matrix;
+}
+
+function deleteEmptyRows(arr) {
+    return arr.filter(row => {
+        return row.some(element => element !== null && element !== '');
+    });
+}
+
+function insertColumn(matrix, columnIndex, columnData) {
+    // Loop through each row in the array
+    for (let i = 0; i < matrix.length; i++) {
+        // Insert the column data at the specified column index for each row
+        matrix[i].splice(columnIndex, 0, columnData[i]);
+    }
+    return matrix;
 }
 
 function strToArrNum(str) {
