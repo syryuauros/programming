@@ -173,7 +173,7 @@ function heatMapPlotData(dataPlotTemp, plotName) {
   Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configs);
 }
 
-function scatterPlotData(dataPlotTemp, headerTemp, plotName) {
+function scatterPlotData(dataPlotTemp, headerTemp, plotName, plotStyle = plotStyle1) {
   var trace = {
     x: getColumn(dataPlotTemp,0),
     mode: 'markers+lines',
@@ -193,8 +193,8 @@ function scatterPlotData(dataPlotTemp, headerTemp, plotName) {
     traceTemp = Object.assign({}, trace);
     traceTemp.y = getColumn(dataPlotTemp,i);
     traceTemp.z = i;
-    traceTemp.marker = { symbol: markerSymbol[i-1], size: markerSize[i-1], }
-    traceTemp.line = { dash: dashType[i-1], width: lineWidth[i-1], };
+    traceTemp.marker = { symbol: plotStyle[1][i-1], size: plotStyle[3][i-1], }
+    traceTemp.line = { dash: plotStyle[0][i-1], width: plotStyle[2][i-1], };
     traceTemp.name = headerTemp[i];
     dataTemp.push(traceTemp);
   }
@@ -224,7 +224,7 @@ function heatMapPlotSelectColumn(tableName, plotName, colNums) {
   Plotly.newPlot(plotName, dataTemp, layoutHeatMap, configPlotHeatMap);
 }
 
-function scatterPlotSelectColumn(tableName, plotName, colNums) {
+function scatterPlotSelectColumn(tableName, plotName, colNums, plotStyle = plotStyle1) {
   dataPlotTemp = tableContent[tableName].getData();
   var trace = {
     x: getColumn(dataPlotTemp,colNums[0]),
@@ -243,13 +243,14 @@ function scatterPlotSelectColumn(tableName, plotName, colNums) {
 
   dataTemp = [];
   var headerTemp = getHeaderFromTable(tableName);
+  console.log(plotStyle);
 
   for (i = 1; i <= colNums.length-1; i++) {
     traceTemp = Object.assign({}, trace);
     traceTemp.y = getColumn(dataPlotTemp,colNums[i]);
     traceTemp.z = i;
-    traceTemp.marker = { symbol: markerSymbol[i-1], size: markerSize[i-1], }
-    traceTemp.line = { dash: dashType[i-1], width: lineWidth[i-1], };
+    traceTemp.marker = { symbol: plotStyle[1][i-1], size: plotStyle[3][i-1], }
+    traceTemp.line = { dash: plotStyle[0][i-1], width: plotStyle[2][i-1], };
     traceTemp.name = headerTemp[colNums[i]];
     dataTemp.push(traceTemp);
   }
