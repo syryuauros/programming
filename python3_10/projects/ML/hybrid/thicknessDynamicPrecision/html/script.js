@@ -69,12 +69,8 @@ function dataPreProcess() {
   let header = dataTrimed[0];
   let data_mod = deleteRows(dataTrimed, [0]);
 
-  let dataYIndicies = [0];
-  let dataNeutral = [1];
-
-
   calTemp(tableName,4, data_mod, header);
-  seperateDataXY(tableName, getRange(0,data_mod[0].length + 1, concatArrays(dataYIndicies, dataNeutral)), dataYIndicies);
+
 
 
   // removeColumns(tableName,colsToBeDel);
@@ -84,14 +80,19 @@ function dataPreProcess() {
   // calTemp(tableName,4);
 }
 
-function seperateDataXY(tableName, xIndicies, yIndicies) {
+function seperateData(tableName, Indicies) {
   let dataAll = tableContent[tableName].getData();
-  let dataX = pickColumns(dataAll, xIndicies);
-  let dataY = pickColumns(dataAll, yIndicies);
-
-  console.log(dataX);
-  console.log(dataY);
+  let dataSeperated = pickColumns(dataAll, Indicies);
+  console.log(dataSeperated);
+  return dataSeperated;
 }
+
+// function seperateDataY(tableName, yIndicies) {
+//   let dataAll = tableContent[tableName].getData();
+//   let dataY = pickColumns(dataAll, yIndicies);
+//   console.log(dataY);
+//   return dataY;
+// }
 
 function calTemp(tableName, thk_index, data1, header1) {
   // var data1 = tableContent.table1.getData();
@@ -150,13 +151,22 @@ async function train() {
   var header1 = tableContent.table1.getColHeader();
   var colIndexThk = document.getElementById('colIndexThk').value;
 
+  let dataYIndicies = [0];
+  let dataNeutral = [1];
+
+  let dataX = seperateData(tableName, getRange(0,data_mod[0].length + 1, concatArrays(dataYIndicies, dataNeutral)));
+  let dataY = seperateData(tableName, dataYIndicies);
+  let dataN = seperateData(tableName, dataNeutral);
+
   const response = await fetch('http://192.168.12.135:7001/DynamicPrec_train', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      data1: data1,
+      dataX: dataX,
+      dataY: dataY,
+      dataN: dataN,
       header1: header1,
       colIndexThk: colIndexThk,
     })
