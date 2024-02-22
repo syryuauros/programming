@@ -13,6 +13,21 @@
             text-align: right;
             width: 100%;
         }
+        .buttonSpace {
+            display: inline-block;
+            padding: 5px 5px;
+            margin-bottom: 15px;
+            background-color: white ;
+            /* background-color: #FEF9E7 ; */
+            color: red;
+            font-size: 8px;
+            text-decoration: none;
+            border: none;
+            /* border-radius: 0px; */
+            /* font-weight: bold; */
+            text-align: right;
+            width: 5px;
+        }
         .button-popuphead {
           display: inline-block;
           padding: 5px 5px;

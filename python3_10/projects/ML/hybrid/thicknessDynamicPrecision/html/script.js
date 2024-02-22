@@ -63,15 +63,24 @@ function dataPreProcess() {
   let data = tableContent[tableName].getData();
   let colsToBeDelStr = document.getElementById('colsToBeDel').value;
   let colsToBeDel = strToArrNum(colsToBeDelStr);
+  let colThk = document.getElementById('colIndexThk').value.split(" ").map(Number);
 
   let dataSelected = deleteColumns(data, colsToBeDel);
   let dataTrimed = deleteEmptyRows(dataSelected);
   let header = dataTrimed[0];
   let data_mod = deleteRows(dataTrimed, [0]);
 
-  calTemp(tableName,4, data_mod, header);
+  data_mod1 = calTemp(data_mod, header, colThk);
+  data_mod2 = convertToFloatWithAsciiSum(data_mod1);
 
+  header.unshift('Th_avg');
+  header.unshift('deviation');
 
+  createTableAny('table1', data_mod2);
+  tableContent['table1'].updateSettings({
+    colHeaders: header,
+    renderer: scientificRenderer,
+  });
 
   // removeColumns(tableName,colsToBeDel);
   // removeEmptyRows(tableName);
@@ -80,24 +89,32 @@ function dataPreProcess() {
   // calTemp(tableName,4);
 }
 
-function seperateData(tableName, Indicies) {
-  let dataAll = tableContent[tableName].getData();
+function convertToFloatWithAsciiSum(a) {
+    // Create a copy of the input array to avoid modifying the original array
+    let aModified = a.map(row => row.slice());
+    // Iterate through each element of 'a' and convert non-float elements to sum of ASCII values
+    for (let i = 0; i < aModified.length; i++) {
+        for (let j = 0; j < aModified[i].length; j++) {
+            if (isNaN(parseFloat(aModified[i][j]))) {
+                // Convert non-float elements to sum of ASCII values
+                let sumAscii = 0;
+                for (let k = 0; k < aModified[i][j].length; k++) {
+                    sumAscii += aModified[i][j].charCodeAt(k);
+                }
+                aModified[i][j] = sumAscii;
+            }
+        }
+    }
+    return aModified;
+}
+
+function seperateData(dataAll, Indicies) {
+  // let dataAll = tableContent[tableName].getData();
   let dataSeperated = pickColumns(dataAll, Indicies);
-  console.log(dataSeperated);
   return dataSeperated;
 }
 
-// function seperateDataY(tableName, yIndicies) {
-//   let dataAll = tableContent[tableName].getData();
-//   let dataY = pickColumns(dataAll, yIndicies);
-//   console.log(dataY);
-//   return dataY;
-// }
-
-function calTemp(tableName, thk_index, data1, header1) {
-  // var data1 = tableContent.table1.getData();
-  // var header1 = tableContent.table1.getColHeader();
-
+function calTemp(data1, header1, thk_index ) {
   var thickness = getColumn(data1,4);
   var cuttingRatio = 0.1;
   var cuttingIndices = [-1];
@@ -126,14 +143,8 @@ function calTemp(tableName, thk_index, data1, header1) {
 
   data1_mod1 = addColumnDataHead(data1, nominalThickness);
   data1_mod2 = addColumnDataHead(data1_mod1, deviations);
-  header1.unshift('Th_avg');
-  header1.unshift('deviation');
 
-  createTableAny('table1', data1_mod2);
-  tableContent['table1'].updateSettings({
-    colHeaders: header1,
-    renderer: scientificRenderer,
-  });
+  return data1_mod2;
 }
 
 function sumArray(array) {
@@ -147,16 +158,20 @@ function addColumnDataHead(arr, a) {
 }
 
 async function train() {
-  var data1 = tableContent.table1.getData();
-  var header1 = tableContent.table1.getColHeader();
-  var colIndexThk = document.getElementById('colIndexThk').value;
+  let tableName = 'table1';
+  var data1 = tableContent[tableName].getData();
+  var header1 = tableContent[tableName].getColHeader();
+  // var colIndexThk = document.getElementById('colIndexThk').value;
+  let colThk = document.getElementById('colIndexThk').value.split(" ").map(Number);
 
-  let dataYIndicies = [0];
+  let dataYIndicies = document.getElementById('colIndexTestY').value.split(" ").map(Number);
+  //  let dataYIndicies = [0];
   let dataNeutral = [1];
+  let dataXOuter = concatArrays(dataYIndicies, dataNeutral);
 
-  let dataX = seperateData(tableName, getRange(0,data_mod[0].length + 1, concatArrays(dataYIndicies, dataNeutral)));
-  let dataY = seperateData(tableName, dataYIndicies);
-  let dataN = seperateData(tableName, dataNeutral);
+  let dataX = seperateData(data1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+  let dataY = seperateData(data1, dataYIndicies);
+  let dataN = seperateData(data1, dataNeutral);
 
   const response = await fetch('http://192.168.12.135:7001/DynamicPrec_train', {
     method: 'POST',
@@ -168,16 +183,11 @@ async function train() {
       dataY: dataY,
       dataN: dataN,
       header1: header1,
-      colIndexThk: colIndexThk,
+      colIndexThk: colThk - dataXOuter.length,
     })
   });
 
   const data = await response.json();
-  createTableAny('table1', data.data1);
-  tableContent['table1'].updateSettings({
-    colHeaders: data.header1,
-    renderer: scientificRenderer,
-  });
 
   createTableAny('table2', data.tst_X);
   tableContent['table2'].updateSettings({

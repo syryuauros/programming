@@ -23,23 +23,26 @@ colIndexThickness = 4;
 def DynamicPrec_train_numbers():
 
     tr_json = request.get_json()
-    data1 = tr_json['data1']
+    dataX = tr_json['dataX']
+    dataY = tr_json['dataY']
+    dataN = tr_json['dataN']
     header1 = tr_json['header1']
-    colIndexThk = tr_json['colIndexThk']
+    colIndexThickness = tr_json['colIndexThk']
 
-    data1Arr = np.array(data1).astype(str)
+    dataXArr = np.array(dataX).astype(float)
+    dataYArr = np.array(dataY).astype(float)
+    dataNArr = np.array(dataN).astype(float)
     header1Arr = np.array(header1).astype(str)
 
-    print('empty or null cell indices(if it represent [] then fine!!):' ,find_empty_indices(data1Arr))
+    # dataX_mod = convert_to_float_with_ascii_sum(dataXArr).astype(float)
+    # dataY_mod = convert_to_float_with_ascii_sum(dataYArr).astype(float)
+    # dataN_mod = convert_to_float_with_ascii_sum(dataNArr).astype(float)
+    # data1_mod1 = data1_mod.astype(float)
 
-    data1_mod = convert_to_float_with_ascii_sum(data1Arr)
-    data1_mod1 = data1_mod.astype(float)
+    thickness = dataXArr[:,colIndexThickness]
 
-    thickness = data1_mod1[:,colIndexThickness]
-
-    train_Y = data1_mod1[:,[0,1]]
-    train_X = data1_mod1[:,2:(len(data1_mod1[0]))]
-
+    train_Y = dataYArr
+    train_X = dataXArr
 
     trn_X, tst_X, trn_y, tst_y = train_test_split(train_X, train_Y, test_size=0.05, shuffle=True)
 
@@ -98,7 +101,7 @@ def DynamicPrec_train_numbers():
         # refpred = insert_col_left(refpred, (pred + np.transpose(tst_y)[1]) / (np.transpose(tst_y)[0]+ np.transpose(tst_y)[1]) * 100)
         # print('refpred: ', refpred)
 
-    return jsonify({ 'data1':data1_mod1.tolist(), 'header1':header1Arr.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
+    return jsonify({ 'dataX':dataXArr.tolist(), 'header1':header1Arr.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
 
 
 @app.route('/DynamicPrec_predict', methods=['POST'])
@@ -212,7 +215,8 @@ def convert_to_float_with_ascii_sum(a):
             except ValueError:
                 a_modified[i, j] = np.sum([ord(c) for c in str(a_modified[i, j])])
 
-    return a_modified############################################### host set #######################################################
+    return a_modified
+############################################### host set #######################################################
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=7001)
 #
