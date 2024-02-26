@@ -239,6 +239,7 @@ const tableSettingsAtStart = {
   outsideClickDeselects: false,
   selectionMode: 'multiple',
   licenseKey: 'non-commercial-and-evaluation',
+
 };
 
 ///////////////////////////////////////////////  for plotly /////////////////////////////////////////////////////////

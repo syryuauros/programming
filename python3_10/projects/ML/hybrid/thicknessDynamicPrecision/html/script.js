@@ -19,11 +19,20 @@ const PredictInit = [
   [40, 0.6, 1.5],
   [50, 0.7, 1.4]
 ];
+const PredictInit2 = [
+  [10, 0.3, ],
+  [20, 0.4, ],
+  [30, 0.5, ],
+  [40, 0.6, ],
+  [50, 0.7, ]
+];
+
 
 let table1Dm = false;
 let table2Dm = false;
 let table3Dm = false;
 let table4Dm = false;
+let table5Dm = false;
 
 dm['table1'] = true;
 ///////////////////////////////////////////////  table1 ititial /////////////////////////////////////////////////////////
@@ -32,6 +41,8 @@ var tableSettingsAtStart1 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart1.contextMenu = contextMenuHTable;
 tableSettingsAtStart1.data = digitMap;
 tableSettingsAtStart1.dropdownMenu = table1Dm;
+tableSettingsAtStart1.formulas.engine = hyperformulaInstance;
+tableSettingsAtStart1.formulas.sheetName = 'Inputs';
 
 var tableSettingsAtStart2 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart2.contextMenu = contextMenuHTable;
@@ -42,11 +53,24 @@ var tableSettingsAtStart3 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart3.contextMenu = contextMenuHTable;
 tableSettingsAtStart3.data = PredictInit;
 tableSettingsAtStart3.dropdownMenu = table3Dm;
-tableSettingsAtStart3.colHeaders = [ 'pred/ref(%)', 'REF', 'Predict'];
+tableSettingsAtStart3.colHeaders = [ 'testY', 'Predict', ' '];
+//tableSettingsAtStart3.colHeaders = [ 'pred/ref(%)', 'REF', 'Predict'];
+
+var tableSettingsAtStart4 = JSON.parse(JSON.stringify(tableSettingsAtStart));
+tableSettingsAtStart4.contextMenu = contextMenuHTable;
+tableSettingsAtStart4.data = PredictInit2;
+tableSettingsAtStart4.dropdownMenu = table4Dm;
+
+var tableSettingsAtStart5 = JSON.parse(JSON.stringify(tableSettingsAtStart));
+tableSettingsAtStart5.contextMenu = contextMenuHTable;
+tableSettingsAtStart5.data = PredictInit2;
+tableSettingsAtStart5.dropdownMenu = table5Dm;
 
 tableContent.table1 = new Handsontable(document.getElementById('table1'), tableSettingsAtStart1);
 tableContent.table2 = new Handsontable(document.getElementById('table2'), tableSettingsAtStart2);
 tableContent.table3 = new Handsontable(document.getElementById('table3'), tableSettingsAtStart3);
+tableContent.table4 = new Handsontable(document.getElementById('table4'), tableSettingsAtStart4);
+tableContent.table5 = new Handsontable(document.getElementById('table5'), tableSettingsAtStart5);
 
 zValues = (tableContent.table1.getData()).map(row => row.map(value => value));
 data = [{
@@ -137,7 +161,7 @@ function calTemp(data1, header1, thk_index ) {
 
     for (let j = startIndex; j < endIndex; j++) {
       nominalThickness.push(avg);
-      deviations.push(rangedThickness[j - startIndex] - avg);
+      deviations.push((rangedThickness[j - startIndex] - avg));
     }
   }
 
@@ -157,6 +181,10 @@ function addColumnDataHead(arr, a) {
     });
 }
 
+function pickElemsFromArr(arr, colIndiciesArr) {
+  return colIndiciesArr.map(index => arr[index]);
+}
+
 async function train() {
   let tableName = 'table1';
   var data1 = tableContent[tableName].getData();
@@ -166,12 +194,19 @@ async function train() {
 
   let dataYIndicies = document.getElementById('colIndexTestY').value.split(" ").map(Number);
   //  let dataYIndicies = [0];
-  let dataNeutral = [1];
-  let dataXOuter = concatArrays(dataYIndicies, dataNeutral);
+  let dataNIndiciesOrigin = document.getElementById('colIndexTestN').value.split(" ");
+  let dataNIndicies = dataNIndiciesOrigin.map(Number);
+  //let dataNIndicies = document.getElementById('colIndexTestN').value.split(" ").map(Number);
+  let dataXOuter = concatArrays(dataYIndicies, dataNIndicies);
 
   let dataX = seperateData(data1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
   let dataY = seperateData(data1, dataYIndicies);
-  let dataN = seperateData(data1, dataNeutral);
+  let dataN = seperateData(data1, dataNIndicies);
+
+  let headerX = pickElemsFromArr(header1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+  let headerY = pickElemsFromArr(header1, dataYIndicies);
+  let headerN = pickElemsFromArr(header1, dataNIndicies);
+  //let headerY = dataNIndicies.map(index => header1[index]);
 
   const response = await fetch('http://192.168.12.135:7001/DynamicPrec_train', {
     method: 'POST',
@@ -191,24 +226,70 @@ async function train() {
 
   createTableAny('table2', data.tst_X);
   tableContent['table2'].updateSettings({
-    colHeaders: removeElementsFromArray(data.header1, 2),
+    colHeaders: headerX,
+    // colHeaders: removeElementsFromArray(header1, 2),
     // numericFormat: {
     //   pattern: '0,0.00',
     // },
     renderer: scientificRenderer,
-  });
-
-  createTableAny('table3', data.refpred);
-  tableContent['table3'].updateSettings({
-    colHeaders: [ 'pred/ref(%)', 'REF', 'Predict'],
-    numericFormat: {
-      pattern: '0,0.0',
+    formulas: {
+      engine: hyperformulaInstance,
+      sheetName: 'TestX',
     },
   });
+
+
+  // table3Data = replaceColToExpr(data.refpred, 2, '=NoTrained!a~ - TestY!a~');
+  table3Data = replaceColToExpr(data.refpred, 2, '=abs(b~/a~*100)');
+  createTableAny('table3', data.refpred);
+  tableContent['table3'].updateSettings({
+    colHeaders: [ 'testY', 'Predict',  'pred_err(%)', ],
+    // colHeaders: [ 'testY', 'Predict', ' '],
+    // numericFormat: {
+    //   pattern: '0,0.0',
+    // },
+    renderer: scientificRenderer,
+    formulas: {
+      engine: hyperformulaInstance,
+      sheetName: 'Predict',
+    },
+  });
+
+  createTableAny('table4', data.tst_y);
+  tableContent['table4'].updateSettings({
+    colHeaders: headerY,
+    // colHeaders: removeElementsFromArray(data.header1, 2),
+    // numericFormat: {
+    //   pattern: '0,0.00',
+    // },
+    renderer: scientificRenderer,
+    formulas: {
+      engine: hyperformulaInstance,
+      sheetName: 'TestY',
+    },
+  });
+
+  if (dataNIndiciesOrigin[0] ==  "") {
+    createTableAny('table5', PredictInit2);
+  } else {
+    createTableAny('table5', data.tst_N);
+    tableContent['table5'].updateSettings({
+      colHeaders: headerN,
+      renderer: scientificRenderer,
+      formulas: {
+        engine: hyperformulaInstance,
+        sheetName: 'NoTrained',
+      },
+    });
+
+  }
+
+
 }
 
 async function predict() {
   var data2 = tableContent.table2.getData();
+  var data4 = tableContent.table4.getData();
   var header2 = tableContent.table2.getColHeader();
 
   const response = await fetch('http://192.168.12.135:7001/DynamicPrec_predict', {
@@ -218,22 +299,27 @@ async function predict() {
     },
     body: JSON.stringify({
       data2: data2,
+      data4: data4,
       header2: header2,
     })
   });
 
   const data = await response.json();
-  table3Data = replaceColToExpr(data.refpred, 3, '=abs(b~/a~*100 - 100)');
-  table3Data = replaceColToExpr(data.refpred, 4, '=abs(c~/a~*100 - 100)');
+  // table3Data = replaceColToExpr(data.refpred, 3, '=abs(b~/a~*100 - 100)');
+  // table3Data = replaceColToExpr(data.refpred, 4, '=abs(c~/a~*100 - 100)');
   //table3Data = replaceSpecificColumn(data.refpred, 0, '=B1/C1*100');
+  table3Data = replaceColToExpr(data.refpred, 2, '=abs(b~/a~*100)');
   createTableAny('table3', data.refpred);
   tableContent['table3'].updateSettings({
-    colHeaders: [ 'REF', 'thickness', 'Predict', 'th_err(%)', 'pred_err(%)', ],
-    numericFormat: {
-      pattern: '0,0.0',
-    },
+    colHeaders: [ 'testY', 'Predict', 'pred_err(%)', ],
+    //colHeaders: [ 'REF', 'thickness', 'Predict', 'th_err(%)', 'pred_err(%)', ],
+    // numericFormat: {
+    //   pattern: '0,0.0',
+    // },
+    renderer: scientificRenderer,
     formulas: {
-      engine: HyperFormula,
+      engine: hyperformulaInstance,
+      sheetName: 'Predict',
     },
   });
 }

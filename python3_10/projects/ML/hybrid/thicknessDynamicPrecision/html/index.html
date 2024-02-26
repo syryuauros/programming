@@ -73,6 +73,7 @@
         <div class="container-grid2-4">
             <div class="itemC">
                 <div class="container-grid2-3">
+
                     <div class="itemC">
                         <textarea id="labelScatterUserSet" rows="5" cols="8" style="background-color:
 #FDFAF2; color: grey; font-family: Arial, sans-serif; font-size: 15px; border: 0px; resize: none; text-align: right;" > </textarea>
@@ -177,7 +178,7 @@
                                     <button class="buttonSpace" onclick="">   </button>
 
                                     <label for="colIndexNoTrain" style="font-size: 14px;">colsNoTrain:  </label>
-                                    <input type="text" size="1px" value="1" id="colIndexNoTrain" >
+                                    <input type="text" size="1px" value="1" id="colIndexTestN" >
                                     <button class="buttonSpace" onclick="">   </button>
 
                                     <label for="colIndexThk" style="font-size: 14px;">colThk:  </label>
@@ -188,17 +189,46 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="item-header">
-                                        <span class="item-title" style="color:#EC7063;">TestX(independent variables)</span>
-                                        <div class="item-controls">
+                                    <div class="container-grid3">
+                                        <div class="item">
+                                            <div class="item-header">
+                                                <span class="item-title" style="color:#EC7063;">NoTrained</span>
+                                                <div class="item-controls">
 
-                                            <button class="button-menu" onclick="toggleDropdownMenu('table2')">&#x25BE</button>
-                                            <button class="button-menu" onclick="loadCSVFile('table2')">&#x2193</button>
-                                            <button class="button-menu" onclick="exportToCSV('table2')">&#x2191</button>
-                                            <button class="button-menu" onclick="predict()">&#x2192</button>
+                                                    <button class="button-menu" onclick="toggleDropdownMenu('table5')">&#x25BE</button>
+                                                    <button class="button-menu" onclick="loadCSVFile('table5')">&#x2193</button>
+                                                    <button class="button-menu" onclick="exportToCSV('table5')">&#x2191</button>
+                                                </div>
+                                            </div>
+                                            <div id="table5"></div>
                                         </div>
+                                        <div class="item">
+                                            <div class="item-header">
+                                                <span class="item-title" style="color:#EC7063;">TestY</span>
+                                                <div class="item-controls">
+
+                                                    <button class="button-menu" onclick="toggleDropdownMenu('table4')">&#x25BE</button>
+                                                    <button class="button-menu" onclick="loadCSVFile('table4')">&#x2193</button>
+                                                    <button class="button-menu" onclick="exportToCSV('table4')">&#x2191</button>
+                                                </div>
+                                            </div>
+                                            <div id="table4"></div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="item-header">
+                                                <span class="item-title" style="color:#EC7063;">TestX(independent variables)</span>
+                                                <div class="item-controls">
+
+                                                    <button class="button-menu" onclick="toggleDropdownMenu('table2')">&#x25BE</button>
+                                                    <button class="button-menu" onclick="loadCSVFile('table2')">&#x2193</button>
+                                                    <button class="button-menu" onclick="exportToCSV('table2')">&#x2191</button>
+                                                    <button class="button-menu" onclick="predict()">&#x2192</button>
+                                                </div>
+                                            </div>
+                                            <div id="table2"></div>
+                                        </div>
+
                                     </div>
-                                    <div id="table2"></div>
                                 </div>
 
                             </div>

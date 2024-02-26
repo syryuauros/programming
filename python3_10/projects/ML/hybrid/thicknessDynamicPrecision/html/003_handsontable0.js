@@ -51,6 +51,7 @@ const tableSettingsAtStart = {
   outsideClickDeselects: false,
   selectionMode: 'multiple',
   licenseKey: 'non-commercial-and-evaluation',
+  formulas: { },
 };
 
 const contextMenuHTable = {
@@ -151,11 +152,12 @@ const contextMenuHTable = {
 ////////////////////////////////////////////////////// functions ////////////////////////////////////////////////
 
 function createTableAny(tableName, csvData) {
-    var tableElement = document.getElementById(tableName);
-    let tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
-    tableSettings.contextMenu = contextMenuHTable;
-    tableSettings.data = csvData;
-    tableContent[tableName] = new Handsontable(tableElement, tableSettings);
+  // var tableElement = document.querySelector('#' + tableName);
+  var tableElement = document.getElementById(tableName);
+  let tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
+  tableSettings.contextMenu = contextMenuHTable;
+  tableSettings.data = csvData;
+  tableContent[tableName] = new Handsontable(tableElement, tableSettings);
 }
 
 function removeColumns(tableName, columnIndexes) {

@@ -26,25 +26,28 @@ def DynamicPrec_train_numbers():
     dataX = tr_json['dataX']
     dataY = tr_json['dataY']
     dataN = tr_json['dataN']
-    header1 = tr_json['header1']
+    # header1 = tr_json['header1']
     colIndexThickness = tr_json['colIndexThk']
 
     dataXArr = np.array(dataX).astype(float)
     dataYArr = np.array(dataY).astype(float)
     dataNArr = np.array(dataN).astype(float)
-    header1Arr = np.array(header1).astype(str)
+    # header1Arr = np.array(header1).astype(str)
 
     # dataX_mod = convert_to_float_with_ascii_sum(dataXArr).astype(float)
     # dataY_mod = convert_to_float_with_ascii_sum(dataYArr).astype(float)
     # dataN_mod = convert_to_float_with_ascii_sum(dataNArr).astype(float)
     # data1_mod1 = data1_mod.astype(float)
 
+    pred = {}
     thickness = dataXArr[:,colIndexThickness]
 
     train_Y = dataYArr
     train_X = dataXArr
+    train_N = dataNArr
 
-    trn_X, tst_X, trn_y, tst_y = train_test_split(train_X, train_Y, test_size=0.05, shuffle=True)
+    trn_X, tst_X, trn_y, tst_y, trn_N, tst_N = train_test_split(train_X, train_Y, train_N, test_size=0.05, shuffle=True)
+    #trn_X, tst_X, trn_y, tst_y = train_test_split(train_X, train_Y, test_size=0.05, shuffle=True)
 
     lgb_param = {'objective': 'regression',
                 'n_estimators': 100,
@@ -88,44 +91,58 @@ def DynamicPrec_train_numbers():
         save_path = '/home/auros/gits/programming/python3_10/projects/ML/hybrid/thicknessDynamicPrecision/trained_model2.txt' + str(col)
         model.save_model(save_path)
 
-        pred = models[0].predict(tst_X)
+        pred[0] = models[0].predict(tst_X)
         # print('tst_y: ',tst_y)
         # print('pred_len: ', len(pred))
         # print('pred: ', pred)
         # # print('tst_y: ',np.transpose(tst_y)[0])
         # print('predM: ', pred / np.transpose(tst_y)[0] * 100)
+        #
 
-        refpred = insert_col_left(np.transpose(np.transpose(tst_X)[1] - [pred]), np.transpose(tst_X)[1] - np.transpose(tst_y)[0])
-        refpred = insert_col_left(refpred, (np.transpose(tst_X)[1] - pred) / (np.transpose(tst_X)[1] - np.transpose(tst_y)[0]) * 100)
+        refpred = insert_col_left(np.transpose([np.zeros(len(pred[0]))]), pred[0])
+        refpred = insert_col_left(refpred, np.transpose(tst_y)[0])
+        # refpred = insert_col_left(np.transpose([pred]), np.transpose(tst_y)[0])
+        # refpred = insert_col_left(refpred, np.zeros(len(pred)))
+
+        # refpred = insert_col_left(np.transpose(np.transpose(tst_X)[1] - [pred]), np.transpose(tst_X)[1] - np.transpose(tst_y)[0])
+        # refpred = insert_col_left(refpred, (np.transpose(tst_X)[1] - pred) / (np.transpose(tst_X)[1] - np.transpose(tst_y)[0]) * 100)
+
         # refpred = insert_col_left(np.transpose([pred]+ np.transpose(tst_y)[1]), np.transpose(tst_y)[0] + np.transpose(tst_y)[1])
         # refpred = insert_col_left(refpred, (pred + np.transpose(tst_y)[1]) / (np.transpose(tst_y)[0]+ np.transpose(tst_y)[1]) * 100)
         # print('refpred: ', refpred)
 
-    return jsonify({ 'dataX':dataXArr.tolist(), 'header1':header1Arr.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist() })
+    return jsonify({ 'dataX':dataXArr.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist(), 'tst_y': tst_y.tolist(), 'tst_N': tst_N.tolist()})
 
 
 @app.route('/DynamicPrec_predict', methods=['POST'])
 def DynamicPrec_predict_numbers():
     tr_json = request.get_json()
     data2 = tr_json['data2']
+    data4 = tr_json['data4']
     header2 = tr_json['header2']
     data2Arr = np.array(data2).astype(str)
     header2Arr = np.array(header2).astype(str)
-    print('empty or null cell indices(if it represent [] then fine!!):' ,find_empty_indices(data2Arr))
+    data4Arr = np.array(data4).astype(str)
+
+    pred = {}
 
     data2_mod1 = data2Arr.astype(float)
-    print('data2_mod1: ', data2_mod1)
-    model = models[0]
-    print('this predict: ', model)
-    pred = model.predict(data2_mod1)
-    print('pred: ', pred)
+    data4_mod1 = data4Arr.astype(float)
+    # model = models[0]
+    pred[0] = models[0].predict(data2_mod1)
+    print(pred[0])
 
     #refpred = insert_col_left(np.transpose([pred]), np.transpose(data2_mod1[:,1]))
     #refpred = insert_col_left(np.transpose(data2_mod1[:,colIndexThickness] - [pred]), np.transpose(data2_mod1[:,colIndexThickness]))
-    refpred = insert_col_left(np.transpose([np.zeros(len(pred))]), np.zeros(len(pred)))
-    refpred = insert_col_left(refpred, (data2_mod1[:,colIndexThickness] - [pred]))
-    refpred = insert_col_left(refpred, np.transpose(data2_mod1[:,colIndexThickness]))
-    refpred = insert_col_left(refpred, np.zeros(len(pred)))
+
+    # refpred = insert_col_left(np.transpose([np.zeros(len(pred))]), np.zeros(len(pred)))
+    # refpred = insert_col_left(refpred, (data2_mod1[:,colIndexThickness] - [pred]))
+    # refpred = insert_col_left(refpred, np.transpose(data2_mod1[:,colIndexThickness]))
+    # refpred = insert_col_left(refpred, np.zeros(len(pred)))
+
+    refpred = insert_col_left(np.transpose([np.zeros(len(pred[0]))]), pred[0])
+    refpred = insert_col_left(refpred, np.transpose(data4_mod1[:,0]))
+    print(refpred)
 
     return jsonify({ 'refpred': refpred.tolist(),  })
 
