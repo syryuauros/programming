@@ -41,8 +41,6 @@ var tableSettingsAtStart1 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart1.contextMenu = contextMenuHTable;
 tableSettingsAtStart1.data = digitMap;
 tableSettingsAtStart1.dropdownMenu = table1Dm;
-tableSettingsAtStart1.formulas.engine = hyperformulaInstance;
-tableSettingsAtStart1.formulas.sheetName = 'Inputs';
 
 var tableSettingsAtStart2 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart2.contextMenu = contextMenuHTable;
@@ -234,7 +232,6 @@ async function train() {
     renderer: scientificRenderer,
     formulas: {
       engine: hyperformulaInstance,
-      sheetName: 'TestX',
     },
   });
 
@@ -251,7 +248,6 @@ async function train() {
     renderer: scientificRenderer,
     formulas: {
       engine: hyperformulaInstance,
-      sheetName: 'Predict',
     },
   });
 
@@ -265,7 +261,6 @@ async function train() {
     renderer: scientificRenderer,
     formulas: {
       engine: hyperformulaInstance,
-      sheetName: 'TestY',
     },
   });
 
@@ -278,7 +273,6 @@ async function train() {
       renderer: scientificRenderer,
       formulas: {
         engine: hyperformulaInstance,
-        sheetName: 'NoTrained',
       },
     });
 

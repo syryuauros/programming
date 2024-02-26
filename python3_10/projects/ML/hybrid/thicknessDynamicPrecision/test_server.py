@@ -110,6 +110,7 @@ def DynamicPrec_train_numbers():
         # refpred = insert_col_left(np.transpose([pred]+ np.transpose(tst_y)[1]), np.transpose(tst_y)[0] + np.transpose(tst_y)[1])
         # refpred = insert_col_left(refpred, (pred + np.transpose(tst_y)[1]) / (np.transpose(tst_y)[0]+ np.transpose(tst_y)[1]) * 100)
         # print('refpred: ', refpred)
+        print(tst_y)
 
     return jsonify({ 'dataX':dataXArr.tolist(), 'refpred': refpred.tolist(), 'tst_X': tst_X.tolist(), 'tst_y': tst_y.tolist(), 'tst_N': tst_N.tolist()})
 

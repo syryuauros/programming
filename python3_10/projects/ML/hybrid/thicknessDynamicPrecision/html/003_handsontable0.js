@@ -152,6 +152,7 @@ const contextMenuHTable = {
 ////////////////////////////////////////////////////// functions ////////////////////////////////////////////////
 
 function createTableAny(tableName, csvData) {
+  if (tableContent[tableName]) { console.log('destroy', tableName); tableContent[tableName].destroy(); }
   // var tableElement = document.querySelector('#' + tableName);
   var tableElement = document.getElementById(tableName);
   let tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
