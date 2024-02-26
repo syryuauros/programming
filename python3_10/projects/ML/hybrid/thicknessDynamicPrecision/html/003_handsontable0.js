@@ -51,7 +51,7 @@ const tableSettingsAtStart = {
   outsideClickDeselects: false,
   selectionMode: 'multiple',
   licenseKey: 'non-commercial-and-evaluation',
-  formulas: { },
+  // formulas: { },
 };
 
 const contextMenuHTable = {
@@ -153,8 +153,8 @@ const contextMenuHTable = {
 
 function createTableAny(tableName, csvData) {
   if (tableContent[tableName]) { console.log('destroy', tableName); tableContent[tableName].destroy(); }
-  // var tableElement = document.querySelector('#' + tableName);
-  var tableElement = document.getElementById(tableName);
+  var tableElement = document.querySelector('#' + tableName);
+  // var tableElement = document.getElementById(tableName);
   let tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
   tableSettings.contextMenu = contextMenuHTable;
   tableSettings.data = csvData;

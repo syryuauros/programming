@@ -46,23 +46,27 @@ var tableSettingsAtStart2 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart2.contextMenu = contextMenuHTable;
 tableSettingsAtStart2.data = digitMap;
 tableSettingsAtStart2.dropdownMenu = table2Dm;
+tableSettingsAtStart2.formulas = { engine: hyperformulaInstance, sheetName: 'sheet2', };
 
 var tableSettingsAtStart3 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart3.contextMenu = contextMenuHTable;
 tableSettingsAtStart3.data = PredictInit;
 tableSettingsAtStart3.dropdownMenu = table3Dm;
 tableSettingsAtStart3.colHeaders = [ 'testY', 'Predict', ' '];
+tableSettingsAtStart3.formulas = { engine: hyperformulaInstance, sheetName: 'sheet3', };
 //tableSettingsAtStart3.colHeaders = [ 'pred/ref(%)', 'REF', 'Predict'];
 
 var tableSettingsAtStart4 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart4.contextMenu = contextMenuHTable;
 tableSettingsAtStart4.data = PredictInit2;
 tableSettingsAtStart4.dropdownMenu = table4Dm;
+tableSettingsAtStart4.formulas = { engine: hyperformulaInstance, sheetName: 'sheet4', };
 
 var tableSettingsAtStart5 = JSON.parse(JSON.stringify(tableSettingsAtStart));
 tableSettingsAtStart5.contextMenu = contextMenuHTable;
 tableSettingsAtStart5.data = PredictInit2;
 tableSettingsAtStart5.dropdownMenu = table5Dm;
+tableSettingsAtStart5.formulas = { engine: hyperformulaInstance, sheetName: 'sheet5', };
 
 tableContent.table1 = new Handsontable(document.getElementById('table1'), tableSettingsAtStart1);
 tableContent.table2 = new Handsontable(document.getElementById('table2'), tableSettingsAtStart2);
@@ -222,58 +226,73 @@ async function train() {
 
   const data = await response.json();
 
-  createTableAny('table2', data.tst_X);
+  // createTableAny('table2', data.tst_X);
   tableContent['table2'].updateSettings({
+    data: data.tst_X,
     colHeaders: headerX,
     // colHeaders: removeElementsFromArray(header1, 2),
     // numericFormat: {
     //   pattern: '0,0.00',
     // },
     renderer: scientificRenderer,
-    formulas: {
-      engine: hyperformulaInstance,
-    },
+    // formulas: {
+    //   engine: HyperFormula,
+    // },
   });
 
 
   // table3Data = replaceColToExpr(data.refpred, 2, '=NoTrained!a~ - TestY!a~');
   table3Data = replaceColToExpr(data.refpred, 2, '=abs(b~/a~*100)');
-  createTableAny('table3', data.refpred);
+  //createTableAny('table3', data.refpred);
   tableContent['table3'].updateSettings({
+    data: data.refpred,
     colHeaders: [ 'testY', 'Predict',  'pred_err(%)', ],
     // colHeaders: [ 'testY', 'Predict', ' '],
     // numericFormat: {
     //   pattern: '0,0.0',
     // },
     renderer: scientificRenderer,
-    formulas: {
-      engine: hyperformulaInstance,
-    },
+    // formulas: {
+    //   engine: hyperformulaInstance,
+    //   sheetName: 'sheet3',
+    // },
+    autoWrapRow: true,
+    autoWrapCol: true,
+    licenseKey: 'non-commercial-and-evaluation',
   });
 
-  createTableAny('table4', data.tst_y);
+  //createTableAny('table4', data.tst_y);
   tableContent['table4'].updateSettings({
+    data: data.tst_y,
     colHeaders: headerY,
     // colHeaders: removeElementsFromArray(data.header1, 2),
     // numericFormat: {
     //   pattern: '0,0.00',
     // },
     renderer: scientificRenderer,
-    formulas: {
-      engine: hyperformulaInstance,
-    },
+    // formulas: {
+    //   engine: hyperformulaInstance,
+    //   sheetName: 'sheet4',
+    // },
+    autoWrapRow: true,
+    autoWrapCol: true,
+    licenseKey: 'non-commercial-and-evaluation',
   });
 
   if (dataNIndiciesOrigin[0] ==  "") {
-    createTableAny('table5', PredictInit2);
-  } else {
-    createTableAny('table5', data.tst_N);
+    // createTableAny('table5', PredictInit2);
     tableContent['table5'].updateSettings({
+      data: PredictInit2,
+    });
+  } else {
+    // createTableAny('table5', data.tst_N);
+    tableContent['table5'].updateSettings({
+      data: data.tst_N,
       colHeaders: headerN,
       renderer: scientificRenderer,
-      formulas: {
-        engine: hyperformulaInstance,
-      },
+      // formulas: {
+      //   engine: HyperFormula,
+      // },
     });
 
   }
@@ -303,8 +322,9 @@ async function predict() {
   // table3Data = replaceColToExpr(data.refpred, 4, '=abs(c~/a~*100 - 100)');
   //table3Data = replaceSpecificColumn(data.refpred, 0, '=B1/C1*100');
   table3Data = replaceColToExpr(data.refpred, 2, '=abs(b~/a~*100)');
-  createTableAny('table3', data.refpred);
+  // createTableAny('table3', data.refpred);
   tableContent['table3'].updateSettings({
+    data: data.refpred,
     colHeaders: [ 'testY', 'Predict', 'pred_err(%)', ],
     //colHeaders: [ 'REF', 'thickness', 'Predict', 'th_err(%)', 'pred_err(%)', ],
     // numericFormat: {
@@ -312,7 +332,7 @@ async function predict() {
     // },
     renderer: scientificRenderer,
     formulas: {
-      engine: hyperformulaInstance,
+      engine: HyperFormula,
       sheetName: 'Predict',
     },
   });
