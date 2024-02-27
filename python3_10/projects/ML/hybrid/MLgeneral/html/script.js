@@ -356,11 +356,13 @@ async function loadTrain() {
 
 function testFun(tableName) {
   const filters = tableContent['table1'].getPlugin('Filters');
+  const siteValue = document.getElementById('siteValue').value.split(" ");
+  console.log(siteValue[0]);
   // console.log(tableContent[tableName].getSelected());
   // console.log(getRowDataFromSelectedRange(tableName));
 
-  // filters.clearConditions();
-  filters.addCondition(5, 'by_value', [[String(5), ]]); // 'eq', 'lt', 'gt', 'lte'
+  filters.clearConditions();
+  filters.addCondition(5, 'by_value', [[String(siteValue[0]), ]]); // 'eq', 'lt', 'gt', 'lte'
   filters.filter();
 // https://handsontable.com/docs/javascript-data-grid/api/filters/
   //
