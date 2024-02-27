@@ -351,5 +351,45 @@ async function loadTrain() {
       trainData: dataTxt,
     })
   });
-
 }
+
+
+function testFun(tableName) {
+  const filters = tableContent['table1'].getPlugin('Filters');
+  // console.log(tableContent[tableName].getSelected());
+  // console.log(getRowDataFromSelectedRange(tableName));
+
+  // filters.clearConditions();
+  filters.addCondition(5, 'by_value', [[String(5), ]]); // 'eq', 'lt', 'gt', 'lte'
+  filters.filter();
+// https://handsontable.com/docs/javascript-data-grid/api/filters/
+  //
+
+  var data1 = tableContent[tableName].getData();
+  var header1 = tableContent[tableName].getColHeader();
+  let dataYIndicies = document.getElementById('colIndexTestY').value.split(" ").map(Number);
+  //  let dataYIndicies = [0];
+  let dataNIndiciesOrigin = document.getElementById('colIndexTestN').value.split(" ");
+  let dataNIndicies = dataNIndiciesOrigin.map(Number);
+  //let dataNIndicies = document.getElementById('colIndexTestN').value.split(" ").map(Number);
+  let dataXOuter = concatArrays(dataYIndicies, dataNIndicies);
+
+  let dataX = seperateData(data1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+  let dataY = seperateData(data1, dataYIndicies);
+  let dataN = seperateData(data1, dataNIndicies);
+
+  let headerX = pickElemsFromArr(header1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+  let headerY = pickElemsFromArr(header1, dataYIndicies);
+  let headerN = pickElemsFromArr(header1, dataNIndicies);
+
+  updateTableAny('table2', dataX, headerX);
+  updateTableAny('table4', dataY, headerY);
+  updateTableAny('table5', dataN, headerN);
+}
+
+
+// documemt.querySelector('filterBelow').addEventListener('click', function() {
+//   filters.clearConditions();
+//   filters.addCondition(2, 'lt', [0.5]);
+//   filters.filter();
+// })

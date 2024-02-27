@@ -4,6 +4,7 @@
 // contextMenuHTable
 
 // createTableAny(tableName, csvData) {
+// updateTableAny(tableName, csvData) {
 //
 // removeColumns(tableName, columnIndexes) {
 // removeRows(tableName, rowIndexes) {
@@ -37,7 +38,7 @@ const tableSettingsAtStart = {
   // numericFormat: {
   //     pattern: '0,0.000',
   // },
-  //renderer: scientificRenderer,
+  // renderer: scientificRenderer,
   //contextMenu: contextMenuTest,
   manualColumnFreeze: true,
   colHeaders: true,
@@ -157,8 +158,17 @@ function createTableAny(tableName, csvData) {
   // var tableElement = document.getElementById(tableName);
   let tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
   tableSettings.contextMenu = contextMenuHTable;
+  tableSettings.filters = true;
   tableSettings.data = csvData;
   tableContent[tableName] = new Handsontable(tableElement, tableSettings);
+}
+
+function updateTableAny(tableName, csvData, colHeaders=true) {
+  tableContent[tableName].updateSettings({
+    colHeaders: colHeaders,
+    data: csvData,
+    renderer: scientificRenderer,
+  })
 }
 
 function removeColumns(tableName, columnIndexes) {
@@ -261,6 +271,18 @@ function getDataFromSelectedRange(tableName) {
     selectedData.push(rowData);
   }
 
+  return selectedData;
+}
+
+function getRowDataFromSelectedRange(tableName) {
+  var selected = tableContent[tableName].getSelected(); // Get the selected range coordinates [startRow, startCol, endRow, endCol]
+  var selectedData = [];
+
+  for (var i = 0; i <= selected.length - 1; i++) {
+    for (var row = selected[i][0]; row <= selected[i][2]; row++) {
+      selectedData.push(tableContent[tableName].getDataAtRow(row));
+    }
+  }
   return selectedData;
 }
 
