@@ -300,10 +300,40 @@ async function train() {
 
 }
 
-async function predict() {
-  var data2 = tableContent.table2.getData();
-  var data4 = tableContent.table4.getData();
-  var header2 = tableContent.table2.getColHeader();
+async function predict(
+  data2 = tableContent.table2.getData(),
+  data4 = tableContent.table4.getData(),
+  header2 = tableContent.table2.getColHeader(),
+) {
+  let resolvedData;
+
+  await predictKernel(data2, data4, header2).then((resolvedValue) => { resolvedData = resolvedValue; });
+
+  // table3Data = replaceColToExpr(data.refpred, 3, '=abs(b~/a~*100 - 100)');
+  // table3Data = replaceColToExpr(data.refpred, 4, '=abs(c~/a~*100 - 100)');
+  //table3Data = replaceSpecificColumn(data.refpred, 0, '=B1/C1*100');
+  table3Data = replaceColToExpr(resolvedData.refpred, 2, '=abs(b~/a~*100)');
+  // createTableAny('table3', data.refpred);
+  tableContent['table3'].updateSettings({
+    data: resolvedData.refpred,
+    colHeaders: [ 'testY', 'Predict', 'pred_err(%)', ],
+    //colHeaders: [ 'REF', 'thickness', 'Predict', 'th_err(%)', 'pred_err(%)', ],
+    // numericFormat: {
+    //   pattern: '0,0.0',
+    // },
+    renderer: scientificRenderer,
+    formulas: {
+      engine: HyperFormula,
+      sheetName: 'Predict',
+    },
+  });
+}
+
+async function predictKernel(
+  data2 = tableContent.table2.getData(),
+  data4 = tableContent.table4.getData(),
+  header2 = tableContent.table2.getColHeader(),
+) {
 
   const response = await fetch('http://192.168.12.135:7001/DynamicPrec_predict', {
     method: 'POST',
@@ -317,26 +347,10 @@ async function predict() {
     })
   });
 
-  const data = await response.json();
-  // table3Data = replaceColToExpr(data.refpred, 3, '=abs(b~/a~*100 - 100)');
-  // table3Data = replaceColToExpr(data.refpred, 4, '=abs(c~/a~*100 - 100)');
-  //table3Data = replaceSpecificColumn(data.refpred, 0, '=B1/C1*100');
-  table3Data = replaceColToExpr(data.refpred, 2, '=abs(b~/a~*100)');
-  // createTableAny('table3', data.refpred);
-  tableContent['table3'].updateSettings({
-    data: data.refpred,
-    colHeaders: [ 'testY', 'Predict', 'pred_err(%)', ],
-    //colHeaders: [ 'REF', 'thickness', 'Predict', 'th_err(%)', 'pred_err(%)', ],
-    // numericFormat: {
-    //   pattern: '0,0.0',
-    // },
-    renderer: scientificRenderer,
-    formulas: {
-      engine: HyperFormula,
-      sheetName: 'Predict',
-    },
-  });
+  const resolvedData = await response.json();
+  return resolvedData;
 }
+
 
 async function loadTrain() {
   await readAndParseTextFile();
@@ -354,35 +368,59 @@ async function loadTrain() {
 }
 
 
-function testFun(tableName) {
+async function testFun(tableName) {
   const filters = tableContent['table1'].getPlugin('Filters');
+  const filterColIndex = 5;
   const siteValue = document.getElementById('siteValue').value.split(" ");
-  console.log(siteValue[0]);
-  // console.log(tableContent[tableName].getSelected());
-  // console.log(getRowDataFromSelectedRange(tableName));
 
-  filters.clearConditions();
-  filters.addCondition(5, 'by_value', [[String(siteValue[0]), ]]); // 'eq', 'lt', 'gt', 'lte'
-  filters.filter();
-// https://handsontable.com/docs/javascript-data-grid/api/filters/
-  //
-
-  var data1 = tableContent[tableName].getData();
   var header1 = tableContent[tableName].getColHeader();
   let dataYIndicies = document.getElementById('colIndexTestY').value.split(" ").map(Number);
-  //  let dataYIndicies = [0];
   let dataNIndiciesOrigin = document.getElementById('colIndexTestN').value.split(" ");
   let dataNIndicies = dataNIndiciesOrigin.map(Number);
-  //let dataNIndicies = document.getElementById('colIndexTestN').value.split(" ").map(Number);
   let dataXOuter = concatArrays(dataYIndicies, dataNIndicies);
 
-  let dataX = seperateData(data1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
-  let dataY = seperateData(data1, dataYIndicies);
-  let dataN = seperateData(data1, dataNIndicies);
+  let resolvedData; let dataX; let dataY; let dataN; let headerX; let headerY; let headerN;
 
-  let headerX = pickElemsFromArr(header1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
-  let headerY = pickElemsFromArr(header1, dataYIndicies);
-  let headerN = pickElemsFromArr(header1, dataNIndicies);
+  for (let i = 0; i < siteValue.length; i++) {
+
+    filters.clearConditions();
+    filters.addCondition(filterColIndex, 'by_value', [[String(siteValue[i]), ]]); // 'eq', 'lt', 'gt', 'lte'
+    filters.filter();
+    // https://handsontable.com/docs/javascript-data-grid/api/filters/
+    var data1 = tableContent[tableName].getData();
+
+    dataX = seperateData(data1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+    dataY = seperateData(data1, dataYIndicies);
+    dataN = seperateData(data1, dataNIndicies);
+
+    headerX = pickElemsFromArr(header1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+    headerY = pickElemsFromArr(header1, dataYIndicies);
+    headerN = pickElemsFromArr(header1, dataNIndicies);
+    await predictKernel(dataX, dataY, headerX).then((resolvedValue) => { resolvedData = resolvedValue; });
+
+    let refpred = resolvedData.refpred;
+    let thAvg = pickColumns(dataN, [0]);
+    let testY = pickColumns(refpred, [0]);
+    let pred = pickColumns(refpred, [1]);
+    let thickness = pickColumns(dataX, [4]);
+    let thk = thickness.map(innerArray =>
+      innerArray.map(str => Number(str))
+    );
+
+    // let thMeasured = minusColumns(thickness, testY);
+    let thPred = minusColumns(thickness, pred);
+
+    let result = insertColumnToMatrix(refpred, refpred.length, thAvg);
+    result = insertColumnToMatrix(result, result.length, thk);
+    result = insertColumnToMatrix(result, result.length, thPred);
+
+    // console.log('refpred: ', refpred);
+    // console.log('thAvg: ', thAvg);
+    // console.log('thickness: ', thickness);
+    // console.log('pred: ', pred[i][0]);
+    console.log('result: ', result);
+    // console.log('thk: ', thk);
+  }
 
   updateTableAny('table2', dataX, headerX);
   updateTableAny('table4', dataY, headerY);
@@ -390,8 +428,54 @@ function testFun(tableName) {
 }
 
 
-// documemt.querySelector('filterBelow').addEventListener('click', function() {
-//   filters.clearConditions();
-//   filters.addCondition(2, 'lt', [0.5]);
-//   filters.filter();
-// })
+async function testFun2() {
+  arr1 = [1,2,3,4,5];
+  arr2 = [6,7,8,9,10];
+
+  roa1 = aoa_arrToRoa(arr1);
+  coa1 = aoa_arrToCoa(arr1);
+  coa2 = aoa_arrToCoa(arr2);
+
+  // roa1C = aoa_deepCopy(roa1);
+  // roa1T = aoa_transpose(roa1);
+  // roa1TT = aoa_transpose(roa1T);
+  testCTA1 = aoa_insertCoaToAoa(coa1, coa1);
+  console.log('testCTA1: ', testCTA1);
+  testCTA1 = aoa_insertCoaToAoa(testCTA1, coa1);
+  console.log('testCTA1: ', testCTA1);
+  testCTA1 = aoa_insertCoaToAoa(testCTA1, coa2, 1);
+  console.log('testCTA1: ', testCTA1);
+  testCTA1 = aoa_insertCoaToAoa(testCTA1, coa2 );
+  console.log('testCTA1: ', testCTA1);
+  testCTA1 = aoa_replaceCoaToAoa(testCTA1, coa1 );
+  console.log('testCTA1: ', testCTA1);
+  testCTA1 = aoa_replaceRoaToAoa(testCTA1, roa1 );
+  console.log('testCTA1: ', testCTA1);
+  testCTA1 = aoa_insertCoaToAoa(testCTA1, coa2 );
+  console.log('testCTA1: ', testCTA1);
+  testCTA1 = aoa_deleteCoaToAoa(testCTA1, 1 );
+  console.log('testCTA1: ', testCTA1);
+  testCTA1 = aoa_insertRoaToAoa(testCTA1, roa1);
+  testCTA1 = aoa_deleteRoaToAoa(testCTA1, 1);
+  console.log('testCTA1: ', testCTA1);
+
+  arrReturn = aoa_coaToArr(coa1);
+  console.log('arrReturn: ', arrReturn);
+  arrReturn.push([1]);
+  console.log('coa1: ', coa1);
+  console.log('arrReturn: ', arrReturn);
+
+  // console.log('roa1: ', roa1);
+  // console.log('roa1C: ', roa1C);
+  // console.log('roa1T: ', roa1T);
+  // console.log('testCTA1: ', testCTA1);
+  // console.log('testCTA2: ', testCTA2);
+  // console.log('testCTA3: ', testCTA3);
+  // console.log('testCTA4: ', testCTA4);
+  // console.log('testCTA5: ', testCTA5);
+  // console.log('testCTA6: ', testCTA6);
+  // console.log('testCTA7: ', testCTA7);
+  // console.log('testCTA8: ', testCTA8);
+  // console.log('testCTA9: ', testCTA9);
+  // console.log('testCTA8: ', testCTA8);
+}

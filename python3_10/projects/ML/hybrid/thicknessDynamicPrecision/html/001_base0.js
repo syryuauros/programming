@@ -1,4 +1,18 @@
 
+//
+// aoa_deepCopy(aoa) {
+// aoa_transpose(aoa) {
+// aoa_arrToRoa(arr) {
+// aoa_arrToCoa(arr) {
+// aoa_roaToArr(roaInput) {
+// aoa_coaToArr(coaInput) {
+// aoa_insertCoaToAoa(aoaInput, coa, coaIndex=aoaInput[0].length) {
+// aoa_insertRoaToAoa(aoaInput, roa, roaIndex=aoaInput.length) {
+// aoa_replaceCoaToAoa(aoaInput, coa, coaIndex=(aoaInput[0].length -1)) {
+// aoa_replaceRoaToAoa(aoaInput, roa, roaIndex=(aoaInput.length - 1)) {
+// aoa_deleteCoaToAoa(aoaInput, delIndex=(aoaInput[0].length -1)) {
+// aoa_deleteRoaToAoa(aoaInput, delIndex=(aoaInput.length -1)) {
+//
 // radio(optionName) {
 //
 // strTest(str) {
@@ -13,6 +27,8 @@
 // deleteRows(matrix, rowIndices) {
 // deleteEmptyRows(matrix) {
 
+// sumArray(arr1, arr2) {
+// sumColumns(array1, array2) {
 
 //
 // strToArrNum(str) {
@@ -36,6 +52,105 @@
 let innerHtml1 = '<option value="1">Option 1</option><option value="2">Option 2</option>';
 
 /////////////////////////////////////////////// functions ////////////////////////////////////////////////////////
+
+function aoa_deepCopy(aoa) {
+    const rowNum = aoa.length;
+    const colNum = aoa[0].length;
+    const deepCopy = [];
+
+    for (let i = 0; i < rowNum; i++) {
+        deepCopy.push([]);
+        for (let j = 0; j < colNum; j++) {
+            deepCopy[i].push(aoa[i][j]);
+        }
+    }
+    return deepCopy;
+}
+
+function aoa_transpose(aoa) {
+    const rowNum = aoa.length;
+    const colNum = aoa[0].length;
+    const transposedAoa = [];
+
+    for (let j = 0; j < colNum; j++) {
+        transposedAoa.push([]);
+        for (let i = 0; i < rowNum; i++) {
+            transposedAoa[j].push(aoa[i][j]);
+        }
+    }
+    return transposedAoa;
+}
+
+function aoa_arrToRoa(arr) {
+  return [arr]
+}
+
+function aoa_arrToCoa(arr) {
+  return aoa_transpose(aoa_arrToRoa(arr));
+}
+
+function aoa_roaToArr(roaInput) {
+  let roa = aoa_deepCopy(roaInput);
+  return roa[0];
+}
+
+function aoa_coaToArr(coaInput) {
+  let coa = aoa_deepCopy(coaInput);
+  let roa = aoa_transpose(coa);
+  return roa[0];
+}
+
+function aoa_insertCoaToAoa(aoaInput, coa, coaIndex=aoaInput[0].length) {
+  let aoa = aoa_deepCopy(aoaInput);
+
+  for (let i = 0; i < aoa.length; i++) {
+    aoa[i].splice(coaIndex, 0, coa[i][0]);
+  }
+  return aoa;
+}
+
+function aoa_insertRoaToAoa(aoaInput, roa, roaIndex=aoaInput.length) {
+  let aoa = aoa_deepCopy(aoaInput);
+  aoa.splice(roaIndex, 0, ...roa);
+  return aoa;
+}
+
+function aoa_replaceCoaToAoa(aoaInput, coa, coaIndex=(aoaInput[0].length -1)) {
+  let aoa = aoa_deepCopy(aoaInput);
+  for (let i = 0; i < aoa.length; i++) {
+    aoa[i].splice(coaIndex, 1, coa[i][0]);
+  }
+  return aoa;
+}
+
+function aoa_replaceRoaToAoa(aoaInput, roa, roaIndex=(aoaInput.length - 1)) {
+  let aoa = aoa_deepCopy(aoaInput);
+  aoa.splice(roaIndex, 1, ...roa);
+  return aoa;
+}
+
+function aoa_deleteCoaToAoa(aoaInput, delIndex=(aoaInput[0].length -1)) {
+  let aoa = aoa_deepCopy(aoaInput);
+  aoa.map(row => {
+    row.splice(delIndex, 1);
+    return row;
+  })
+  return aoa;
+}
+
+function aoa_deleteRoaToAoa(aoaInput, delIndex=(aoaInput.length -1)) {
+  let aoa = aoa_deepCopy(aoaInput);
+  aoa.splice(delIndex, 1);
+  return aoa;
+}
+
+
+
+
+
+
+
+
 function radio(optionName) {
   var options = document.getElementsByName(optionName);
   options.forEach(option => {
@@ -113,14 +228,57 @@ function deleteEmptyRows(arr) {
     });
 }
 
-function insertColumn(matrix, columnIndex, columnData) {
+function insertColumnToMatrix(matrix, columnIndex, columnData) {
     // Loop through each row in the array
     for (let i = 0; i < matrix.length; i++) {
         // Insert the column data at the specified column index for each row
-        matrix[i].splice(columnIndex, 0, columnData[i]);
+        matrix[i].splice(columnIndex, 0, columnData[i][0]);
     }
     return matrix;
 }
+
+function sumArray(arr1, arr2) {
+  return arr1.map((value, index) => value + arr2[index]);
+}
+
+function sumColumns(array1, array2) {
+  const result = [];
+  for (let i = 0; i < array1.length; i++) {
+    result.push([]);
+    for (let j = 0; j < array1[i].length; j++) {
+      result[i].push(array1[i][j] + array2[i][j]);
+    }
+  }
+  return result;
+}
+
+function minusColumns(array1, array2) {
+  const result = [];
+  for (let i = 0; i < array1.length; i++) {
+    result.push([]);
+    for (let j = 0; j < array1[i].length; j++) {
+      result[i].push(array1[i][j] - array2[i][j]);
+    }
+  }
+  return result;
+}
+
+function transpose(matrix) {
+    const rows = matrix.length;
+    const cols = matrix[0].length;
+
+    // Create a new matrix with swapped rows and columns
+    const transposedMatrix = [];
+    for (let j = 0; j < cols; j++) {
+        transposedMatrix.push([]);
+        for (let i = 0; i < rows; i++) {
+            transposedMatrix[j].push(matrix[i][j]);
+        }
+    }
+
+    return transposedMatrix;
+}
+
 
 function strToArrNum(str) {
   let arrayOfNumbers = str.split(' ').map(Number);
