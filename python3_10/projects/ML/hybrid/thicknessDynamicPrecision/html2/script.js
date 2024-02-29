@@ -520,6 +520,7 @@ async function testFun2() {
 
   roa1CTA1 = aoa_pickRoa(testCTA1, 3);
   console.log('roa1CTA1: ', roa1CTA1);
+  console.log(localStorage);
 
   // aoa_removeItemFromLocalStorage('testCTA1Save');
   const key = 'myData';
@@ -527,14 +528,15 @@ async function testFun2() {
   const loadedData = aoaN_loadDataFromLocal('myData');
   console.log('loadedData: ', loadedData);
 
-  let aoa3Test = [];
-  aoa3Test.push(testCTA1);
-  aoa3Test.push(testCTA1);
-  aoa3Test.push(testCTA1);
-  aoa3Test.push(testCTA1);
-  aoaN_saveDataToLocal()
-  console.log('aoa3Test: ', aoa3Test);
-  aoaN_saveDataToLocal(aoa3Test, 'aoa3Test');
+  // let aoa3Test = [];
+  // aoa3Test.push(testCTA1);
+  // aoa3Test.push(testCTA1);
+  // aoa3Test.push(testCTA1);
+  // aoa3Test.push(testCTA1);
+  // aoa3Test.push(testCTA1);
+  // aoaN_saveDataToLocal()
+  // console.log('aoa3Test2: ', aoa3Test);
+  // aoaN_saveDataToLocal(aoa3Test, 'aoa3Test2');
   const loadedDataAoa3 = aoaN_loadDataFromLocal('aoa3Test');
   console.log(localStorage);
   console.log('loadedDataAoa3: ', loadedDataAoa3);

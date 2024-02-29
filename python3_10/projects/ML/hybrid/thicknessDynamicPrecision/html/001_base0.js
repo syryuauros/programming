@@ -65,6 +65,18 @@ let innerHtml1 = '<option value="1">Option 1</option><option value="2">Option 2<
 
 /////////////////////////////////////////////// functions ////////////////////////////////////////////////////////
 
+async function fillInput(InputID, value) {
+    // Select the input element by its CSS selector
+    var inputElement = document.getElementById(InputID);
+
+    // Set the value of the input element
+    if (inputElement) {
+        inputElement.value = value;
+    } else {
+        console.error("Input element not found for selector:", selector);
+    }
+}
+
 function aoa_deepCopy(aoa) {
     const rowNum = aoa.length;
     const colNum = aoa[0].length;
@@ -293,6 +305,7 @@ function aoa_exportToCSV(arrayOfArrays, fileName) {
 }
 
 function aoaN_saveDataToLocal(aoaN, key) {
+  console.log('saving...');
   localStorage.setItem(key, JSON.stringify(aoaN));
 }
 
@@ -343,6 +356,31 @@ function arr_Average(arrayInput) {
 function convertToNumber(value) {
     return Number(value);
 }
+
+function arr_cal2(arr1, arr2, operator) {
+  const operators = {
+    '+': (a, b) => a + b,
+    '-': (a, b) => a - b,
+    '*': (a, b) => a * b,
+    '/': (a, b) => a / b,
+    'user1': (a,b) => Math.abs((a / b * 100) - 100),
+  };
+
+  if (!operators[operator]) {
+    throw new Error('Unsupported operator');
+  } else if ( operator === '/' && arr_hasInvalidElement(arr2)) {
+    throw new Error('Division by zero, NaN, or null');
+  }
+
+  const applyOperator = operators[operator];
+
+  const result = [];
+  for (let i = 0; i < arr1.length; i++) {
+    result.push(applyOperator(arr1[i], arr2[i]));
+  }
+  return result;
+}
+
 
 
 function arr_hasInvalidElement(arrInput) {

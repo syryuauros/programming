@@ -369,12 +369,78 @@ async function loadTrain() {
 
 
 async function testFun(tableName) {
-  const filters = tableContent['table1'].getPlugin('Filters');
+  let header1 = tableContent[tableName].getColHeader();
+  header1.splice(0,2);
+  let headers = [ "no excluding", ...header1 ];
+  let batchResults; let coas = []; let avgs = [];
+  batchResults = await batch1_1('table1');
+
+  let coaRef = aoa_pickCoa(batchResults[1][0], 1);
+  let avgRef = arr_Average(aoa_coaToArr(coaRef));
+  coas.push(aoa_coaToArr(coaRef));
+  avgs.push(['thk error(%)', avgRef]);
+
+  for (i = 0; i < batchResults[1].length; i++) {
+    let coaTemp = aoa_pickCoa(batchResults[1][i], 2);
+    let avgTemp = arr_Average(aoa_coaToArr(coaTemp));
+    coas.push(aoa_coaToArr(coaTemp));
+    avgs.push([headers[i], avgTemp]);
+  }
+
+  // aoaN_saveDataToLocal(batchResults, 'batchResults');
+
+  console.log(batchResults);
+  console.log('coas: ', coas);
+  console.log('avgs: ', avgs);
+}
+
+async function batch1_1(tableName) {
+  var headers = tableContent[tableName].getColHeader();
+  let resultsBundle = [];
+  let scoresBundle = [];
+  let bundles = [];
+  let batch1Result;
+
+  const filters = tableContent[tableName].getPlugin('Filters');
+  const filterColIndex = 5;
+  filters.clearConditions();
+  filters.filter();
+
+
+  await train();
+  batch1Result = await batch1(tableName);
+  resultsBundle.push(batch1Result[0]);
+  scoresBundle.push(batch1Result[1]);
+
+  // for (i = 0; i < 4 - 2; i++) {
+  for (i = 0; i < headers.length - 2; i++) {
+    filters.clearConditions();
+    filters.filter();
+    await sleep(30);
+
+    let colNoTrain = "1 " + String(i+2);
+    fillInput('colIndexTestN', colNoTrain);
+    await train();
+    batch1Result = await batch1(tableName);
+    resultsBundle.push(batch1Result[0]);
+    scoresBundle.push(batch1Result[1]);
+  }
+
+  bundles.push(resultsBundle);
+  bundles.push(scoresBundle);
+
+  // console.log('batch1Result: ', batch1Result);
+  // console.log('bundles: ', bundles);
+  return bundles;
+}
+
+async function batch1(tableName) {
+  const filters = tableContent[tableName].getPlugin('Filters');
   const filterColIndex = 5;
   const siteValueParams = document.getElementById('siteValue').value.split(" ");
   const siteValue = arr_range(Number(siteValueParams[0]), Number(siteValueParams[1]), siteValueParams[2]);
-  console.log(siteValueParams);
-  console.log(siteValue);
+  // console.log(siteValueParams);
+  // console.log(siteValue);
 
   var header1 = tableContent[tableName].getColHeader();
   let dataYIndicies = document.getElementById('colIndexTestY').value.split(" ").map(Number);
@@ -383,7 +449,7 @@ async function testFun(tableName) {
   let dataXOuter = concatArrays(dataYIndicies, dataNIndicies);
 
   let resolvedData; let dataX; let dataY; let dataN; let headerX; let headerY; let headerN;
-  let scores = [];
+  let scores = []; let results = []; let finals = [];
 
   for (let i = 0; i < siteValue.length; i++) {
 
@@ -409,7 +475,7 @@ async function testFun(tableName) {
     let pred = aoa_pickCoa(refpred, 1);
 
     let thAvg = aoa_pickCoa(aoa_deepCopy(dataN), 0);
-    let thickness = aoa_formatChange(aoa_pickCoa(aoa_deepCopy(dataX), 4), 'num');
+    let thickness = aoa_formatChange(aoa_pickCoa(aoa_deepCopy(data1), 6), 'num');
     let predThk = aoa_arithmetic(thickness, pred, '-');
 
     let errorPred = aoa_cal2(pred, testY, 'user1');
@@ -420,11 +486,7 @@ async function testFun(tableName) {
     score.push(arr_Average(aoa_coaToArr(errorThickness)));
     score.push(arr_Average(aoa_coaToArr(errorPredThk)));
     score.push(errorPredThk.length);
-    console.log('score: ', score);
-
-    scores.push([]);
-    scores[i].push(score);
-    console.log('scores: ', scores);
+    scores.push(score);
 
     result = aoa_insertCoaToAoa(testY, pred);
     result = aoa_insertCoaToAoa(result, errorPred);
@@ -433,42 +495,20 @@ async function testFun(tableName) {
     result = aoa_insertCoaToAoa(result, predThk);
     result = aoa_insertCoaToAoa(result, errorThickness);
     result = aoa_insertCoaToAoa(result, errorPredThk);
-    console.log('result: ', result);
+    results.push(result);
 
     let exportingPath = "batchResult" + i + ".csv";
-
-    aoa_exportToCSV(result, exportingPath);
-    // let thickness = aoa_pickCoa(aoa_deepCopy(dataX), 4).map(innerArray =>
-    //   innerArray.map(str => Number(str))
-    // );
-    // let thAvg = pickColumns(dataN, [0]);
-    // let testY = pickColumns(refpred, [0]);
-    // let pred = pickColumns(refpred, [1]);
-    // let thickness = pickColumns(dataX, [4]);
-    // let thk = thickness.map(innerArray =>
-    //   innerArray.map(str => Number(str))
-    // );
-
-    // // let thMeasured = minusColumns(thickness, testY);
-    // let thPred = minusColumns(thickness, pred);
-
-    // let result = insertColumnToMatrix(refpred, refpred.length, thAvg);
-    // result = insertColumnToMatrix(result, result.length, thk);
-    // result = insertColumnToMatrix(result, result.length, thPred);
-
-    // console.log('refpred: ', refpred);
-    // console.log('thAvg: ', thAvg);
-    // console.log('thickness: ', thickness);
-    // console.log('pred: ', pred);
-    // console.log('predThk: ', predThk);
-    // console.log('result: ', result);
-    // console.log('thk: ', thk);
   }
 
-  aoa_exportToCSV(scores, "scores.csv");
-  updateTableAny('table2', dataX, headerX);
-  updateTableAny('table4', dataY, headerY);
-  updateTableAny('table5', dataN, headerN);
+  // aoa_exportToCSV(scores, "scores.csv");
+  // aoaN_saveDataToLocal(scores, 'scores');
+  // aoaN_saveDataToLocal(results, 'results');
+  finals.push(results, scores);
+
+  // scoresLoaded = aoaN_loadDataFromLocal('scores');
+  // resultsLoaded = aoaN_loadDataFromLocal('results');
+
+  return finals;
 }
 
 
@@ -520,6 +560,7 @@ async function testFun2() {
 
   roa1CTA1 = aoa_pickRoa(testCTA1, 3);
   console.log('roa1CTA1: ', roa1CTA1);
+  console.log(localStorage);
 
   // aoa_removeItemFromLocalStorage('testCTA1Save');
   const key = 'myData';
@@ -527,14 +568,18 @@ async function testFun2() {
   const loadedData = aoaN_loadDataFromLocal('myData');
   console.log('loadedData: ', loadedData);
 
-  let aoa3Test = [];
-  aoa3Test.push(testCTA1);
-  aoa3Test.push(testCTA1);
-  aoa3Test.push(testCTA1);
-  aoa3Test.push(testCTA1);
-  aoaN_saveDataToLocal()
-  console.log('aoa3Test: ', aoa3Test);
-  aoaN_saveDataToLocal(aoa3Test, 'aoa3Test');
+  let arr4 = arr_cal2(arr1, arr2, '*');
+  console.log('arr4: ', arr4);
+
+  // let aoa3Test = [];
+  // aoa3Test.push(testCTA1);
+  // aoa3Test.push(testCTA1);
+  // aoa3Test.push(testCTA1);
+  // aoa3Test.push(testCTA1);
+  // aoa3Test.push(testCTA1);
+  // aoaN_saveDataToLocal()
+  // console.log('aoa3Test2: ', aoa3Test);
+  // aoaN_saveDataToLocal(aoa3Test, 'aoa3Test2');
   const loadedDataAoa3 = aoaN_loadDataFromLocal('aoa3Test');
   console.log(localStorage);
   console.log('loadedDataAoa3: ', loadedDataAoa3);
