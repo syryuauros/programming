@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Table Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Database Table Explorer</h1>
+    <button onclick="fetchTableNames()">Fetch Table Names</button>
+    <div id="tableNames"></div>
+
+    <h1>Folder Explorer</h1>
+    <ul id="folderList"></ul>
+
+    <script>
+        function fetchTableNames() {
+          fetch('http://192.168.12.135:7102/get_table_names')
+                .then(response => response.json())
+                .then(data => {
+                    let tableNames = '<ul>';
+                    data.forEach(tableName => {
+                        tableNames += `<li>${tableName}</li>`;
+                    });
+                    tableNames += '</ul>';
+                    document.getElementById('tableNames').innerHTML = tableNames;
+                })
+                .catch(error => console.error('Error:', error));
+        };
+
+        window.onload = function() {
+            fetch('http://192.168.12.135:7102/folders')
+                .then(response => response.json())
+                .then(data => {
+                    const folderList = document.getElementById('folderList');
+                    data.forEach(folder => {
+                        const li = document.createElement('li');
+                        li.textContent = folder.folder_name;
+                        folderList.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        };
+    </script>
+</body>
+</html>

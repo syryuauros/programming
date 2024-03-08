@@ -290,6 +290,11 @@ function aoa_cal3(aoa1, aoa2, aoa3, operator) {
   return result;
 }
 
+function aoa_filter(aoaInput, columnIndex, filteredValue) {
+  let aoa = aoa_deepCopy(aoaInput);
+  return aoa.filter(row => row[columnIndex] === filteredValue);
+}
+
 function aoa_exportToCSV(arrayOfArrays, fileName) {
     const csvData = arrayOfArrays.map(row => row.join(',')).join('\n');
 

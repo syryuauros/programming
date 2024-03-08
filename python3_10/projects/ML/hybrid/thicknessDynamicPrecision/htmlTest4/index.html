@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Basic Tree - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.10.19/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.10.19/themes/icon.css">
+    <link rel="stylesheet" href="./styles.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.10.19/demo.css"> -->
+    <script type="text/javascript" src="../jquery-easyui-1.10.19/jquery.min.js"></script>
+    <script type="text/javascript" src="../jquery-easyui-1.10.19/jquery.easyui.min.js"></script>
+  </head>
+
+  <body>
+    <button onclick="openPopUp(popup1,400,300)">DB</button>
+    <button onclick="addFolder(); refreshEventHandlers();">addFolder</button>
+    <input type="text" size="15px" value="text" id="inputBox1" ></input>
+    <input type="text" size="15px" value="DataBase" id="inputBox2" ></input>
+
+    <div class="popup" id="popup1" style="height: 900px; width: 450px; display: none;">
+      <button class="button" onclick="closePopUp(popup1)">X</button> <br>
+      <div id="treeContainer"></div>
+      <div id="treeContextMenu" class="easyui-menu" style="width: 120px;">
+        <div data-options="iconCls:'icon-add'">Add folder</div>
+        <div data-options="iconCls:'icon-edit'">Edit Node</div>
+        <div class="menu-sep"></div>
+        <div data-options="iconCls:'icon-remove'">Delete folder</div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

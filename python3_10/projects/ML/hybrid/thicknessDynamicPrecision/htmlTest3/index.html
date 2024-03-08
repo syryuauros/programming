@@ -1,0 +1,246 @@
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="en"> -->
+<!-- <head> -->
+<!--     <meta charset="UTF-8"> -->
+<!--     <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<!--     <title>Folder Explorer</title> -->
+<!--     <link rel="stylesheet" href="style.css"> -->
+<!-- </head> -->
+<!-- <body> -->
+<!--     <div id="folder-explorer"></div> -->
+
+<!--     <script src="script.js"></script> -->
+<!-- </body> -->
+<!-- </html> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Tree - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.10.19/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.10.19/themes/icon.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.10.19/demo.css"> -->
+    <script type="text/javascript" src="../jquery-easyui-1.10.19/jquery.min.js"></script>
+    <script type="text/javascript" src="../jquery-easyui-1.10.19/jquery.easyui.min.js"></script>
+<!--     <script type="text/javascript"> -->
+<!--       function addNode() { -->
+<!--         var databaseUl = document.querySelector(".easyui-panel"); -->
+<!--         databaseUl.insertAdjacentHTML('beforeend',` -->
+
+<!-- <p>This is the HTML content to be inserted</p> -->
+<!-- <p>This is the HTML content to be inserted</p> -->
+<!-- <ul class="easyui-tree"> -->
+<!--   <li> -->
+<!--     <span>DataBase</span> -->
+<!--     <ul> -->
+<!--       <li> -->
+<!--         <span>Basic Data</span> -->
+<!--       </li> -->
+<!--       <li> -->
+<!--         <span>Data1</span> -->
+<!--       </li> -->
+<!--     </ul> -->
+<!--   </li> -->
+<!-- </ul> -->
+
+<!-- `); -->
+<!--       } -->
+<!--     </script> -->
+<!-- </head> -->
+<!-- <body> -->
+<!--   <h2>Basic Tree</h2> -->
+<!--   <p>Click the arrow on the left to expand or collapse nodes.</p> -->
+<!--   <div style="margin:20px 0;"></div> -->
+<!--   <div class="easyui-panel" style="padding:0px"> -->
+<!--     <\!-- <ul class="easyui-tree"> -\-> -->
+<!--     <\!--   <li> -\-> -->
+<!--     <\!--     <span>DataBase</span> -\-> -->
+<!--     <\!--     <ul> -\-> -->
+<!--     <\!--       <li data-options="state:'closed'"> -\-> -->
+<!--     <\!--         <span>Basic Data</span> -\-> -->
+<!--     <\!--         <ul> -\-> -->
+<!--     <\!--           <li> -\-> -->
+<!--     <\!--             <span>Friend</span> -\-> -->
+<!--     <\!--           </li> -\-> -->
+<!--     <\!--           <li> -\-> -->
+<!--     <\!--             <span>Wife</span> -\-> -->
+<!--     <\!--           </li> -\-> -->
+<!--     <\!--           <li> -\-> -->
+<!--     <\!--             <span>Company</span> -\-> -->
+<!--     <\!--           </li> -\-> -->
+<!--     <\!--         </ul> -\-> -->
+<!--     <\!--       </li> -\-> -->
+<!--     <\!--       <li data-options="state: 'closed'"> -\-> -->
+<!--     <\!--         <span>Data1</span> -\-> -->
+<!--     <\!--         <ul> -\-> -->
+<!--     <\!--           <li>Intel</li> -\-> -->
+<!--     <\!--           <li>Java</li> -\-> -->
+<!--     <\!--           <li>Microsoft Office</li> -\-> -->
+<!--     <\!--           <li>Games</li> -\-> -->
+<!--     <\!--         </ul> -\-> -->
+<!--     <\!--       </li> -\-> -->
+<!--     <\!--       <li data-options="state: 'closed'"> -\-> -->
+<!--     <\!--         <span>Data2</span> -\-> -->
+<!--     <\!--         <ul> -\-> -->
+<!--     <\!--           <li data-options="state: 'closed'"> -\-> -->
+<!--     <\!--             <span>I</span> -\-> -->
+<!--     <\!--             <ul> -\-> -->
+<!--     <\!--               <li>am</li> -\-> -->
+<!--     <\!--             </ul> -\-> -->
+<!--     <\!--           </li> -\-> -->
+<!--     <\!--           <li>You</li> -\-> -->
+<!--     <\!--         </ul> -\-> -->
+<!--     <\!--       </li> -\-> -->
+<!--     <\!--       <li>index.html</li> -\-> -->
+<!--     <\!--       <li>about.html</li> -\-> -->
+<!--     <\!--       <li>welcome.html</li> -\-> -->
+<!--     <\!--     </ul> -\-> -->
+<!--     <\!--   </li> -\-> -->
+<!--     <\!-- </ul> -\-> -->
+<!--   </div> -->
+<!--   <button onclick="addNode()">Add Node</button> -->
+<!-- </body> -->
+<!-- </html> -->
+
+<body>
+
+<div id="treeContainer"></div>
+
+<div id="treeContextMenu" class="easyui-menu" style="width: 120px;">
+    <div data-options="iconCls:'icon-add'">Add Node</div>
+    <div data-options="iconCls:'icon-edit'">Edit Node</div>
+    <div class="menu-sep"></div>
+    <div data-options="iconCls:'icon-remove'">Delete Node</div>
+</div>
+
+<script>
+
+  // Define the tree data
+  var treeData = [];
+  treeData.push({"text": "DataBase", "state": "closed", "path": [0]});
+  treeData.push({"text": "Data1", "state": "closed"});
+  treeData.push({"text": "Data2", "state": "closed"});
+  treeData.push({"text": "Data3", "state": "closed"});
+
+  treeData[3]["state"] = "closed";
+  treeData[3]["children"] = [];
+
+  addChildAtPath(treeData, [0,0], "Data0-0");
+  addChildAtPath(treeData, [0,1], "Data0-1", false);
+  addChildAtPath(treeData, [1,0], "Data1-0", false);
+  addChildAtPath(treeData, [2,0], "Data2-0");
+
+  addChildAtPath(treeData, [0,0,0], "Data0-0-0", false);
+  addChildAtPath(treeData, [2,0,0], "Data2-0-0", false);
+
+  addChildAtPath(treeData, [0,0,0,0], "Data0-0-0-0", false);
+  addChildAtPath(treeData, [0,0,0,1], "Data0-0-0-1");
+
+  addChildAtPath(treeData, [0,0,0,1,0], "Data0-0-0-1-0", false);
+
+  <!-- treeData[0]["children"] = []; -->
+  <!-- treeData[2]["children"] = []; -->
+  <!-- treeData[0]["children"].push({"text": "Data0-0"}); -->
+  <!-- treeData[0]["children"].push({"text": "Data0-1"}); -->
+  <!-- treeData[2]["children"].push({"text": "Data2-1"}); -->
+
+
+  <!-- treeData[0]["children"][0]["children"] = []; -->
+  <!-- treeData[2]["children"][0]["children"] = []; -->
+  <!-- treeData[0]["children"][0]["children"].push({"text": "Data0-0-0"}); -->
+  <!-- treeData[2]["children"][0]["children"].push({"text": "Data2-0-0"}); -->
+
+  <!-- addChild(treeData[0], "Data0-0"); -->
+  <!-- addChild(treeData[0], "Data0-1"); -->
+  <!-- addChild(treeData[2], "Data2-1"); -->
+
+  <!-- // Add children to Data0-0 and Data2-0 -->
+  <!-- addChild(treeData[0].children[0], "Data0-0-0"); -->
+  <!-- addChild(treeData[2].children[0], "Data2-0-0"); -->
+
+  <!-- addChildAtPath(treeData, [0,0], "Data-0-0"); -->
+
+  <!-- addChild(treeData[0].children[0].children[0], "Data0-0-0-0"); -->
+
+
+  function addChild(node, childText) {
+  if (!node.children) {
+  node.children = []; // Initialize children array if it doesn't exist
+  }
+  node.children.push({ "text": childText }); // Push new child object
+  }
+
+  function addChildAtPath(obj, path, childText, isFolder = true) {
+  var currentNode = obj;
+  for (var i = 0; i < path.length - 1; i++)
+      {
+        if (!currentNode[path[i]].children) { currentNode[path[i]].children = []; }
+        currentNode = currentNode[path[i]].children;
+      }
+    if (isFolder) { currentNode.push({ "text": childText, "state": "closed", "path": path}); }
+      else { currentNode.push({ "text": childText, "path": path}); }
+  }
+
+
+  <!-- treeData[2]["children"][1]["children"] = [{"text": "Data2-1-0"}]; -->
+
+  <!-- var treeData = [{ -->
+  <!-- "text": "DataBase", -->
+  <!-- "children": [{ -->
+  <!-- "text": "Basic Data", -->
+  <!-- "children": [{ -->
+  <!-- "text": "Basic Data children", -->
+  <!-- }] -->
+  <!-- }, { -->
+  <!-- "text": "Data1" -->
+  <!-- }] -->
+  <!-- }]; -->
+
+  $(document).ready(function() {
+
+    // Create and initialize the EasyUI tree
+    $('#treeContainer').tree({
+      data: treeData,
+      onSelect: function(node) {
+        var selectedNode = $('#treeContainer').tree('getSelected');
+
+        if (selectedNode) {
+          var text = selectedNode.text;
+          var path = selectedNode.path;
+          console.log("Selected node:", text, path);
+        }
+      },
+
+      onContextMenu: function(e, node) {
+        e.preventDefault();
+        $('#treeContextMenu').menu('show', {
+            left: e.pageX,
+            top: e.pageY
+        });
+      }
+    });
+    $('#treeContextMenu').menu({
+        onClick: function(item, node) {
+            var selectedNode = $('#treeContainer').tree('getSelected');
+            <!-- console.log("Clicked on menu item:", item); -->
+
+            if (item.iconCls === 'icon-add') {
+              if (selectedNode) {
+                var text = selectedNode.text;
+                var path = selectedNode.path;
+                console.log("Selected node info:", text, path);
+              }
+            }
+        }
+    });
+
+  });
+
+  $('#treeContainer').tree({
+  });
+</script>
+
+</body>
+</html>

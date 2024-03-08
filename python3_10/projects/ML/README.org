@@ -38,3 +38,10 @@ https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Pr
       console.log(target); // Output: { prop1: 'value1', prop2: 'value2' }
 
       while const target = Object.assign({}, pName); gives { 'p': 'N': 'a': 'm': 'e' }
+
+
++ tree structure in DB
+https://blog.yevgnenll.me/posts/save-tree-in-mysql-closure-pattern-hierarchy-structure
+
++ UI libraries
+  https://www.jeasyui.com/demo/main/index.php?plugin=ComboBox&theme=default&dir=ltr&pitem=&sort=asc

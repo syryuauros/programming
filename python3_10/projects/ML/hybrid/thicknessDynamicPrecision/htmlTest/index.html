@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insert Data into MariaDB</title>
+  <button onclick="sendData()">insertData</button>
+</head>
+<body>
+
+<h1>Insert Data into MariaDB</h1>
+
+<script>
+// Sample array of arrays
+const dataArray = [
+  ['John', 30],
+  ['Alice', 25],
+  ['Bob', 35]
+];
+
+// Function to send data to server
+async function sendData() {
+  try {
+    const response = await fetch('http://192.168.12.135:7100/insert_data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataArray),
+    });
+
+    if (response.ok) {
+      console.log('Data inserted successfully.');
+    } else {
+      console.error('Failed to insert data. server response is incorrect!');
+    }
+  } catch (error) {
+    console.error('Error sending data:', error);
+  }
+}
+
+// Call the function to send data
+<!-- sendData(); -->
+</script>
+
+</body>
+</html>

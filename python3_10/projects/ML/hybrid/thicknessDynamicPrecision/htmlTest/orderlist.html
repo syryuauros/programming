@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order-List</title>
+    <style>
+      h1,
+      a {
+        text-align: center;
+      }
+
+      table {
+        margin: 0 auto;
+        border: none;
+      }
+
+      td,
+      th {
+        border: 1px solid black;
+        padding: 6px;
+      }
+
+      td {
+        text-align: center;
+      }
+
+      div {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Order-List</h1>
+    <div>
+      <a href="./">Go Home</a>
+    </div>
+    <table class="table" style="border: 1px solid black">
+      <!-- 열의 제목 -->
+      <th>Product_ID</th>
+      <th>Product_Name</th>
+      <th>Order_Data</th>
+    </table>
+    <script>
+      const rowsData = { ROWS_DATA };
+      let table = document.querySelector(".table");
+
+      rowsData.forEach((row) => {
+        let list_tr = document.createElement("tr");
+        list_tr.innerHTML = `
+          <tr>
+            <td>${row.product_id}</td>
+            <td>${row.product_name}</td>
+            <td>${row.order_date}</td>
+          </tr>
+        `;
+        table.appendChild(list_tr);
+      });
+    </script>
+  </body>
+</html>

@@ -201,11 +201,15 @@ async function train() {
   //let dataNIndicies = document.getElementById('colIndexTestN').value.split(" ").map(Number);
   let dataXOuter = concatArrays(dataYIndicies, dataNIndicies);
 
-  let dataX = seperateData(data1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+  let dataX = seperateData(data1, getRange(0,data1[0].length - 1, dataXOuter));
+  console.log('data1[0].length: ', data1[0].length);
+  console.log('dataXOuter', dataXOuter);
+  console.log('dataX: ', dataX);
   let dataY = seperateData(data1, dataYIndicies);
   let dataN = seperateData(data1, dataNIndicies);
 
-  let headerX = pickElemsFromArr(header1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+  let headerX = pickElemsFromArr(header1, getRange(0,data1[0].length + 1, dataXOuter));
+  //let headerX = pickElemsFromArr(header1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
   let headerY = pickElemsFromArr(header1, dataYIndicies);
   let headerN = pickElemsFromArr(header1, dataNIndicies);
   //let headerY = dataNIndicies.map(index => header1[index]);
@@ -461,11 +465,11 @@ async function batch1(tableName) {
     let score = [];
     let result = [];
 
-    dataX = seperateData(data1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+    dataX = seperateData(data1, getRange(0,data1[0].length - 1, dataXOuter));
     dataY = seperateData(data1, dataYIndicies);
     dataN = seperateData(data1, dataNIndicies);
 
-    headerX = pickElemsFromArr(header1, getRange(0,data1[0].length + 1 - dataXOuter.length, dataXOuter));
+    headerX = pickElemsFromArr(header1, getRange(0,data1[0].length - 1, dataXOuter));
     headerY = pickElemsFromArr(header1, dataYIndicies);
     headerN = pickElemsFromArr(header1, dataNIndicies);
     await predictKernel(dataX, dataY, headerX).then((resolvedValue) => { resolvedData = resolvedValue; });
