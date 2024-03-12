@@ -5,6 +5,7 @@
 // var pathID;
 // function initializeContextMenu(treeID, treeData, treeContextMenu='treeContextMenu') {
 // function refreshEventHandlers(treeID, treeData) {
+// async function fetchTableNames() {
 //
 // function tree_findNodeByPath(treeData, path) {
 // function tree_findEmptyIndex(treeData, path) {
@@ -25,6 +26,7 @@
 var treeData = [];
 treeData.push({"text": "DataBase", "path": [0], "state": "closed", "isFolder": true});
 
+
 // tree_addChildAtPath(treeData, [0, 0], "a");
 // tree_addChildAtPath(treeData, [0, 0, 0], "a1");
 // tree_addChildAtPath(treeData, [0, 0, 1], "a2");
@@ -43,15 +45,18 @@ treeData.push({"text": "DataBase", "path": [0], "state": "closed", "isFolder": t
 // tree_addChildAtPath(treeData, [0, 3], "d");
 
 
-$(document).ready(function() {
+$(document).ready(async function() {
   initializeTree('treeContainer', treeData);
   initializeContextMenu('treeContainer', treeData);
+  await fetchDB();
 });
+
 
 
 function initializeTree(treeID, treeData, treeContextMenu='treeContextMenu') { // treeID: str, treeData: var, treeContextMenu: str
   let treeUI = $('#' + treeID);
   let treeCM = $('#' + treeContextMenu);
+  console.log('in refresh end');
 
   treeUI.tree({
     data: treeData,
@@ -141,6 +146,18 @@ function refreshEventHandlers(treeID, treeData) {
   initializeContextMenu('treeContainer', treeData);
 }
 
+async function fetchDB() {
+  await fetch('http://192.168.12.135:7105/get_table_tree')
+    .then(response => response.json())
+    .then(data => {
+      data.forEach(values => {
+        tree_addChildAtPath(treeData, stringToArray(values[1]), values[0]);
+      });
+    })
+    .catch(error => console.error('Error:', error));
+  console.log('treeData: ', treeData);
+  await refreshEventHandlers('treeContainer', treeData);
+};
 
 
 
@@ -158,6 +175,39 @@ function tree_findNodeByPath(treeData, path) {
   }
   return currentNode;
 }
+
+// function fetchTableNames() {
+//   fetch('http://192.168.12.135:7105/get_table_tree')
+//     .then(response => response.json())
+//     .then(data => {
+//       let tableNames = '<ul>';
+//       data.forEach(tableName => {
+//         tableNames += `<li>${tableName}</li>`;
+//       });
+//       tableNames += '</ul>';
+//       document.getElementById('tableNames').innerHTML = tableNames;
+//     })
+//     .catch(error => console.error('Error:', error));
+// };
+
+
+// window.onload = function() {
+//   fetch('http://192.168.12.135:7105/folders')
+//     .then(response => response.json())
+//     .then(data => {
+//       const folderList = document.getElementById('folderList');
+//       data.forEach(folder => {
+//         const li = document.createElement('li');
+//         li.textContent = folder.folder_name;
+//         folderList.appendChild(li);
+//       });
+//     })
+//     .catch(error => console.error('Error:', error));
+// };
+
+
+
+
 
 function tree_findEmptyIndex(treeData, path) {
   let emptyIndex = 0;
@@ -187,7 +237,7 @@ function tree_addChildAtPath(treeData, targetPath, childText, isFolder = true) {
   let targetIndex = newPath.pop();
   let currentNode = tree_findNodeByPath(treeData, newPath);
   if (!currentNode.children) { currentNode.children = []; };
-  console.log('currentNode.children: ', currentNode.children);
+  // console.log('currentNode.children: ', currentNode.children);
 
   if (isFolder) { currentNode.children.push({ "text": childText, "path": targetPath, "state": "closed", "isFolder": true}); }
   else { currentNode.children.push({ "text": childText, "path": targetPath, "isFolder": false}); }
@@ -264,6 +314,26 @@ function arr_removeElementFromArray(arr, elem) {
     return arr.filter(function(value) {
         return value !== elem;
     });
+}
+
+function stringToArray(str) {
+    // Remove the brackets from the string
+    const strippedStr = str.slice(1, -1);
+
+    // Parse the string into an array using JSON.parse()
+    const array = JSON.parse("[" + strippedStr + "]");
+
+    return array;
+}
+
+function stringToBoolean(str) {
+    // Check if the string is 'true' (case insensitive)
+    if (str.toLowerCase() === 'true') {
+        return true;
+    } else {
+        // If the string is not 'true', return false
+        return false;
+    }
 }
 
 function listObj_findObjectWithKeyValue(listOfObjects, key, value) {
