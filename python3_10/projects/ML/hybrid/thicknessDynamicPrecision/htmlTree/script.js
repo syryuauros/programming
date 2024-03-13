@@ -159,6 +159,18 @@ async function fetchDB() {
   await refreshEventHandlers('treeContainer', treeData);
 };
 
+async function addFolderIntoDB(newFolderInfo) {
+  // var newFolderInfo = {"text": "folderInfo", "path": [2], "state": "closed", "isFolder": true};
+  const response = await fetch('http://192.168.12.135:7105/add_folder', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newFolderInfo),
+  });
+};
+
+
 
 
 function tree_findNodeByPath(treeData, path) {
@@ -248,7 +260,9 @@ function tree_addFolder(treeData, currentPath) {
   if (currentNodeAtData.isFolder == true) {
     let targetIndex = tree_findEmptyIndex(treeData, currentPath);
     let newPath = [ ...currentPath, targetIndex];
+    let newFolderInfo = {"text": "NewFolder", "path": newPath, "state": "closed", "isFolder": true};
     tree_addChildAtPath(treeData, newPath, 'NewFolder', true);
+    addFolderIntoDB(newFolderInfo);
   }
 }
 
