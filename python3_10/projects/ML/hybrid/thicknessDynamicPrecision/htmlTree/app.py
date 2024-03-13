@@ -42,10 +42,8 @@ def add_folder():
     state = tr_json['state']
     isFolder = 'true'
 
-    print(f"text: {text}, path: {path}, state: {state}, isFolder: {isFolder}")
-
     cursor = db.cursor()
-    cursor.execute(f"INSERT INTO htmlTree2 (text, path, state, isFolder) VALUES ('{text}', '{path}', '{state}', '{isFolder}');")
+    cursor.execute(f"INSERT INTO {tableName} (text, path, state, isFolder) VALUES ('{text}', '{path}', '{state}', '{isFolder}');")
     db.commit()
     cursor.close()
     return jsonify({ })
@@ -58,8 +56,7 @@ def remove_folder():
     targetPathIncluding = targetPath[:-1]
 
     cursor = db.cursor()
-    print(f"DELETE FROM htmlTree2 WHERE path LIKE '%{targetPathIncluding}%';")
-    cursor.execute(f"DELETE FROM htmlTree2 WHERE path LIKE '%{targetPathIncluding}%';")
+    cursor.execute(f"DELETE FROM {tableName} WHERE path LIKE '%{targetPathIncluding}%';")
     db.commit()
     cursor.close()
     return jsonify({ })
@@ -72,7 +69,7 @@ def update_folder():
 
     cursor = db.cursor()
     print(f"UPDATE htmlTree2 SET text = '{newName}' WHERE path = '{targetPath}';")
-    cursor.execute(f"UPDATE htmlTree2 SET text = '{newName}' WHERE path = '{targetPath}';")
+    cursor.execute(f"UPDATE {tableName} SET text = '{newName}' WHERE path = '{targetPath}';")
     db.commit()
     cursor.close()
     return jsonify({ })
