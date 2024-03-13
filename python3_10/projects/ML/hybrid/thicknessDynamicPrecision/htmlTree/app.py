@@ -16,6 +16,8 @@ db = mysql.connector.connect(
     database="test"
 )
 
+tableName = "htmlTree2"
+
 # Route to render the HTML page
 @app.route('/')
 def index():
@@ -24,17 +26,10 @@ def index():
 # Route to fetch and return table contents as JSON
 @app.route('/get_table_tree')
 def get_table_tree():
-    print('hello')
     cursor = db.cursor()
-    cursor.execute("SELECT * from htmlTree2")
-    # cursor.execute("SHOW TABLES")
+    cursor.execute(f"SELECT * FROM {tableName} ORDER BY path DESC")
     table1 = [table for table in cursor.fetchall()]
-    table10 = list(table1[0])
     print('table1: ', table1)
-    print('table10: ', table10)
-    # print('table1[0]: ', table1[0])
-    # print('table1[1]: ', table1[1])
-    # print('tables: ', tables)
     rows = cursor.fetchall()
     cursor.close()
     return jsonify(table1)
@@ -46,7 +41,6 @@ def add_folder():
     path = tr_json['path']
     state = tr_json['state']
     isFolder = 'true'
-    # isFolder = tr_json['isFolder']
 
     print(f"text: {text}, path: {path}, state: {state}, isFolder: {isFolder}")
 
@@ -55,6 +49,35 @@ def add_folder():
     db.commit()
     cursor.close()
     return jsonify({ })
+
+@app.route('/remove_folder', methods=['POST'])
+def remove_folder():
+    tr_json = request.get_json()
+    targetPath = str(tr_json['targetPath'])
+    print(targetPath)
+    targetPathIncluding = targetPath[:-1]
+
+    cursor = db.cursor()
+    print(f"DELETE FROM htmlTree2 WHERE path LIKE '%{targetPathIncluding}%';")
+    cursor.execute(f"DELETE FROM htmlTree2 WHERE path LIKE '%{targetPathIncluding}%';")
+    db.commit()
+    cursor.close()
+    return jsonify({ })
+
+@app.route('/update_folder', methods=['POST'])
+def update_folder():
+    tr_json = request.get_json()
+    newName = tr_json['newName']
+    targetPath = tr_json['targetPath']
+
+    cursor = db.cursor()
+    print(f"UPDATE htmlTree2 SET text = '{newName}' WHERE path = '{targetPath}';")
+    cursor.execute(f"UPDATE htmlTree2 SET text = '{newName}' WHERE path = '{targetPath}';")
+    db.commit()
+    cursor.close()
+    return jsonify({ })
+
+
 
 
 # API endpoint to fetch folder hierarchy data

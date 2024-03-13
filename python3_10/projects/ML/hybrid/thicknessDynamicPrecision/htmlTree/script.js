@@ -87,6 +87,7 @@ function initializeTree(treeID, treeData, treeContextMenu='treeContextMenu') { /
       var selectedNode = treeUI.tree('getSelected');
       var currentNodeAtData = tree_findNodeByPath(treeData, selectedNode.path);
       currentNodeAtData.text = selectedNode.text;
+      updateFolderNameDB(currentNodeAtData.text, selectedNode.path);
       console.log(currentNodeAtData);
     },
 
@@ -139,18 +140,12 @@ function initializeContextMenu(treeID, treeData, treeContextMenu='treeContextMen
   });
 }
 
-function refreshEventHandlers(treeID, treeData) {
-  let treeUI = $('#' + treeID);
-  treeUI.tree('loadData', treeData);
-  initializeTree('treeContainer', treeData);
-  initializeContextMenu('treeContainer', treeData);
-}
-
 async function fetchDB() {
   await fetch('http://192.168.12.135:7105/get_table_tree')
     .then(response => response.json())
     .then(data => {
       data.forEach(values => {
+        console.log(stringToArray(values[1]), values[0]);
         tree_addChildAtPath(treeData, stringToArray(values[1]), values[0]);
       });
     })
@@ -158,6 +153,53 @@ async function fetchDB() {
   console.log('treeData: ', treeData);
   await refreshEventHandlers('treeContainer', treeData);
 };
+
+async function addFolderIntoDB(newFolderInfo) {
+  // var newFolderInfo = {"text": "folderInfo", "path": [2], "state": "closed", "isFolder": true};
+  const response = await fetch('http://192.168.12.135:7105/add_folder', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newFolderInfo),
+  });
+};
+
+async function removeNodeFromDB(targetFolderPath) {
+  // var newFolderInfo = {"text": "folderInfo", "path": [2], "state": "closed", "isFolder": true};
+  const response = await fetch('http://192.168.12.135:7105/remove_folder', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      targetPath: targetFolderPath
+    }),
+  });
+};
+
+async function updateFolderNameDB(newFolderName, targetFolderPath) {
+  // var newFolderInfo = {"text": "folderInfo", "path": [2], "state": "closed", "isFolder": true};
+  const response = await fetch('http://192.168.12.135:7105/update_folder', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      newName: newFolderName,
+      targetPath: targetFolderPath
+    }),
+  });
+};
+
+
+function refreshEventHandlers(treeID, treeData) {
+  let treeUI = $('#' + treeID);
+  treeUI.tree('loadData', treeData);
+  initializeTree('treeContainer', treeData);
+  initializeContextMenu('treeContainer', treeData);
+}
+
 
 async function addFolderIntoDB(newFolderInfo) {
   // var newFolderInfo = {"text": "folderInfo", "path": [2], "state": "closed", "isFolder": true};
@@ -289,6 +331,7 @@ function tree_removeNode(treeID, treeData, selectedNode) {
   // console.log(numChildToBeDel);
   // console.log(numChildren);
   parentNodeAtData.children.splice(numChildToBeDel, 1);
+  removeNodeFromDB(targetPathOrigin);
   // for (var i = 0; i < numChildren - 1; i++) {
   //   let newTargetPath = [...targetPath, i];
   //   console.log('newTargetPath: ' + newTargetPath);
