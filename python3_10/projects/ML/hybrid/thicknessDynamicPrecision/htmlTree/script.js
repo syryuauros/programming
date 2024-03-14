@@ -317,29 +317,18 @@ function tree_addFile(treeData, currentPath) {
   }
 }
 
-function tree_removeNode(treeID, treeData, selectedNode) {
+async function tree_removeNode(treeID, treeData, selectedNode) {
   let treeUI = $('#' + treeID);
   treeUI.tree('remove', selectedNode.target);
   let targetPathOrigin = arr_deepCopy(selectedNode.path);
   let targetPath = arr_deepCopy(selectedNode.path);
+  console.log('targetPath: ', targetPath);
   let numChildToBeDel = targetPath.pop();
-  let parentNodeAtData = tree_findNodeByPath(treeData, targetPath);
-  let numChildren = parentNodeAtData.children.length;
-  // console.log(parentNodeAtData);
-  // console.log(targetPathOrigin);
-  // console.log(targetPath);
-  // console.log(numChildToBeDel);
-  // console.log(numChildren);
-  parentNodeAtData.children.splice(numChildToBeDel, 1);
+  let parentNodeAtData = await tree_findNodeByPath(treeData, targetPath);
+  listObj_deleteElementsByKeyValue(parentNodeAtData.children, 'path', targetPathOrigin);
   removeNodeFromDB(targetPathOrigin);
-  // for (var i = 0; i < numChildren - 1; i++) {
-  //   let newTargetPath = [...targetPath, i];
-  //   console.log('newTargetPath: ' + newTargetPath);
-  //   parentNodeAtData.children[i].path = newTargetPath;
-  //   console.log(i + 'th path ' + parentNodeAtData.children[i].path);
-  // }
-  console.log(parentNodeAtData);
-  // refreshEventHandlers('treeContainer', treeData);
+  console.log(parentNodeAtData.children);
+  refreshEventHandlers('treeContainer', treeData);
 }
 
 
@@ -403,6 +392,13 @@ function listObj_findObjectWithKeyValue(listOfObjects, key, value) {
   });
 }
 
+function listObj_deleteElementsByKeyValue(listOfObjects, key, value) {
+  for (let i = listOfObjects.length - 1; i >= 0; i--) {
+    if (JSON.stringify(listOfObjects[i][key]) === JSON.stringify(value)) {
+      listOfObjects.splice(i, 1);
+    }
+  }
+}
 
 
 
