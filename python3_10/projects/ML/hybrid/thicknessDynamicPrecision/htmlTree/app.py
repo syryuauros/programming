@@ -88,3 +88,11 @@ def get_folders():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=7105, debug=False)
+
+
+#create table htmlTree2 (     text VARCHAR(30),     path VARCHAR(50) PRIMARY KEY,     state VARCHAR(30),   isFolder VARCHAR(10), fileContents Json );
+#DROP TABLE htmlTree;
+#CREATE USER 'auros'@'localhost' IDENTIFIED BY 'auros1';
+#GRANT ALL PRIVILEGES ON *.* TO 'auros'@'localhost';
+#FLUSH PRIVILEGES;
+#create table htmlTree2DB ( path VARCHAR(50) PRIMARY KEY, fileContents JSON );
