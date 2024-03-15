@@ -145,8 +145,8 @@ async function fetchDB() {
     .then(response => response.json())
     .then(data => {
       data.forEach(values => {
-        console.log(stringToArray(values[1]), values[0]);
-        tree_addChildAtPath(treeData, stringToArray(values[1]), values[0]);
+        console.log(stringToArray(values[1]), values[0], stringToBoolean(values[3]));
+        tree_addChildAtPath(treeData, stringToArray(values[1]), values[0], stringToBoolean(values[3]));
       });
     })
     .catch(error => console.error('Error:', error));
@@ -188,6 +188,30 @@ async function updateFolderNameDB(newFolderName, targetFolderPath) {
     body: JSON.stringify({
       newName: newFolderName,
       targetPath: targetFolderPath
+    }),
+  });
+};
+
+async function addFileIntoDB(newFileInfo) {
+  // var newFolderInfo = {"text": "folderInfo", "path": [2], "state": "closed", "isFolder": true};
+  const response = await fetch('http://192.168.12.135:7105/add_file', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newFileInfo),
+  });
+};
+
+async function removeNodeFromDB(targetPath) {
+  // var newFolderInfo = {"text": "folderInfo", "path": [2], "state": "closed", "isFolder": true};
+  const response = await fetch('http://192.168.12.135:7105/remove_folder', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      targetPath: targetPath,
     }),
   });
 };
@@ -293,8 +317,8 @@ function tree_addChildAtPath(treeData, targetPath, childText, isFolder = true) {
   if (!currentNode.children) { currentNode.children = []; };
   // console.log('currentNode.children: ', currentNode.children);
 
-  if (isFolder) { currentNode.children.push({ "text": childText, "path": targetPath, "state": "closed", "isFolder": true}); }
-  else { currentNode.children.push({ "text": childText, "path": targetPath, "isFolder": false}); }
+  if (isFolder) { console.log(isFolder); currentNode.children.push({ "text": childText, "path": targetPath, "state": "closed", "isFolder": true}); }
+  else { console.log('isFolder is false'); currentNode.children.push({ "text": childText, "path": targetPath, "state": "open", "isFolder": false}); }
 }
 
 function tree_addFolder(treeData, currentPath) {
@@ -308,12 +332,20 @@ function tree_addFolder(treeData, currentPath) {
   }
 }
 
+const dataArray = [
+  ['John', 30],
+  ['Alice', 25],
+  ['Bob', 35]
+];
+
 function tree_addFile(treeData, currentPath) {
   var currentNodeAtData = tree_findNodeByPath(treeData, currentPath);
   if (currentNodeAtData.isFolder == true) {
     let targetIndex = tree_findEmptyIndex(treeData, currentPath);
     let newPath = [ ...currentPath, targetIndex];
+    let newFileInfo = {"text": "NewFile", "path": newPath, "fileContents": JSON.stringify(dataArray) };
     tree_addChildAtPath(treeData, newPath, 'NewFile', false);
+    addFileIntoDB(newFileInfo);
   }
 }
 
@@ -328,6 +360,7 @@ async function tree_removeNode(treeID, treeData, selectedNode) {
   listObj_deleteElementsByKeyValue(parentNodeAtData.children, 'path', targetPathOrigin);
   removeNodeFromDB(targetPathOrigin);
   console.log(parentNodeAtData.children);
+  if (parentNodeAtData.children.length === 0) { parentNodeAtData.state = 'closed'; }
   refreshEventHandlers('treeContainer', treeData);
 }
 

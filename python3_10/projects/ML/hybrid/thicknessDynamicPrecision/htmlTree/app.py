@@ -17,6 +17,7 @@ db = mysql.connector.connect(
 )
 
 tableName = "htmlTree2"
+dbTableName = "htmlTree2DB"
 
 # Route to render the HTML page
 @app.route('/')
@@ -57,9 +58,27 @@ def remove_folder():
 
     cursor = db.cursor()
     cursor.execute(f"DELETE FROM {tableName} WHERE path LIKE '%{targetPathIncluding}%';")
+    cursor.execute(f"DELETE FROM {dbTableName} WHERE path LIKE '%{targetPathIncluding}%';")
     db.commit()
     cursor.close()
     return jsonify({ })
+
+@app.route('/add_file', methods=['POST'])
+def add_file():
+    tr_json = request.get_json()
+    text = tr_json['text']
+    path = tr_json['path']
+    state = 'open'
+    isFolder = 'false'
+    fileContents = tr_json['fileContents']
+
+    cursor = db.cursor()
+    cursor.execute(f"INSERT INTO {tableName} (text, path, state, isFolder) VALUES ('{text}', '{path}', '{state}', '{isFolder}');")
+    cursor.execute(f"INSERT INTO {dbTableName} (path, fileContents) VALUES ('{path}', '{fileContents}');")
+    db.commit()
+    cursor.close()
+    return jsonify({ })
+
 
 @app.route('/update_folder', methods=['POST'])
 def update_folder():
