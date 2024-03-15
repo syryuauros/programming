@@ -12,19 +12,20 @@
 
   <body>
     <button onclick="openPopUp(popup1,400,300)">DB</button>
-    <button onclick="addFolderIntoDB()">fetch DB</button>
+    <button onclick="loadDataFromDB1()">fetch DB</button>
     <div id="tableNames"></div>
 
 
     <div class="popup" id="popup1" style="height: 900px; width: 450px; display: none;">
-      <button class="button" onclick="closePopUp(popup1)">X</button> <br>
+      <button class="button" onclick=""></button> <br>
       <div id="treeContainer"></div>
       <div id="treeContextMenu" class="easyui-menu" style="width: 120px;">
         <div data-options="iconCls:'icon-add'">Add folder</div>
-        <div data-options="iconCls:'icon-edit'">Edit Node</div>
+        <div data-options="iconCls:'icon-edit'">Add file</div>
         <div class="menu-sep"></div>
-        <div data-options="iconCls:'icon-remove'">Delete folder</div>
-      </div>
+        <div data-options="iconCls:'icon-remove'">Delete</div>
+      </div> <br><br><br>
+      <button onclick="loadDataFromDB2('treeContainer');">confirm</button> <br>
     </div>
 
     <script src="script.js"></script>

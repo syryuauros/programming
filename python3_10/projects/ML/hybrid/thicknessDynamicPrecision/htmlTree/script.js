@@ -254,6 +254,7 @@ function tree_findNodeByPath(treeData, path) {
   return currentNode;
 }
 
+
 // function fetchTableNames() {
 //   fetch('http://192.168.12.135:7105/get_table_tree')
 //     .then(response => response.json())
@@ -363,6 +364,42 @@ async function tree_removeNode(treeID, treeData, selectedNode) {
   if (parentNodeAtData.children.length === 0) { parentNodeAtData.state = 'closed'; }
   refreshEventHandlers('treeContainer', treeData);
 }
+
+let loadingData = false;
+async function loadDataFromDB1() {
+  openPopUp(popup1, 400,300);
+  loadingData = true;
+}
+
+let loadedData;
+async function loadDataFromDB2(treeID) {
+  let treeUI = $('#' + treeID);
+  if (loadingData == true) {
+    var selectedNode = treeUI.tree('getSelected');
+    console.log('selectedNode: ', selectedNode.path);
+
+    const response = await fetch('http://192.168.12.135:7105/load_file', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        targetPath: selectedNode.path
+      }),
+    });
+
+    if (response.ok) {
+      loadedData = await response.json();
+      console.log('loadedData: ', loadedData);
+    } else {
+      console.error('Failed to load data. server response is incorrect!');
+    }
+  }
+  loadingData = false;
+  closePopUp(popup1);
+}
+
+
 
 
 function openPopUp(popUpId, top, left) {

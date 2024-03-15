@@ -63,6 +63,20 @@ def remove_folder():
     cursor.close()
     return jsonify({ })
 
+@app.route('/update_folder', methods=['POST'])
+def update_folder():
+    tr_json = request.get_json()
+    newName = tr_json['newName']
+    targetPath = tr_json['targetPath']
+
+    cursor = db.cursor()
+    print(f"UPDATE htmlTree2 SET text = '{newName}' WHERE path = '{targetPath}';")
+    cursor.execute(f"UPDATE htmlTree2 SET text = '{newName}' WHERE path = '{targetPath}';")
+    db.commit()
+    cursor.close()
+    return jsonify({ })
+
+
 @app.route('/add_file', methods=['POST'])
 def add_file():
     tr_json = request.get_json()
@@ -79,21 +93,20 @@ def add_file():
     cursor.close()
     return jsonify({ })
 
-
-@app.route('/update_folder', methods=['POST'])
-def update_folder():
+@app.route('/load_file', methods=['POST'])
+def load_file():
     tr_json = request.get_json()
-    newName = tr_json['newName']
     targetPath = tr_json['targetPath']
 
     cursor = db.cursor()
-    print(f"UPDATE htmlTree2 SET text = '{newName}' WHERE path = '{targetPath}';")
-    cursor.execute(f"UPDATE {tableName} SET text = '{newName}' WHERE path = '{targetPath}';")
-    db.commit()
+    print(f"SELECT fileContents FROM {dbTableName} WHERE path = '{targetPath}' ORDER BY path DESC;")
+    cursor.execute(f"SELECT fileContents FROM {dbTableName} WHERE path = '{targetPath}' ORDER BY path DESC;")
+
+    loadedData = [table for table in cursor.fetchall()]
+    print('loadedData', loadedData)
+    rows = cursor.fetchall()
     cursor.close()
-    return jsonify({ })
-
-
+    return jsonify(bytes_tuples_to_json(loadedData))
 
 
 # API endpoint to fetch folder hierarchy data
@@ -104,6 +117,24 @@ def get_folders():
     folders = [{'folder_id': folder[0], 'folder_name': folder[1], 'parent_folder_id': folder[2]} for folder in cursor.fetchall()]
     cursor.close()
     return jsonify(folders)
+
+def bytes_tuples_to_json(list_of_tuples):
+    """
+    Converts a list of tuples containing bytes objects into a list of JSON strings.
+
+    Args:
+        list_of_tuples (list): A list of tuples where each tuple contains a bytes object.
+
+    Returns:
+        list: A list of JSON strings converted from the bytes objects.
+    """
+    json_data_list = []
+    for item in list_of_tuples:
+        decoded_data = item[0].decode('utf-8')
+        parsed_data = json.loads(decoded_data)
+        json_data = json.dumps(parsed_data)
+        json_data_list.append(json_data)
+    return json_data_list
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=7105, debug=False)
