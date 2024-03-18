@@ -25,6 +25,8 @@
 
 var treeData = [];
 treeData.push({"text": "DataBase", "path": [0], "state": "closed", "isFolder": true});
+var treeData1 = [];
+treeData1.push({"text": "DataBase1", "path": [0], "state": "closed", "isFolder": true});
 
 
 // tree_addChildAtPath(treeData, [0, 0], "a");
