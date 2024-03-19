@@ -1,4 +1,6 @@
 
+
+
 class arrFunctions {
   constructor() {}
 
@@ -148,8 +150,8 @@ class treeFunctions {
     if (currentNodeAtData.isFolder == true) {
       let targetIndex = this.findEmptyIndex(currentPath, treeDataIn);
       let newPath = [ ...currentPath, targetIndex];
-      let newFileInfo = {"text": "NewFile", "path": newPath, "fileContents": JSON.stringify(dataArray) };
-      this.addChildAtPath(treeDataIn, newPath, 'NewFile', false);
+      let newFileInfo = {"text": "NewFile", "path": newPath, "fileContents": JSON.stringify(fileContents) };
+      this.addChildAtPath(newPath, 'NewFile', treeDataIn, false);
       this.addFileIntoDB(newFileInfo);
     }
   }
@@ -317,12 +319,12 @@ class dBTree {
         });
       },
 
-      onDblClick: function(node, treeDataIn) {
+      onDblClick: function(node) {
         $(this).tree('beginEdit', node.target);
         console.log(treeUI);
       },
 
-      onAfterEdit: function(node, treeDataIn) {
+      onAfterEdit: function(node) {
         var selectedNode = treeUI.tree('getSelected');
         var currentNodeAtData = treeF.findNodeByPath(selectedNode.path, treeDataIn);
         currentNodeAtData.text = selectedNode.text;
@@ -330,12 +332,12 @@ class dBTree {
         console.log(currentNodeAtData);
       },
 
-      onExpand: function(node, treeDataIn) {
+      onExpand: function(node) {
         console.log("expending", node.path);
         var currentNodeAtData = treeF.findNodeByPath(node.path, treeDataIn);
         currentNodeAtData.state = "open";
       },
-      onCollapse: function(node, treeDataIn) {
+      onCollapse: function(node) {
         console.log("collapsed", node.path);
         var currentNodeAtData = treeF.findNodeByPath(node.path, treeDataIn);
         currentNodeAtData.state = "closed";
@@ -343,10 +345,10 @@ class dBTree {
     });
   }
 
-  pathID;
   initializeContextMenu(treeContextMenu=this.treeContextMenu, treeID = this.treeID, treeDataIn = this.treeDataIn, ) {
     let treeUI = $('#' + treeID);
     let treeCM = $('#' + treeContextMenu);
+    var pathID;
 
     treeCM.menu({
       onClick: function(item, node) {
@@ -357,9 +359,9 @@ class dBTree {
           if (selectedNode) {
             var text = selectedNode.text;
             var path = selectedNode.path;
-            pathID = this.arrF.deepCopy(path);
-            treeF.addFolder(treeDataIn, path);
-            treeF.refreshEventHandlers(treeID, treeDataIn);
+            pathID = treeF.arrF.deepCopy(path);
+            treeF.addFolder(path, treeDataIn);
+            refreshEventHandlers(treeID, treeDataIn);
           }
         } else if (item.iconCls === 'icon-remove') {
           if (selectedNode) {
@@ -370,8 +372,8 @@ class dBTree {
           if (selectedNode) {
             var text = selectedNode.text;
             var path = selectedNode.path;
-            pathID = arr_deepCopy(path);
-            treeF.addFile(treeDataIn, path);
+            pathID = treeF.arrF.deepCopy(path);
+            treeF.addFile(path, treeDataIn);
             refreshEventHandlers(treeID, treeDataIn);
           }
         }
@@ -380,7 +382,31 @@ class dBTree {
   }
 }
 
+function refreshEventHandlers(treeID, treeDataIn) {
+  let treeUI = $('#' + treeID);
+  console.log('treeDataIn in refresh: ', treeDataIn);
+  treeUI.tree('loadData', treeDataIn);
+  dBTree1.initializeTree();
+  dBTree1.initializeContextMenu();
+}
 
+function openPopUp(popUpId, top, left) {
+  topPosition = top + 'px';
+  leftPosition = left + 'px';
+  popUpId.style.top = topPosition;
+  popUpId.style.left = leftPosition;
+  popUpId.style.display = 'block';
+}
+
+function closePopUp(popUpId) {
+  popUpId.style.display = 'none';
+}
+
+var dataArray = [
+  ['John2', 30],
+  ['Alice2', 25],
+  ['Bob2', 35]
+];
 
 const arrF = new arrFunctions();
 const strF = new strFunctions();
@@ -391,6 +417,6 @@ const dBTree1 = new dBTree();
 $(document).ready(async function () {
   dBTree1.initializeTree();
   dBTree1.initializeContextMenu();
-  await treeF.fetchDB();
+  await dBTree1.treeF.fetchDB();
 
 })

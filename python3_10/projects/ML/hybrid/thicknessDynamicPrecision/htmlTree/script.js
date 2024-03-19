@@ -47,11 +47,11 @@ treeData1.push({"text": "DataBase1", "path": [0], "state": "closed", "isFolder":
 // tree_addChildAtPath(treeData, [0, 3], "d");
 
 
-$(document).ready(async function() {
-  initializeTree('treeContainer', treeData);
-  initializeContextMenu('treeContainer', treeData);
-  await fetchDB();
-});
+// $(document).ready(async function() {
+//   initializeTree('treeContainer', treeData);
+//   initializeContextMenu('treeContainer', treeData);
+//   await fetchDB();
+// });
 
 
 
