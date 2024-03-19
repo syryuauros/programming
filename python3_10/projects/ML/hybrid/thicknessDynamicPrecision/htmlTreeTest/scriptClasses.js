@@ -297,6 +297,7 @@ class dBTree {
   initializeTree(treeContextMenu=this.treeContextMenu, treeID = this.treeID, treeDataIn = this.treeDataIn ) { // treeID: str, treeData: var, treeContextMenu: str
     let treeUI = $('#' + treeID);
     let treeCM = $('#' + treeContextMenu);
+    let treeF = this.treeF;
     console.log('in refresh end');
 
     treeUI.tree({
@@ -348,6 +349,7 @@ class dBTree {
   initializeContextMenu(treeContextMenu=this.treeContextMenu, treeID = this.treeID, treeDataIn = this.treeDataIn, ) {
     let treeUI = $('#' + treeID);
     let treeCM = $('#' + treeContextMenu);
+    let treeF = this.treeF;
     var pathID;
 
     treeCM.menu({
@@ -411,7 +413,7 @@ var dataArray = [
 const arrF = new arrFunctions();
 const strF = new strFunctions();
 const looF = new listObjFunctions();
-const treeF = new treeFunctions();
+// const treeF = new treeFunctions();
 const dBTree1 = new dBTree();
 
 $(document).ready(async function () {
