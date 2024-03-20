@@ -1,0 +1,34 @@
+.buttonForDBTree {
+  display: inline-block;
+  padding: 5px 5px;
+  margin-bottom: 5px;
+  background-color: #EDBB99 ;
+  /* background-color: #FEF9E7 ; */
+  color: red;
+  font-size: 8px;
+  text-decoration: none;
+  border: none;
+  /* border-radius: 0px; */
+  /* font-weight: bold; */
+  text-align: right;
+  width: 100%;
+}
+
+.popupForDBTree {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  background-color: #FDFAF2  ;
+  /* background-color: #F4F6F7  ; */
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  border: 2px solid #ccc;
+
+  /* 임시 지정 */
+  width: 100px;
+  height: 100px;
+
+  /* 초기에 약간 아래에 배치 */
+  transform: translate(-50%, -40%);
+  z-index: 10000;
+}

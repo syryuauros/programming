@@ -79,7 +79,7 @@ class treeFunctions {
 
   treeContextMenu = 'treeContextMenu';
   treeID = 'treeContainer';
-  treeDataIn = [{"text": "DB", "path": [0], "state": "closed", "isFolder": true}];
+  treeDataIn = [{"text": "DataBase", "path": [0], "state": "closed", "isFolder": true}];
 
   loadingDataIn = false;
   loadedDataIn;
@@ -145,7 +145,7 @@ class treeFunctions {
     }
   }
 
-  addFile(currentPath, treeDataIn = this.treeDataIn, fileContents = dataArray) {
+  addFile(currentPath, treeDataIn = this.treeDataIn, fileContents = dataArrayToSave) {
     var currentNodeAtData = this.findNodeByPath(currentPath, treeDataIn);
     if (currentNodeAtData.isFolder == true) {
       let targetIndex = this.findEmptyIndex(currentPath, treeDataIn);
@@ -238,7 +238,6 @@ class treeFunctions {
       }
     }
     this.loadingDataIn = false;
-    closePopUp(popup1);
   }
 
   async updateFolderNameDB(newFolderName, targetFolderPath) {
@@ -276,7 +275,7 @@ class treeFunctions {
       .then(response => response.json())
       .then(data => {
         data.forEach(values => {
-          console.log(this.strF.toArray(values[1]), values[0], this.strF.toBoolean(values[3]));
+          // console.log(this.strF.toArray(values[1]), values[0], this.strF.toBoolean(values[3]));
           this.addChildAtPath(this.strF.toArray(values[1]), values[0], treeDataIn, this.strF.toBoolean(values[3]));
         });
       })
@@ -330,8 +329,6 @@ class dBTree {
           left: e.pageX,
           top: e.pageY,
           onClick: async function(item, node) {
-            console.log('I am in');
-
             var selectedNode = treeUI.tree('getSelected');
 
             if (item.iconCls === 'icon-add') {
@@ -444,7 +441,7 @@ function closePopUp(popUpId) {
   popUpId.style.display = 'none';
 }
 
-var dataArray = [
+var dataArrayToSave = [
   ['John2', 30],
   ['Alice2', 25],
   ['Bob2', 35]
@@ -454,7 +451,7 @@ const arrF = new arrFunctions();
 const strF = new strFunctions();
 const looF = new listObjFunctions();
 // const treeF = new treeFunctions();
-const dBTree1 = new dBTree('test5');
+const dBTree1 = new dBTree('dBTreeTest');
 
 $(document).ready(async function () {
   dBTree1.initializeTree();
