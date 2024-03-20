@@ -17,7 +17,7 @@
 
 
     <div class="popup" id="popup1" style="height: 900px; width: 450px; display: none;">
-      <button class="button" onclick=""></button> <br>
+      <button class="button" onclick="closePopUp(popup1)">x</button> <br>
       <div id="treeContainer"></div>
       <div id="treeContextMenu" class="easyui-menu" style="width: 120px;">
         <div data-options="iconCls:'icon-add'">Add folder</div>
@@ -25,7 +25,7 @@
         <div class="menu-sep"></div>
         <div data-options="iconCls:'icon-remove'">Delete</div>
       </div> <br><br><br>
-      <button onclick="loadDataFromDB2('treeContainer');">confirm</button> <br>
+      <button onclick="dBTree1.treeF.loadDataFromDB('treeContainer');">Load</button> <br>
     </div>
 
     <!-- <script src="script.js"></script> -->

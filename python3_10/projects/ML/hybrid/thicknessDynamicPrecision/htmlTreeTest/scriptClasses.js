@@ -191,7 +191,8 @@ class treeFunctions {
     this.removeNodeFromDB(targetPathOrigin);
     console.log(parentNodeAtData.children);
     if (parentNodeAtData.children.length === 0) { parentNodeAtData.state = 'closed'; }
-    refreshEventHandlers(treeID, treeDataIn);
+    await treeUI.tree({data: treeDataIn});
+    // refreshEventHandlers(treeID, treeDataIn);
   }
 
   async removeNodeFromDB(targetPath) {
@@ -207,13 +208,14 @@ class treeFunctions {
     });
   }
 
-  async loadDataFromDB1() {
-    openPopUp(popup1, 400,300);
-    this.loadingDataIn = true;
-  }
+  // async loadDataFromDB1() {
+  //   openPopUp(popup1, 400,300);
+  //   this.loadingDataIn = true;
+  // }
 
-  async loadDataFromDB2(treeID = this.treeID) {
+  async loadDataFromDB(treeID = this.treeID) {
     let treeUI = $('#' + treeID);
+    this.loadingDataIn = true;
     if (this.loadingDataIn == true) {
       var selectedNode = treeUI.tree('getSelected');
       console.log('selectedNode: ', selectedNode.path);
@@ -253,6 +255,21 @@ class treeFunctions {
     });
   }
 
+  async initDBTree(dataBaseName, treeID = this.treeID, treeDataIn = this.treeDataIn) {
+    await this.initDBTreeInside(dataBaseName, treeID, treeDataIn);
+  }
+
+  async initDBTreeInside(dataBaseName, treeID = this.treeID, treeDataIn = this.treeDataIn) {
+    const response = await fetch('http://192.168.12.135:7105/init_db_tree', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        dataBaseName: dataBaseName,
+      }),
+    });
+  };
 
   async fetchDB(treeID = this.treeID, treeDataIn = this.treeDataIn) {
     await fetch('http://192.168.12.135:7105/get_table_tree')
@@ -265,7 +282,10 @@ class treeFunctions {
       })
       .catch(error => console.error('Error:', error));
     console.log('treeDataIn: ', treeDataIn);
-    await refreshEventHandlers(treeID, treeDataIn);
+
+    let treeUI = $('#' + treeID);
+    await treeUI.tree({data: treeDataIn});
+    // await refreshEventHandlers(treeID, treeDataIn);
   };
 
 }
@@ -276,28 +296,20 @@ class dBTree {
   treeID = 'treeContainer';
   treeDataIn = [{"text": "DB", "path": [0], "state": "closed", "isFolder": true}];
 
-  loadingDataIn = false;
-  loadedDataIn;
-
   treeF = new treeFunctions(this.treeID, this.treeDataIn, this.treeContextMenu);
 
-  constructor(treeIDName = this.treeID, treeDataInName = this.treeDataIn, treeContextMenuName = this.treeContextMenu) {
-    this.treeID = treeIDName,
-    this.treeDataIn = treeDataInName,
-    this.treeContextMenu = treeContextMenuName
-  }
-
-  refreshEventHandlers(treeID = this.treeID, treeDataIn = this.treeDataIn) {
-    let treeUI = $('#' + treeID);
-    treeUI.tree('loadData', treeDataIn);
-    this.initializeTree(treeID, treeDataIn);
-    this.initializeContextMenu(treeID, treeDataIn);
+  constructor(dataBaseName, treeIDName = this.treeID, treeDataInName = this.treeDataIn, treeContextMenuName = this.treeContextMenu) {
+    this.treeID = treeIDName;
+    this.treeDataIn = treeDataInName;
+    this.treeContextMenu = treeContextMenuName;
+    this.treeF.initDBTree(dataBaseName);
   }
 
   initializeTree(treeContextMenu=this.treeContextMenu, treeID = this.treeID, treeDataIn = this.treeDataIn ) { // treeID: str, treeData: var, treeContextMenu: str
     let treeUI = $('#' + treeID);
     let treeCM = $('#' + treeContextMenu);
     let treeF = this.treeF;
+    let pathID;
     console.log('in refresh end');
 
     treeUI.tree({
@@ -316,7 +328,34 @@ class dBTree {
         e.preventDefault();
         treeCM.menu('show', {
           left: e.pageX,
-          top: e.pageY
+          top: e.pageY,
+          onClick: async function(item, node) {
+            console.log('I am in');
+
+            var selectedNode = treeUI.tree('getSelected');
+
+            if (item.iconCls === 'icon-add') {
+              if (selectedNode) {
+                var text = selectedNode.text;
+                var path = selectedNode.path;
+                pathID = treeF.arrF.deepCopy(path);
+                treeF.addFolder(path, treeDataIn);
+                await treeUI.tree({data: treeDataIn});
+              }
+            } else if (item.iconCls === 'icon-remove') {
+              if (selectedNode) {
+                treeF.removeNode(selectedNode, treeID, treeDataIn );
+              }
+            } else if (item.iconCls === 'icon-edit') {
+              if (selectedNode) {
+                var text = selectedNode.text;
+                var path = selectedNode.path;
+                pathID = treeF.arrF.deepCopy(path);
+                treeF.addFile(path, treeDataIn);
+                await treeUI.tree({data: treeDataIn});
+              }
+            }
+          }
         });
       },
 
@@ -346,51 +385,52 @@ class dBTree {
     });
   }
 
-  initializeContextMenu(treeContextMenu=this.treeContextMenu, treeID = this.treeID, treeDataIn = this.treeDataIn, ) {
-    let treeUI = $('#' + treeID);
-    let treeCM = $('#' + treeContextMenu);
-    let treeF = this.treeF;
-    var pathID;
+  // initializeContextMenu(treeContextMenu=this.treeContextMenu, treeID = this.treeID, treeDataIn = this.treeDataIn, ) {
+  //   let treeUI = $('#' + treeID);
+  //   let treeCM = $('#' + treeContextMenu);
+  //   let treeF = this.treeF;
+  //   let initializeTree = this.initializeTree;
+  //   var pathID;
 
-    treeCM.menu({
-      onClick: function(item, node) {
+  //   treeCM.menu({
+  //     onClick: function(item, node) {
 
-        var selectedNode = treeUI.tree('getSelected');
+  //       var selectedNode = treeUI.tree('getSelected');
 
-        if (item.iconCls === 'icon-add') {
-          if (selectedNode) {
-            var text = selectedNode.text;
-            var path = selectedNode.path;
-            pathID = treeF.arrF.deepCopy(path);
-            treeF.addFolder(path, treeDataIn);
-            refreshEventHandlers(treeID, treeDataIn);
-          }
-        } else if (item.iconCls === 'icon-remove') {
-          if (selectedNode) {
-            treeF.removeNode(selectedNode, treeID, treeDataIn );
-            refreshEventHandlers(treeID, treeDataIn);
-          }
-        } else if (item.iconCls === 'icon-edit') {
-          if (selectedNode) {
-            var text = selectedNode.text;
-            var path = selectedNode.path;
-            pathID = treeF.arrF.deepCopy(path);
-            treeF.addFile(path, treeDataIn);
-            refreshEventHandlers(treeID, treeDataIn);
-          }
-        }
-      }
-    });
-  }
+  //       if (item.iconCls === 'icon-add') {
+  //         if (selectedNode) {
+  //           var text = selectedNode.text;
+  //           var path = selectedNode.path;
+  //           pathID = treeF.arrF.deepCopy(path);
+  //           treeF.addFolder(path, treeDataIn);
+  //           treeUI.tree({data: treeDataIn});
+  //         }
+  //       } else if (item.iconCls === 'icon-remove') {
+  //         if (selectedNode) {
+  //           treeF.removeNode(selectedNode, treeID, treeDataIn );
+  //           treeUI.tree({data: treeDataIn});
+  //         }
+  //       } else if (item.iconCls === 'icon-edit') {
+  //         if (selectedNode) {
+  //           var text = selectedNode.text;
+  //           var path = selectedNode.path;
+  //           pathID = treeF.arrF.deepCopy(path);
+  //           treeF.addFile(path, treeDataIn);
+  //           treeUI.tree({data: treeDataIn});
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 }
 
-function refreshEventHandlers(treeID, treeDataIn) {
-  let treeUI = $('#' + treeID);
-  console.log('treeDataIn in refresh: ', treeDataIn);
-  treeUI.tree('loadData', treeDataIn);
-  dBTree1.initializeTree();
-  dBTree1.initializeContextMenu();
-}
+// function refreshEventHandlers(treeID, treeDataIn) {
+//   let treeUI = $('#' + treeID);
+//   console.log('treeDataIn in refresh: ', treeDataIn);
+//   treeUI.tree('loadData', treeDataIn);
+//   dBTree1.initializeTree();
+//   // dBTree1.initializeContextMenu();
+// }
 
 function openPopUp(popUpId, top, left) {
   topPosition = top + 'px';
@@ -414,11 +454,9 @@ const arrF = new arrFunctions();
 const strF = new strFunctions();
 const looF = new listObjFunctions();
 // const treeF = new treeFunctions();
-const dBTree1 = new dBTree();
+const dBTree1 = new dBTree('test5');
 
 $(document).ready(async function () {
   dBTree1.initializeTree();
-  dBTree1.initializeContextMenu();
   await dBTree1.treeF.fetchDB();
-
 })

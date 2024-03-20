@@ -13,7 +13,7 @@ db = mysql.connector.connect(
     host="localhost",
     user="auros",
     password="auros1",
-    database="test"
+    database="mysql"
 )
 
 tableName = "htmlTree2"
@@ -25,8 +25,56 @@ def index():
     return render_template('index.html')
 
 # Route to fetch and return table contents as JSON
+@app.route('/init_db_tree', methods=['POST'])
+def init_db_tree():
+    tr_json = request.get_json()
+    # dataBaseName = 'test5'
+    dataBaseName = str(tr_json['dataBaseName'])
+
+    global db
+    db_start = mysql.connector.connect(
+        host="localhost",
+        user="auros",
+        password="auros1",
+        database="mysql"
+    )
+    cursor_start = db_start.cursor()
+    cursor_start.execute(f"SHOW DATABASES;")
+    table1 = [table for table in cursor_start.fetchall() if table[0] == f"{dataBaseName}"]
+    if table1 == []:
+        print(f"\033[91m make new DataBase, {dataBaseName} !! \033[0m")
+        cursor_start.execute(f"CREATE DATABASE {dataBaseName};")
+    else:
+        print(f'\033[91m DataBase {dataBaseName} is already exsits!! keep using it! \033[0m')
+    db_start.commit()
+    cursor_start.close()
+
+    db = mysql.connector.connect(
+        host="localhost",
+        user="auros",
+        password="auros1",
+        database=f"{dataBaseName}"
+    )
+    print('db58: ', db)
+    cursor = db.cursor()
+    cursor.execute(f"SHOW TABLES;")
+    table2 = [table for table in cursor.fetchall() if table[0] == f"{tableName}"]
+    if table2 == []:
+        print(f"\033[91m make new tables, {tableName} !! \033[0m")
+        cursor.execute(f"CREATE TABLE {tableName} (     text VARCHAR(30),     path VARCHAR(50) PRIMARY KEY,     state VARCHAR(30),   isFolder VARCHAR(10) );")
+        print(f"\033[91m make new tables, {dbTableName} !! \033[0m")
+        cursor.execute(f"CREATE TABLE {dbTableName} ( path VARCHAR(50) PRIMARY KEY, fileContents JSON );")
+        print(f"\033[91m table creation complete!! \033[0m")
+        # cursor.close()
+    else:
+        print(f'\033[91m table {tableName} and {dbTableName} exists!!, keep using it!! \033[0m')
+    db.commit()
+    return jsonify()
+
+# Route to fetch and return table contents as JSON
 @app.route('/get_table_tree')
 def get_table_tree():
+    print('db76: ', db)
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM {tableName} ORDER BY path DESC")
     table1 = [table for table in cursor.fetchall()]
@@ -140,6 +188,8 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=7105, debug=False)
 
 
+#❯ sudo mariadb -u auros -p
+# use test
 #create table htmlTree2 (     text VARCHAR(30),     path VARCHAR(50) PRIMARY KEY,     state VARCHAR(30),   isFolder VARCHAR(10), fileContents Json );
 #DROP TABLE htmlTree;
 #CREATE USER 'auros'@'localhost' IDENTIFIED BY 'auros1';
