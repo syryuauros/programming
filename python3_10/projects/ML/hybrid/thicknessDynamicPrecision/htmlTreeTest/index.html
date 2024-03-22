@@ -11,12 +11,12 @@
   </head>
 
   <body>
-    <button onclick="openPopUp(popup1,400,300)">DB1</button>
+    <button onclick="openPopUp(popupDBTree,400,300)">DB1</button>
     <div id="tableNames"></div>
 
 
-    <div class="popupForDBTree" id="popup1" style="height: 900px; width: 450px; display: none;">
-      <button class="buttonForDBTree" onclick="closePopUp(popup1)">x</button> <br>
+    <div class="popupForDBTree" id="popupDBTree" style="height: 900px; width: 450px; display: none;">
+      <button class="buttonForDBTree" onclick="closePopUp(popupDBTree)">x</button> <br>
       <div id="treeContainer"></div>
       <div id="treeContextMenu" class="easyui-menu" style="width: 120px;">
         <div data-options="iconCls:'icon-add'">Add folder</div>
