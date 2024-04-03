@@ -429,7 +429,7 @@ class dBTree {
 //   // dBTree1.initializeContextMenu();
 // }
 
-function openPopUp(popUpId, top, left) {
+function openPopUpDB(popUpId, top, left) {
   topPosition = top + 'px';
   leftPosition = left + 'px';
   popUpId.style.top = topPosition;
