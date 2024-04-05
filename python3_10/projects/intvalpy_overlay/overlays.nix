@@ -35,7 +35,7 @@ in rec
           matplotlib
         ];
 
-        doCheck = false;
+        doCheck = false; #all the tests disable
 
       };
 
