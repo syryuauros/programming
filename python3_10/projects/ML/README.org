@@ -45,3 +45,7 @@ https://blog.yevgnenll.me/posts/save-tree-in-mysql-closure-pattern-hierarchy-str
 
 + UI libraries
   https://www.jeasyui.com/demo/main/index.php?plugin=ComboBox&theme=default&dir=ltr&pitem=&sort=asc
+
++ using intvalpy via virtual environment and pip
+  https://discourse.nixos.org/t/python-and-pip-in-nixos/15849
+https://github.com/AndrosovAS/intvalpy
