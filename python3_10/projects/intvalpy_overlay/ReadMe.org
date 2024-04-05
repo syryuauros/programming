@@ -1,0 +1,18 @@
+#+title: Read Me
+intvalpy
+https://github.com/AndrosovAS/intvalpy
+
+help
+python3 -> import intvalpy as ip -> iplt = ip.IPlot() -> help(iplt. <TAB><TAB> -> help(iplt.figure.savefig)
+
+Docs for intvalpy
+https://intvalpy.readthedocs.io/ru/latest/index.html
+
+vertual environment (use pip in nixos)
+https://discourse.nixos.org/t/python-and-pip-in-nixos/15849
+
+how to make python package overlay
+https://nixos.wiki/wiki/Overlays
+
+how to clarify hash type in 'src'
+https://fridh.github.io/nix-tutorials/tutorials/02-python/01-using-and-creating-python-packages.html
