@@ -15,4 +15,6 @@ def J(x):
     return ip.asinterval(result)
 
 results = ip.nonlinear.HansenSengupta(f, J, ip.Interval([0.5,0.5],[1,1]))
+print(f([0.5, 0.5]))
+print(f([1, 1]))
 print(results)

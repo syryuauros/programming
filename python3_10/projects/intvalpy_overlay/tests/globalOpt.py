@@ -11,8 +11,16 @@ def levy(x):
     t2 = sum(((x - 1) ** 2 * (1 + 10 * np.sin(np.pi * x + 1) ** 2))[:-1])
     t3 = (z[-1] - 1) ** 2 * (1 + np.sin(2*np.pi * z[-1]) ** 2)
     return t1 + t2 + t3
+def levy2(x):
+    # z = (x-2) ** 2 + 1
+    t1 = (x[0]-2) ** 2 + 2 + x[1]
+    t2 = x[1] + 3
+    return t1 + t2
 
 N = 2
 x = ip.Interval([-5]*N, [5]*N)
-results = ip.nonlinear.globopt(levy, x, tol=1e-14)
+testx = ip.Interval([-5]*3, [5]*3)
+results = ip.nonlinear.globopt(levy2, x, tol=1e-14)
+print(testx)
 print(results)
+print(levy2([-5,5]))
