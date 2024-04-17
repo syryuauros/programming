@@ -4,8 +4,8 @@
 
     <title>ML Tools</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.10.19/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="../jquery-easyui-1.10.19/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="./jquery-easyui-1.10.19/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="./jquery-easyui-1.10.19/themes/icon.css">
     <link rel="stylesheet" href="./stylesForDBTree.css">
     <script type="text/javascript" src="../jquery-easyui-1.10.19/jquery.min.js"></script>
     <script type="text/javascript" src="../jquery-easyui-1.10.19/jquery.easyui.min.js"></script>
@@ -34,7 +34,7 @@
         <div class="menu-sep"></div>
         <div data-options="iconCls:'icon-remove'">Delete</div>
       </div> <br><br><br>
-      <button onclick="dBTree1.treeF.loadDataFromDB('treeContainer');">Load</button> <br>
+      <button id="myButton" onclick="dBTree1.treeF.loadDataFromDB('treeContainer');">Load</button> <br>
     </div>
 
 
@@ -146,6 +146,7 @@
                     <div class="item-header">
                         <span class="item-title" style="color:#EC7063;">Inputs</span>
                         <div class="item-controls">
+                            <button class="button-menu" onclick="importFromDB('table1')">DB&#x2193</button>
                             <button class="button-menu" onclick="exportToDB('table1')">DB&#x2191</button>
                             <button class="button-menu" onclick="toggleDropdownMenu('table1')">&#x25BE</button>
                             <button class="button-menu" onclick="loadCSVFile('table1')">&#x2193</button>
@@ -187,7 +188,7 @@
 
                                     <button onclick="loadTrain()">load train</button>
 
-                                    <button onclick="openPopUp(popupDBTree,400,300)">DB1</button>
+                                    <button onclick="openPopUpDB(popupDBTree,400,300)">DB1</button>
                                     <br>
 
 

@@ -4,6 +4,9 @@ var dataArrayToSave = [
   ['Bob2', 35]
 ];
 
+
+var dataArrayToLoad;
+
 const arrF = new arrFunctions();
 const strF = new strFunctions();
 const looF = new listObjFunctions();

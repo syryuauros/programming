@@ -232,7 +232,8 @@ class treeFunctions {
 
       if (response.ok) {
         this.loadedDataIn = await response.json();
-        console.log('loadedData: ', this.loadedDataIn);
+        dataArrayToLoad = this.loadedDataIn[0];
+        console.log('loadedData[0]: ', this.loadedDataIn[0]);
       } else {
         console.error('Failed to load data. server response is incorrect!');
       }
