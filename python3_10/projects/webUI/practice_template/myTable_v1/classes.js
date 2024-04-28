@@ -1,38 +1,39 @@
-class MyTable {
+class MySheet {
   constructor(name) {
     this.name = name;
-    this.panel = new MyPanel(this.name);
+    this.panelCurrent = new MyPanel(this.name);
   }
 
   identify() {
-    console.log(`the table name is ${this.name}`);
+    console.log(`the sheet name is ${this.name}`);
   }
 }
 
 
 class MyPanel {
-  constructor(tableName) {
+  constructor(sheetName) {
     this.isMinimized = false;
     this.isMaximized = false;
     this.panel = document.createElement('div');
     this.panel.className = 'panel';
+    this.panel.id = `${sheetName}_panel`;
     this.panel.style = 'color:#EC7063; z-Index: 1';
     this.panel.innerHTML = `
-    <div class="panel-header">
-      <span contenteditable="true" spellcheck="false" class="panel-title">${tableName}</span>
+    <div class="panel-header" onmousedown="bringToFront('${this.panel.id}')">
+      <span contenteditable="true" spellcheck="false" class="panel-title">${sheetName}</span>
       <div class="panel-controls">
         <button class="panel-minimize">\u2193</button>
         <button class="panel-minimize">\u2191</button>
-        <button class="panel-minimize" onclick="${tableName}.panel.toggleMinimize()">-</button>
-        <button class="panel-minimize" onclick="${tableName}.panel.toggleMaximize()">\u25A1</button>
-        <button class="panel-close" onclick="${tableName}.panel.closePanel()" >×</button>
+        <button class="panel-minimize" onclick="${sheetName}.panelCurrent.toggleMinimize()">-</button>
+        <button class="panel-minimize" onclick="${sheetName}.panelCurrent.toggleMaximize()">\u25A1</button>
+        <button class="panel-close" onclick="${sheetName}.panelCurrent.closePanel()" >×</button>
       </div>
     </div>
-    <div class="panel-content">
+    <div class="panel-content" onmousedown="bringToFront('${this.panel.id}')">
       <div id='aaa'></div>
       <button >new</button>
     </div>
-    <div class="panel-resize-handle"></div>
+    <div class="panel-resize-handle" onmousedown="bringToFront('${this.panel.id}')"></div>
     <script>
     </script/>
   `;

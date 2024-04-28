@@ -1,7 +1,7 @@
 
 let panelCounter = 0;
 var panels = [];
-var tables = [];
+var sheets = [];
 
 let isDragging = false;
 let isResizing = false;
@@ -16,13 +16,30 @@ document.addEventListener('mousemove', handleMouseMove);
 document.addEventListener('mouseup', handleMouseUp);
 
 
-// const table0 = new MyTable('table0');
-
-function createNewTable() {
+function createNewSheet() {
   const panelName = `panels[${panelCounter}]`;
-  const tableName = `tables[${panelCounter}]`;
-  tables[panelCounter] = new MyTable(tableName);
+  const sheetName = `sheets[${panelCounter}]`;
+  sheets[panelCounter] = new MySheet(sheetName);
   panelCounter++;
+}
+
+function bringToFront(panelID) {
+  const panels = document.querySelectorAll('.panel');
+  const panel = document.getElementById(panelID);
+
+  // Set the clicked panel to the highest z-index
+  let maxZIndex = 0;
+  let minZIndex = 0;
+  let count = 0;
+  panels.forEach(p => {
+    const zIndex = parseInt(window.getComputedStyle(p).zIndex, 10);
+    maxZIndex = Math.max(maxZIndex, zIndex);
+    minZIndex = Math.min(minZIndex, zIndex);
+    count++;
+    p.style.zIndex = p.style.zIndex - 1;
+  });
+
+  panel.style.zIndex = maxZIndex;
 }
 
 function handleMouseDown(e) {
@@ -30,7 +47,6 @@ function handleMouseDown(e) {
   const panelResizeHandle = e.target.closest('.panel-resize-handle');
 
   if (panelHeader) {
-    console.log('I am here');
     isDragging = true;
     offsetX = e.clientX - panelHeader.getBoundingClientRect().left;
     offsetY = e.clientY - panelHeader.getBoundingClientRect().top;
