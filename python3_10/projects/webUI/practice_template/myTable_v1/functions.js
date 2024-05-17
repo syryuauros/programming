@@ -16,10 +16,10 @@ document.addEventListener('mousemove', handleMouseMove);
 document.addEventListener('mouseup', handleMouseUp);
 
 
-function createNewSheet() {
+function createNewSheet(panelHeight='210', panelWidth='320') {
   const panelName = `panels[${panelCounter}]`;
   const sheetName = `sheets[${panelCounter}]`;
-  sheets[panelCounter] = new MySheet(sheetName);
+  sheets[panelCounter] = new MySheet(sheetName, panelHeight, panelWidth);
   panelCounter++;
 }
 
@@ -51,6 +51,7 @@ function handleMouseDown(e) {
     offsetX = e.clientX - panelHeader.getBoundingClientRect().left;
     offsetY = e.clientY - panelHeader.getBoundingClientRect().top;
     currentPanel = panelHeader.closest('.panel');
+    // console.log(currentPanel);
     initialWidth = currentPanel.offsetWidth;
     initialHeight = currentPanel.offsetHeight;
   } else if (panelResizeHandle) {
@@ -64,7 +65,7 @@ function handleMouseDown(e) {
 }
 
 function handleMouseMove(e) {
-  if (isDragging) {
+  if (isDragging && !currentPanel.isMaximized) {
     // const panel = document.querySelector('.panel');
     const x = e.clientX - offsetX;
     const y = e.clientY - offsetY;
