@@ -16,10 +16,10 @@ document.addEventListener('mousemove', handleMouseMove);
 document.addEventListener('mouseup', handleMouseUp);
 
 
-function createNewSheet(panelHeight='210', panelWidth='320') {
+function createNewSheet(panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
   const panelName = `panels[${panelCounter}]`;
   const sheetName = `sheets[${panelCounter}]`;
-  sheets[panelCounter] = new MySheet(sheetName, panelHeight, panelWidth);
+  sheets[panelCounter] = new MySheet(sheetName, panelHeight, panelWidth, panelYposition, panelXposition);
   panelCounter++;
 }
 
