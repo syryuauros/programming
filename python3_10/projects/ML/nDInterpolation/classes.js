@@ -4,55 +4,7 @@ const hyperformulaInstance = HyperFormula.buildEmpty({
 
 const tableSettingsAtStart = {
   data: [
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
-    [ , , , , , , , , ],
+    [ , , ],
   ],
   dropdownMenu: false,
   filters: false,
@@ -81,65 +33,6 @@ const tableSettingsAtStart = {
 const contextMenuHTable = {
   //https://handsontable.com/docs/8.2.0/demo-context-menu.html
   items: {
-    plot: {
-      name: 'Plot selected Data',
-      submenu: {
-        items: [
-          {
-            key: 'plot:heatMap',
-            name: 'heatMap',
-            callback: function(key, selection, event) {
-              let tableName = this.view.hot.rootElement.id;
-              heatMapPlotData(getDataFromSelectedRange(tableName), 'plot1');
-            },
-          },
-          {
-            key: 'plot:scatter',
-            name: 'scatter',
-            callback: function(key, selection, event) {
-              let tableName = this.view.hot.rootElement.id;
-              scatterPlotData(getDataFromSelectedRange(tableName), getHeaderFromSelectedRange(tableName), 'plot1');
-            },
-          },
-        ]
-      },
-    },
-    dataPrcs: {
-      name: 'Data Processing',
-      submenu: {
-        items: [
-          {
-            key: 'dataPrcs:rowToHeader',
-            name: 'rowToHeader',
-            callback: function(key, selection, event) {
-              let tableName = this.view.hot.rootElement.id;
-              var sel = this.getSelected();
-              rowToHeader(tableName, sel[0][0]);
-            },
-          },
-          {
-            key: 'dataPrcs:trimEmpty',
-            name: 'trimEmpty',
-            callback: function(key, selection, event) {
-              let tableName = this.view.hot.rootElement.id;
-              removeEmptyRows(tableName);
-              removeEmptyCols(tableName);
-            },
-          },
-          {
-            key: 'dataPrcs:exportSelectedData',
-            name: 'exportSelectedData',
-            callback: function(key, selection, event) {
-              let tableName = this.view.hot.rootElement.id;
-              exportDataToCSV(getDataFromSelectedRange(tableName));
-            },
-          },
-
-        ]
-      },
-    },
-
-    "sp1": '---------',
     'col_right': {
       name: 'insert column'
     },
@@ -162,14 +55,6 @@ const contextMenuHTable = {
         });
       },
     },
-    "sp2": '---------',
-
-    tableInfo: {
-      name: 'Table Info',
-      callback: function(key, selection, event) {
-        console.log("tableID:", this.view.hot.rootElement.id);
-      },
-    },
   },
 };
 
@@ -190,7 +75,7 @@ class MyTable {
     this.id = `${sheetName}_table`;
     this.tableElement = document.getElementById(`${this.id}`);
     this.tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
-    // this.tableSettings.contextMenu = contextMenuHTable;
+    this.tableSettings.contextMenu = contextMenuHTable;
     // this.tableSettings.dropdownMenu = true;
     // this.tableSettings.filters = true;
     // this.tableSettings.formulas = { engine: hyperformulaInstance, };
@@ -304,4 +189,32 @@ class MyPanel {
       this.panel.style.overflow = 'hidden';
     }
   }
+}
+
+class AoaFunctions {
+  constructor() { }
+
+  deepCopy(aoa) {
+    const rowNum = aoa.length;
+    const colNum = aoa[0].length;
+    const deepCopy = [];
+
+    for (let i = 0; i < rowNum; i++) {
+      deepCopy.push([]);
+      for (let j = 0; j < colNum; j++) {
+        deepCopy[i].push(aoa[i][j]);
+      }
+    }
+    return deepCopy;
+  }
+
+  deleteCoaToAoa(aoaInput, delIndex=(aoaInput[0].length -1)) {
+    let aoa = this.deepCopy(aoaInput);
+    aoa.map(row => {
+      row.splice(delIndex, 1);
+      return row;
+    })
+    return aoa;
+  }
+
 }
