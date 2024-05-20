@@ -3,10 +3,10 @@ let panelCounter = 0;
 var panels = [];
 var sheets = [];
 
-function createNewSheet(panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
+function createNewSheet(panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22', name=`sheets[${panelCounter}]`) {
   const panelName = `panels[${panelCounter}]`;
-  const sheetName = `sheets[${panelCounter}]`;
-  sheets[panelCounter] = new MySheet(sheetName, panelHeight, panelWidth, panelYposition, panelXposition);
+  // const sheetName = `sheets[${panelCounter}]`;
+  sheets[panelCounter] = new MySheet(name, panelHeight, panelWidth, panelYposition, panelXposition);
   panelCounter++;
 }
 

@@ -4,14 +4,55 @@ const hyperformulaInstance = HyperFormula.buildEmpty({
 
 const tableSettingsAtStart = {
   data: [
-    [ , , , , , ],
-    [ , , , , , ],
-    [ , , , , , ],
-    [ , , , , , ],
-    [ , , , , , ],
-    [ , , , , , ],
-    [ , , , , , ],
-    [ , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
+    [ , , , , , , , , ],
   ],
   dropdownMenu: false,
   filters: false,
@@ -29,7 +70,7 @@ const tableSettingsAtStart = {
   manualRowResize: true,
   customBorders: true,
   width: '100%',
-  height: '90%',
+  height: '91%',
   renderAllRows: false,
   outsideClickDeselects: false,
   selectionMode: 'multiple',
@@ -203,9 +244,9 @@ class MyPanel {
 
     this.panel.innerHTML =
       innerHTMLStart
-      + innerHTMLContents1DB
-      + innerHTMLContents1Toggle
-      + innerHTMLContents1Close
+      // + innerHTMLContents1DB
+      // + innerHTMLContents1Toggle
+      // + innerHTMLContents1Close
       + innerHTMLLinker1
       + innerHTMLContents2Table
       + innerHTMLEnd;
