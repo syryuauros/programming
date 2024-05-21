@@ -217,4 +217,18 @@ class AoaFunctions {
     return aoa;
   }
 
+  transpose(aoa) {
+    const rowNum = aoa.length;
+    const colNum = aoa[0].length;
+    const transposedAoa = [];
+
+    for (let j = 0; j < colNum; j++) {
+      transposedAoa.push([]);
+      for (let i = 0; i < rowNum; i++) {
+        transposedAoa[j].push(aoa[i][j]);
+      }
+    }
+    return transposedAoa;
+  }
+
 }

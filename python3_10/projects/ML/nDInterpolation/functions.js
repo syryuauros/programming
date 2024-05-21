@@ -31,9 +31,15 @@ function bringToFront(panelID) {
 }
 
 async function calculate() {
-  var inputData = aoa.deleteCoaToAoa(sheets[0].tableCurrent.tableSettings.data,0);
-  var paramData = aoa.deleteCoaToAoa(sheets[1].tableCurrent.tableSettings.data,0);
+  var xData = aoa.transpose(sheets[0].tableCurrent.tableSettings.data)[0];
+  var inputData  = aoa.deleteCoaToAoa(sheets[0].tableCurrent.tableSettings.data,0);
+  var paramData  = aoa.deleteCoaToAoa(sheets[1].tableCurrent.tableSettings.data,0);
   var pointsData = aoa.deleteCoaToAoa(sheets[2].tableCurrent.tableSettings.data,0);
+  // var inputData = aoa.transpose(aoa.deleteCoaToAoa(sheets[0].tableCurrent.tableSettings.data,0));
+  // var paramData = aoa.transpose(aoa.deleteCoaToAoa(sheets[1].tableCurrent.tableSettings.data,0));
+  // var pointsData = aoa.transpose(aoa.deleteCoaToAoa(sheets[2].tableCurrent.tableSettings.data,0));
+  var paramHead = aoa.transpose(sheets[1].tableCurrent.tableSettings.data);
+  // console.log(paramHead[0]);
 
   // console.log(inputData);
   // console.log(paramData);
@@ -45,13 +51,27 @@ async function calculate() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      xData: xData,
       inputData: inputData,
       paramData: paramData,
       pointsData: pointsData,
+      paramHead: paramHead[0],
     })
   });
 
-  // const data = await response.json();
+  const data = await response.json();
+
+  console.log(data.results);
+
+  sheets[3].tableCurrent.tableContent.updateSettings({
+    data: data.results,
+    numericFormat: {
+      pattern: '0,0.000',
+    },
+  });
+  // sheets[3].tableCurrent.tableSettings.data = data.results;
+  // sheets[3].tableCurrent.tableContent.updateSettings;
+
 
   // // createTableAny('table2', data.tst_X);
   // tableContent['table2'].updateSettings({
