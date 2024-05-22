@@ -11,6 +11,74 @@ function createNewSheet(panelHeight='210', panelWidth='320', panelYposition='22'
   panelCounter++;
 }
 
+function createNewPlotPanel(panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22', name=`sheets[${panelCounter}]`) {
+  const panelName = `panels[${panelCounter}]`;
+  // const sheetName = `sheets[${panelCounter}]`;
+  sheets[panelCounter] = new MyPlotPanel(name, panelHeight, panelWidth, panelYposition, panelXposition);
+  panelCounter++;
+}
+
+function updatePlot(plotId) {
+  newData = [];
+  inputsData = sheets[0].tableCurrent.tableContent.getData();
+  inputsPointsData = sheets[1].tableCurrent.tableContent.getData();
+  // outputData = sheets[3].tableCurrent.tableContent.getData();
+  inputsDataTr = aoa.transpose(inputsData);
+  inputsPointsDataTr = aoa.transpose(inputsPointsData);
+  // outputDataTr = aoa.transpose(outputData);
+  // dataNum = inputsData[0].length + outputData[0].length -2;
+
+  xData = inputsDataTr[0];
+  console.log(xData);
+  // console.log(dataNum);
+
+  for (i = 1; i <= inputsData[0].length-1; i++) {
+    traceTemp = { mode: 'lines', };
+    traceTemp.x = xData;
+    traceTemp.y = inputsDataTr[i];
+    traceTemp.z = i/inputsData[0].length;
+    traceTemp.name = String(inputsPointsDataTr[i][0]) + '_' + String(inputsPointsDataTr[i][1]);
+    traceTemp.type = 'scatter';
+    traceTemp.line = {
+      dash: 'solid',
+      width: 1,
+    };
+    newData.push(traceTemp);
+  }
+  Plotly.react(plotId, newData, layoutScatter, { scrollZoom: true, responsive: true});
+}
+
+function updatePlot2(plotId) {
+  newData = [];
+  inputsData = sheets[3].tableCurrent.tableContent.getData();
+  inputsPointsData = sheets[2].tableCurrent.tableContent.getData();
+  // outputData = sheets[3].tableCurrent.tableContent.getData();
+  inputsDataTr = aoa.transpose(inputsData);
+  inputsPointsDataTr = aoa.transpose(inputsPointsData);
+  // outputDataTr = aoa.transpose(outputData);
+  // dataNum = inputsData[0].length + outputData[0].length -2;
+
+  xData = inputsDataTr[0];
+  console.log(xData);
+  // console.log(dataNum);
+
+  for (i = 1; i <= inputsData[0].length-1; i++) {
+    traceTemp = { mode: 'lines', };
+    traceTemp.x = xData;
+    traceTemp.y = inputsDataTr[i];
+    traceTemp.z = i/inputsData[0].length;
+    traceTemp.name = String(inputsPointsDataTr[i][0]) + '_' + String(inputsPointsDataTr[i][1]);
+    traceTemp.type = 'scatter';
+    traceTemp.line = {
+      dash: 'solid',
+      width: 1,
+    };
+    newData.push(traceTemp);
+  }
+  Plotly.react(plotId, newData, layoutScatter, { scrollZoom: true, responsive: true});
+}
+
+
 function bringToFront(panelID) {
   const panels = document.querySelectorAll('.panel');
   const panel = document.getElementById(panelID);

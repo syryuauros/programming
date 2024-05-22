@@ -52,7 +52,6 @@ def nD_interpolation_numbers():
     num_inputData = inputDataArr.shape[0]
     num_out_points = len(out_points[0])
     results = np.zeros((num_inputData,num_out_points))
-    print(results.tolist())
     for i in range(num_inputData):
         values = inputDataArr[i]
 
@@ -74,7 +73,7 @@ def nD_interpolation_numbers():
 
 
     results = insert_col_left(results,np.transpose(xDataArr))
-    print(points)
+    # print(points)
     # print(values)
     # print(grids[0])
     #print(grid_x)
@@ -85,8 +84,8 @@ def nD_interpolation_numbers():
     # print(grids_max)
     # print(out_points[0])
     # print(out_points[1])
-    print(results.tolist())
-    print(num_inputData)
+    # print(results.tolist())
+    # print(num_inputData)
 
     return jsonify({ 'results': results.tolist(), })
 

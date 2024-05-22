@@ -1,62 +1,3 @@
-const hyperformulaInstance = HyperFormula.buildEmpty({
-  licenseKey: 'internal-use-in-handsontable',
-});
-
-const tableSettingsAtStart = {
-  data: [
-    [ , , ],
-  ],
-  dropdownMenu: false,
-  filters: false,
-  allowEmpty: true,
-  type: 'numeric',
-  // numericFormat: {
-  //     pattern: '0,0.000',
-  // },
-  // renderer: scientificRenderer,
-  //contextMenu: contextMenuTest,
-  manualColumnFreeze: true,
-  colHeaders: true,
-  rowHeaders: true,
-  manualColumnResize: true,
-  manualRowResize: true,
-  customBorders: true,
-  width: '100%',
-  height: '91%',
-  renderAllRows: false,
-  outsideClickDeselects: false,
-  selectionMode: 'multiple',
-  licenseKey: 'non-commercial-and-evaluation',
-  // formulas: { engine: hyperformulaInstance },
-};
-
-const contextMenuHTable = {
-  //https://handsontable.com/docs/8.2.0/demo-context-menu.html
-  items: {
-    'col_right': {
-      name: 'insert column'
-    },
-    'remove_col': {
-      name: 'remove column(s)'
-    },
-    'row_below': {
-      name: 'insert row'
-    },
-    'remove_row': {
-      name: 'remove row(s)'
-    },
-    freeze: {
-      name: 'freeze(unfreeze: set A1)',
-      callback: function(key, selection, event) {
-        var sel = this.getSelected();
-        this.updateSettings({
-          fixedRowsTop: sel[0][2],
-          fixedColumnsLeft: sel[0][3],
-        });
-      },
-    },
-  },
-};
 
 class MySheet {
   constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
@@ -67,6 +8,37 @@ class MySheet {
 
   identify() {
     console.log(`the sheet name is ${this.name}`);
+  }
+}
+
+class MyPlotPanel {
+  constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
+    this.name = name;
+    this.panelCurrent = new MyPanel(this.name, panelHeight, panelWidth, panelYposition, panelXposition);
+    this.plotCurrent = new MyPlot(this.name);
+  }
+
+  identify() {
+    console.log(`the sheet name is ${this.name}`);
+  }
+}
+
+class MyPlot {
+  constructor(PlotName) {
+    this.id = `${PlotName}_plot`;
+    this.trace = {
+      x: [],
+      y: [],
+      z: 1,
+      mode: 'lines',
+      line: {
+        dash: 'line',
+        size: 5,
+      },
+      type: 'scatter',
+      colorscale: 'Hot'
+    };
+    Plotly.newPlot(this.id, [this.trace], layoutScatter, {scrollZoom: true, responsive: true});
   }
 }
 
@@ -120,6 +92,9 @@ class MyPanel {
     var innerHTMLContents2Table = `
         <div id="${sheetName}_table"></div>
     `;
+    var innerHTMLContents2Plot = `
+        <div id="${sheetName}_plot" style="margin-left:1px"></div>
+    `;
     var innerHTMLEnd = `
       </div>
       <div class="panel-resize-handle" onmousedown="bringToFront('${this.panel.id}')"></div>
@@ -134,6 +109,7 @@ class MyPanel {
       // + innerHTMLContents1Close
       + innerHTMLLinker1
       + innerHTMLContents2Table
+      + innerHTMLContents2Plot
       + innerHTMLEnd;
   //   this.panel.innerHTML = `
   //   <div class="panel-header" onmousedown="bringToFront('${this.panel.id}')">
