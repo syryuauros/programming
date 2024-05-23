@@ -6,6 +6,7 @@ import json
 import numpy as np
 import math
 import random
+from scipy.interpolate import griddata
 
 num3 = float(0)
 
@@ -646,6 +647,38 @@ def custom_OSigmaP_calOSigmaP_numbers():
     #return jsonify({ 'dataOS':VecSP.reshape(-1,1).tolist(), })
     return jsonify({ 'dataOSPSP':MatOSPSP.tolist(), 'dataG':MatG.tolist(), 'dataCovP':MatCovP.tolist(), })
 
+@app.route('/nD_interpolation', methods=['POST'])
+def nD_interpolation_numbers():
+    tr_json = request.get_json()
+    xData = tr_json['xData']
+    inputData = tr_json['inputData']
+    paramData = tr_json['paramData']
+    pointsData = tr_json['pointsData']
+    paramHead = tr_json['paramHead']
+
+    xDataArr = np.array(xData).astype(float)
+    inputDataArr = np.array(inputData).astype(float)
+    paramDataArr = np.array(paramData).astype(float)
+    pointsDataArr = np.array(pointsData).astype(float)
+    paramHeadArr = np.array(paramHead).astype(str)
+
+    paramDataArrTr = np.transpose(paramDataArr)
+    points = paramDataArrTr
+    out_points = pointsDataArr
+
+    num_inputData = inputDataArr.shape[0]
+    num_out_points = len(out_points[0])
+    results = np.zeros((num_inputData,num_out_points))
+    for i in range(num_inputData):
+        values = inputDataArr[i]
+        grid_values = griddata(points, values, (out_points[0], out_points[1]), method='linear')
+        results[i] = grid_values
+
+    results = insert_col_left(results,np.transpose(xDataArr))
+
+    return jsonify({ 'results': results.tolist(), })
+
+
 
 def can_be_float(arr):
     k = 0
@@ -675,6 +708,10 @@ def find_max_indices(arr):
 def find_min_indices(arr):
     min_indices = np.where((arr == np.min(arr)))[0]
     return min_indices
+
+def insert_col_left(arr, inserts, axis=1):
+    modified_arr = np.insert(arr, 0, inserts, axis)
+    return modified_arr
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=6969)

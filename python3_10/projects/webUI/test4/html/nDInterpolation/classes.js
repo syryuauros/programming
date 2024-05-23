@@ -1,38 +1,31 @@
-// class MyBasicPanel {
-//   constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
-//     this.name = name;
-//     this.panelCurrent = new MyPanel(this.name, panelHeight, panelWidth, panelYposition, panelXposition);
-//   }
-// }
 
-
-// class MyTablePanel extends MyBasicPanel {
-//   constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
-//     super(name);
-//     this.itemCurrent = new MyTable(this.name);
-//   }
-// }
-
-class MyTablePanel {
+class MySheet {
   constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
     this.name = name;
     this.panelCurrent = new MyPanel(this.name, panelHeight, panelWidth, panelYposition, panelXposition);
-    this.itemCurrent = new MyTable(this.name);
+    this.tableCurrent = new MyTable(this.name);
+  }
+
+  identify() {
+    console.log(`the sheet name is ${this.name}`);
   }
 }
-
 
 class MyPlotPanel {
   constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
     this.name = name;
     this.panelCurrent = new MyPanel(this.name, panelHeight, panelWidth, panelYposition, panelXposition);
-    this.itemCurrent = new MyPlot(this.name);
+    this.plotCurrent = new MyPlot(this.name);
+  }
+
+  identify() {
+    console.log(`the sheet name is ${this.name}`);
   }
 }
 
 class MyPlot {
-  constructor(name) {
-    this.id = `${name}_plot`;
+  constructor(PlotName) {
+    this.id = `${PlotName}_plot`;
     this.trace = {
       x: [],
       y: [],
@@ -50,11 +43,11 @@ class MyPlot {
 }
 
 class MyTable {
-  constructor(name) {
-    this.id = `${name}_table`;
+  constructor(sheetName) {
+    this.id = `${sheetName}_table`;
     this.tableElement = document.getElementById(`${this.id}`);
     this.tableSettings = JSON.parse(JSON.stringify(tableSettingsAtStart));
-    // this.tableSettings.contextMenu = contextMenuHTable;
+    this.tableSettings.contextMenu = contextMenuHTable;
     // this.tableSettings.dropdownMenu = true;
     // this.tableSettings.filters = true;
     // this.tableSettings.formulas = { engine: hyperformulaInstance, };
@@ -63,12 +56,12 @@ class MyTable {
 }
 
 class MyPanel {
-  constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
+  constructor(sheetName, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
     this.isMinimized = false;
     this.isMaximized = false;
     this.panel = document.createElement('div');
     this.panel.className = 'panel';
-    this.panel.id = `${name}_panel`;
+    this.panel.id = `${sheetName}_panel`;
     this.panel.style = 'color:#EC7063; z-Index: 1';
     this.panel.style.height = panelHeight + 'px';
     this.panel.style.width = panelWidth + 'px';
@@ -76,7 +69,7 @@ class MyPanel {
     this.panel.style.left = panelXposition + 'px';
     var innerHTMLStart = `
       <div class="panel-header" onmousedown="bringToFront('${this.panel.id}')">
-        <span contenteditable="true" spellcheck="false" class="panel-title">${name}</span>
+        <span contenteditable="true" spellcheck="false" class="panel-title">${sheetName}</span>
         <div class="panel-controls">
     `;
     var innerHTMLContents1DB = `
@@ -84,11 +77,11 @@ class MyPanel {
           <button class="panel-minimize">\u2191</button>
     `;
     var innerHTMLContents1Toggle = `
-          <button class="panel-minimize" onclick="${name}.panelCurrent.toggleMinimize()">-</button>
-          <button class="panel-minimize" onclick="${name}.panelCurrent.toggleMaximize()">\u25A1</button>
+          <button class="panel-minimize" onclick="${sheetName}.panelCurrent.toggleMinimize()">-</button>
+          <button class="panel-minimize" onclick="${sheetName}.panelCurrent.toggleMaximize()">\u25A1</button>
     `;
     var innerHTMLContents1Close = `
-          <button class="panel-close" onclick="${name}.panelCurrent.closePanel()" >×</button>
+          <button class="panel-close" onclick="${sheetName}.panelCurrent.closePanel()" >×</button>
     `;
 
     var innerHTMLLinker1 = `
@@ -97,10 +90,10 @@ class MyPanel {
       <div class="panel-content" onmousedown="bringToFront('${this.panel.id}')">
     `;
     var innerHTMLContents2Table = `
-        <div id="${name}_table"></div>
+        <div id="${sheetName}_table"></div>
     `;
     var innerHTMLContents2Plot = `
-        <div id="${name}_plot"></div>
+        <div id="${sheetName}_plot" style="margin-left:1px"></div>
     `;
     var innerHTMLEnd = `
       </div>
@@ -111,14 +104,31 @@ class MyPanel {
 
     this.panel.innerHTML =
       innerHTMLStart
-      + innerHTMLContents1DB
-      + innerHTMLContents1Toggle
-      + innerHTMLContents1Close
+      // + innerHTMLContents1DB
+      // + innerHTMLContents1Toggle
+      // + innerHTMLContents1Close
       + innerHTMLLinker1
       + innerHTMLContents2Table
       + innerHTMLContents2Plot
       + innerHTMLEnd;
-
+  //   this.panel.innerHTML = `
+  //   <div class="panel-header" onmousedown="bringToFront('${this.panel.id}')">
+  //     <span contenteditable="true" spellcheck="false" class="panel-title">${sheetName}</span>
+  //     <div class="panel-controls">
+  //       <button class="panel-minimize">\u2193</button>
+  //       <button class="panel-minimize">\u2191</button>
+  //       <button class="panel-minimize" onclick="${sheetName}.panelCurrent.toggleMinimize()">-</button>
+  //       <button class="panel-minimize" onclick="${sheetName}.panelCurrent.toggleMaximize()">\u25A1</button>
+  //       <button class="panel-close" onclick="${sheetName}.panelCurrent.closePanel()" >×</button>
+  //     </div>
+  //   </div>
+  //   <div class="panel-content" onmousedown="bringToFront('${this.panel.id}')">
+  //     <div id="${sheetName}_table"></div>
+  //   </div>
+  //   <div class="panel-resize-handle" onmousedown="bringToFront('${this.panel.id}')"></div>
+  //   <script>
+  //   </script/>
+  // `;
     document.body.appendChild(this.panel);
   }
 
@@ -155,4 +165,46 @@ class MyPanel {
       this.panel.style.overflow = 'hidden';
     }
   }
+}
+
+class AoaFunctions {
+  constructor() { }
+
+  deepCopy(aoa) {
+    const rowNum = aoa.length;
+    const colNum = aoa[0].length;
+    const deepCopy = [];
+
+    for (let i = 0; i < rowNum; i++) {
+      deepCopy.push([]);
+      for (let j = 0; j < colNum; j++) {
+        deepCopy[i].push(aoa[i][j]);
+      }
+    }
+    return deepCopy;
+  }
+
+  deleteCoaToAoa(aoaInput, delIndex=(aoaInput[0].length -1)) {
+    let aoa = this.deepCopy(aoaInput);
+    aoa.map(row => {
+      row.splice(delIndex, 1);
+      return row;
+    })
+    return aoa;
+  }
+
+  transpose(aoa) {
+    const rowNum = aoa.length;
+    const colNum = aoa[0].length;
+    const transposedAoa = [];
+
+    for (let j = 0; j < colNum; j++) {
+      transposedAoa.push([]);
+      for (let i = 0; i < rowNum; i++) {
+        transposedAoa[j].push(aoa[i][j]);
+      }
+    }
+    return transposedAoa;
+  }
+
 }

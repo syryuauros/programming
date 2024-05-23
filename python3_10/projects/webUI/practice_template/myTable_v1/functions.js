@@ -1,13 +1,20 @@
 
-let panelCounter = 0;
+let tableCounter = 0;
+let plotCounter = 0;
 var panels = [];
-var sheets = [];
+var tables = [];
+var plots = [];
 
-function createNewSheet(panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
-  const panelName = `panels[${panelCounter}]`;
-  const sheetName = `sheets[${panelCounter}]`;
-  sheets[panelCounter] = new MySheet(sheetName, panelHeight, panelWidth, panelYposition, panelXposition);
-  panelCounter++;
+function createNewTable(panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
+  const tableName = `tables[${tableCounter}]`;
+  tables[tableCounter] = new MyTablePanel(tableName, panelHeight, panelWidth, panelYposition, panelXposition);
+  tableCounter++;
+}
+
+function createNewPlot(panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
+  const plotName = `plots[${plotCounter}]`;
+  plots[plotCounter] = new MyPlotPanel(plotName, panelHeight, panelWidth, panelYposition, panelXposition);
+  plotCounter++;
 }
 
 function bringToFront(panelID) {

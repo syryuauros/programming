@@ -1,4 +1,3 @@
-
 let panelCounter = 0;
 var panels = [];
 var sheets = [];
@@ -113,7 +112,7 @@ async function calculate() {
   // console.log(paramData);
   // console.log(pointsData);
 
-  const response = await fetch('http://192.168.12.135:7003/nD_interpolation', {
+  const response = await fetch('http://192.168.12.135:6969/nD_interpolation', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
