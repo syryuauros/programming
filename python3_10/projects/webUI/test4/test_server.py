@@ -665,13 +665,16 @@ def nD_interpolation_numbers():
     paramDataArrTr = np.transpose(paramDataArr)
     points = paramDataArrTr
     out_points = pointsDataArr
+    out_points_tuple = tuple(out_points)
+    print(out_points_tuple)
 
     num_inputData = inputDataArr.shape[0]
     num_out_points = len(out_points[0])
     results = np.zeros((num_inputData,num_out_points))
     for i in range(num_inputData):
         values = inputDataArr[i]
-        grid_values = griddata(points, values, (out_points[0], out_points[1]), method='linear')
+        # grid_values = griddata(points, values, (out_points[0], out_points[1]), method='linear')
+        grid_values = griddata(points, values, out_points_tuple, method='linear')
         results[i] = grid_values
 
     results = insert_col_left(results,np.transpose(xDataArr))

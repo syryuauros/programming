@@ -32,9 +32,9 @@ let iconSliders = {
 
 
 const layoutScatter = {
-  // width: 205,
-  // height: 380,
-  autosize: true,
+  width: 310,
+  height: 176,
+  // autosize: true,
   margin: {
     l: 25,
     r: 15,
