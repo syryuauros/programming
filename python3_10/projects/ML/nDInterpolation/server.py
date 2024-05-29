@@ -6,6 +6,8 @@ import json
 import numpy as np
 from scipy.interpolate import griddata
 
+from test import is_point_inside_territory, nDIntp
+
 app = Flask(__name__)
 CORS(app)
 
@@ -49,6 +51,7 @@ def nD_interpolation_numbers():
     points = paramDataArrTr
     out_points = pointsDataArr
 
+
     num_inputData = inputDataArr.shape[0]
     num_out_points = len(out_points[0])
     results = np.zeros((num_inputData,num_out_points))
@@ -68,7 +71,9 @@ def nD_interpolation_numbers():
 
         #grid_values1 = griddata(points, values, ([20, 20], [25, 35]), method='linear')
 
-        grid_values = griddata(points, values, (out_points[0], out_points[1]), method='linear')
+        grid_values = nDIntp(points, values, np.transpose(out_points))
+        # grid_values = griddata(points, values, np.transpose(out_points), method='linear')
+        #grid_values = griddata(points, values, (out_points[0], out_points[1]), method='linear')
         results[i] = grid_values
 
 
@@ -93,7 +98,6 @@ def nD_interpolation_numbers():
 def insert_col_left(arr, inserts, axis=1):
     modified_arr = np.insert(arr, 0, inserts, axis)
     return modified_arr
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=7003)

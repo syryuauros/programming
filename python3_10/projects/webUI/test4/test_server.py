@@ -8,6 +8,8 @@ import math
 import random
 from scipy.interpolate import griddata
 
+from nDIntpLib import is_point_inside_territory, nDIntp
+
 num3 = float(0)
 
 app = Flask(__name__)
@@ -673,8 +675,44 @@ def nD_interpolation_numbers():
     results = np.zeros((num_inputData,num_out_points))
     for i in range(num_inputData):
         values = inputDataArr[i]
-        # grid_values = griddata(points, values, (out_points[0], out_points[1]), method='linear')
-        grid_values = griddata(points, values, out_points_tuple, method='linear')
+        # grid_values = griddata(points, values, out_points_tuple, method='linear')
+        grid_values = griddata(points, values, np.transpose(out_points), method='linear')
+        # grid_values = nDIntp(points, values, np.transpose(out_points))
+        results[i] = grid_values
+
+    results = insert_col_left(results,np.transpose(xDataArr))
+
+    return jsonify({ 'results': results.tolist(), })
+
+@app.route('/nD_interpolation_internal_engine', methods=['POST'])
+def nD_interpolation_internal_engine_numbers():
+    tr_json = request.get_json()
+    xData = tr_json['xData']
+    inputData = tr_json['inputData']
+    paramData = tr_json['paramData']
+    pointsData = tr_json['pointsData']
+    paramHead = tr_json['paramHead']
+
+    xDataArr = np.array(xData).astype(float)
+    inputDataArr = np.array(inputData).astype(float)
+    paramDataArr = np.array(paramData).astype(float)
+    pointsDataArr = np.array(pointsData).astype(float)
+    paramHeadArr = np.array(paramHead).astype(str)
+
+    paramDataArrTr = np.transpose(paramDataArr)
+    points = paramDataArrTr
+    out_points = pointsDataArr
+    out_points_tuple = tuple(out_points)
+    print(out_points_tuple)
+
+    num_inputData = inputDataArr.shape[0]
+    num_out_points = len(out_points[0])
+    results = np.zeros((num_inputData,num_out_points))
+    for i in range(num_inputData):
+        values = inputDataArr[i]
+        # grid_values = griddata(points, values, out_points_tuple, method='linear')
+        # grid_values = griddata(points, values, np.transpose(out_points), method='linear')
+        grid_values = nDIntp(points, values, np.transpose(out_points))
         results[i] = grid_values
 
     results = insert_col_left(results,np.transpose(xDataArr))

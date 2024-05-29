@@ -136,6 +136,8 @@ async function calculate() {
       pattern: '0,0.000',
     },
   });
+
+
   // sheets[3].tableCurrent.tableSettings.data = data.results;
   // sheets[3].tableCurrent.tableContent.updateSettings;
 
@@ -153,4 +155,37 @@ async function calculate() {
   //   //   engine: HyperFormula,
   //   // },
   // });
+}
+
+async function calculate_internal_engine() {
+  var xData = aoa.transpose(sheets[0].tableCurrent.tableSettings.data)[0];
+  var inputData  = aoa.deleteCoaToAoa(sheets[0].tableCurrent.tableSettings.data,0);
+  var paramData  = aoa.deleteCoaToAoa(sheets[1].tableCurrent.tableSettings.data,0);
+  var pointsData = aoa.deleteCoaToAoa(sheets[2].tableCurrent.tableSettings.data,0);
+  var paramHead = aoa.transpose(sheets[1].tableCurrent.tableSettings.data);
+
+  const response = await fetch('http://192.168.12.135:6969/nD_interpolation_internal_engine', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      xData: xData,
+      inputData: inputData,
+      paramData: paramData,
+      pointsData: pointsData,
+      paramHead: paramHead[0],
+    })
+  });
+
+  const data = await response.json();
+
+  console.log(data.results);
+
+  sheets[3].tableCurrent.tableContent.updateSettings({
+    data: data.results,
+    numericFormat: {
+      pattern: '0,0.000',
+    },
+  });
 }
