@@ -8,7 +8,9 @@ from scipy.interpolate import griddata
 def is_point_inside_territory(dataMatrix, targetVector):
     A = np.transpose(np.copy(dataMatrix)).tolist()
     det_A = np.linalg.det(A)
-    sign_det_A = det_A/abs(det_A)
+    sign_det_A = math.copysign(1,det_A)
+    round_error_acception = -0.00001
+    # sign_det_A = det_A/abs(det_A)
     # print('det_A: ', det_A)
     det_A1 = np.zeros(len(A))
     for i in np.arange(0,len(A),1):
@@ -18,7 +20,7 @@ def is_point_inside_territory(dataMatrix, targetVector):
         det_A1[i] = sign_det_A * np.linalg.det(A1)
         # print('det_A1: ', det_A1)
 
-    if any(x < 0 for x in det_A1) or any(math.isnan(x) for x in det_A1): # x<0 means boundary is also territory
+    if any(x < round_error_acception for x in det_A1) or any(math.isnan(x) for x in det_A1): # x<0 means boundary is also territory
         return False
     elif np.isclose(abs(det_A),sum(det_A1)):
         return True
@@ -37,9 +39,9 @@ def nDIntp(inputData, values, targetData):
         targetVectorTemp = np.insert(targetDataTemp, len(targetDataTemp), 1)
 
         distances = np.linalg.norm(inputData - targetDataTemp, axis=1)
-        # print('distances: ', distances)
+        # print('distances: ', distances, 'i: ', i)
         sorted_indices = np.argsort(distances).tolist()
-        # print('sorted_indices: ', sorted_indices)
+        # print('sorted_indices: ', sorted_indices, 'i: ', i)
 
         for j in np.arange(dimensions,len(sorted_indices),1):
             is_point_inside = False
@@ -50,7 +52,7 @@ def nDIntp(inputData, values, targetData):
             squareShapeDataMatrixTemp = np.vstack((np.transpose(inputData[test_indices]), np.ones(dimensions+1)))
             # print('squareShapeDataMatrixTemp: ', squareShapeDataMatrixTemp)
             is_point_inside = is_point_inside_territory(squareShapeDataMatrixTemp, targetVectorTemp)
-            # print('is point inside?: ', is_point_inside)
+            # print('is point inside?: ', is_point_inside, 'i: ', i, 'j: ', j)
             if is_point_inside:
                 break;
 
@@ -59,9 +61,12 @@ def nDIntp(inputData, values, targetData):
         lambdaMatrixTemp = np.linalg.inv(squareShapeDataMatrixTemp) @ targetVectorTemp
         resultTemp = lambdaMatrixTemp @ squareShapeValuesTemp
         if is_point_inside:
+            # print('resultTemp: ', resultTemp, 'i: ', i, 'j: ', j)
             results[i] = resultTemp
         else:
+            # print('nan', i, ', ', j)
             results[i] = float('nan')
+
 
     return results
 

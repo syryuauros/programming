@@ -681,6 +681,7 @@ def nD_interpolation_numbers():
         results[i] = grid_values
 
     results = insert_col_left(results,np.transpose(xDataArr))
+    # print('griddata results', results)
 
     return jsonify({ 'results': results.tolist(), })
 
@@ -716,6 +717,7 @@ def nD_interpolation_internal_engine_numbers():
         results[i] = grid_values
 
     results = insert_col_left(results,np.transpose(xDataArr))
+    # print('nDIntp results', results)
 
     return jsonify({ 'results': results.tolist(), })
 

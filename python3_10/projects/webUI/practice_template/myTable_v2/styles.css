@@ -4,24 +4,23 @@ body {
 }
 
 .panel {
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  width: 300px;
-  height: 200px;
+  position: absolute; width: 300px; height: 200px;
   background-color: #FEF9E7;
   /* background-color: #f0f0f0; */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  overflow: hidden;
-  cursor: move;
+  border: 1px solid #ccc; border-radius: 4px;
+  overflow: hidden; cursor: move;
+}
+
+
+.innerPanel {
+  width: 100px; height: 100px; padding: 0.0em;
 }
 
 .panel-header {
-  background-color: #FEF9E7;
+  background-color: #FEF9E7; color: #EC7063;
+  font-size: 13px; font-weight: bold;
   /* background-color: #ddd; */
-  padding: 5px;
-  cursor: move;
+  padding: 5px; cursor: move;
   display: flex;
   justify-content: space-between;
   align-items: center;
