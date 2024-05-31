@@ -8,6 +8,7 @@ from scipy.interpolate import griddata
 def is_point_inside_territory(dataMatrix, targetVector):
     A = np.transpose(np.copy(dataMatrix)).tolist()
     det_A = np.linalg.det(A)
+    roundErrorAcception = -0.00001
     sign_det_A = det_A/abs(det_A)
     # print('det_A: ', det_A)
     det_A1 = np.zeros(len(A))
@@ -18,7 +19,7 @@ def is_point_inside_territory(dataMatrix, targetVector):
         det_A1[i] = sign_det_A * np.linalg.det(A1)
         # print('det_A1: ', det_A1)
 
-    if any(x < 0 for x in det_A1) or any(math.isnan(x) for x in det_A1): # x<0 means boundary is also territory
+    if any(x < roundErrorAcception for x in det_A1) or any(math.isnan(x) for x in det_A1): # x<0 means boundary is also territory
         return False
     elif np.isclose(abs(det_A),sum(det_A1)):
         return True
@@ -48,7 +49,7 @@ def nDIntp(inputData, values, targetData):
             test_indices.extend([test_index])
             # print('test_indices: ', test_indices, ', ', i, ', ', j)
             squareShapeDataMatrixTemp = np.vstack((np.transpose(inputData[test_indices]), np.ones(dimensions+1)))
-            # print('squareShapeDataMatrixTemp: ', squareShapeDataMatrixTemp)
+            print('squareShapeDataMatrixTemp: \n', squareShapeDataMatrixTemp)
             is_point_inside = is_point_inside_territory(squareShapeDataMatrixTemp, targetVectorTemp)
             # print('is point inside?: ', is_point_inside)
             if is_point_inside:

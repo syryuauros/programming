@@ -1,9 +1,39 @@
+
+class MyTree {
+  constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
+    this.id = `${name}`;
+    this.innerHTMLTree = `
+      <table class="tree0">
+        <tbody>
+          <tr class="treegrid-1 expanded"><td>Root node</td></tr>
+          <tr class="treegrid-2 treegrid-parent-1"><td>node 1-1</td></tr>
+          <tr class="treegrid-3 treegrid-parent-1"><td>node 1-2</td></tr>
+          <tr class="treegrid-4 treegrid-parent-3"><td>node 1-2-1</td></tr>
+          <tr class="treegrid-5 expanded"><td>Root node</td></tr>
+      </table>
+    `;
+    this.panelCurrent = new MyPanel(this.id, panelHeight, panelWidth, panelYposition, panelXposition);
+    this.panelCurrent.panel.innerHTML =
+      this.panelCurrent.innerHTMLStart
+      + this.innerHTMLTree
+      + this.panelCurrent.innerHTMLEnd;
+
+    this.initialize();
+  }
+
+  initialize() {
+    $(function() {
+      $(".tree0").treegrid();
+    }.bind(this));
+  };
+}
+
 class MyPanel {
   constructor(name, panelHeight='210', panelWidth='320', panelYposition='22', panelXposition='22') {
     this.isMinimized = false;
     this.isMaximized = false;
     this.panel = document.createElement('div');
-    this.panel.id = `${name}`;
+    this.panel.id = `${name}_panel`;
     this.panel.className = 'panel ui-widget-content';
     this.panel.style = 'color:#EC7063; z-Index: 1';
     this.panel.style.height = panelHeight + 'px';
@@ -31,7 +61,6 @@ class MyPanel {
 
     this.panel.innerHTML =
       this.innerHTMLStart
-      + this.innerHTMLInnerPanel;
       + this.innerHTMLEnd;
 
     document.body.appendChild(this.panel);

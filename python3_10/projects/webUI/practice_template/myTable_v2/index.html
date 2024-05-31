@@ -13,6 +13,11 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery-treegrid@0.3.0/js/jquery.treegrid.min.js"></script>
+
+  <!-- <script src="js/jquery.js"></script> -->
+  <!-- <script src="js/jquery.treegrid.js"></script> -->
+  <!-- <link rel="stylesheet" href="css/jquery.treegrid.css"> -->
+
   <style>
     /* .plot-container { */
     /*   flex: 1; */
@@ -40,30 +45,21 @@
 
   <button onclick="createNewPanel(210,320,422,422)">New panel</button>
 
-  <!-- <div id="panel1" class="panel ui-widget-content"> -->
-  <!--   <div class="panel-header" onmousedown="">panel1</div> -->
-  <!--   <\!-- <h3 class="ui-widget-header" style="border: 0px; padding: 5px;">panel1</h3> -\-> -->
-  <!-- </div> -->
+  <table class="tree">
+    <tbody>
+      <tr class="treegrid-1 expanded"><td>Root node</td></tr>
+      <tr class="treegrid-2 treegrid-parent-1"><td>node 1-1</td></tr>
+      <tr class="treegrid-3 treegrid-parent-1"><td>node 1-2</td></tr>
+      <tr class="treegrid-4 treegrid-parent-3"><td>node 1-2-1</td></tr>
+      <tr class="treegrid-5 expanded"><td>Root node</td></tr>
 
-  <!-- <div id="panel2" class="panel ui-widget-content"> -->
-  <!--   <div class="panel-header" onmousedown="">panel2</div> -->
-  <!--   <\!-- <h3 class="ui-widget-header">panel2</h3> -\-> -->
-
-  <!--   <div id="panel3" class="innerPanel ui-widget-content"> -->
-  <!--     <div class="panel-header" onmousedown="">panel3</div> -->
-  <!--     <\!-- <h4 class="ui-widget-header">panel3</h4> -\-> -->
-  <!--   </div> -->
-  <!-- </div> -->
-
-  <!-- <div id="panel4" class="panel ui-widget-content"> -->
-  <!--   <div class="panel-header" onmousedown="">panel4</div> -->
-  <!--   <\!-- <h3 class="ui-widget-header" style="border: 0px; padding: 5px;">panel1</h3> -\-> -->
-  </div>
-
+  </table>
 
 
   <script>
     let zIndexCouter = 1;
+
+    $('.tree').treegrid();
 
     // function makePanelInteractive(panelId) {
     //   $(panelId).draggable({

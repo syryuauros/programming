@@ -6,6 +6,7 @@ import json
 import numpy as np
 import math
 import random
+import time
 from scipy.interpolate import griddata
 
 from nDIntpLib import is_point_inside_territory, nDIntp
@@ -651,6 +652,7 @@ def custom_OSigmaP_calOSigmaP_numbers():
 
 @app.route('/nD_interpolation', methods=['POST'])
 def nD_interpolation_numbers():
+    griddata_start = time.time()
     tr_json = request.get_json()
     xData = tr_json['xData']
     inputData = tr_json['inputData']
@@ -682,11 +684,15 @@ def nD_interpolation_numbers():
 
     results = insert_col_left(results,np.transpose(xDataArr))
     # print('griddata results', results)
+    griddata_end = time.time()
+    print('elapsed time for griddata: ',(griddata_end - griddata_start), 'sec')
 
     return jsonify({ 'results': results.tolist(), })
 
 @app.route('/nD_interpolation_internal_engine', methods=['POST'])
 def nD_interpolation_internal_engine_numbers():
+
+    nDIntp_start = time.time()
     tr_json = request.get_json()
     xData = tr_json['xData']
     inputData = tr_json['inputData']
@@ -718,6 +724,8 @@ def nD_interpolation_internal_engine_numbers():
 
     results = insert_col_left(results,np.transpose(xDataArr))
     # print('nDIntp results', results)
+    nDIntp_end = time.time()
+    print('elapsed time for nDIntp: ',(nDIntp_end - nDIntp_start), 'sec')
 
     return jsonify({ 'results': results.tolist(), })
 

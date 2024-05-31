@@ -8,9 +8,9 @@ from scipy.interpolate import griddata
 def is_point_inside_territory(dataMatrix, targetVector):
     A = np.transpose(np.copy(dataMatrix)).tolist()
     det_A = np.linalg.det(A)
-    sign_det_A = math.copysign(1,det_A)
-    round_error_acception = -0.00001
-    # sign_det_A = det_A/abs(det_A)
+    #sign_det_A = math.copysign(1,det_A)
+    round_error_acception = -0.0000001
+    sign_det_A = det_A/abs(det_A)
     # print('det_A: ', det_A)
     det_A1 = np.zeros(len(A))
     for i in np.arange(0,len(A),1):
