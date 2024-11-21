@@ -66,6 +66,45 @@ def nDIntp(inputData, values, targetData):
 
     return results
 
+def triLinear(inputData, values, targetData):
+    inputs = np.transpose(np.copy(inputData))
+    dimensions = len(inputs)
+    listOfPoints = inputs.tolist()
+
+    results = np.zeros(len(targetData))
+    sortedValues = values
+    sortedArray = inputData
+    ratioTemp = np.zeros(dimensions)
+
+    for j in np.arange(0,dimensions,1):
+        sortedIndicies = np.argsort(sortedArray[:,dimensions - 1 - j].astype(int))
+        sortedArray = sortedArray[sortedIndicies]
+        # sortedValues = sortedValues[sortedIndicies]
+
+    targetDataTemp = targetData[0]
+    ratioTemp[0] = 1 - (targetDataTemp[0] - sortedArray[0][0])/(sortedArray[len(sortedArray) - 1][0])
+    ratioTemp[1] = 1 - (targetDataTemp[1] - sortedArray[0][1])/(sortedArray[len(sortedArray) - 1][1])
+    ratioTemp[2] = 1 - (targetDataTemp[2] - sortedArray[0][2])/(sortedArray[len(sortedArray) - 1][2])
+
+    print(3 % 2)
+    print((3 / 2))
+
+    print(inputData)
+    print(sortedArray)
+    print(ratioTemp)
+
+    return results
+
+# listOfPoints = [[0,1,0,1],[1,0,0,1]]
+listOfPoints = [[0,1,0,1,0,0,1,1],[1,0,0,1,1,0,0,1],[0,0,0,0,1,1,1,1]]
+values = [2,3,3,5,4,5,6,7]
+targetData = np.array([[0.5, 0.4, 0.3]])
+
+inputs = np.array(listOfPoints)
+inputData = np.transpose(np.copy(inputs))
+
+result = triLinear(inputData, values, targetData)
+
 # listOfPoints = [[0,3]]
 # values = np.array([0,7])
 # targetData = np.array([[0.2]]) #True

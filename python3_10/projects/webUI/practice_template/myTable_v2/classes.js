@@ -8,7 +8,7 @@ class MyTree {
           <tr class="treegrid-1 expanded"><td>Root node</td></tr>
           <tr class="treegrid-2 treegrid-parent-1"><td>node 1-1</td></tr>
           <tr class="treegrid-3 treegrid-parent-1"><td>node 1-2</td></tr>
-          <tr class="treegrid-4 treegrid-parent-3"><td>node 1-2-1</td></tr>
+          <tr class="treegrid-4 treegrid-parent-2"><td>node 1-2-1</td></tr>
           <tr class="treegrid-5 expanded"><td>Root node</td></tr>
       </table>
     `;

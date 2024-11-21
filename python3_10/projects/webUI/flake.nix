@@ -29,6 +29,7 @@
           buildInputs = [
             packages.python3_9
             packages.gnuplot
+            pkgs.nodejs
             ];
 
         };
