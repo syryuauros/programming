@@ -42,5 +42,6 @@ function exportToCSV(tableName) {
 function convertToAOA(csvData) {
     var rows = csvData.split("\n");
     var csvDataAOA = rows.map(row => row.split(/[\t,]/));
+    console.log(csvData);
     return csvDataAOA;
 }
