@@ -250,6 +250,7 @@ dynUI2.addLabel('%');
 dynUI2.addLines(1);
 dynUI2.addButton('button2_1', 'calculate');
 dynUI2.addLines(1);
+dynUI2.addButton('button2_2', 'export to csv');
 dynUI2.addLines(1);
 dynUI2.addTable('table2_1');
 
@@ -436,6 +437,7 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
 
         line: {
             color: 'blue',
+            //color: 'rgba(75, 192, 192, 0.3)',
             width: 1,
             dash: 'dot',
         },
@@ -453,6 +455,7 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
 
         line: {
             color: 'red',
+            //color: 'rgba(150, 100, 100, 0.6)',
             width: 1,
             dash: 'solid',
         },
@@ -493,6 +496,13 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
 
 
 
+dynUI2.buttonList['button2_2'].addEventListener('click',async function(event) {
+    var fileNum = dynUI1.fileInputList.fileInput1.files.length;
+
+    for(i = 0; i < fileNum; i++) {
+        exportToCSV(dynUI2, i);
+    }
+})
 
 
 
@@ -531,6 +541,19 @@ function formattingData(csvData, headerNum, colNumRangeMin, colNumRangeMax) {
     return csvDataAOA;
 }
 
+function exportToCSV(container, selNum) {
+    var Data0 = container.tableDataList[selNum].amp_result;
+    const csvFormat = Data0.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvFormat], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data0.csv';
+    a.click();
+    // URL.revokeObjectURL(url);
+}
+
+
 function drawChart(xData, yData, chart, chartContainer, options = null) {
 
     if (options) {
@@ -548,21 +571,21 @@ function drawChart(xData, yData, chart, chartContainer, options = null) {
     chart.update();
 }
 
-function drawChart2(xData, yData, chart, chartContainer, options = null) {
-    console.log(yData);
-    console.log(yData.length);
+// function drawChart2(xData, yData, chart, chartContainer, options = null) {
+//     console.log(yData);
+//     console.log(yData.length);
 
-//     if (options) {
-//         chartSettingsScatPoint = [Object.assign({}, options)];
-//     } else {
+// //     if (options) {
+// //         chartSettingsScatPoint = [Object.assign({}, options)];
+// //     } else {
 
-//         chartSettingsScatPoint = [Object.assign({}, chartContainer.chartSettingsScatPoint)];
-//     }
-//     chartSettingsScatPoint[0].data = xData.map((value, index) => ({ x: value, y: yData[index] }));
+// //         chartSettingsScatPoint = [Object.assign({}, chartContainer.chartSettingsScatPoint)];
+// //     }
+// //     chartSettingsScatPoint[0].data = xData.map((value, index) => ({ x: value, y: yData[index] }));
 
-//     chart.data.datasets = [
-//         chartSettingsScatPoint[0],
-//     ];
+// //     chart.data.datasets = [
+// //         chartSettingsScatPoint[0],
+// //     ];
 
-//     chart.update();
-}
+// //     chart.update();
+// }
