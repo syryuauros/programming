@@ -2,6 +2,7 @@
 class DynUI {
     constructor(containerID) {
         this.container = document.getElementById(containerID);
+        this.buttonList = {};
         this.inputList = {};
         this.fileInputList = {};
         this.selectList = {};
@@ -50,22 +51,23 @@ class DynUI {
         }
     }
 
-    addButton(buttonText) {
+    addButton(buttonID, buttonText) {
         const button = document.createElement('button');
+        button.id = buttonID;
         button.textContent = buttonText;
-        button1.style = {
+        button.style = {
             width: '200px',
             height: '50px'
         };
-        button1.addEventListener('click', () => this.handleClick());
         this.container.appendChild(button);
+        this.buttonList[buttonID] = button;
     }
 
     addSelect(selectID) {
         const select = document.createElement('select');
         select.id = selectID;
         const option = document.createElement('option');
-        option.value = '1';
+        option.value = 'no data';
         option.text = 'no data';
         select.appendChild(option);
         this.container.appendChild(select);
@@ -115,35 +117,43 @@ class DynUI {
     }
 }
 
-const dynUI = new DynUI('dynUI');
 
 var options1 = [];
 
+const dynUI1 = new DynUI('dynUI1');
+dynUI1.addTitle('Input');
+dynUI1.addLabel('Num of Header: ');
+dynUI1.addInput('input1', '40px', '37');
+dynUI1.addLabel(' , ');
+dynUI1.addLines(1);
+dynUI1.addLabel('column range to remove: ');
+dynUI1.addInput('input2', '35px', '3');
+dynUI1.addLabel(' ~ ');
+dynUI1.addInput('input3', '35px', '7');
+dynUI1.addLines(1);
+dynUI1.addFileInput('fileInput1');
+dynUI1.addLines(1);
+dynUI1.addLabel(' select csv file to show: ');
+dynUI1.addSelect('select1');
+dynUI1.addLabel(' , ');
+dynUI1.addLines(1);
+dynUI1.addTable('table1');
 
-dynUI.addTitle('Input');
-dynUI.addLabel('Num of Header: ');
-dynUI.addInput('input1', '40px', '37');
-dynUI.addLabel(' , ');
-dynUI.addLines(1);
-dynUI.addLabel('column range to remove: ');
-dynUI.addInput('input2', '35px', '3');
-dynUI.addLabel(' ~ ');
-dynUI.addInput('input3', '35px', '7');
-dynUI.addLines(1);
-dynUI.addFileInput('fileInput1');
-dynUI.addLines(1);
-dynUI.addLabel(' select csv file to show: ');
-dynUI.addSelect('select1');
-dynUI.addLabel(' , ');
-dynUI.addLines(1);
-dynUI.addTable('table1');
+const dynUI2 = new DynUI('dynUI2');
+dynUI2.addTitle('Output');
+dynUI2.addButton('button2_1', 'calculate');
+dynUI2.addLines(1);
+dynUI2.addTable('table2_1');
 
 
-dynUI.fileInputList['fileInput1'].addEventListener('change', function(event) {
+
+
+
+dynUI1.fileInputList['fileInput1'].addEventListener('change', async function(event) {
     var headerNum = +document.getElementById('input1').value;
     var colRanMin = +document.getElementById('input2').value;
     var colRanMax = +document.getElementById('input3').value;
-    var fileNum = dynUI.fileInputList.fileInput1.files.length;
+    var fileNum = dynUI1.fileInputList.fileInput1.files.length;
 
     options1 = [];
     for (i = 0; i < fileNum; i++) {
@@ -153,17 +163,49 @@ dynUI.fileInputList['fileInput1'].addEventListener('change', function(event) {
         options1[i] = option;
     }
 
-    loadCSVsFromFolder(dynUI, 'fileInput1', 'table1', headerNum, colRanMin, colRanMax);
-    dynUI.modifySelect('select1', options1);
+    loadCSVsFromFolder(dynUI1, 'fileInput1', 'table1', headerNum, colRanMin, colRanMax);
+    dynUI1.modifySelect('select1', options1);
+    dynUI1.selectList['select1'].value = fileNum.toString();
+    dynUI1.selectList['select1'].text = fileNum.toString();
 });
 
-dynUI.selectList['select1'].addEventListener('change', function(event) {
-    console.log('test!');
-    const container = dynUI;
+dynUI1.selectList['select1'].addEventListener('change', function(event) {
+    const container = dynUI1;
     const selNum = +container.selectList['select1'].value;
-    console.log(selNum-1);
-    container.tableSettings['table1'].data = container.tableDataList[selNum-1];
-    container.modifyTable('table1', container.tableSettings['table1']);
+    dynUI1.tableSettings['table1'].data = dynUI1.tableDataList[selNum-1];
+    dynUI1.modifyTable('table1', dynUI1.tableSettings['table1']);
+    dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
+    dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
+})
+
+dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
+
+    var fileNum = dynUI1.fileInputList.fileInput1.files.length;
+
+    for (i = 0; i < fileNum; i++) {
+        var dataTemp = dynUI1.tableDataList[i];
+        const trRatio = 0;
+
+        const response = await fetch('http://192.168.12.135:6969/FFTMulti', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                check: false,
+                data: dataTemp,
+                truncateRatio: trRatio
+            })
+        });
+
+        data = await response.json();
+
+        dynUI2.tableDataList[i] = Object.assign({}, data);
+    }
+
+    const selNum = +dynUI1.selectList['select1'].value;
+    dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
+    dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
 })
 
 
