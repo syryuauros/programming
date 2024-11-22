@@ -42,7 +42,7 @@
         }
         .container-grid0 {
           display: grid;
-          grid-template-columns: 1fr 1fr 1fr 1.3fr;
+          grid-template-columns: 1fr 1fr 1.5fr 1.5fr;
           gap: 0px; /* Gap between grid items */
           width: 93%;
           height: 1000px;

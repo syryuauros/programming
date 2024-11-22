@@ -9,11 +9,7 @@ class DynUI {
         this.tableList = {};
         this.canvasList = {};
         this.chartList = {};
-        this.plotList = {};
-
         this.tableSettings = {};
-        this.chartSettings = {};
-        this.plotLayoutList = {};
         this.tableDataList = {};
 
         this.tableSettingsAtStart = {
@@ -137,6 +133,7 @@ class DynUI {
     }
 
     addChart(chartID, width, height){
+        console.log('test');
         const canvas = document.createElement('canvas');
         canvas.id = chartID;
         canvas.width = width;
@@ -169,50 +166,6 @@ class DynUI {
 
         this.canvasList[chartID] = canvas;
         this.chartList[chartID] = chart;
-        this.chartSettings[chartID] = Object.assign({}, this.chartSettingsScatPoint);
-
-        chart.options = this.chartSettings[chartID];
-    }
-
-    addPlot(plotID, width, height) {
-
-        const plotDiv = document.createElement('div');
-        plotDiv.id = plotID;
-
-        this.container.appendChild(plotDiv);
-
-        const trace = {
-            x: [],
-            y: [],
-            mode: 'markers',
-            type: 'scatter',
-            name: 'Dataset 2'
-        };
-
-        const layout = {
-            autosize: false,
-            width: width,
-            height: height,
-            margin: {
-                l: 20,
-                r: 20,
-                t: 20,
-                b: 20,
-            },
-            legend: {
-                showlegend: true,
-                x: 0.5,  // Horizontal position (0.5 is centered)
-                y: 1.2,  // Vertical position (1.1 is above the plot)
-                orientation: 'h',  // Horizontal layout for the legend (default is vertical)
-                xanchor: 'center',  // Align legend horizontally to the center
-                yanchor: 'bottom'   // Align legend vertically to the bottom
-            },
-        };
-        Plotly.newPlot(plotID, [trace], layout);
-        //Plotly.newPlot(plotID + '_div', [trace], layout, { responsive: true});
-
-        this.plotList[plotID] = plotDiv;
-        this.plotLayoutList[plotID] = Object.assign({}, layout);
     }
 }
 
@@ -254,21 +207,12 @@ dynUI2.addLines(1);
 dynUI2.addTable('table2_1');
 
 const dynUI3 = new DynUI('dynUI3');
-dynUI3.addTitle('Alpha Chart','h1');
+dynUI3.addTitle('Charts','h1');
 dynUI3.addTitle('Input data','h2');
-dynUI3.addPlot('plot3_1', 400, 250);
+dynUI3.addChart('chart3_1', 280, 200);
 dynUI3.addLines(1);
 dynUI3.addTitle('Output data','h2');
-dynUI3.addPlot('plot3_2', 400, 250);
-
-const dynUI4 = new DynUI('dynUI4');
-dynUI4.addTitle('Beta Chart','h1');
-dynUI4.addTitle('Input data','h2');
-dynUI4.addPlot('plot4_1', 400, 250);
-dynUI4.addLines(1);
-dynUI4.addTitle('Output data','h2');
-dynUI4.addPlot('plot4_2', 400, 250);
-
+dynUI3.addChart('chart3_2', 280, 200);
 
 
 dynUI1.fileInputList['fileInput1'].addEventListener('change', async function(event) {
@@ -306,82 +250,12 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
     var waveLength = dataTable1.map(row => row[0]);
     var alpha = dataTable1.map(row => row[1]);
     var beta = dataTable1.map(row => row[2]);
-    var frequency = dataTable2.amp_result.map(row => row[0]);
-    var amp_alpha = dataTable2.amp_result.map(row => row[1]);
-    var amp_beta = dataTable2.amp_result.map(row => row[2]);
+    var frequency = dataTable2.map(row => row[0]);
+    var amp = dataTable2.map(row => row[1]);
+    var pow = dataTable2.map(row => row[1]**row[1]);
 
-    var iFFT_alpha = dataTable2.iFFT_result.map(row => row[1]);
-    var iFFT_beta = dataTable2.iFFT_result.map(row => row[2]);
-
-    const traceAlpha = {
-        x: waveLength,
-        y: alpha,
-        mode: 'markers',
-        type: 'scatter',
-        name: 'input',
-
-        line: {
-            color: 'blue',
-            width: 1,
-            dash: 'dot',
-        },
-        marker: {
-            size: 3,
-        }
-    };
-
-    const traceiFFTAlpha = {
-        x: waveLength,
-        y: iFFT_alpha,
-        mode: 'lines',
-        type: 'scatter',
-        name: 'iFFT',
-
-        line: {
-            color: 'red',
-            width: 1,
-            dash: 'solid',
-        },
-        marker: {
-            size: 3,
-        }
-    };
-
-    const traceBeta = Object.assign({}, traceAlpha);
-    traceBeta.y = beta;
-
-    const traceAmpAlpha = Object.assign({}, traceAlpha);
-    traceAmpAlpha.x = frequency;
-    traceAmpAlpha.y = amp_alpha;
-
-    const traceAmpBeta = Object.assign({}, traceAlpha);
-    traceAmpBeta.x = frequency;
-    traceAmpBeta.y = amp_beta;
-
-    const traceiFFTBeta = Object.assign({}, traceiFFTAlpha);
-    traceiFFTBeta.y = iFFT_beta;
-
-
-
-    Plotly.newPlot('plot3_1', [traceAlpha], dynUI3.plotLayoutList['plot3_1']);
-    Plotly.addTraces('plot3_1', [traceiFFTAlpha]);
-    Plotly.newPlot('plot3_2', [traceAmpAlpha], dynUI3.plotLayoutList['plot3_1']);
-
-    Plotly.newPlot('plot4_1', [traceBeta], dynUI3.plotLayoutList['plot3_1']);
-    Plotly.addTraces('plot4_1', [traceiFFTBeta]);
-    Plotly.newPlot('plot4_2', [traceAmpBeta], dynUI3.plotLayoutList['plot3_1']);
-
-
-    // dynUI3.chartSettings['chart3_1'] = {
-    //     backgroundColor: "rgba(75, 192, 192, 0.6)",
-    //     borderColor: "rgba(75, 192, 192, 0.6)",
-    //     showLine: true,
-    //     borderWidth: 5,
-    //     borderDash: [1, 1],
-    // };
-    // // drawChart2(waveLength, [alpha, beta], dynUI3.chartList['chart3_1']);
-    // // drawChart(waveLength, alpha, dynUI3.chartList['chart3_1'], dynUI3, dynUI3.chartSettings['chart3_1']);
-    // drawChart(frequency, amp_alpha, dynUI3.chartList['chart3_2'], dynUI3);
+    drawChart(waveLength, alpha, dynUI.chartList['chart3_1'], dynUI3);
+    drawChart(frequency, pow, dynUI.chartList['chart3_1'], dynUI3);
 })
 
 
@@ -413,82 +287,6 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     const selNum = +dynUI1.selectList['select1'].value;
     dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
     dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
-
-    var dataTable1 = dynUI1.tableDataList[selNum-1];
-    var dataTable2 = dynUI2.tableDataList[selNum-1];
-
-    var waveLength = dataTable1.map(row => row[0]);
-    var alpha = dataTable1.map(row => row[1]);
-    var beta = dataTable1.map(row => row[2]);
-    var frequency = dataTable2.amp_result.map(row => row[0]);
-    var amp_alpha = dataTable2.amp_result.map(row => row[1]);
-    var amp_beta = dataTable2.amp_result.map(row => row[2]);
-
-    var iFFT_alpha = dataTable2.iFFT_result.map(row => row[1]);
-    var iFFT_beta = dataTable2.iFFT_result.map(row => row[2]);
-
-    const traceAlpha = {
-        x: waveLength,
-        y: alpha,
-        mode: 'markers',
-        type: 'scatter',
-        name: 'input',
-
-        line: {
-            color: 'blue',
-            width: 1,
-            dash: 'dot',
-        },
-        marker: {
-            size: 3,
-        }
-    };
-
-    const traceiFFTAlpha = {
-        x: waveLength,
-        y: iFFT_alpha,
-        mode: 'lines',
-        type: 'scatter',
-        name: 'iFFT',
-
-        line: {
-            color: 'red',
-            width: 1,
-            dash: 'solid',
-        },
-        marker: {
-            size: 3,
-        }
-    };
-
-    const traceAmp = Object.assign({}, traceAlpha);
-    traceAmp.x = frequency;
-    traceAmp.y = amp_alpha;
-
-    const traceBeta = Object.assign({}, traceAlpha);
-    traceBeta.y = beta;
-
-    const traceAmpAlpha = Object.assign({}, traceAlpha);
-    traceAmpAlpha.x = frequency;
-    traceAmpAlpha.y = amp_alpha;
-
-    const traceAmpBeta = Object.assign({}, traceAlpha);
-    traceAmpBeta.x = frequency;
-    traceAmpBeta.y = amp_beta;
-
-    const traceiFFTBeta = Object.assign({}, traceiFFTAlpha);
-    traceiFFTBeta.y = iFFT_beta;
-
-
-
-    Plotly.newPlot('plot3_1', [traceAlpha], dynUI3.plotLayoutList['plot3_1']);
-    Plotly.addTraces('plot3_1', [traceiFFTAlpha]);
-    Plotly.newPlot('plot3_2', [traceAmpAlpha], dynUI3.plotLayoutList['plot3_1']);
-
-    Plotly.newPlot('plot4_1', [traceBeta], dynUI3.plotLayoutList['plot3_1']);
-    Plotly.addTraces('plot4_1', [traceiFFTBeta]);
-    Plotly.newPlot('plot4_2', [traceAmpBeta], dynUI3.plotLayoutList['plot3_1']);
-
 })
 
 
@@ -531,38 +329,30 @@ function formattingData(csvData, headerNum, colNumRangeMin, colNumRangeMax) {
     return csvDataAOA;
 }
 
-function drawChart(xData, yData, chart, chartContainer, options = null) {
+function drawChart(xData, yData, chart, chartContainer) {
 
-    if (options) {
-        chartSettingsScatPoint = [Object.assign({}, options)];
-    } else {
-
-        chartSettingsScatPoint = [Object.assign({}, chartContainer.chartSettingsScatPoint)];
-    }
+    chartSettingsScatPoint = [Object.assign({}, chartContainer.chartSettingsScatPoint)];
     chartSettingsScatPoint[0].data = xData.map((value, index) => ({ x: value, y: yData[index] }));
 
     chart.data.datasets = [
         chartSettingsScatPoint[0],
     ];
 
+    // if (!checkKeepAxis.checked) {
+    //     scatterChart1.options.scales = {
+    //         x: {
+    //             min: xData1.min,
+    //             max: xData1.max
+    //         },
+    //         y: {
+    //             ticks: {
+    //                 callback: function(value, index, values) {
+    //                     return value.toExponential(1); // Convert ticks to scientific notation
+    //                 },
+    //             },
+    //         },
+    //     };
+    // } else {
+    // }
     chart.update();
-}
-
-function drawChart2(xData, yData, chart, chartContainer, options = null) {
-    console.log(yData);
-    console.log(yData.length);
-
-//     if (options) {
-//         chartSettingsScatPoint = [Object.assign({}, options)];
-//     } else {
-
-//         chartSettingsScatPoint = [Object.assign({}, chartContainer.chartSettingsScatPoint)];
-//     }
-//     chartSettingsScatPoint[0].data = xData.map((value, index) => ({ x: value, y: yData[index] }));
-
-//     chart.data.datasets = [
-//         chartSettingsScatPoint[0],
-//     ];
-
-//     chart.update();
 }
