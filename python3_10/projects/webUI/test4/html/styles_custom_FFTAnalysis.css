@@ -6,7 +6,7 @@
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
-            width: 100px;
+            width: 85px;
         }
         .button-1 {
             display: inline-block;
@@ -16,7 +16,7 @@
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
-            width: 100px;
+            width: 80px;
         }
 
         .container-nav {
@@ -25,8 +25,9 @@
               border-start-end-radius: 15px 15px;
               border-end-start-radius: 15px 15px;
               border-start-start-radius: 15px 15px;
-            background-color: #85929E;
-            width: 5.8%;
+            background-color: #146152;
+            width: 6.0%;
+            height: 500px;
             text-align: center;
             padding: 5px;
             float: left;
@@ -35,6 +36,16 @@
             flex-direction: column;
             gap: 7px;
         }
+        .container-innerHtml {
+          width: 100%;
+          text-align: center;
+          padding: 0px;
+          float: left;
+          overflow: hidden; /* Clear the float */
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+        }
         .container-empty {
             width: 0.2%;
             float: left;
@@ -42,7 +53,7 @@
         }
         .container-grid0 {
           display: grid;
-          grid-template-columns: 1fr 1fr 1.5fr 1.5fr;
+          grid-template-columns: 0.05fr 1fr 1fr 1.5fr 1.5fr;
           gap: 0px; /* Gap between grid items */
           width: 93%;
           height: 1000px;

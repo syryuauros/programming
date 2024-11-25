@@ -189,10 +189,12 @@ class DynUI {
             name: 'Dataset 2'
         };
 
-        const layout = {
+        var layout = {
             autosize: false,
-            width: width,
-            height: height,
+            width: this.container.offsetWidth * 90/100,
+            height: width * (12 / 16),
+            // width: width,
+            // height: height,
             margin: {
                 l: 20,
                 r: 20,
@@ -245,7 +247,7 @@ dynUI2.addInput('input2_tr', '35px', '0');
 dynUI2.addLabel('%');
 dynUI2.addLines(1);
 dynUI2.addLabel('truncate over: ');
-dynUI2.addInput('input2_tr2', '35px', '100');
+dynUI2.addInput('input2_trOver', '35px', '100');
 dynUI2.addLabel('%');
 dynUI2.addLines(1);
 dynUI2.addButton('button2_1', 'calculate');
@@ -393,6 +395,7 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     for (i = 0; i < fileNum; i++) {
         var dataTemp = dynUI1.tableDataList[i];
         const trRatio = document.getElementById('input2_tr').value;
+        const trRatioOver = document.getElementById('input2_trOver').value;
 
         const response = await fetch('http://192.168.12.135:6969/FFTMulti', {
             method: 'POST',
@@ -402,7 +405,8 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
             body: JSON.stringify({
                 check: true,
                 data: dataTemp,
-                truncateRatio: trRatio
+                truncateRatio: trRatio,
+                truncateRatioOver: trRatioOver
             })
         });
 
@@ -474,10 +478,15 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     const traceAmpAlpha = Object.assign({}, traceAlpha);
     traceAmpAlpha.x = frequency;
     traceAmpAlpha.y = amp_alpha;
+    traceAmpAlpha.mode = 'lines';
+    traceAmpAlpha.line.dash = 'solid';
+
 
     const traceAmpBeta = Object.assign({}, traceAlpha);
     traceAmpBeta.x = frequency;
     traceAmpBeta.y = amp_beta;
+    traceAmpBeta.mode = 'lines';
+    traceAmpBeta.line.dash = 'solid';
 
     const traceiFFTBeta = Object.assign({}, traceiFFTAlpha);
     traceiFFTBeta.y = iFFT_beta;
@@ -500,7 +509,8 @@ dynUI2.buttonList['button2_2'].addEventListener('click',async function(event) {
     var fileNum = dynUI1.fileInputList.fileInput1.files.length;
 
     for(i = 0; i < fileNum; i++) {
-        exportToCSV(dynUI2, i);
+        await exportToCSV(dynUI2, i);
+        await delay(500);
     }
 })
 
@@ -541,7 +551,7 @@ function formattingData(csvData, headerNum, colNumRangeMin, colNumRangeMax) {
     return csvDataAOA;
 }
 
-function exportToCSV(container, selNum) {
+async function exportToCSV(container, selNum) {
     var Data0 = container.tableDataList[selNum].amp_result;
     const csvFormat = Data0.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvFormat], { type: 'text/csv' });
@@ -549,8 +559,12 @@ function exportToCSV(container, selNum) {
     const a = document.createElement('a');
     a.href = url;
     a.download = 'data0.csv';
-    a.click();
+    await a.click();
     // URL.revokeObjectURL(url);
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 

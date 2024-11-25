@@ -6,7 +6,7 @@
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
-            width: 100px;
+            width: 85px;
         }
         .button-1 {
             display: inline-block;
@@ -25,8 +25,9 @@
               border-start-end-radius: 15px 15px;
               border-end-start-radius: 15px 15px;
               border-start-start-radius: 15px 15px;
-            background-color: #85929E;
-            width: 5.8%;
+            background-color: #146152;
+            width: 6.0%;
+            height: 500px;
             text-align: center;
             padding: 5px;
             float: left;

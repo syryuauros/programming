@@ -134,6 +134,7 @@ def FFTMulti_numbers():
     data = tr_json['data']
     check = tr_json['check']
     truncate_ratio = tr_json['truncateRatio']
+    truncate_ratio_over = tr_json.get('truncateRatioOver', 100)
     show_elem_origin = np.array(data)
 
     if not can_be_float(show_elem_origin[0,:]):
@@ -191,6 +192,11 @@ def FFTMulti_numbers():
             amplitudeL[amplitudeN/amplitudeN.max() < tr_ratio] = 0
             s_fftL[amplitudeN/amplitudeN.max() < tr_ratio] = 0
             phaseL[amplitudeN/amplitudeN.max() < tr_ratio] = 0
+
+            tr_ratio_over = float(truncate_ratio_over)/100
+            amplitudeL[amplitudeN/amplitudeN.max() > tr_ratio_over] = 0
+            s_fftL[amplitudeN/amplitudeN.max() > tr_ratio_over] = 0
+            phaseL[amplitudeN/amplitudeN.max() > tr_ratio_over] = 0
 
             s_iFFTL = np.fft.ifft(s_fftL).real
             complexelemL = amplitudeL.astype(float) * np.exp(1j * phaseL.astype(float))
