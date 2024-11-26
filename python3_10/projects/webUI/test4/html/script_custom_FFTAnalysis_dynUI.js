@@ -6,6 +6,8 @@ class DynUI {
         this.inputList = {};
         this.fileInputList = {};
         this.selectList = {};
+        this.checkBoxList = {};
+        this.GroupedCheckBoxList = {};
         this.tableList = {};
         this.canvasList = {};
         this.chartList = {};
@@ -100,6 +102,33 @@ class DynUI {
         for (var option of options) {
             select.appendChild(option);
         }
+    }
+
+    addCheckBox(checkBoxName, checkBoxValue, defaultCheck = true) {
+        const check = document.createElement('input');
+        check.type = 'checkbox';
+        check.name = checkBoxName;
+        check.value = checkBoxValue;
+        check.checked = defaultCheck;
+        this.container.appendChild(check);
+        this.checkBoxList[checkBoxValue] = check;
+    }
+
+    addGroupedCheckBox(checkBoxName, valueList) {
+        const groupCheckField = document.createElement('fieldset');
+        this.container.appendChild(groupCheckField);
+
+        const checkList = {};
+        const numValue = valueList.length;
+        for (let i = 0; i < numValue; i++ ) {
+            checkList[i] = document.createElement('input');
+            checkList[i].type = 'checkbox';
+            checkList[i].name = checkBoxName;
+            checkList[i].value = valueList[i];
+            groupCheckField.appendChild(checkList[i]);
+        }
+
+        // this.groupCheckBoxList[checkBoxName] = checkList;
     }
 
     addInput(inputID, width, defaultValue) {
@@ -244,13 +273,28 @@ const dynUI2 = new DynUI('dynUI2');
 dynUI2.addTitle('Output', 'h1');
 dynUI2.addLabel('truncate under: ');
 dynUI2.addInput('input2_tr', '35px', '0');
-dynUI2.addLabel('%');
-dynUI2.addLines(1);
-dynUI2.addLabel('truncate over: ');
+dynUI2.addLabel('% , ');
+dynUI2.addLabel('over: ');
 dynUI2.addInput('input2_trOver', '35px', '100');
 dynUI2.addLabel('%');
 dynUI2.addLines(1);
+dynUI2.addLabel('frequency cut under: ');
+dynUI2.addInput('input2_fc', '35px', '0');
+dynUI2.addLabel('% , ');
+dynUI2.addLabel('over: ');
+dynUI2.addInput('input2_fcOver', '35px', '100');
+dynUI2.addLabel('%');
+dynUI2.addLines(1);
 dynUI2.addButton('button2_1', 'calculate');
+
+dynUI2.addLabel(' ');
+dynUI2.addCheckBox('xUnit', 'nm');
+dynUI2.addLabel('nm, ');
+dynUI2.addCheckBox('xUnit', 'eV', false);
+dynUI2.addLabel('eV');
+
+// dynUI2.addGroupedCheckBox('xUint',['nm', 'eV']);
+
 dynUI2.addLines(1);
 dynUI2.addButton('button2_2', 'export to csv');
 dynUI2.addLines(1);
@@ -316,8 +360,14 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
     var iFFT_alpha = dataTable2.iFFT_result.map(row => row[1]);
     var iFFT_beta = dataTable2.iFFT_result.map(row => row[2]);
 
+    var xAxis = waveLength;
+
+    if(dynUI2.checkBoxList['eV'].checked) {
+        xAxis = energyLevel;
+    }
+
     const traceAlpha = {
-        x: waveLength,
+        x: xAxis,
         y: alpha,
         mode: 'markers',
         type: 'scatter',
@@ -334,7 +384,7 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
     };
 
     const traceiFFTAlpha = {
-        x: waveLength,
+        x: xAxis,
         y: iFFT_alpha,
         mode: 'lines',
         type: 'scatter',
@@ -393,10 +443,18 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     var fileNum = dynUI1.fileInputList.fileInput1.files.length;
 
     for (i = 0; i < fileNum; i++) {
-        var dataTemp = dynUI1.tableDataList[i];
+        var dataTemp = dynUI1.tableDataList[i].map(row => [...row]);
+        // if(dynUI2.checkBoxList['eV'].checked) {
+
+        //     dataTemp = dataTemp.map(row => {
+        //         row[0] = 1240 / row[0];
+        //         return row;
+        //     });
+        // }
         const trRatio = document.getElementById('input2_tr').value;
         const trRatioOver = document.getElementById('input2_trOver').value;
 
+        await console.log(dataTemp);
         const response = await fetch('http://192.168.12.135:6969/FFTMulti', {
             method: 'POST',
             headers: {
@@ -423,6 +481,7 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     var dataTable2 = dynUI2.tableDataList[selNum-1];
 
     var waveLength = dataTable1.map(row => row[0]);
+    var energyLevel = dataTable1.map(row => 1240/row[0]);
     var alpha = dataTable1.map(row => row[1]);
     var beta = dataTable1.map(row => row[2]);
     var frequency = dataTable2.amp_result.map(row => row[0]);
@@ -432,8 +491,14 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     var iFFT_alpha = dataTable2.iFFT_result.map(row => row[1]);
     var iFFT_beta = dataTable2.iFFT_result.map(row => row[2]);
 
+    var xAxis = waveLength;
+
+    if(dynUI2.checkBoxList['eV'].checked) {
+        xAxis = energyLevel;
+    }
+
     const traceAlpha = {
-        x: waveLength,
+        x: xAxis,
         y: alpha,
         mode: 'markers',
         type: 'scatter',
@@ -451,7 +516,7 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     };
 
     const traceiFFTAlpha = {
-        x: waveLength,
+        x: xAxis,
         y: iFFT_alpha,
         mode: 'lines',
         type: 'scatter',
@@ -513,6 +578,17 @@ dynUI2.buttonList['button2_2'].addEventListener('click',async function(event) {
         await delay(500);
     }
 })
+
+
+dynUI2.checkBoxList['nm'].addEventListener('change',async function(event) {
+    dynUI2.checkBoxList['eV'].checked = ! dynUI2.checkBoxList['eV'].checked;
+    document.getElementById('button2_1').click();
+})
+dynUI2.checkBoxList['eV'].addEventListener('change',async function(event) {
+    dynUI2.checkBoxList['nm'].checked = ! dynUI2.checkBoxList['nm'].checked;
+    document.getElementById('button2_1').click();
+})
+
 
 
 
