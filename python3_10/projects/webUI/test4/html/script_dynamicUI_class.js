@@ -1,72 +1,320 @@
 
+class DynUI {
+    constructor(containerID) {
+        this.container = document.getElementById(containerID);
+        this.buttonList = {};
+        this.inputList = {};
+        this.fileInputList = {};
+        this.selectList = {};
+        this.checkBoxList = {};
+        this.GroupedCheckBoxList = {};
+        this.tableList = {};
+        this.canvasList = {};
+        this.chartList = {};
+        this.plotList = {};
 
-var options1 = [];
+        this.tableSettings = {};
+        this.chartSettings = {};
+        this.plotLayoutList = {};
+        this.tableDataList = {};
 
-const dynUI1 = new DynUI('dynUI1');
-dynUI1.addTitle('Input', 'h1');
-dynUI1.addLabel('Num of Header: ');
-dynUI1.addInput('input1', '40px', '37');
-dynUI1.addLabel(' , ');
-dynUI1.addLines(1);
-dynUI1.addLabel('column range to remove: ');
-dynUI1.addInput('input2', '35px', '3');
-dynUI1.addLabel(' ~ ');
-dynUI1.addInput('input3', '35px', '7');
-dynUI1.addLines(1);
-dynUI1.addFileInput('fileInput1');
-dynUI1.addLines(1);
-dynUI1.addLabel(' select csv file to show: ');
-dynUI1.addSelect('select1');
-dynUI1.addLabel(' , ');
-dynUI1.addLines(1);
-dynUI1.addTable('table1');
+        this.tableSettingsAtStart = {
+            data: [
+                [ , ],
+            ],
+            allowEmpty: true,
+            type: 'numeric',
+            numericFormat: {
+                pattern: '0,0.00',
+            },
+            colHeaders: true,
+            rowHeaders: true,
+            customBorders: true,
+            width: '100%',
+            height: '63.5%',
+            renderAllRows: false,
+            licenseKey: 'non-commercial-and-evaluation'
+        }
+        this.chartSettingsScatPoint = {
+            label: 'Calculated',
+            backgroundColor: "rgba(150, 100, 100, 0.6)",
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            showLine: true,
+            fill: false,
+            borderWidth: 3,
+            borderColor: "rgba(150, 100, 100, 0.6)",
+            //borderDash: [10, 3, 20, 10],
+            tension:0.5
+        };
 
-const dynUI2 = new DynUI('dynUI2');
-dynUI2.addTitle('Output', 'h1');
-dynUI2.addLabel('truncate: under ');
-dynUI2.addInput('input2_tr', '35px', '0');
-dynUI2.addLabel('% , ');
-dynUI2.addLabel('over ');
-dynUI2.addInput('input2_trOver', '35px', '100');
-dynUI2.addLabel('%');
-dynUI2.addLines(1);
-dynUI2.addLabel('xAxis-cut: under ');
-dynUI2.addInput('input2_fc', '35px', '0');
-dynUI2.addLabel(' , ');
-dynUI2.addLabel('over ');
-dynUI2.addInput('input2_fcOver', '35px', '100');
-dynUI2.addLabel('');
-dynUI2.addLines(1);
-dynUI2.addButton('button2_1', 'calculate');
+    }
 
-dynUI2.addLabel(' ');
-dynUI2.addCheckBox('xUnit', 'nm');
-dynUI2.addLabel('nm, ');
-dynUI2.addCheckBox('xUnit', 'eV', false);
-dynUI2.addLabel('eV');
+    handleClick() {
+        alert('button clicked!');
+    }
 
-// dynUI2.addGroupedCheckBox('xUint',['nm', 'eV']);
+    addTitle(titleText, font) {
+        const title = document.createElement(font);
+        title.textContent = titleText;
+        this.container.appendChild(title);
+    }
 
-dynUI2.addLines(1);
-dynUI2.addButton('button2_2', 'export to csv');
-dynUI2.addLines(1);
-dynUI2.addTable('table2_1');
+    addLabel(labelText) {
+        const label = document.createElement('label');
+        label.textContent = labelText;
+        this.container.appendChild(label);
+    }
 
-const dynUI3 = new DynUI('dynUI3');
-dynUI3.addTitle('Alpha Chart','h1');
-dynUI3.addTitle('Input data','h2');
-dynUI3.addPlot('plot3_1', 400, 250);
-dynUI3.addLines(1);
-dynUI3.addTitle('Output data','h2');
-dynUI3.addPlot('plot3_2', 400, 250);
+    addLines(lineNum) {
+        for (let i = 0; i <= lineNum; i++) {
+            const line = document.createElement('br');
+            this.container.appendChild(line);
+        }
+    }
 
-const dynUI4 = new DynUI('dynUI4');
-dynUI4.addTitle('Beta Chart','h1');
-dynUI4.addTitle('Input data','h2');
-dynUI4.addPlot('plot4_1', 400, 250);
-dynUI4.addLines(1);
-dynUI4.addTitle('Output data','h2');
-dynUI4.addPlot('plot4_2', 400, 250);
+    addButton(buttonID, buttonText) {
+        const button = document.createElement('button');
+        button.id = buttonID;
+        button.textContent = buttonText;
+        button.style = {
+            width: '200px',
+            height: '50px'
+        };
+        this.container.appendChild(button);
+        this.buttonList[buttonID] = button;
+    }
+
+    addSelect(selectID) {
+        const select = document.createElement('select');
+        select.id = selectID;
+        const option = document.createElement('option');
+        option.value = 'no data';
+        option.text = 'no data';
+        select.appendChild(option);
+        this.container.appendChild(select);
+        this.selectList[selectID] = select;
+    }
+
+    modifySelect(selectID, options) {
+        const select = document.getElementById(selectID);
+        select.innerHTML ="";
+        for (var option of options) {
+            select.appendChild(option);
+        }
+    }
+
+    addCheckBox(checkBoxName, checkBoxValue, defaultCheck = true) {
+        const check = document.createElement('input');
+        check.type = 'checkbox';
+        check.name = checkBoxName;
+        check.value = checkBoxValue;
+        check.checked = defaultCheck;
+        this.container.appendChild(check);
+        this.checkBoxList[checkBoxValue] = check;
+    }
+
+    addGroupedCheckBox(checkBoxName, valueList) {
+        const groupCheckField = document.createElement('fieldset');
+        this.container.appendChild(groupCheckField);
+
+        const checkList = {};
+        const numValue = valueList.length;
+        for (let i = 0; i < numValue; i++ ) {
+            checkList[i] = document.createElement('input');
+            checkList[i].type = 'checkbox';
+            checkList[i].name = checkBoxName;
+            checkList[i].value = valueList[i];
+            groupCheckField.appendChild(checkList[i]);
+        }
+
+        // this.groupCheckBoxList[checkBoxName] = checkList;
+    }
+
+    addInput(inputID, width, defaultValue) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = inputID;
+        input.style.width = width;
+        input.style.textAlign = 'center';
+        input.value = defaultValue;
+        this.container.appendChild(input);
+        this.inputList[inputID] = input;
+    }
+
+    addFileInput(inputID) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.id = inputID;
+        input.accept = '.csv';
+        input.multiple = true;
+        this.container.appendChild(input);
+        this.fileInputList[inputID] = input;
+    }
+
+    addTable(tableID) {
+        const table = document.createElement('div');
+        table.id = tableID;
+        this.container.appendChild(table);
+        this.tableSettings[tableID] = Object.assign({}, this.tableSettingsAtStart);
+        this.tableList[tableID]= new Handsontable(table, this.tableSettings[tableID]);
+    }
+
+    modifyTable(tableID, tableSettings) {
+        const table = document.getElementById(tableID);
+        this.tableList[tableID]= new Handsontable(table, tableSettings);
+    }
+
+    addChart(chartID, width, height){
+        const canvas = document.createElement('canvas');
+        canvas.id = chartID;
+        canvas.width = width;
+        canvas.height = height;
+
+        this.container.appendChild(canvas);
+
+        const chart = new Chart(canvas.getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [],
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    },
+                    y: {
+
+                    }
+                }
+            }
+        });
+
+        this.canvasList[chartID] = canvas;
+        this.chartList[chartID] = chart;
+        this.chartSettings[chartID] = Object.assign({}, this.chartSettingsScatPoint);
+
+        chart.options = this.chartSettings[chartID];
+    }
+
+    addPlot(plotID, width, height) {
+
+        const plotDiv = document.createElement('div');
+        plotDiv.id = plotID;
+
+        this.container.appendChild(plotDiv);
+
+        const trace = {
+            x: [],
+            y: [],
+            mode: 'markers',
+            type: 'scatter',
+            name: 'Dataset 2'
+        };
+
+        var layout = {
+            autosize: false,
+            width: this.container.offsetWidth * 90/100,
+            height: width * (12 / 16),
+            // width: width,
+            // height: height,
+            margin: {
+                l: 20,
+                r: 20,
+                t: 20,
+                b: 20,
+            },
+            legend: {
+                showlegend: true,
+                x: 0.5,  // Horizontal position (0.5 is centered)
+                y: 1.2,  // Vertical position (1.1 is above the plot)
+                orientation: 'h',  // Horizontal layout for the legend (default is vertical)
+                xanchor: 'center',  // Align legend horizontally to the center
+                yanchor: 'bottom'   // Align legend vertically to the bottom
+            },
+        };
+        Plotly.newPlot(plotID, [trace], layout);
+        //Plotly.newPlot(plotID + '_div', [trace], layout, { responsive: true});
+
+        this.plotList[plotID] = plotDiv;
+        this.plotLayoutList[plotID] = Object.assign({}, layout);
+    }
+}
+
+
+// var options1 = [];
+
+// const dynUI1 = new DynUI('dynUI1');
+// dynUI1.addTitle('Input', 'h1');
+// dynUI1.addLabel('Num of Header: ');
+// dynUI1.addInput('input1', '40px', '37');
+// dynUI1.addLabel(' , ');
+// dynUI1.addLines(1);
+// dynUI1.addLabel('column range to remove: ');
+// dynUI1.addInput('input2', '35px', '3');
+// dynUI1.addLabel(' ~ ');
+// dynUI1.addInput('input3', '35px', '7');
+// dynUI1.addLines(1);
+// dynUI1.addFileInput('fileInput1');
+// dynUI1.addLines(1);
+// dynUI1.addLabel(' select csv file to show: ');
+// dynUI1.addSelect('select1');
+// dynUI1.addLabel(' , ');
+// dynUI1.addLines(1);
+// dynUI1.addTable('table1');
+
+// const dynUI2 = new DynUI('dynUI2');
+// dynUI2.addTitle('Output', 'h1');
+// dynUI2.addLabel('truncate: under ');
+// dynUI2.addInput('input2_tr', '35px', '0');
+// dynUI2.addLabel('% , ');
+// dynUI2.addLabel('over ');
+// dynUI2.addInput('input2_trOver', '35px', '100');
+// dynUI2.addLabel('%');
+// dynUI2.addLines(1);
+// dynUI2.addLabel('xAxis-cut: under ');
+// dynUI2.addInput('input2_fc', '35px', '0');
+// dynUI2.addLabel(' , ');
+// dynUI2.addLabel('over ');
+// dynUI2.addInput('input2_fcOver', '35px', '100');
+// dynUI2.addLabel('');
+// dynUI2.addLines(1);
+// dynUI2.addButton('button2_1', 'calculate');
+
+// dynUI2.addLabel(' ');
+// dynUI2.addCheckBox('xUnit', 'nm');
+// dynUI2.addLabel('nm, ');
+// dynUI2.addCheckBox('xUnit', 'eV', false);
+// dynUI2.addLabel('eV');
+
+// // dynUI2.addGroupedCheckBox('xUint',['nm', 'eV']);
+
+// dynUI2.addLines(1);
+// dynUI2.addButton('button2_2', 'export to csv');
+// dynUI2.addLines(1);
+// dynUI2.addTable('table2_1');
+
+// const dynUI3 = new DynUI('dynUI3');
+// dynUI3.addTitle('Alpha Chart','h1');
+// dynUI3.addTitle('Input data','h2');
+// dynUI3.addPlot('plot3_1', 400, 250);
+// dynUI3.addLines(1);
+// dynUI3.addTitle('Output data','h2');
+// dynUI3.addPlot('plot3_2', 400, 250);
+
+// const dynUI4 = new DynUI('dynUI4');
+// dynUI4.addTitle('Beta Chart','h1');
+// dynUI4.addTitle('Input data','h2');
+// dynUI4.addPlot('plot4_1', 400, 250);
+// dynUI4.addLines(1);
+// dynUI4.addTitle('Output data','h2');
+// dynUI4.addPlot('plot4_2', 400, 250);
 
 
 

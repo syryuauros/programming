@@ -135,6 +135,8 @@ def FFTMulti_numbers():
     check = tr_json['check']
     truncate_ratio = tr_json['truncateRatio']
     truncate_ratio_over = tr_json.get('truncateRatioOver', 100)
+    frequency_cut = float(tr_json.get('frequencyCut', 0))
+    frequency_cut_over = float(tr_json.get('frequencyCutOver', 100))
     show_elem_origin = np.array(data)
 
     if not can_be_float(show_elem_origin[0,:]):
@@ -197,6 +199,14 @@ def FFTMulti_numbers():
             amplitudeL[amplitudeN/amplitudeN.max() > tr_ratio_over] = 0
             s_fftL[amplitudeN/amplitudeN.max() > tr_ratio_over] = 0
             phaseL[amplitudeN/amplitudeN.max() > tr_ratio_over] = 0
+
+            amplitudeL[ abs(frequency_cut) > abs(frequency) ] = 0
+            s_fftL[abs(frequency_cut) > abs(frequency) ] = 0
+            phaseL[abs(frequency_cut) > abs(frequency) ] = 0
+
+            amplitudeL[ abs(frequency) > abs(frequency_cut_over)] = 0
+            s_fftL[ abs(frequency) > abs(frequency_cut_over)] = 0
+            phaseL[ abs(frequency) > abs(frequency_cut_over)] = 0
 
             s_iFFTL = np.fft.ifft(s_fftL).real
             complexelemL = amplitudeL.astype(float) * np.exp(1j * phaseL.astype(float))
