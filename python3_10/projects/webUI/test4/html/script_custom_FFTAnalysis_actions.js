@@ -212,7 +212,6 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     if(dynUI2.checkBoxList['amp'].checked) {
         dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
     } else {
-
         dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result;
     }
     dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
@@ -340,12 +339,24 @@ dynUI2.buttonList['button2_2'].addEventListener('click',async function(event) {
         ampPhs = 1;
     }
 
-    for(i = 0; i < fileNum; i++) {
-        await exportToCSV(dynUI2, i, ampPhs);
-        await delay(500);
-    }
+    await exportToCSVSequentially(dynUI2, ampPhs, dynUI1.fileNameList);
+    // for(i = 0; i < fileNum; i++) {
+    //     await exportToCSV(dynUI2, i, ampPhs);
+    //     await delay(500);
+    // }
 })
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+dynUI2.buttonList['button2_3'].addEventListener('click',async function(event) {
+    var fileNum = dynUI1.fileInputList.fileInput1.files.length;
+    var ampPhs = 0;
+    if(dynUI2.checkBoxList['phs'].checked) {
+        ampPhs = 1;
+    }
+
+    await exportToCSVsAsZip(dynUI2, ampPhs, dynUI1.fileNameList);
+})
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

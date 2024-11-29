@@ -439,10 +439,10 @@ function formattingData(csvData, headerNum, colNumRangeMin, colNumRangeMax) {
 }
 
 async function exportToCSV(container, selNum, ampPhs) {
-    if(ampPhs = 0) {
-        var Data0 = container.tableDataList[selNum].amp_result;
+    if(ampPhs === 0) {
+        let Data0 = container.tableDataList[selNum].amp_result;
     } else {
-        var Data0 = container.tableDataList[selNum].phs_result;
+        let Data0 = container.tableDataList[selNum].phs_result;
     }
     const csvFormat = Data0.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvFormat], { type: 'text/csv' });
@@ -453,6 +453,120 @@ async function exportToCSV(container, selNum, ampPhs) {
     await a.click();
     // URL.revokeObjectURL(url);
 }
+
+async function exportToCSVSequentially(container, ampPhs, nameList) {
+    let selNum = Object.keys(container.tableDataList).length;
+
+    for (let i = 0; i < selNum; i++) {
+        var ampPhs = 0;
+        if(dynUI2.checkBoxList['phs'].checked) {
+            ampPhs = 1;
+        }
+
+        let Data0 = container.tableDataList[i].amp_result;
+        let addingText = '_amp';
+
+        if (ampPhs === 0) {
+        } else {
+            Data0 = container.tableDataList[i].phs_result;
+            addingText = '_phs';
+        }
+
+        const csvFormat = Data0.map(row => row.join(',')).join('\n');
+
+        const blob = new Blob([csvFormat], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nameList[i].slice(0, -4) + addingText  + '.csv';
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(url);
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+    }
+}
+
+// async function exportToCSVSequentiallyFullAuto(container, ampPhs, nameList) {
+
+//     const directoryHandle = await window.showDirectoryPicker();
+
+//     var ampPhs = 0;
+//     if(dynUI2.checkBoxList['phs'].checked) {
+//         ampPhs = 1;
+//     }
+
+//     let selNum = Object.keys(container.tableDataList).length;
+
+//     for (let i = 0; i < selNum; i++) {
+//         let data, filename;
+//         let addingText = '_amp';
+
+//         if (ampPhs === 0) {
+//             data = container.tableDataList[i].amp_result;
+//         } else {
+//             data = container.tableDataList[i].phs_result;
+//             addingText = '_phs';
+//         }
+
+//         const csvFormat = data.map(row => row.join(',')).join('\n');
+//         filename = nameList[i].slice(0, -4) + addingText  + '.csv';
+
+//         const fileHandle = directoryHandle.getFileHandle(filename, { create: true });
+//         const writableStream = fileHandle.createWritable();
+//         await writableStream.write(csvFormat);
+//         await writableStream.close();
+
+//         console.log(`File ${filename} saved successfully.`);
+//     }
+// }
+
+async function exportToCSVsAsZip(container, ampPhs, nameList) {
+    const zip = new JSZip();
+
+    var ampPhs = 0;
+    if(dynUI2.checkBoxList['phs'].checked) {
+        ampPhs = 1;
+    }
+    let zipText = 'amplitude'
+
+    let selNum = Object.keys(container.tableDataList).length;
+    for (let i = 0; i < selNum; i++) {
+        let data, filename;
+        let addingText = '_amp';
+
+        if (ampPhs === 0) {
+            data = container.tableDataList[i].amp_result;
+        } else {
+            data = container.tableDataList[i].phs_result;
+            addingText = '_phs';
+            zipText = 'phase';
+        }
+
+        const csvFormat = data.map(row => row.join(',')).join('\n');
+        filename = nameList[i].slice(0, -4) + addingText  + '.csv';
+
+        zip.file(filename, csvFormat);
+    }
+
+    const content = await zip.generateAsync({ type: 'blob' });
+    const url = await URL.createObjectURL(content);
+    const a = document.createElement('a');
+    a.href = await url;
+    a.download = zipText + '.zip';
+    await document.body.appendChild(a);
+    await a.click();
+    await document.body.removeChild(a);
+
+    console.log('ZIP file exported successfully.');
+}
+
+
+
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));

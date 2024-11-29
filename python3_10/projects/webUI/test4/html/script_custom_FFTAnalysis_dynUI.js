@@ -56,6 +56,8 @@ dynUI2.addLines(1);
 dynUI2.addButton('button2_1', 'calculate');
 dynUI2.addSpace(5);
 dynUI2.addButton('button2_2', 'export to csv');
+dynUI2.addSpace(5);
+dynUI2.addButton('button2_3', 'export CSVs as zip');
 dynUI2.addLines(1);
 dynUI2.addTable('table2_1');
 
