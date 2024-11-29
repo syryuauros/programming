@@ -1,13 +1,22 @@
 const option1_File = document.createElement('option');
-option1_File.value = 'false';
+option1_File.value = 0;
 option1_File.text = 'file';
 const option1_Folder = document.createElement('option');
-option1_Folder.value = 'true';
+option1_Folder.value = 1;
 option1_Folder.text = 'fold';
 
 
 dynUI1.modifySelect('select1_fileFolder', [option1_File, option1_Folder]);
+dynUI1.fileInputList['fileInput1'].webkitdirectory = false;
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+dynUI1.selectList['select1_fileFolder'].addEventListener('change', function(event) {
+    dynUI1.fileInputList['fileInput1'].webkitdirectory = dynUI1.selectList['select1_fileFolder'].value === '1';
+})
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 dynUI1.fileInputList['fileInput1'].addEventListener('change', async function(event) {
     var headerNum = +document.getElementById('input1').value;
     var colRanMin = +document.getElementById('input2').value;
@@ -22,7 +31,6 @@ dynUI1.fileInputList['fileInput1'].addEventListener('change', async function(eve
         options1[i] = option;
     }
 
-    dynUI1.fileInputList['fileInput1'].webkitdirectory = select1_fileFolder.value;
     await loadCSVsFromFolder(dynUI1, 'fileInput1', 'table1', headerNum, colRanMin, colRanMax);
     dynUI1.modifySelect('select1', options1);
     dynUI1.selectList['select1'].value = fileNum.toString();
@@ -30,6 +38,7 @@ dynUI1.fileInputList['fileInput1'].addEventListener('change', async function(eve
 
     dynUI2.inputList['input2_fcOver'].value = dynUI1.tableDataList[fileNum - 1].length/2;
 });
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

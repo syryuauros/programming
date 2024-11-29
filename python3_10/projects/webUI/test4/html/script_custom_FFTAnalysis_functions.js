@@ -373,12 +373,12 @@ async function loadCSVsFromFolder(container, inputName, tableName, headerNum, co
         if (file.type === 'text/csv') {
             const filePromise = new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                console.log(file.webkitRelativePath);
+                // console.log(file.webkitRelativePath);
 
                 reader.onload = function(e) {
                     try {
                         const csvDataOrigin = e.target.result;
-                        console.log(file.name);
+                        container.fileNameList[i] = file.name;
                         container.tableDataList[i] = formattingData(csvDataOrigin, headerNum, colRanMin, colRanMax);
                         container.tableSettings[tableName].data = container.tableDataList[i];
                         container.modifyTable(tableName, container.tableSettings[tableName]);

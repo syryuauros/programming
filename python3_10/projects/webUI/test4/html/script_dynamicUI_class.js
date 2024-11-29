@@ -5,6 +5,7 @@ class DynUI {
         this.buttonList = {};
         this.inputList = {};
         this.fileInputList = {};
+        this.fileNameList = {};
         this.selectList = {};
         this.checkBoxList = {};
         this.GroupedCheckBoxList = {};
