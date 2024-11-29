@@ -373,10 +373,12 @@ async function loadCSVsFromFolder(container, inputName, tableName, headerNum, co
         if (file.type === 'text/csv') {
             const filePromise = new Promise((resolve, reject) => {
                 const reader = new FileReader();
+                console.log(file.webkitRelativePath);
 
                 reader.onload = function(e) {
                     try {
                         const csvDataOrigin = e.target.result;
+                        console.log(file.name);
                         container.tableDataList[i] = formattingData(csvDataOrigin, headerNum, colRanMin, colRanMax);
                         container.tableSettings[tableName].data = container.tableDataList[i];
                         container.modifyTable(tableName, container.tableSettings[tableName]);
@@ -436,8 +438,12 @@ function formattingData(csvData, headerNum, colNumRangeMin, colNumRangeMax) {
     return csvDataAOA;
 }
 
-async function exportToCSV(container, selNum) {
-    var Data0 = container.tableDataList[selNum].amp_result;
+async function exportToCSV(container, selNum, ampPhs) {
+    if(ampPhs = 0) {
+        var Data0 = container.tableDataList[selNum].amp_result;
+    } else {
+        var Data0 = container.tableDataList[selNum].phs_result;
+    }
     const csvFormat = Data0.map(row => row.join(',')).join('\n');
     const blob = new Blob([csvFormat], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);

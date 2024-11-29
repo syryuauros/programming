@@ -14,6 +14,7 @@ dynUI1.addLabel(' ~ ');
 dynUI1.addInput('input3', '35px', '7');
 dynUI1.addLines(1);
 dynUI1.addFileInput('fileInput1');
+dynUI1.addSelect('select1_fileFolder');
 dynUI1.addLines(1);
 dynUI1.addLabel(' select csv file to show: ');
 dynUI1.addSelect('select1');
@@ -37,17 +38,23 @@ dynUI2.addLabel('over ');
 dynUI2.addInput('input2_fcOver', '35px', '100');
 dynUI2.addLabel('');
 dynUI2.addLines(1);
-dynUI2.addButton('button2_1', 'calculate');
 
 dynUI2.addLabel(' ');
 dynUI2.addCheckBox('xUnit', 'nm');
 dynUI2.addLabel('nm, ');
 dynUI2.addCheckBox('xUnit', 'eV', false);
 dynUI2.addLabel('eV');
-
-// dynUI2.addGroupedCheckBox('xUint',['nm', 'eV']);
+dynUI2.addSpace(20);
+dynUI2.addLabel('|');
+dynUI2.addSpace(20);
+dynUI2.addCheckBox('outputY', 'amp');
+dynUI2.addLabel('amplitude, ');
+dynUI2.addCheckBox('outputY', 'phs', false);
+dynUI2.addLabel('phase');
 
 dynUI2.addLines(1);
+dynUI2.addButton('button2_1', 'calculate');
+dynUI2.addSpace(5);
 dynUI2.addButton('button2_2', 'export to csv');
 dynUI2.addLines(1);
 dynUI2.addTable('table2_1');

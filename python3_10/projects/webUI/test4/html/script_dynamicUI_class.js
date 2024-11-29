@@ -73,6 +73,14 @@ class DynUI {
         }
     }
 
+    addSpace(spaceNum) {
+            const space = document.createElement('div');
+            space.style.display = 'inline-block';
+            space.style.width = spaceNum + 'px';
+            space.style.height = '1px';
+            this.container.appendChild(space);
+    }
+
     addButton(buttonID, buttonText) {
         const button = document.createElement('button');
         button.id = buttonID;
@@ -142,12 +150,13 @@ class DynUI {
         this.inputList[inputID] = input;
     }
 
-    addFileInput(inputID) {
+    addFileInput(inputID, folder=false) {
         const input = document.createElement('input');
         input.type = 'file';
         input.id = inputID;
         input.accept = '.csv';
         input.multiple = true;
+        input.webkitdirectory = folder;
         this.container.appendChild(input);
         this.fileInputList[inputID] = input;
     }

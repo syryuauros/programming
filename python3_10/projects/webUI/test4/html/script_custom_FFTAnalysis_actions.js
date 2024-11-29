@@ -1,74 +1,12 @@
+const option1_File = document.createElement('option');
+option1_File.value = 'false';
+option1_File.text = 'file';
+const option1_Folder = document.createElement('option');
+option1_Folder.value = 'true';
+option1_Folder.text = 'fold';
 
 
-// var options1 = [];
-
-// const dynUI1 = new DynUI('dynUI1');
-// dynUI1.addTitle('Input', 'h1');
-// dynUI1.addLabel('Num of Header: ');
-// dynUI1.addInput('input1', '40px', '37');
-// dynUI1.addLabel(' , ');
-// dynUI1.addLines(1);
-// dynUI1.addLabel('column range to remove: ');
-// dynUI1.addInput('input2', '35px', '3');
-// dynUI1.addLabel(' ~ ');
-// dynUI1.addInput('input3', '35px', '7');
-// dynUI1.addLines(1);
-// dynUI1.addFileInput('fileInput1');
-// dynUI1.addLines(1);
-// dynUI1.addLabel(' select csv file to show: ');
-// dynUI1.addSelect('select1');
-// dynUI1.addLabel(' , ');
-// dynUI1.addLines(1);
-// dynUI1.addTable('table1');
-
-// const dynUI2 = new DynUI('dynUI2');
-// dynUI2.addTitle('Output', 'h1');
-// dynUI2.addLabel('truncate: under ');
-// dynUI2.addInput('input2_tr', '35px', '0');
-// dynUI2.addLabel('% , ');
-// dynUI2.addLabel('over ');
-// dynUI2.addInput('input2_trOver', '35px', '100');
-// dynUI2.addLabel('%');
-// dynUI2.addLines(1);
-// dynUI2.addLabel('xAxis-cut: under ');
-// dynUI2.addInput('input2_fc', '35px', '0');
-// dynUI2.addLabel(' , ');
-// dynUI2.addLabel('over ');
-// dynUI2.addInput('input2_fcOver', '35px', '100');
-// dynUI2.addLabel('');
-// dynUI2.addLines(1);
-// dynUI2.addButton('button2_1', 'calculate');
-
-// dynUI2.addLabel(' ');
-// dynUI2.addCheckBox('xUnit', 'nm');
-// dynUI2.addLabel('nm, ');
-// dynUI2.addCheckBox('xUnit', 'eV', false);
-// dynUI2.addLabel('eV');
-
-// // dynUI2.addGroupedCheckBox('xUint',['nm', 'eV']);
-
-// dynUI2.addLines(1);
-// dynUI2.addButton('button2_2', 'export to csv');
-// dynUI2.addLines(1);
-// dynUI2.addTable('table2_1');
-
-// const dynUI3 = new DynUI('dynUI3');
-// dynUI3.addTitle('Alpha Chart','h1');
-// dynUI3.addTitle('Input data','h2');
-// dynUI3.addPlot('plot3_1', 400, 250);
-// dynUI3.addLines(1);
-// dynUI3.addTitle('Output data','h2');
-// dynUI3.addPlot('plot3_2', 400, 250);
-
-// const dynUI4 = new DynUI('dynUI4');
-// dynUI4.addTitle('Beta Chart','h1');
-// dynUI4.addTitle('Input data','h2');
-// dynUI4.addPlot('plot4_1', 400, 250);
-// dynUI4.addLines(1);
-// dynUI4.addTitle('Output data','h2');
-// dynUI4.addPlot('plot4_2', 400, 250);
-
-
+dynUI1.modifySelect('select1_fileFolder', [option1_File, option1_Folder]);
 
 dynUI1.fileInputList['fileInput1'].addEventListener('change', async function(event) {
     var headerNum = +document.getElementById('input1').value;
@@ -84,6 +22,7 @@ dynUI1.fileInputList['fileInput1'].addEventListener('change', async function(eve
         options1[i] = option;
     }
 
+    dynUI1.fileInputList['fileInput1'].webkitdirectory = select1_fileFolder.value;
     await loadCSVsFromFolder(dynUI1, 'fileInput1', 'table1', headerNum, colRanMin, colRanMax);
     dynUI1.modifySelect('select1', options1);
     dynUI1.selectList['select1'].value = fileNum.toString();
@@ -92,6 +31,7 @@ dynUI1.fileInputList['fileInput1'].addEventListener('change', async function(eve
     dynUI2.inputList['input2_fcOver'].value = dynUI1.tableDataList[fileNum - 1].length/2;
 });
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 dynUI1.selectList['select1'].addEventListener('change', function(event) {
     const container = dynUI1;
@@ -101,15 +41,24 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
 
     dynUI1.tableSettings['table1'].data = dataTable1;
     dynUI1.modifyTable('table1', dynUI1.tableSettings['table1']);
-    dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
+
+    if(dynUI2.checkBoxList['amp'].checked) {
+        dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
+    } else {
+
+        dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result;
+    }
     dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
 
     var waveLength = dataTable1.map(row => row[0]);
+    var energyLevel = dataTable1.map(row => 1240/row[0]);
     var alpha = dataTable1.map(row => row[1]);
     var beta = dataTable1.map(row => row[2]);
     var frequency = dataTable2.amp_result.map(row => row[0]);
     var amp_alpha = dataTable2.amp_result.map(row => row[1]);
     var amp_beta = dataTable2.amp_result.map(row => row[2]);
+    var phs_alpha = dataTable2.phs_result.map(row => row[1]);
+    var phs_beta = dataTable2.phs_result.map(row => row[2]);
 
     var iFFT_alpha = dataTable2.iFFT_result.map(row => row[1]);
     var iFFT_beta = dataTable2.iFFT_result.map(row => row[2]);
@@ -169,18 +118,31 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
     traceAmpBeta.mode = 'lines';
     traceAmpBeta.line.dash = 'solid';
 
+    const tracePhsAlpha = Object.assign({}, traceAmpAlpha);
+    tracePhsAlpha.y = phs_alpha;
+
+    const tracePhsBeta = Object.assign({}, traceAmpBeta);
+    tracePhsBeta.y = phs_beta;
+
     const traceiFFTBeta = Object.assign({}, traceiFFTAlpha);
     traceiFFTBeta.y = iFFT_beta;
 
 
-
     Plotly.newPlot('plot3_1', [traceAlpha], dynUI3.plotLayoutList['plot3_1']);
-    Plotly.addTraces('plot3_1', [traceiFFTAlpha]);
-    Plotly.newPlot('plot3_2', [traceAmpAlpha], dynUI3.plotLayoutList['plot3_1']);
-
     Plotly.newPlot('plot4_1', [traceBeta], dynUI3.plotLayoutList['plot3_1']);
+    Plotly.addTraces('plot3_1', [traceiFFTAlpha]);
     Plotly.addTraces('plot4_1', [traceiFFTBeta]);
+
+    Plotly.newPlot('plot3_2', [traceAmpAlpha], dynUI3.plotLayoutList['plot3_1']);
     Plotly.newPlot('plot4_2', [traceAmpBeta], dynUI3.plotLayoutList['plot3_1']);
+
+    if(dynUI2.checkBoxList['amp'].checked) {
+        Plotly.newPlot('plot3_2', [traceAmpAlpha], dynUI3.plotLayoutList['plot3_1']);
+        Plotly.newPlot('plot4_2', [traceAmpBeta], dynUI3.plotLayoutList['plot3_1']);
+    } else {
+        Plotly.newPlot('plot3_2', [tracePhsAlpha], dynUI3.plotLayoutList['plot3_1']);
+        Plotly.newPlot('plot4_2', [tracePhsBeta], dynUI3.plotLayoutList['plot3_1']);
+    }
 
 
     // dynUI3.chartSettings['chart3_1'] = {
@@ -196,6 +158,7 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
 })
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
 
     var fileNum = dynUI1.fileInputList.fileInput1.files.length;
@@ -215,7 +178,6 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
         const freqCut = document.getElementById('input2_fc').value;
         const freqCutOver = document.getElementById('input2_fcOver').value;
 
-        await console.log(dataTemp);
         const response = await fetch('http://192.168.12.135:6969/FFTMulti', {
             method: 'POST',
             headers: {
@@ -237,7 +199,13 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     }
 
     const selNum = +dynUI1.selectList['select1'].value;
-    dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
+
+    if(dynUI2.checkBoxList['amp'].checked) {
+        dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
+    } else {
+
+        dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result;
+    }
     dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
 
     var dataTable1 = dynUI1.tableDataList[selNum-1];
@@ -250,6 +218,8 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     var frequency = dataTable2.amp_result.map(row => row[0]);
     var amp_alpha = dataTable2.amp_result.map(row => row[1]);
     var amp_beta = dataTable2.amp_result.map(row => row[2]);
+    var phs_alpha = dataTable2.phs_result.map(row => row[1]);
+    var phs_beta = dataTable2.phs_result.map(row => row[2]);
 
     var iFFT_alpha = dataTable2.iFFT_result.map(row => row[1]);
     var iFFT_beta = dataTable2.iFFT_result.map(row => row[2]);
@@ -323,33 +293,53 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     traceAmpBeta.mode = 'lines';
     traceAmpBeta.line.dash = 'solid';
 
+    const tracePhsAlpha = Object.assign({}, traceAmpAlpha);
+    tracePhsAlpha.y = phs_alpha;
+
+    const tracePhsBeta = Object.assign({}, traceAmpBeta);
+    tracePhsBeta.y = phs_beta;
+
     const traceiFFTBeta = Object.assign({}, traceiFFTAlpha);
     traceiFFTBeta.y = iFFT_beta;
 
 
 
     Plotly.newPlot('plot3_1', [traceAlpha], dynUI3.plotLayoutList['plot3_1']);
-    Plotly.addTraces('plot3_1', [traceiFFTAlpha]);
-    Plotly.newPlot('plot3_2', [traceAmpAlpha], dynUI3.plotLayoutList['plot3_1']);
-
     Plotly.newPlot('plot4_1', [traceBeta], dynUI3.plotLayoutList['plot3_1']);
+    Plotly.addTraces('plot3_1', [traceiFFTAlpha]);
     Plotly.addTraces('plot4_1', [traceiFFTBeta]);
+
+    Plotly.newPlot('plot3_2', [traceAmpAlpha], dynUI3.plotLayoutList['plot3_1']);
     Plotly.newPlot('plot4_2', [traceAmpBeta], dynUI3.plotLayoutList['plot3_1']);
 
+    if(dynUI2.checkBoxList['amp'].checked) {
+        Plotly.newPlot('plot3_2', [traceAmpAlpha], dynUI3.plotLayoutList['plot3_1']);
+        Plotly.newPlot('plot4_2', [traceAmpBeta], dynUI3.plotLayoutList['plot3_1']);
+    } else {
+        Plotly.newPlot('plot3_2', [tracePhsAlpha], dynUI3.plotLayoutList['plot3_1']);
+        Plotly.newPlot('plot4_2', [tracePhsBeta], dynUI3.plotLayoutList['plot3_1']);
+    }
 })
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 dynUI2.buttonList['button2_2'].addEventListener('click',async function(event) {
     var fileNum = dynUI1.fileInputList.fileInput1.files.length;
+    var ampPhs = 0;
+    if(dynUI2.checkBoxList['phs'].checked) {
+        ampPhs = 1;
+    }
 
     for(i = 0; i < fileNum; i++) {
-        await exportToCSV(dynUI2, i);
+        await exportToCSV(dynUI2, i, ampPhs);
         await delay(500);
     }
 })
 
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 dynUI2.checkBoxList['nm'].addEventListener('change',async function(event) {
     dynUI2.checkBoxList['eV'].checked = ! dynUI2.checkBoxList['eV'].checked;
     document.getElementById('button2_1').click();
@@ -359,136 +349,11 @@ dynUI2.checkBoxList['eV'].addEventListener('change',async function(event) {
     document.getElementById('button2_1').click();
 })
 
-
-
-
-
-// async function loadCSVsFromFolder(container, inputName, tableName, headerNum, colRanMin, colRanMax) {
-//     const files = container.fileInputList[inputName].files;
-//     let i = 0;
-
-//     const filePromises = [];
-
-//     for (const file of files) {
-//         if (file.type === 'text/csv') {
-//             const filePromise = new Promise((resolve, reject) => {
-//                 const reader = new FileReader();
-
-//                 reader.onload = function(e) {
-//                     try {
-//                         const csvDataOrigin = e.target.result;
-//                         container.tableDataList[i] = formattingData(csvDataOrigin, headerNum, colRanMin, colRanMax);
-//                         container.tableSettings[tableName].data = container.tableDataList[i];
-//                         container.modifyTable(tableName, container.tableSettings[tableName]);
-//                         i++;
-//                         resolve();
-//                     } catch (error) {
-//                         reject(error);
-//                     }
-//                 };
-
-//                 reader.onerror = function(e) {
-//                     reject(new Error('Error reading file: ' + file.name));
-//                 };
-
-//                 reader.readAsText(file);
-//             });
-
-//             filePromises.push(filePromise);
-//         } else {
-//             console.log(`${file.name} is not a CSV file.`);
-//         }
-//     }
-
-//     await Promise.all(filePromises);
-// }
-
-
-// // async function loadCSVsFromFolder(container, inputName, tableName, headerNum, colRanMin, colRanMax) {
-// //     var files = container.fileInputList[inputName].files;
-// //     let i = 0;
-
-// //     for (const file of files) {
-// //         if (file.type === 'text/csv') {
-// //             const reader = await new FileReader();
-// //             reader.onload = function(e) {
-// //                 var csvDataOrigin = e.target.result;
-// //                 container.tableDataList[i] = formattingData(csvDataOrigin, headerNum, colRanMin, colRanMax);
-// //                 container.tableSettings[tableName].data = container.tableDataList[i];
-// //                 container.modifyTable(tableName, container.tableSettings[tableName]);
-// //                 i++;
-// //             };
-// //             reader.readAsText(file);
-// //         } else {
-// //             console.log(`${file.name} is not a CSV file.`);
-// //         }
-// //     }
-// // }
-
-// function formattingData(csvData, headerNum, colNumRangeMin, colNumRangeMax) {
-//     var rows = csvData.split("\n");
-//     var trimedRows = rows.slice(headerNum);
-//     var csvDataAOA = trimedRows.map(row => {
-//         let columns = row.split(/[\t,]/);
-//         let updatedColumns = columns.slice(0, colNumRangeMin).concat(columns.slice(colNumRangeMax));
-//         return updatedColumns;
-//     });
-//     return csvDataAOA;
-// }
-
-// async function exportToCSV(container, selNum) {
-//     var Data0 = container.tableDataList[selNum].amp_result;
-//     const csvFormat = Data0.map(row => row.join(',')).join('\n');
-//     const blob = new Blob([csvFormat], { type: 'text/csv' });
-//     const url = URL.createObjectURL(blob);
-//     const a = document.createElement('a');
-//     a.href = url;
-//     a.download = 'data0.csv';
-//     await a.click();
-//     // URL.revokeObjectURL(url);
-// }
-
-// function delay(ms) {
-//   return new Promise(resolve => setTimeout(resolve, ms));
-// }
-
-
-// function drawChart(xData, yData, chart, chartContainer, options = null) {
-
-//     if (options) {
-//         chartSettingsScatPoint = [Object.assign({}, options)];
-//     } else {
-
-//         chartSettingsScatPoint = [Object.assign({}, chartContainer.chartSettingsScatPoint)];
-//     }
-//     chartSettingsScatPoint[0].data = xData.map((value, index) => ({ x: value, y: yData[index] }));
-
-//     chart.data.datasets = [
-//         chartSettingsScatPoint[0],
-//     ];
-
-//     chart.update();
-// }
-
-
-// function handleCSVFiles(dynUI, fileInputId, headerNum, colRanMin, colRanMax) {
-//   return loadCSVsFromFolder(dynUI, fileInputId, 'table1', headerNum, colRanMin, colRanMax);
-// }
-// // function drawChart2(xData, yData, chart, chartContainer, options = null) {
-// //     console.log(yData);
-// //     console.log(yData.length);
-
-// // //     if (options) {
-// // //         chartSettingsScatPoint = [Object.assign({}, options)];
-// // //     } else {
-
-// // //         chartSettingsScatPoint = [Object.assign({}, chartContainer.chartSettingsScatPoint)];
-// // //     }
-// // //     chartSettingsScatPoint[0].data = xData.map((value, index) => ({ x: value, y: yData[index] }));
-
-// // //     chart.data.datasets = [
-// // //         chartSettingsScatPoint[0],
-// // //     ];
-
-// // //     chart.update();
-// // }
+dynUI2.checkBoxList['amp'].addEventListener('change',async function(event) {
+    dynUI2.checkBoxList['phs'].checked = ! dynUI2.checkBoxList['phs'].checked;
+    document.getElementById('button2_1').click();
+})
+dynUI2.checkBoxList['phs'].addEventListener('change',async function(event) {
+    dynUI2.checkBoxList['amp'].checked = ! dynUI2.checkBoxList['amp'].checked;
+    document.getElementById('button2_1').click();
+})
