@@ -55,7 +55,13 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
         dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
     } else {
         dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result.map(row =>
-            row.map(value => { return value / Math.PI * 180;})
+            row.map((value, index) => {
+                if (index === 0) {
+                    return value;
+                } else {
+                    return value / Math.PI * 180;
+                }
+            })
         );
     }
     dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
@@ -216,7 +222,13 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
         dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
     } else {
         dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result.map(row =>
-            row.map(value => { return value / Math.PI * 180;})
+            row.map((value, index) => {
+                if (index === 0) {
+                    return value;
+                } else {
+                    return value / Math.PI * 180;
+                }
+            })
         );
     }
     dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);

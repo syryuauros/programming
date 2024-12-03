@@ -363,26 +363,69 @@
 
 
 
+// async function loadCSVsFromFolder(container, inputName, tableName, headerNum, colRanMin, colRanMax) {
+//     const files = container.fileInputList[inputName].files;
+//     let i = 0;
+
+//     const filePromises = [];
+
+//     for (const file of files) {
+//         if (file.type === 'text/csv') {
+//             const filePromise = new Promise((resolve, reject) => {
+//                 const reader = new FileReader();
+//                 // console.log(file.webkitRelativePath);
+
+//                 reader.onload = function(e) {
+//                     try {
+//                         const csvDataOrigin = e.target.result;
+//                         container.fileNameList[i] = file.name;
+//                         container.tableDataList[i] = formattingData(csvDataOrigin, headerNum, colRanMin, colRanMax);
+//                         container.tableSettings[tableName].data = container.tableDataList[i];
+//                         container.modifyTable(tableName, container.tableSettings[tableName]);
+//                         i++;
+//                         resolve();
+//                     } catch (error) {
+//                         reject(error);
+//                     }
+//                 };
+
+//                 reader.onerror = function(e) {
+//                     reject(new Error('Error reading file: ' + file.name));
+//                 };
+
+//                 reader.readAsText(file);
+//             });
+
+//             filePromises.push(filePromise);
+//         } else {
+//             console.log(`${file.name} is not a CSV file.`);
+//         }
+//     }
+
+//     await Promise.all(filePromises);
+// }
+
 async function loadCSVsFromFolder(container, inputName, tableName, headerNum, colRanMin, colRanMax) {
     const files = container.fileInputList[inputName].files;
-    let i = 0;
 
-    const filePromises = [];
+    // Initialize fileNameList and tableDataList to maintain order
+    container.fileNameList = new Array(files.length);
+    container.tableDataList = new Array(files.length);
 
-    for (const file of files) {
+    const filePromises = Array.from(files).map((file, index) => {
         if (file.type === 'text/csv') {
-            const filePromise = new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                // console.log(file.webkitRelativePath);
 
                 reader.onload = function(e) {
                     try {
                         const csvDataOrigin = e.target.result;
-                        container.fileNameList[i] = file.name;
-                        container.tableDataList[i] = formattingData(csvDataOrigin, headerNum, colRanMin, colRanMax);
-                        container.tableSettings[tableName].data = container.tableDataList[i];
+                        container.fileNameList[index] = file.name; // Use the index to maintain order
+                        container.tableDataList[index] = formattingData(csvDataOrigin, headerNum, colRanMin, colRanMax);
+
+                        container.tableSettings[tableName].data = container.tableDataList[index];
                         container.modifyTable(tableName, container.tableSettings[tableName]);
-                        i++;
+
                         resolve();
                     } catch (error) {
                         reject(error);
@@ -395,15 +438,15 @@ async function loadCSVsFromFolder(container, inputName, tableName, headerNum, co
 
                 reader.readAsText(file);
             });
-
-            filePromises.push(filePromise);
         } else {
             console.log(`${file.name} is not a CSV file.`);
+            return Promise.resolve(); // Resolve immediately for non-CSV files
         }
-    }
+    });
 
-    await Promise.all(filePromises);
+    await Promise.all(filePromises); // Wait for all files to be processed
 }
+
 
 
 // async function loadCSVsFromFolder(container, inputName, tableName, headerNum, colRanMin, colRanMax) {
@@ -542,8 +585,14 @@ async function exportToCSVsAsZip(container, ampPhs, nameList) {
         if (ampPhs === 0) {
             data = container.tableDataList[i].amp_result;
         } else {
-            data = container.tableDataList[i].phs_result.map(row =>
-                row.map(value => { return value / Math.PI * 180;})
+            data = dynUI2.tableDataList[i].phs_result.map(row =>
+                row.map((value, index) => {
+                    if (index === 0) {
+                        return value;
+                    } else {
+                        return value / Math.PI * 180;
+                    }
+                })
             );
 
             addingText = '_phs';
