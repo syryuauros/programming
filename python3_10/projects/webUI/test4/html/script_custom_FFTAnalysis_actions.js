@@ -54,8 +54,9 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
     if(dynUI2.checkBoxList['amp'].checked) {
         dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
     } else {
-
-        dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result;
+        dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result.map(row =>
+            row.map(value => { return value / Math.PI * 180;})
+        );
     }
     dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
 
@@ -68,6 +69,8 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
     var amp_beta = dataTable2.amp_result.map(row => row[2]);
     var phs_alpha = dataTable2.phs_result.map(row => row[1]);
     var phs_beta = dataTable2.phs_result.map(row => row[2]);
+    var phs_alpha_deg = phs_alpha.map(value => value / Math.PI * 180);
+    var phs_beta_deg = phs_beta.map(value => value / Math.PI * 180);
 
     var iFFT_alpha = dataTable2.iFFT_result.map(row => row[1]);
     var iFFT_beta = dataTable2.iFFT_result.map(row => row[2]);
@@ -128,10 +131,10 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
     traceAmpBeta.line.dash = 'solid';
 
     const tracePhsAlpha = Object.assign({}, traceAmpAlpha);
-    tracePhsAlpha.y = phs_alpha;
+    tracePhsAlpha.y = phs_alpha_deg;
 
     const tracePhsBeta = Object.assign({}, traceAmpBeta);
-    tracePhsBeta.y = phs_beta;
+    tracePhsBeta.y = phs_beta_deg;
 
     const traceiFFTBeta = Object.assign({}, traceiFFTAlpha);
     traceiFFTBeta.y = iFFT_beta;
@@ -212,7 +215,9 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     if(dynUI2.checkBoxList['amp'].checked) {
         dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].amp_result;
     } else {
-        dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result;
+        dynUI2.tableSettings['table2_1'].data = dynUI2.tableDataList[selNum-1].phs_result.map(row =>
+            row.map(value => { return value / Math.PI * 180;})
+        );
     }
     dynUI2.modifyTable('table2_1', dynUI2.tableSettings['table2_1']);
 
@@ -228,6 +233,8 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     var amp_beta = dataTable2.amp_result.map(row => row[2]);
     var phs_alpha = dataTable2.phs_result.map(row => row[1]);
     var phs_beta = dataTable2.phs_result.map(row => row[2]);
+    var phs_alpha_deg = phs_alpha.map(value => value / Math.PI * 180);
+    var phs_beta_deg = phs_beta.map(value => value / Math.PI * 180);
 
     var iFFT_alpha = dataTable2.iFFT_result.map(row => row[1]);
     var iFFT_beta = dataTable2.iFFT_result.map(row => row[2]);
@@ -302,10 +309,10 @@ dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
     traceAmpBeta.line.dash = 'solid';
 
     const tracePhsAlpha = Object.assign({}, traceAmpAlpha);
-    tracePhsAlpha.y = phs_alpha;
+    tracePhsAlpha.y = phs_alpha_deg;
 
     const tracePhsBeta = Object.assign({}, traceAmpBeta);
-    tracePhsBeta.y = phs_beta;
+    tracePhsBeta.y = phs_beta_deg;
 
     const traceiFFTBeta = Object.assign({}, traceiFFTAlpha);
     traceiFFTBeta.y = iFFT_beta;

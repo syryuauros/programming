@@ -542,7 +542,10 @@ async function exportToCSVsAsZip(container, ampPhs, nameList) {
         if (ampPhs === 0) {
             data = container.tableDataList[i].amp_result;
         } else {
-            data = container.tableDataList[i].phs_result;
+            data = container.tableDataList[i].phs_result.map(row =>
+                row.map(value => { return value / Math.PI * 180;})
+            );
+
             addingText = '_phs';
             zipText = 'phase';
         }
