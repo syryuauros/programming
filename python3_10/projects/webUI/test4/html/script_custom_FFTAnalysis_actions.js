@@ -180,9 +180,18 @@ dynUI1.selectList['select1'].addEventListener('change', function(event) {
 dynUI2.buttonList['button2_1'].addEventListener('click',async function(event) {
 
     var fileNum = dynUI1.fileInputList.fileInput1.files.length;
+    var noiseLevel = parseFloat(dynUI1.inputList['input4'].value)/100;
 
     for (i = 0; i < fileNum; i++) {
         var dataTemp = dynUI1.tableDataList[i].map(row => [...row]);
+        let colNum = dataTemp.length > 0 ? dataTemp[0].length : 0;
+        for (j = 1; j < colNum; j++ ) {
+            let absMax = Math.max(...dataTemp.map(row => Math.abs(row[j])));
+            dataTemp.forEach(row => {
+                let value = parseFloat(row[j]);
+                row[j] = value + absMax * noiseLevel * (Math.random() - 0.5);
+            })
+        }
         // if(dynUI2.checkBoxList['eV'].checked) {
 
         //     dataTemp = dataTemp.map(row => {

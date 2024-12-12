@@ -16,9 +16,12 @@ dynUI1.addLines(1);
 dynUI1.addFileInput('fileInput1');
 dynUI1.addSelect('select1_fileFolder');
 dynUI1.addLines(1);
-dynUI1.addLabel(' select csv file to show: ');
+dynUI1.addLabel('csv to show: ');
 dynUI1.addSelect('select1');
 dynUI1.addLabel(' , ');
+dynUI1.addLabel('noise: ');
+dynUI1.addInput('input4', '35px', '0');
+dynUI1.addLabel(' % ');
 dynUI1.addLines(1);
 dynUI1.addTable('table1');
 
