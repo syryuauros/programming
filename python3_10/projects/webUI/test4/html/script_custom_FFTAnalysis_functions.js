@@ -617,7 +617,77 @@ async function exportToCSVsAsZip(container, ampPhs, nameList) {
     console.log('ZIP file exported successfully.');
 }
 
+async function exportToCSVsAsZip2(container, nameList) {
+    const zip = new JSZip();
 
+    let zipText = 'iFFT'
+
+    let selNum = Object.keys(container.tableDataList).length;
+    for (let i = 0; i < selNum; i++) {
+        let data, filename;
+        let addingText = '_iFFT';
+
+        data = dynUI2.tableDataList[i].iFFT_result.map(row => [...row]);
+        data.forEach(row => row.push(0));
+        data.forEach(row => row.push(0));
+        data.forEach(row => row.push(1));
+        data.forEach(row => row.push(0));
+        data.unshift(['Wavelength','Alpha','Beta','AlphaStd','BetaStd','MirrorTanPsi','MirrorDelta']);
+        data.unshift(['RecipeType','SE']);
+        data.unshift(['WavelengthShift','0.649']);
+        data.unshift(['PolarizerAngle','35']);
+        data.unshift(['AngularSpread','6.66586']);
+        data.unshift(['AOI','66.80328']);
+        data.unshift(['ScanCount','20']);
+        data.unshift(['SEFilter','ND03']);
+        data.unshift(['MeasureType',' ']);
+        data.unshift(['Humidity','30']);
+        data.unshift(['Temperature','10']);
+        data.unshift(['StageZ','-1034.625']);
+        data.unshift(['StageY','-6366.020508']);
+        data.unshift(['StageX','5958.727539']);
+        data.unshift(['WaferY','5000']);
+        data.unshift(['WaferX','-6000']);
+        data.unshift(['DieHeight','0']);
+        data.unshift(['DieWidth','0']);
+        data.unshift(['DieY','0']);
+        data.unshift(['DieX','0']);
+        data.unshift(['UseDieMap','False']);
+        data.unshift(['SiteNumber','0']);
+        data.unshift(['StageGroupName','G1']);
+        data.unshift(['CassetteRecipeName','SiGe_Static_MNS1']);
+        data.unshift(['FilmRecipeName','#3_10um']);
+        data.unshift(['StageRecipeName','#3_SIGE_Static_150X_1st']);
+        data.unshift(['WaferRecipeName','SKH_SiGe_100Pair_STATIC_150X_MNS1']);
+        data.unshift(['WaferID','21']);
+        data.unshift(['LotID',' ']);
+        data.unshift(['TaskName','SiGe_Static_MNS1']);
+        data.unshift(['WaferSize','0']);
+        data.unshift(['AcquisitionTime','2024-11-11 22:36:00']);
+        data.unshift(['SystemSoftwareVersion','v1.0']);
+        data.unshift(['SystemID',' ']);
+        data.unshift(['SystemModel','AEliT2021']);
+        data.unshift(['SystemName','AEliT2021']);
+        data.unshift(['FormatVersion','1.1.0']);
+
+        const csvFormat = data.map(row => row.join(',')).join('\n');
+        filename = nameList[i].slice(0, -4) + addingText  + '.csv';
+
+        zip.file(filename, csvFormat);
+    }
+
+
+    const content = await zip.generateAsync({ type: 'blob' });
+    const url = await URL.createObjectURL(content);
+    const a = document.createElement('a');
+    a.href = await url;
+    a.download = zipText + '.zip';
+    await document.body.appendChild(a);
+    await a.click();
+    await document.body.removeChild(a);
+
+    console.log('ZIP file exported successfully.');
+}
 
 
 function delay(ms) {
